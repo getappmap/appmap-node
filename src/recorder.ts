@@ -1,18 +1,18 @@
 import { Parameter, optParameter, parameter } from "./parameter.js";
-import { Function, functions } from "./registry.js";
+import { FunctionInfo, functions } from "./registry.js";
 
-type CallEvent = {
+interface CallEvent {
   type: "call";
-  fun: Function;
+  fun: FunctionInfo;
   this_?: Parameter;
   args: Parameter[];
-};
+}
 
-type ReturnEvent = {
+interface ReturnEvent {
   type: "return";
   parent_id: number;
   return_value?: Parameter;
-};
+}
 
 export type Event = { id: number } & (CallEvent | ReturnEvent);
 
@@ -43,14 +43,3 @@ export function record(
   });
   return result;
 }
-
-const gAppMap = {
-  record,
-};
-
-declare global {
-  // eslint-disable-next-line no-var
-  var AppMap: typeof gAppMap;
-}
-
-global.AppMap = gAppMap;

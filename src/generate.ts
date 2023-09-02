@@ -12,7 +12,7 @@ export function call_(
   };
 }
 
-export function member(ids: ESTree.Expression[]): ESTree.MemberExpression {
+export function member(...ids: ESTree.Expression[]): ESTree.MemberExpression {
   assert(ids.length > 1);
   let result = [...ids];
   while (result.length > 1) {
@@ -42,3 +42,6 @@ export function ret(
     argument,
   };
 }
+
+export const args = identifier("arguments");
+export const this_ = identifier("this");

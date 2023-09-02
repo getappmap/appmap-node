@@ -1,9 +1,9 @@
-export type Parameter = {
+export interface Parameter {
   name?: string;
   object_id?: number | string;
   class: string;
   value: string;
-};
+}
 
 export function parameter(value: unknown): Parameter {
   return {

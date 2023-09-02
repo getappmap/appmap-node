@@ -2,7 +2,7 @@ import type { Event as AppMapEvent } from "./event.js";
 import type { ESTree } from "meriyah";
 import type { Parameter } from "./parameter.js";
 import { trace, Event as RecorderEvent } from "./recorder.js";
-import type { Function } from "./registry.js";
+import type { FunctionInfo } from "./registry.js";
 import assert from "node:assert";
 
 process.on("exit", printAppMap);
@@ -28,7 +28,7 @@ function printAppMap(): void {
   console.log(JSON.stringify(trace.map(resolve), undefined, 2));
 }
 
-function resolveParameters(args: Parameter[], fun: Function): Parameter[] {
+function resolveParameters(args: Parameter[], fun: FunctionInfo): Parameter[] {
   return args.map(
     (value, index): Parameter => ({
       ...value,

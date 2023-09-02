@@ -1,21 +1,21 @@
-import path from "node:path";
-import { cwd } from "node:process";
-import { fileURLToPath } from "node:url";
-import instrument from "./instrument.js";
+import { generate } from "astring";
+import { parse, type ESTree } from "meriyah";
 
-const root = cwd();
+import * as instrument from "./hooks/instrument";
+import * as jest from "./hooks/jest";
 
-export default function transform(code: string, url: URL): string {
-  if (url.protocol !== "file:") return code;
-
-  const filePath = fileURLToPath(url);
-  if (filePath.includes("node_modules")) return code;
-  if (isUnrelated(root, filePath)) return code;
-
-  return instrument(code, url);
+export interface Hook {
+  shouldInstrument(url: URL): boolean;
+  transform(program: ESTree.Program): ESTree.Program;
 }
 
-function isUnrelated(parentPath: string, targetPath: string) {
-  const rel = path.relative(parentPath, targetPath);
-  return rel === targetPath || rel.startsWith("..");
+const hooks: Hook[] = [jest, instrument];
+
+export default function transform(code: string, url: URL): string {
+  const hook = hooks.find((h) => h.shouldInstrument(url));
+  if (!hook) return code;
+
+  const tree = parse(code, { source: url.toString(), next: true });
+  const xformed = hook.transform(tree);
+  return generate(xformed);
 }

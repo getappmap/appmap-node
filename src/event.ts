@@ -1,20 +1,20 @@
 import type { Parameter } from "./parameter.js";
 
-type BaseEvent = {
+interface BaseEvent {
   id: number;
-};
+}
 
-type CallEvent = BaseEvent & {
+interface CallEvent extends BaseEvent {
   type: "call";
   method_id: string;
   receiver?: Parameter;
   parameters?: Parameter[];
   static: boolean;
-};
+}
 
-type ReturnEvent = BaseEvent & {
+interface ReturnEvent extends BaseEvent {
   parent_id: number;
   return_value?: Parameter;
-};
+}
 
 export type Event = CallEvent | ReturnEvent;
