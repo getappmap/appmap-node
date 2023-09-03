@@ -36,6 +36,7 @@ const root = cwd();
 
 export function shouldInstrument(url: URL): boolean {
   if (url.protocol !== "file:") return false;
+  if (url.pathname.endsWith(".json")) return false;
 
   const filePath = fileURLToPath(url);
   if (filePath.includes("node_modules")) return false;
