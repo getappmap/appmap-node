@@ -1,9 +1,12 @@
-import type { Event as AppMapEvent } from "./event.js";
+import assert from "node:assert";
+import { fileURLToPath } from "node:url";
+
 import type { ESTree } from "meriyah";
+
+import type { Event as AppMapEvent } from "./event.js";
 import type { Parameter } from "./parameter.js";
 import { trace, Event as RecorderEvent } from "./recorder.js";
 import type { FunctionInfo } from "./registry.js";
-import assert from "node:assert";
 
 process.on("exit", printAppMap);
 
@@ -11,7 +14,7 @@ function resolve(event: RecorderEvent): AppMapEvent {
   const { type, id } = event;
   if (type === "call") {
     const { this_, fun, args } = event;
-    return {
+    const result: AppMapEvent = {
       type,
       id,
       method_id: fun.id?.name ?? "<anonymous>",
@@ -19,6 +22,12 @@ function resolve(event: RecorderEvent): AppMapEvent {
       receiver: this_,
       parameters: resolveParameters(args, fun),
     };
+    if (fun.loc?.source?.startsWith("file://")) {
+      // TODO make it relative to the root directory
+      result.path = fileURLToPath(fun.loc.source);
+      result.lineno = fun.loc.start.line;
+    }
+    return result;
   }
   assert(event.type === "return");
   return event;

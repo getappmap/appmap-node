@@ -10,6 +10,8 @@ interface CallEvent extends BaseEvent {
   receiver?: Parameter;
   parameters?: Parameter[];
   static: boolean;
+  path?: string;
+  lineno?: number;
 }
 
 interface ReturnEvent extends BaseEvent {
