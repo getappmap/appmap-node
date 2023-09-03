@@ -1,14 +1,17 @@
+import assert from "node:assert";
 import path from "node:path";
 import { cwd } from "node:process";
 import { fileURLToPath } from "node:url";
+
 import { ESTree } from "meriyah";
 import { simple as walk } from "acorn-walk";
+
 import * as gen from "../generate.js";
-import { addFunction } from "../registry.js";
+import { addFunction, addMethod } from "../registry.js";
 import globals from "../globals.js";
 
 export function transform(program: ESTree.Program): ESTree.Program {
-  walk(program, { FunctionDeclaration });
+  walk(program, { FunctionDeclaration, MethodDefinition });
   return program;
 }
 
@@ -21,6 +24,25 @@ function FunctionDeclaration(fun: ESTree.FunctionDeclaration) {
   };
   const index = addFunction(fun);
   fun.body.body = [
+    gen.ret(
+      gen.call_(globals.record, [
+        gen.literal(index),
+        gen.this_,
+        gen.args,
+        arrow,
+      ]),
+    ),
+  ];
+}
+
+function MethodDefinition(method: ESTree.MethodDefinition) {
+  const index = addMethod(method);
+  assert(method.value.body);
+  const arrow: ESTree.FunctionExpression = {
+    ...method.value,
+    body: { ...method.value.body },
+  };
+  method.value.body.body = [
     gen.ret(
       gen.call_(globals.record, [
         gen.literal(index),
