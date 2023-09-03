@@ -2,25 +2,37 @@ import assert from "node:assert";
 
 import type { ESTree } from "meriyah";
 
-export type FunctionInfo = Omit<ESTree.FunctionDeclaration, "body" | "type">;
+export interface FunctionInfo {
+  id: ESTree.Identifier | null;
+  generator: boolean;
+  async: boolean;
+  params: ESTree.Parameter[];
+  static?: boolean;
+}
 
 export const functions: FunctionInfo[] = [];
 
 export function addFunction(fun: ESTree.FunctionDeclaration): number {
-  const fn = { ...fun };
-  delete fn.body;
-
   const index = functions.length;
-  functions.push(fn);
+  functions.push({
+    async: fun.async,
+    generator: fun.generator,
+    id: fun.id,
+    params: fun.params,
+  });
   return index;
 }
 
 export function addMethod(method: ESTree.MethodDefinition): number {
   const index = functions.length;
-  assert(method.key?.type === "Identifier");
+  const { key, value } = method;
+  assert(key?.type === "Identifier");
   functions.push({
-    ...method.value,
-    id: method.key,
+    async: value.async,
+    generator: value.generator,
+    id: key,
+    params: value.params,
+    static: method.static,
   });
   return index;
 }

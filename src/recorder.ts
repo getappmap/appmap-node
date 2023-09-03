@@ -25,17 +25,21 @@ export function record(
   args: IArguments,
   original: (...args: unknown[]) => unknown,
 ) {
+  const funInfo = functions[functionIdx];
   const call: Event = {
     type: "call",
-    fun: functions[functionIdx],
+    fun: funInfo,
     args: [...args].map(parameter),
     id: currentId++,
-    this_: optParameter(this_),
   };
 
+  if (!funInfo.static) call.this_ = optParameter(this_);
+
   emit(call);
+
   // TODO handle exceptions
   const result = original.call(this_, ...args);
+
   emit({
     type: "return",
     parent_id: call.id,
