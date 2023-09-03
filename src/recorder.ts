@@ -1,3 +1,4 @@
+import { emit } from "./appmap.js";
 import { Parameter, optParameter, parameter } from "./parameter.js";
 import { FunctionInfo, functions } from "./registry.js";
 
@@ -16,7 +17,7 @@ interface ReturnEvent {
 
 export type Event = { id: number } & (CallEvent | ReturnEvent);
 
-export const trace: Event[] = [];
+let currentId = 1;
 
 export function record(
   functionIdx: number,
@@ -28,18 +29,18 @@ export function record(
     type: "call",
     fun: functions[functionIdx],
     args: [...args].map(parameter),
-    id: trace.length,
+    id: currentId++,
     this_: optParameter(this_),
   };
 
-  trace.push(call);
+  emit(call);
   // TODO handle exceptions
   const result = original.call(this_, ...args);
-  trace.push({
+  emit({
     type: "return",
     parent_id: call.id,
     return_value: optParameter(result),
-    id: trace.length,
+    id: currentId++,
   });
   return result;
 }

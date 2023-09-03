@@ -5,6 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "tsc",
+    "lint": "eslint src",
     "watch": "tsc --watch"
   },
   "devDependencies": {

@@ -5,10 +5,14 @@ import type { ESTree } from "meriyah";
 
 import type { Event as AppMapEvent } from "./event.js";
 import type { Parameter } from "./parameter.js";
-import { trace, Event as RecorderEvent } from "./recorder.js";
+import { Event as RecorderEvent } from "./recorder.js";
 import type { FunctionInfo } from "./registry.js";
+import AppMapStream from "./AppMapStream.js";
+import { info } from "node:console";
+import { rmSync } from "node:fs";
 
-process.on("exit", printAppMap);
+const stream = new AppMapStream();
+process.on("exit", finish);
 
 function resolve(event: RecorderEvent): AppMapEvent {
   const { type, id } = event;
@@ -33,8 +37,8 @@ function resolve(event: RecorderEvent): AppMapEvent {
   return event;
 }
 
-function printAppMap(): void {
-  console.log(JSON.stringify(trace.map(resolve), undefined, 2));
+export function emit(event: RecorderEvent) {
+  stream.emit(resolve(event));
 }
 
 function resolveParameters(args: Parameter[], fun: FunctionInfo): Parameter[] {
@@ -54,4 +58,10 @@ function paramName(param: ESTree.Parameter): string | undefined {
       return paramName(param.left);
     // TODO: handle other parameter types
   }
+}
+
+function finish() {
+  stream.close();
+  if (stream.seenAny) info("Wrote %s", stream.path);
+  else rmSync(stream.path);
 }
