@@ -31,6 +31,7 @@ function resolve(event: RecorderEvent): AppMapEvent {
       result.path = fileURLToPath(fun.loc.source);
       result.lineno = fun.loc.start.line;
     }
+    if (fun.klass) result.defined_class = fun.klass;
     return result;
   }
   assert(event.type === "return");

@@ -7,6 +7,7 @@ interface BaseEvent {
 interface CallEvent extends BaseEvent {
   type: "call";
   method_id: string;
+  defined_class?: string;
   receiver?: Parameter;
   parameters?: Parameter[];
   static: boolean;

@@ -8,6 +8,8 @@ export interface FunctionInfo {
   async: boolean;
   params: ESTree.Parameter[];
   static?: boolean;
+  klass?: string;
+  loc?: ESTree.SourceLocation;
 }
 
 export const functions: FunctionInfo[] = [];
@@ -19,11 +21,15 @@ export function addFunction(fun: ESTree.FunctionDeclaration): number {
     generator: fun.generator,
     id: fun.id,
     params: fun.params,
+    loc: fun.loc ?? undefined,
   });
   return index;
 }
 
-export function addMethod(method: ESTree.MethodDefinition): number {
+export function addMethod(
+  method: ESTree.MethodDefinition,
+  klass: ESTree.ClassDeclaration | ESTree.ClassExpression,
+): number {
   const index = functions.length;
   const { key, value } = method;
   assert(key?.type === "Identifier");
@@ -33,6 +39,8 @@ export function addMethod(method: ESTree.MethodDefinition): number {
     id: key,
     params: value.params,
     static: method.static,
+    klass: klass.id?.name,
+    loc: method.loc ?? undefined,
   });
   return index;
 }
