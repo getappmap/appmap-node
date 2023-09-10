@@ -17,7 +17,7 @@ export function member(...ids: ESTree.Expression[]): ESTree.MemberExpression {
   let result = [...ids];
   while (result.length > 1) {
     const [object, property, ...rest] = result;
-    result = [{ type: "MemberExpression", object, property }, ...rest];
+    result = [{ type: "MemberExpression", object, property, computed: false }, ...rest];
   }
   assert(result[0].type === "MemberExpression");
   return result[0];
@@ -44,4 +44,4 @@ export function ret(
 }
 
 export const args = identifier("arguments");
-export const this_ = identifier("this");
+export const this_: ESTree.ThisExpression = { type: "ThisExpression" };

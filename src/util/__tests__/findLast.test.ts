@@ -9,4 +9,11 @@ describe(findLast, () => {
 
   it("returns undefined if none match", () =>
     expect(findLast([1, 2, 3], (a) => a > 3)).toBeUndefined());
+
+  it("correctly returns type when given a type predicate", () => {
+    type correct = "ok";
+    const isCorrect = (x: unknown): x is correct => x === "ok";
+    const result: correct | undefined = findLast([1, "ok"], isCorrect);
+    expect(result).toBe("ok");
+  });
 });

@@ -1,6 +1,6 @@
-import { emit } from "./appmap.js";
-import { Parameter, optParameter, parameter } from "./parameter.js";
-import { FunctionInfo, functions } from "./registry.js";
+import { emit } from "./appmap";
+import { Parameter, optParameter, parameter } from "./parameter";
+import { FunctionInfo, functions } from "./registry";
 
 interface CallEvent {
   type: "call";

@@ -1,17 +1,18 @@
 import assert from "node:assert";
+import { info } from "node:console";
+import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 import type { ESTree } from "meriyah";
 
-import type { Event as AppMapEvent } from "./event.js";
-import type { Parameter } from "./parameter.js";
-import { Event as RecorderEvent } from "./recorder.js";
-import type { FunctionInfo } from "./registry.js";
-import AppMapStream from "./AppMapStream.js";
-import { info } from "node:console";
-import { rmSync } from "node:fs";
+import type { Event as AppMapEvent } from "./event";
+import type { Parameter } from "./parameter";
+import { Event as RecorderEvent } from "./recorder";
+import type { FunctionInfo } from "./registry";
+import AppMapStream from "./AppMapStream";
+import compactObject from "./util/compactObject";
 
-const stream = new AppMapStream();
+export const stream = new AppMapStream();
 process.on("exit", finish);
 
 function resolve(event: RecorderEvent): AppMapEvent {
@@ -19,27 +20,34 @@ function resolve(event: RecorderEvent): AppMapEvent {
   if (type === "call") {
     const { this_, fun, args } = event;
     const result: AppMapEvent = {
-      type,
+      event: type,
       id,
-      method_id: fun.id?.name ?? "<anonymous>",
+      thread_id: 0,
+      method_id: fun.id ?? "<anonymous>",
       static: !this_,
       receiver: this_,
       parameters: resolveParameters(args, fun),
+      defined_class: fun.klass,
     };
     if (fun.loc?.source?.startsWith("file://")) {
       // TODO make it relative to the root directory
       result.path = fileURLToPath(fun.loc.source);
       result.lineno = fun.loc.start.line;
     }
-    if (fun.klass) result.defined_class = fun.klass;
     return result;
   }
   assert(event.type === "return");
-  return event;
+  return {
+    event: "return",
+    thread_id: 0,
+    id: event.id,
+    parent_id: event.parent_id,
+    return_value: event.return_value,
+  };
 }
 
 export function emit(event: RecorderEvent) {
-  stream.emit(resolve(event));
+  stream.emit(compactObject(resolve(event)));
 }
 
 function resolveParameters(args: Parameter[], fun: FunctionInfo): Parameter[] {
@@ -61,8 +69,6 @@ function paramName(param: ESTree.Parameter): string | undefined {
   }
 }
 
-function finish() {
-  stream.close();
-  if (stream.seenAny) info("Wrote %s", stream.path);
-  else rmSync(stream.path);
+export function finish() {
+  if (stream.close()) info("Wrote %s", stream.path);
 }

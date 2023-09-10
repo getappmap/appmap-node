@@ -2,10 +2,11 @@ import type { Parameter } from "./parameter.js";
 
 interface BaseEvent {
   id: number;
+  thread_id: number;
 }
 
-interface CallEvent extends BaseEvent {
-  type: "call";
+export interface CallEvent extends BaseEvent {
+  event: "call";
   method_id: string;
   defined_class?: string;
   receiver?: Parameter;
@@ -15,7 +16,8 @@ interface CallEvent extends BaseEvent {
   lineno?: number;
 }
 
-interface ReturnEvent extends BaseEvent {
+export interface ReturnEvent extends BaseEvent {
+  event: "return";
   parent_id: number;
   return_value?: Parameter;
 }

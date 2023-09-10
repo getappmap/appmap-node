@@ -3,7 +3,7 @@ import assert from "node:assert";
 import type { ESTree } from "meriyah";
 
 export interface FunctionInfo {
-  id: ESTree.Identifier | null;
+  id?: string;
   generator: boolean;
   async: boolean;
   params: ESTree.Parameter[];
@@ -19,7 +19,7 @@ export function addFunction(fun: ESTree.FunctionDeclaration): number {
   functions.push({
     async: fun.async,
     generator: fun.generator,
-    id: fun.id,
+    id: fun.id?.name,
     params: fun.params,
     loc: fun.loc ?? undefined,
   });
@@ -36,7 +36,7 @@ export function addMethod(
   functions.push({
     async: value.async,
     generator: value.generator,
-    id: key,
+    id: key.name,
     params: value.params,
     static: method.static,
     klass: klass.id?.name,

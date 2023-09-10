@@ -1,10 +1,8 @@
 {
   "extends": "@tsconfig/node16",
   "compilerOptions": {
-    "allowJs": true,
     "outDir": "dist",
     "noImplicitAny": true,
-    "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
     "types": ["node", "jest"]
@@ -12,5 +10,6 @@
   "ts-node": {
     "swc": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["src/coverage/**/*"]
 }

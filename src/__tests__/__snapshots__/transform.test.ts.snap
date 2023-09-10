@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`transform returns original code on error 1`] = `
+[
+  [
+    "Error transforming source at %s: %s",
+    "file:///foo",
+    "test error",
+  ],
+]
+`;

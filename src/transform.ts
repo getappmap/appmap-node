@@ -17,9 +17,9 @@ export interface Hook {
   transform(program: ESTree.Program): ESTree.Program;
 }
 
-const hooks: Hook[] = [jest, instrument];
+const defaultHooks: Hook[] = [jest, instrument];
 
-export default function transform(code: string, url: URL): string {
+export default function transform(code: string, url: URL, hooks = defaultHooks): string {
   const hook = hooks.find((h) => h.shouldInstrument(url));
   if (!hook) return code;
 

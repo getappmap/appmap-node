@@ -1,13 +1,14 @@
-import type { ESTree } from "meriyah";
-import { simple as walk } from "acorn-walk";
-import assert, { AssertionError } from "assert";
-import { pathToFileURL } from "url";
+import assert, { AssertionError } from "node:assert";
+import { warn } from "node:console";
+import { pathToFileURL } from "node:url";
 
 import type { TransformTypes } from "@jest/types";
+import { simple as walk } from "acorn-walk";
+import type { ESTree } from "meriyah";
 
 import * as gen from "../generate";
-import genericTranform from "../transform";
 import globals from "../globals";
+import genericTranform from "../transform";
 
 export function shouldInstrument(url: URL): boolean {
   return url.pathname.endsWith("@jest/transform/build/ScriptTransformer.js");
@@ -17,13 +18,12 @@ export function transform(program: ESTree.Program): ESTree.Program {
   try {
     walk(program, { MethodDefinition });
   } catch (e) {
-    if (e instanceof AssertionError) {
-      console.warn(
-        "Unknown Jest version. AppMap instrumentation cannot be applied.\n" +
-          "Please report the problem and Jest version at https://github.com/getappmap/appmap-agent-js/issues\n",
-        e,
-      );
-    } else throw e;
+    assert(e instanceof AssertionError);
+    warn(
+      "Unknown Jest version. AppMap instrumentation cannot be applied.\n" +
+        "Please report the problem and Jest version at https://github.com/getappmap/appmap-agent-js/issues\n",
+      e,
+    );
   }
   return program;
 }

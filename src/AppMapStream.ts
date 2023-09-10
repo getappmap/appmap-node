@@ -3,36 +3,34 @@ import { dirname, join } from "path";
 import { cwd } from "process";
 
 export default class AppMapStream {
-  private fd: number;
+  private fd?: number;
   private path_ = outputPath();
-  private seenAny_ = false;
-
-  constructor() {
-    mkdirSync(dirname(this.path), { recursive: true });
-    this.fd = openSync(this.path, "w");
-    this.writePreamble();
-  }
 
   public get path(): string {
     return this.path_;
   }
 
   public get seenAny(): boolean {
-    return this.seenAny_;
+    return this.fd !== undefined;
   }
 
-  private writePreamble() {
-    writeSync(this.fd, '{ "events": [');
+  private open(): number {
+    mkdirSync(dirname(this.path), { recursive: true });
+    const fd = openSync(this.path, "w");
+    writeSync(fd, '{ "events": [');
+    return fd;
   }
 
-  public close() {
+  public close(): boolean {
+    if (this.fd === undefined) return false;
     writeSync(this.fd, "]}");
     closeSync(this.fd);
+    return true;
   }
 
   public emit(event: unknown) {
-    if (this.seenAny_) writeSync(this.fd, ",");
-    this.seenAny_ = true;
+    if (this.fd === undefined) this.fd = this.open();
+    else writeSync(this.fd, ",");
     writeSync(this.fd, JSON.stringify(event));
   }
 }
