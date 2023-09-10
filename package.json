@@ -1,6 +1,9 @@
 {
   "name": "appmap-agent-js-ng",
   "license": "SEE LICENSE IN LICENSE",
+  "bin": {
+    "appmap-node": "bin/appmap-node.js"
+  },
   "packageManager": "yarn@3.6.1",
   "type": "commonjs",
   "scripts": {
