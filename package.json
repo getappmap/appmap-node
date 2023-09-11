@@ -1,13 +1,29 @@
 {
-  "name": "appmap-agent-js-ng",
+  "name": "appmap-node",
+  "version": "0.0.1",
+  "description": "AppMap agent for Node.js",
+  "keywords": [
+    "AppMap",
+    "node.js",
+    "agent"
+  ],
+  "homepage": "https://github.com/getappmap/appmap-node",
+  "bugs": "https://github.com/getappmap/appmap-node/issues",
   "license": "SEE LICENSE IN LICENSE",
-  "bin": {
-    "appmap-node": "bin/appmap-node.js"
-  },
+  "author": "Rafał Rzepecki <rafal@appmap.io>",
+  "files": [
+    "/dist"
+  ],
+  "main": "./dist/bin.js",
+  "bin": "bin/appmap-node.js",
+  "repository": "github:getappmap/appmap-node",
   "packageManager": "yarn@3.6.1",
   "type": "commonjs",
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "prepack": "tsc -p tsconfig.build.json",
     "lint": "eslint src",
     "test": "jest src",
     "watch": "tsc --watch -p tsconfig.build.json"

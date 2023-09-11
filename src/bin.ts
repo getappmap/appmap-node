@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 
 const registerPath = resolve(__dirname, "../dist/register.js");
 
-export default function main() {
+export function main() {
   addNodeOptions("--require", registerPath);
   const [cmd, ...args] = process.argv.slice(2);
 
