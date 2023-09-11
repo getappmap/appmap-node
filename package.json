@@ -1,5 +1,6 @@
 {
   "name": "appmap-agent-js-ng",
+  "license": "SEE LICENSE IN LICENSE",
   "packageManager": "yarn@3.6.1",
   "type": "commonjs",
   "scripts": {
