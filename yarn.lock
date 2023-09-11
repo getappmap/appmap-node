@@ -1519,6 +1519,7 @@ __metadata:
     astring: ^1.8.6
     eslint: ^8.47.0
     eslint-config-prettier: ^9.0.0
+    fast-glob: ^3.3.1
     jest: ^29.6.2
     meriyah: ^4.3.7
     prettier: ^3.0.2
@@ -2322,7 +2323,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.9":
+"fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.1":
   version: 3.3.1
   resolution: "fast-glob@npm:3.3.1"
   dependencies:

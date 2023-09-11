@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping a simple script 1`] = `
+{
+  "events": [
+    {
+      "event": "call",
+      "id": 1,
+      "lineno": 1,
+      "method_id": "foo",
+      "parameters": [
+        {
+          "class": "Number",
+          "name": "x",
+          "value": "42",
+        },
+      ],
+      "path": "./index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Number",
+        "value": "84",
+      },
+      "thread_id": 0,
+    },
+  ],
+}
+`;

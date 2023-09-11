@@ -5,29 +5,14 @@ import { addFunction, functions } from "../registry";
 
 describe(record, () => {
   it("records the function call", () => {
-    const fn = jest.fn().mockImplementation(function (
-      this: string,
-      arg1,
-      arg2,
-    ) {
+    const fn = jest.fn().mockImplementation(function (this: string, arg1, arg2) {
       expect(this).toBe("this");
       expect(arg1).toBe("arg1");
       expect(arg2).toBe("arg2");
       return "return";
     });
-    const index = addFunction({
-      async: false,
-      generator: false,
-      id: identifier("testFun"),
-      params: [identifier("param0"), identifier("param1")],
-      type: "FunctionDeclaration",
-    });
-    const result = record(
-      index,
-      "this",
-      ["arg1", "arg2"] as unknown as IArguments,
-      fn,
-    );
+    const index = addTestFn("testFun", "param0", "param1");
+    const result = record(index, "this", ["arg1", "arg2"], fn);
     expect(result).toBe("return");
     expect(fn).toBeCalled();
     expect(emit).nthCalledWith<[Event]>(1, {
@@ -59,6 +44,30 @@ describe(record, () => {
       },
     });
   });
+
+  it("treats functions called with global this as static", () => {
+    const fn = jest.fn(function () {
+      expect(this).toBe(globalThis);
+    });
+    record(addTestFn("getThis"), global, [], fn);
+    const [[call]] = jest.mocked(emit).mock.calls;
+    expect(call).not.toHaveProperty("this_");
+  });
 });
+
+afterEach(() => {
+  functions.splice(0);
+  jest.resetAllMocks();
+});
+
+function addTestFn(name: string, ...args: string[]): number {
+  return addFunction({
+    async: false,
+    generator: false,
+    id: identifier(name),
+    params: args.map(identifier),
+    type: "FunctionDeclaration",
+  });
+}
 
 jest.mock("../appmap");

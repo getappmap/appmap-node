@@ -22,7 +22,7 @@ let currentId = 1;
 export function record(
   functionIdx: number,
   this_: unknown,
-  args: IArguments,
+  args: unknown[],
   original: (...args: unknown[]) => unknown,
 ) {
   const funInfo = functions[functionIdx];
@@ -33,7 +33,7 @@ export function record(
     id: currentId++,
   };
 
-  if (!funInfo.static) call.this_ = optParameter(this_);
+  if (!funInfo.static && this_ !== globalThis) call.this_ = optParameter(this_);
 
   emit(call);
 

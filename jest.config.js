@@ -12,5 +12,5 @@ module.exports = {
       },
     ],
   },
-  rootDir: "src",
+  testPathIgnorePatterns: ["/node_modules/", "<rootDir>/dist/"],
 };

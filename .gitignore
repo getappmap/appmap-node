@@ -11,4 +11,6 @@
 #.pnp.*
 node_modules
 /dist
-/src/coverage
+/coverage
+
+tmp/
