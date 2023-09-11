@@ -1,0 +1,25 @@
+name: Lint and test
+
+on: push
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: yarn
+      - run: yarn lint
+
+  test:
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{matrix.node-version}}
+      - run: yarn
+      - run: yarn test
