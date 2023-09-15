@@ -5,29 +5,23 @@ import * as jestHook from "../jest";
 import transform from "../../transform";
 
 describe(jestHook.shouldInstrument, () => {
-  it("instruments ScriptTransformer", () => {
+  it("instruments jest Runtime", () => {
     expect(
-      jestHook.shouldInstrument(
-        new URL(
-          "file:///test/node_modules/@jest/transform/build/ScriptTransformer.js",
-        ),
-      ),
+      jestHook.shouldInstrument(new URL("file:///test/node_modules/jest-runtime/build/index.js")),
     ).toBe(true);
     expect(
       jestHook.shouldInstrument(
-        new URL(
-          "file:///test/node_modules/@jest/transform/build/NotScriptTransformer.js",
-        ),
+        new URL("file:///test/node_modules/@jest/transform/build/NotScriptTransformer.js"),
       ),
     ).toBe(false);
   });
 });
 
 describe(jestHook.transform, () => {
-  it("transforms the transformSource results", () => {
+  it("transforms the transformFile results", () => {
     const program = parse(`
-      class ScriptTransformer {
-        transformSource() {
+      class Runtime {
+        transformFile() {
           if (false) return 4;
           return 5;
         }
@@ -39,8 +33,8 @@ describe(jestHook.transform, () => {
 
     expect(xformed).toEqual(
       parse(`
-        class ScriptTransformer {
-          transformSource() {
+        class Runtime {
+          transformFile() {
             if (false) return global.AppMap.transformJest(filename, 4);
             return global.AppMap.transformJest(filename, 5);
           }
@@ -53,7 +47,7 @@ describe(jestHook.transform, () => {
   it("generates a warning if code has unexpected structure", () => {
     const program = parse(`
       class ScriptTransformer {
-        transformSource() { return; }
+        transformFile() { return; }
       }`);
 
     const warnSpy = (console.warn = jest.fn());
@@ -66,20 +60,9 @@ describe(jestHook.transform, () => {
 describe(jestHook.transformJest, () => {
   it("pushes jest transformed code through appmap hooks", () => {
     jest.mocked(transform).mockReturnValue("transformed test code");
-    const result = jestHook.transformJest("/test/test.js", {
-      code: "test code",
-      originalCode: "original test code",
-      sourceMapPath: null,
-    });
-    expect(result).toStrictEqual({
-      code: "transformed test code",
-      originalCode: "original test code",
-      sourceMapPath: null,
-    });
-    expect(transform).toBeCalledWith(
-      "test code",
-      new URL("file:///test/test.js"),
-    );
+    const result = jestHook.transformJest("/test/test.js", "test code");
+    expect(result).toBe("transformed test code");
+    expect(transform).toBeCalledWith("test code", new URL("file:///test/test.js"));
   });
 });
 

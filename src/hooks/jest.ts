@@ -2,7 +2,6 @@ import assert, { AssertionError } from "node:assert";
 import { warn } from "node:console";
 import { pathToFileURL } from "node:url";
 
-import type { TransformTypes } from "@jest/types";
 import { simple as walk } from "acorn-walk";
 import type { ESTree } from "meriyah";
 
@@ -11,7 +10,7 @@ import globals from "../globals";
 import genericTranform from "../transform";
 
 export function shouldInstrument(url: URL): boolean {
-  return url.pathname.endsWith("@jest/transform/build/ScriptTransformer.js");
+  return url.pathname.endsWith("jest-runtime/build/index.js");
 }
 
 export function transform(program: ESTree.Program): ESTree.Program {
@@ -30,7 +29,7 @@ export function transform(program: ESTree.Program): ESTree.Program {
 
 function MethodDefinition(method: ESTree.MethodDefinition) {
   const { key } = method;
-  if (!isId(key, "transformSource")) return;
+  if (!isId(key, "transformFile")) return;
 
   const body = method.value.body;
   assert(body);
@@ -39,10 +38,7 @@ function MethodDefinition(method: ESTree.MethodDefinition) {
     ReturnStatement(ret: ESTree.ReturnStatement) {
       const arg = ret.argument;
       assert(arg);
-      ret.argument = gen.call_(globals.transformJest, [
-        gen.identifier("filename"),
-        arg,
-      ]);
+      ret.argument = gen.call_(globals.transformJest, [gen.identifier("filename"), arg]);
     },
   });
 }
@@ -51,10 +47,6 @@ function isId(node: ESTree.Node | null, name: string) {
   return node?.type === "Identifier" && node.name === name;
 }
 
-export function transformJest(
-  filename: string,
-  original: TransformTypes.TransformResult,
-): TransformTypes.TransformResult {
-  const xformed = genericTranform(original.code, pathToFileURL(filename));
-  return { ...original, code: xformed };
+export function transformJest(filename: string, code: string): string {
+  return genericTranform(code, pathToFileURL(filename));
 }
