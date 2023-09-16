@@ -13,10 +13,7 @@ declare global {
 
 const originalCompile = Module.prototype._compile;
 
-Module.prototype._compile = function _compile(
-  code: string,
-  fileName: string,
-): string {
+Module.prototype._compile = function _compile(code: string, fileName: string): string {
   const xformed = transform(code, pathToFileURL(fileName));
   return originalCompile.call(this, xformed, fileName);
 };

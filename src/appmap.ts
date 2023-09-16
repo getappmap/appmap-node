@@ -1,11 +1,11 @@
 import assert from "node:assert";
-import { info } from "node:console";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 import type { ESTree } from "meriyah";
 
 import type { Event as AppMapEvent } from "./event";
+import { info } from "./message";
 import type { Parameter } from "./parameter";
 import { Event as RecorderEvent } from "./recorder";
 import type { FunctionInfo } from "./registry";

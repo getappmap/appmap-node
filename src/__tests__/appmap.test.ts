@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import console from "node:console";
-
 import { emit, finish, stream } from "../appmap";
 import { identifier } from "../generate";
+import { info } from "../message";
 
 describe(emit, () => {
   it("transforms and emits call events", () => {
@@ -80,14 +79,14 @@ describe(finish, () => {
     jest.mocked(stream.close).mockReturnValue(true);
     finish();
     expect(stream.close).toHaveBeenCalled();
-    expect(jest.mocked(console.info).mock.lastCall).toMatchSnapshot();
+    expect(jest.mocked(info).mock.lastCall).toMatchSnapshot();
   });
 
   it("doesn't print anything if nothing was written", () => {
     jest.mocked(stream.close).mockReturnValue(false);
     finish();
     expect(stream.close).toHaveBeenCalled();
-    expect(console.info).not.toHaveBeenCalled();
+    expect(info).not.toHaveBeenCalled();
   });
 });
 
@@ -100,4 +99,4 @@ Object.defineProperties(stream, {
 
 jest.mock("../AppMapStream.ts");
 jest.mock("node:fs");
-console.info = jest.fn();
+jest.mock("../message");

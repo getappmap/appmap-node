@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import console from "node:console";
 import { ESTree } from "meriyah";
 import transform, { Hook } from "../transform";
 import { literal } from "../generate";
+import { warn } from "../message";
 
 describe(transform, () => {
   it("uses hooks to transform the code", () => {
@@ -38,7 +38,7 @@ describe(transform, () => {
       ]),
     ).toBe("'hello'");
 
-    expect(jest.mocked(console.warn).mock.calls).toMatchSnapshot();
+    expect(jest.mocked(warn).mock.calls).toMatchSnapshot();
   });
 });
 
@@ -63,4 +63,4 @@ class TestHook implements Hook {
   }
 }
 
-console.warn = jest.fn();
+jest.mock("../message");

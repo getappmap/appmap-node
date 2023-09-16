@@ -1,13 +1,13 @@
 import { generate } from "astring";
 import { parse, type ESTree } from "meriyah";
 import assert from "node:assert";
-import { warn } from "node:console";
 import { fileURLToPath } from "node:url";
 import { debuglog } from "node:util";
 import { isNativeError } from "node:util/types";
 
 import * as instrument from "./hooks/instrument";
 import * as jest from "./hooks/jest";
+import { warn } from "./message";
 import { writeFileSync } from "node:fs";
 
 const treeDebug = debuglog("appmap-tree");

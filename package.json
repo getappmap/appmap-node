@@ -51,6 +51,7 @@
   "dependencies": {
     "acorn-walk": "^8.2.0",
     "astring": "^1.8.6",
+    "chalk": "<5",
     "meriyah": "^4.3.7"
   }
 }

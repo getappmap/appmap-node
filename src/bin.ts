@@ -2,14 +2,21 @@ import { spawn } from "node:child_process";
 import { accessSync } from "node:fs";
 import { resolve } from "node:path";
 
+import { info } from "./message";
+import { version } from "./version";
+
 const registerPath = resolve(__dirname, "../dist/register.js");
 
 export function main() {
-  addNodeOptions("--require", registerPath);
   const [cmd, ...args] = process.argv.slice(2);
 
+  if (!cmd) return usage();
+
+  info("Running with appmap-node version %s", version);
+  addNodeOptions("--require", registerPath);
+
   if (isScript(cmd)) {
-    process.argv.splice(1, 1); // remove outselves from argv
+    process.argv.splice(1, 1); // remove ourselves from argv
     runScript(cmd);
   } else {
     // it's a command, spawn it
@@ -37,6 +44,13 @@ function isScript(arg: string) {
 function runScript(path: string) {
   require(registerPath);
   require(resolve(path));
+}
+
+function usage() {
+  console.log("appmap-node version %s", version);
+  console.log("Usage:");
+  console.log("  $ appmap-node <script.js> [script args...]");
+  console.log("  $ appmap-node <command> [command args...]");
 }
 
 if (require.main === module) main();

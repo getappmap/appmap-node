@@ -3,12 +3,9 @@ import { dirname, join } from "path";
 import { cwd } from "process";
 
 export default class AppMapStream {
-  private fd?: number;
-  private path_ = outputPath();
+  constructor(public readonly path = outputPath()) {}
 
-  public get path(): string {
-    return this.path_;
-  }
+  private fd?: number;
 
   public get seenAny(): boolean {
     return this.fd !== undefined;
