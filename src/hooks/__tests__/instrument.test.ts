@@ -23,9 +23,9 @@ describe(instrument.transform, () => {
     expect(instrument.transform(program)).toStrictEqual(
       parse(`
         function testFun(arg) {
-          return global.AppMap.record(0, this, arguments, function testFun(arg) {
+          return global.AppMap[0].call(this, function testFun(arg) {
             return arg + 1;
-          });
+          }, arguments, 0);
         }
       `),
     );
@@ -50,9 +50,9 @@ describe(instrument.transform, () => {
       parse(`
         class TestClass {
           foo(value) {
-            return global.AppMap.record(0, this, arguments, function foo(value) {
+            return global.AppMap[0].call(this, function (value) {
               return value + 1;
-            });
+            }, arguments, 0);
           }
         }
       `),

@@ -6,8 +6,8 @@ import { fileURLToPath } from "node:url";
 import { ancestor as walk } from "acorn-walk";
 import { ESTree } from "meriyah";
 
-import * as gen from "../generate";
-import globals from "../globals";
+import { wrap } from ".";
+import { record } from "../recorder";
 import { addFunction, addMethod } from "../registry";
 import findLast from "../util/findLast";
 
@@ -17,40 +17,17 @@ export function transform(program: ESTree.Program): ESTree.Program {
 }
 
 function FunctionDeclaration(fun: ESTree.FunctionDeclaration) {
-  if (!fun.body) return; // TODO instrument functions without a body
-  const inner: ESTree.FunctionExpression = {
-    ...fun,
-    body: { ...fun.body },
-    type: "FunctionExpression",
-  };
-  const index = addFunction(fun);
-  fun.body.body = [
-    gen.ret(gen.call_(globals.record, [gen.literal(index), gen.this_, gen.args, inner])),
-  ];
+  fun.body = wrap(fun, record, addFunction(fun));
 }
 
 function isClass(node: ESTree.Node): node is ESTree.ClassDeclaration | ESTree.ClassExpression {
   return node.type === "ClassDeclaration" || node.type === "ClassExpression";
 }
 
-function MethodDefinition(
-  method: ESTree.MethodDefinition,
-  state: unknown,
-  ancestors: ESTree.Node[],
-) {
+function MethodDefinition(method: ESTree.MethodDefinition, _: unknown, ancestors: ESTree.Node[]) {
   const klass = findLast(ancestors, isClass);
   assert(klass);
-  const index = addMethod(method, klass);
-  assert(method.value.body);
-  assert(method.key?.type === "Identifier");
-  const inner: ESTree.FunctionExpression = {
-    ...method.value,
-    id: method.key,
-    body: { ...method.value.body },
-  };
-  method.value.body.body = [
-    gen.ret(gen.call_(globals.record, [gen.literal(index), gen.this_, gen.args, inner])),
-  ];
+  method.value.body = wrap({ ...method.value }, record, addMethod(method, klass));
 }
 
 let root = cwd();

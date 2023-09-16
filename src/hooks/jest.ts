@@ -1,12 +1,9 @@
-import assert, { AssertionError } from "node:assert";
-import { warn } from "node:console";
 import { pathToFileURL } from "node:url";
 
 import { simple as walk } from "acorn-walk";
 import type { ESTree } from "meriyah";
 
-import * as gen from "../generate";
-import globals from "../globals";
+import { wrap } from ".";
 import genericTranform from "../transform";
 
 export function shouldInstrument(url: URL): boolean {
@@ -14,39 +11,25 @@ export function shouldInstrument(url: URL): boolean {
 }
 
 export function transform(program: ESTree.Program): ESTree.Program {
-  try {
-    walk(program, { MethodDefinition });
-  } catch (e) {
-    assert(e instanceof AssertionError);
-    warn(
-      "Unknown Jest version. AppMap instrumentation cannot be applied.\n" +
-        "Please report the problem and Jest version at https://github.com/getappmap/appmap-agent-js/issues\n",
-      e,
-    );
-  }
+  walk(program, { MethodDefinition });
   return program;
 }
 
 function MethodDefinition(method: ESTree.MethodDefinition) {
   const { key } = method;
   if (!isId(key, "transformFile")) return;
-
-  const body = method.value.body;
-  assert(body);
-
-  walk(body, {
-    ReturnStatement(ret: ESTree.ReturnStatement) {
-      const arg = ret.argument;
-      assert(arg);
-      ret.argument = gen.call_(globals.transformJest, [gen.identifier("filename"), arg]);
-    },
-  });
+  method.value.body = wrap(method.value, transformJest);
 }
 
 function isId(node: ESTree.Node | null, name: string) {
   return node?.type === "Identifier" && node.name === name;
 }
 
-export function transformJest(filename: string, code: string): string {
-  return genericTranform(code, pathToFileURL(filename));
+export function transformJest(
+  this: unknown,
+  fun: (...args: [string]) => string,
+  args: [string],
+): string {
+  const [filename] = args;
+  return genericTranform(fun.apply(this, args), pathToFileURL(filename));
 }

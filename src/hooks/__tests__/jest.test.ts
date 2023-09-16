@@ -1,5 +1,3 @@
-import console from "node:console";
-
 import { parse } from "meriyah";
 import * as jestHook from "../jest";
 import transform from "../../transform";
@@ -35,32 +33,27 @@ describe(jestHook.transform, () => {
       parse(`
         class Runtime {
           transformFile() {
-            if (false) return global.AppMap.transformJest(filename, 4);
-            return global.AppMap.transformJest(filename, 5);
+            return global.AppMap[0].call(
+              this,
+              function () {
+                if (false) return 4;
+                return 5;
+              },
+              arguments,
+            );
           }
 
           otherMethod() {}
-        }`),
+        }
+      `),
     );
-  });
-
-  it("generates a warning if code has unexpected structure", () => {
-    const program = parse(`
-      class ScriptTransformer {
-        transformFile() { return; }
-      }`);
-
-    const warnSpy = (console.warn = jest.fn());
-
-    expect(jestHook.transform(program)).toStrictEqual(program);
-    expect(warnSpy.mock.lastCall).toMatchSnapshot();
   });
 });
 
 describe(jestHook.transformJest, () => {
   it("pushes jest transformed code through appmap hooks", () => {
     jest.mocked(transform).mockReturnValue("transformed test code");
-    const result = jestHook.transformJest("/test/test.js", "test code");
+    const result = jestHook.transformJest.call(undefined, () => "test code", ["/test/test.js"]);
     expect(result).toBe("transformed test code");
     expect(transform).toBeCalledWith("test code", new URL("file:///test/test.js"));
   });

@@ -12,7 +12,7 @@ describe(record, () => {
       return "return";
     });
     const index = addTestFn("testFun", "param0", "param1");
-    const result = record(index, "this", ["arg1", "arg2"], fn);
+    const result = record.call("this", fn, ["arg1", "arg2"], index);
     expect(result).toBe("return");
     expect(fn).toBeCalled();
     expect(emit).nthCalledWith<[Event]>(1, {
@@ -49,7 +49,7 @@ describe(record, () => {
     const fn = jest.fn(function () {
       expect(this).toBe(globalThis);
     });
-    record(addTestFn("getThis"), global, [], fn);
+    record.call(global, fn, [], addTestFn("getThis"));
     const [[call]] = jest.mocked(emit).mock.calls;
     expect(call).not.toHaveProperty("this_");
   });

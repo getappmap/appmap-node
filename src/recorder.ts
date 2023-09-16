@@ -19,12 +19,12 @@ export type Event = { id: number } & (CallEvent | ReturnEvent);
 
 let currentId = 1;
 
-export function record(
-  functionIdx: number,
-  this_: unknown,
+export function record<This, Return>(
+  this: This,
+  fun: (this: This, ...args: unknown[]) => Return,
   args: unknown[],
-  original: (...args: unknown[]) => unknown,
-) {
+  functionIdx: number,
+): Return {
   const funInfo = functions[functionIdx];
   const call: Event = {
     type: "call",
@@ -33,12 +33,12 @@ export function record(
     id: currentId++,
   };
 
-  if (!funInfo.static && this_ !== globalThis) call.this_ = optParameter(this_);
+  if (!funInfo.static && this !== globalThis) call.this_ = optParameter(this);
 
   emit(call);
 
   // TODO handle exceptions
-  const result = original.call(this_, ...args);
+  const result = fun.apply(this, args);
 
   emit({
     type: "return",

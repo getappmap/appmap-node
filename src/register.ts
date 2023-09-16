@@ -2,10 +2,6 @@ import Module from "node:module";
 import transform from "./transform.js";
 import { pathToFileURL } from "node:url";
 
-import "./recorder.js";
-import "./appmap.js";
-import "./globals.js";
-
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace NodeJS {

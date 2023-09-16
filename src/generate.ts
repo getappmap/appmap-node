@@ -3,7 +3,7 @@ import type { ESTree } from "meriyah";
 
 export function call_(
   callee: ESTree.Expression,
-  args: ESTree.Expression[],
+  ...args: ESTree.Expression[]
 ): ESTree.CallExpression {
   return {
     type: "CallExpression",
@@ -17,13 +17,18 @@ export function member(...ids: ESTree.Expression[]): ESTree.MemberExpression {
   let result = [...ids];
   while (result.length > 1) {
     const [object, property, ...rest] = result;
-    result = [{ type: "MemberExpression", object, property, computed: false }, ...rest];
+    result = [
+      { type: "MemberExpression", object, property, computed: property.type !== "Identifier" },
+      ...rest,
+    ];
   }
   assert(result[0].type === "MemberExpression");
   return result[0];
 }
 
-export function literal(value: ESTree.Literal["value"]): ESTree.Literal {
+export type LiteralValue = ESTree.Literal["value"];
+
+export function literal(value: LiteralValue): ESTree.Literal {
   return { type: "Literal", value };
 }
 
