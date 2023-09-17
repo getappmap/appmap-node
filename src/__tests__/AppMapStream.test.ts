@@ -14,7 +14,7 @@ describe(AppMapStream, () => {
   afterEach(() => chdir(origCwd));
 
   it("creates an appmap file in current directory", () => {
-    const stream = new AppMapStream();
+    const stream = new AppMapStream("./test.appmap.json");
     expect(stream.seenAny).toBe(false);
 
     stream.emit({ event: "call" });
@@ -33,7 +33,7 @@ describe(AppMapStream, () => {
 
   it("only creates the file when the first event is sent", () => {
     jest.spyOn(fs, "openSync");
-    const stream = new AppMapStream();
+    const stream = new AppMapStream("./test.appmap.json");
     expect(stream.seenAny).toBe(false);
     expect(stream.close()).toBe(false);
     expect(fs.openSync).not.toBeCalled();

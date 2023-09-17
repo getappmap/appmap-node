@@ -1,9 +1,9 @@
-import { emit } from "../appmap";
+import AppMapStream from "../AppMapStream";
 import { identifier } from "../generate";
-import { record, Event } from "../recorder";
+import * as recorder from "../recorder";
 import { addFunction, functions } from "../registry";
 
-describe(record, () => {
+describe(recorder.record, () => {
   it("records the function call", () => {
     const fn = jest.fn().mockImplementation(function (this: string, arg1, arg2) {
       expect(this).toBe("this");
@@ -12,36 +12,21 @@ describe(record, () => {
       return "return";
     });
     const index = addTestFn("testFun", "param0", "param1");
-    const result = record.call("this", fn, ["arg1", "arg2"], index);
+    const result = recorder.record.call("this", fn, ["arg1", "arg2"], index);
     expect(result).toBe("return");
     expect(fn).toBeCalled();
-    expect(emit).nthCalledWith<[Event]>(1, {
+    expect(emit).nthCalledWith(1, {
       type: "call",
       id: 1,
       fun: functions[index],
-      args: [
-        {
-          class: "String",
-          value: "'arg1'",
-        },
-        {
-          class: "String",
-          value: "'arg2'",
-        },
-      ],
-      this_: {
-        class: "String",
-        value: "'this'",
-      },
+      args: ["arg1", "arg2"],
+      this_: "this",
     });
-    expect(emit).nthCalledWith<[Event]>(2, {
+    expect(emit).nthCalledWith(2, {
       type: "return",
       id: 2,
       parent_id: 1,
-      return_value: {
-        class: "String",
-        value: "'return'",
-      },
+      return_value: "return",
     });
   });
 
@@ -49,8 +34,8 @@ describe(record, () => {
     const fn = jest.fn(function () {
       expect(this).toBe(globalThis);
     });
-    record.call(global, fn, [], addTestFn("getThis"));
-    const [[call]] = jest.mocked(emit).mock.calls;
+    recorder.record.call(global, fn, [], addTestFn("getThis"));
+    const [[call]] = emit.mock.calls;
     expect(call).not.toHaveProperty("this_");
   });
 });
@@ -70,4 +55,5 @@ function addTestFn(name: string, ...args: string[]): number {
   });
 }
 
-jest.mock("../appmap");
+const emit = jest.spyOn(AppMapStream.prototype, "emitEvent");
+jest.mock("../AppMapStream");

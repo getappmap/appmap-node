@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`finish closes the stream and prints the path if anything was written 1`] = `
-[
-  "Wrote %s",
-  "/test/appmap.yml",
-]
-`;

@@ -1,0 +1,8 @@
+{
+  "name": "jest-appmap-node-test",
+  "packageManager": "yarn@3.6.3",
+  "dependencies": {
+    "jest": "^29.6.2"
+  },
+  "private": true
+}

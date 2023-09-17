@@ -1,23 +1,29 @@
-import { emit } from "./appmap";
-import { Parameter, optParameter, parameter } from "./parameter";
+import { join } from "node:path";
+import { cwd } from "node:process";
+
+import AppMapStream from "./AppMapStream";
 import { FunctionInfo, functions } from "./registry";
+import { info } from "./message";
+import { rmSync } from "node:fs";
 
 interface CallEvent {
   type: "call";
   fun: FunctionInfo;
-  this_?: Parameter;
-  args: Parameter[];
+  this_?: unknown;
+  args: unknown[];
 }
 
 interface ReturnEvent {
   type: "return";
   parent_id: number;
-  return_value?: Parameter;
+  return_value?: unknown;
 }
 
 export type Event = { id: number } & (CallEvent | ReturnEvent);
 
 let currentId = 1;
+
+let stream: AppMapStream | undefined;
 
 export function record<This, Return>(
   this: This,
@@ -29,11 +35,11 @@ export function record<This, Return>(
   const call: Event = {
     type: "call",
     fun: funInfo,
-    args: [...args].map(parameter),
+    args: [...args],
     id: currentId++,
   };
 
-  if (!funInfo.static && this !== globalThis) call.this_ = optParameter(this);
+  if (!funInfo.static && !isGlobal(this)) call.this_ = this;
 
   emit(call);
 
@@ -43,8 +49,51 @@ export function record<This, Return>(
   emit({
     type: "return",
     parent_id: call.id,
-    return_value: optParameter(result),
+    return_value: result,
     id: currentId++,
   });
   return result;
 }
+
+/* Detect a global-ish object, perhaps coming from a different context.
+This is a bit of a heuristic, but we can't rely on obj === global since
+the obj could be coming from somewhere else (eg. in a test it would
+be the test context). */
+function isGlobal(obj: unknown): obj is typeof globalThis {
+  return typeof obj === "object" && obj !== null && "global" in obj && obj.global === obj;
+}
+
+export function finishRecording(keep = true) {
+  if (stream?.close()) {
+    if (keep) info("Wrote %s", stream.path);
+    else rmSync(stream.path);
+  }
+  stream = undefined;
+  currentId = 1;
+}
+
+process.on("exit", () => finishRecording(true));
+
+function emit(event: Event) {
+  stream?.emitEvent(event);
+}
+
+const root = cwd();
+
+export function start(type: string, ...names: string[]) {
+  const dirs = [type, ...names];
+  const name = dirs.pop()!; // it must have at least one element
+
+  stream = new AppMapStream(join(root, "tmp", "appmap", ...dirs, makeAppMapFilename(name)));
+}
+
+function makeAppMapFilename(name: string): string {
+  // TODO make sure it isn't too long
+  return name + ".appmap.json";
+}
+
+function timestampName(): string {
+  return new Date().toISOString();
+}
+
+start("process", timestampName());

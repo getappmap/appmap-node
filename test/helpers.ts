@@ -1,32 +1,41 @@
 import { spawnSync } from "node:child_process";
 import { accessSync, readFileSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
-import { chdir, cwd } from "node:process";
+import { cwd } from "node:process";
 
+import caller from "caller";
 import { globSync } from "fast-glob";
 import assert from "node:assert";
 
 const binPath = resolve(__dirname, "../bin/appmap-node.js");
 
 export function runAppmapNode(...args: string[]) {
-  return spawnSync(process.argv[0], [binPath, ...args]);
+  return runCommand(process.argv[0], binPath, ...args);
 }
 
-const origCwd = cwd();
-let target = origCwd;
+export function runCommand(command: string, ...args: string[]) {
+  const result = spawnSync(command, args, { cwd: target });
+  assert(result.status === 0 && result.error === undefined);
+  return result;
+}
+
+let target = cwd();
 
 export function testDir(path: string) {
   target = resolve(path);
-  beforeEach(() => {
-    rmSync(resolve(target, "tmp"), { recursive: true, force: true });
-    chdir(target);
-  });
-  afterEach(() => chdir(origCwd));
+  beforeEach(() => rmSync(resolve(target, "tmp"), { recursive: true, force: true }));
 }
 
-export function readAppmap(path?: string): object & Record<"events", unknown> {
+export function integrationTest(name: string, fn?: jest.ProvidesCallback, timeout?: number): void {
+  testDir(caller().replace(/\.test\.[tj]s$/, "/"));
+  test(name, fn, timeout);
+}
+
+type AppMap = object & Record<"events", unknown>;
+
+export function readAppmap(path?: string): AppMap {
   if (!path) {
-    const files = globSync("tmp/**/*.appmap.json");
+    const files = globSync(resolve(target, "tmp/**/*.appmap.json"));
     expect(files.length).toBe(1);
     [path] = files;
   }
@@ -34,16 +43,27 @@ export function readAppmap(path?: string): object & Record<"events", unknown> {
   const result = JSON.parse(readFileSync(path, "utf8")) as unknown;
   assert(typeof result === "object" && result && "events" in result);
   assert(result.events instanceof Array);
-  for (const event of result.events) fixPath(event);
+  result.events.forEach(fixEvent);
 
   return result;
 }
 
-function fixPath(event: unknown) {
+export function readAppmaps(): Record<string, AppMap> {
+  const files = globSync(resolve(target, "tmp/**/*.appmap.json"));
+  const maps = files.map<[string, AppMap]>((path) => [fixPath(path), readAppmap(path)]);
+  return Object.fromEntries(maps);
+}
+
+function fixEvent(event: unknown) {
   if (!(event && typeof event === "object" && "path" in event)) return;
   const { path } = event;
   if (typeof path !== "string") return;
-  if (path.startsWith(target)) event.path = path.replace(target, ".");
+  event.path = fixPath(path);
+}
+
+function fixPath(path: string): string {
+  if (path.startsWith(target)) return path.replace(target, ".");
+  else return path;
 }
 
 function ensureBuilt() {

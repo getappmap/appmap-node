@@ -15,7 +15,7 @@ describe(jestHook.shouldInstrument, () => {
   });
 });
 
-describe(jestHook.transform, () => {
+describe(jestHook.patchRuntime, () => {
   it("transforms the transformFile results", () => {
     const program = parse(`
       class Runtime {
@@ -27,7 +27,7 @@ describe(jestHook.transform, () => {
         otherMethod() {}
       }`);
 
-    const xformed = jestHook.transform(program);
+    const xformed = jestHook.patchRuntime(program);
 
     expect(xformed).toEqual(
       parse(`

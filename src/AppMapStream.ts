@@ -1,9 +1,11 @@
-import { closeSync, mkdirSync, openSync, writeSync } from "fs";
-import { dirname, join } from "path";
-import { cwd } from "process";
+import { closeSync, mkdirSync, openSync, writeSync } from "node:fs";
+import { dirname } from "node:path";
+
+import { toAppMap } from "./event";
+import type { Event } from "./recorder";
 
 export default class AppMapStream {
-  constructor(public readonly path = outputPath()) {}
+  constructor(public readonly path: string) {}
 
   private fd?: number;
 
@@ -30,20 +32,8 @@ export default class AppMapStream {
     else writeSync(this.fd, ",");
     writeSync(this.fd, JSON.stringify(event));
   }
-}
 
-function outputPath(): string {
-  // TODO configurable output path
-  // TODO other recording types
-  return join(
-    cwd(),
-    "tmp",
-    "appmap",
-    "process",
-    timestampName() + ".appmap.json",
-  );
-}
-
-function timestampName(): string {
-  return new Date().toISOString();
+  public emitEvent(event: Event) {
+    this.emit(toAppMap(event));
+  }
 }

@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping Jest tests 1`] = `
+{
+  "./tmp/appmap/jest/sum/sums numbers correctly.appmap.json": {
+    "events": [
+      {
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "sum",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "x",
+            "value": "1",
+          },
+          {
+            "class": "Number",
+            "name": "y",
+            "value": "2",
+          },
+        ],
+        "path": "./calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "3",
+        },
+        "thread_id": 0,
+      },
+    ],
+  },
+}
+`;

@@ -31,6 +31,6 @@ development, not ready for production use,  and the feature set is currently lim
 - Instruments all the files under current directory that aren't node_modules.
 - Only captures named `function`s and methods.
 - CommonJS only.
-- Only whole process recording.
+- Only whole process recording and Jest per-test recordings.
 - No metadata or classmap generation yet.
 - No exception support.
