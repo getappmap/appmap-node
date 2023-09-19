@@ -4,6 +4,8 @@ import { dirname } from "node:path";
 import { toAppMap } from "./event";
 import type { Event } from "./recorder";
 
+const APPMAP_VERSION = "1.12";
+
 export default class AppMapStream {
   constructor(public readonly path: string) {}
 
@@ -16,7 +18,7 @@ export default class AppMapStream {
   private open(): number {
     mkdirSync(dirname(this.path), { recursive: true });
     const fd = openSync(this.path, "w");
-    writeSync(fd, '{ "events": [');
+    writeSync(fd, `{"version":"${APPMAP_VERSION}","events":[`);
     return fd;
   }
 

@@ -30,5 +30,6 @@ exports[`mapping a simple script 1`] = `
       "thread_id": 0,
     },
   ],
+  "version": "1.12",
 }
 `;

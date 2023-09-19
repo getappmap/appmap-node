@@ -27,6 +27,7 @@ describe(AppMapStream, () => {
     const output: unknown = JSON.parse(fs.readFileSync(path, { encoding: "utf8" }));
 
     expect(output).toStrictEqual({
+      version: "1.12",
       events: [{ event: "call" }, { event: "return" }],
     });
   });
