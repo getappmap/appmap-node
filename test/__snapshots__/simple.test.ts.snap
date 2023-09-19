@@ -2,8 +2,29 @@
 
 exports[`mapping a simple script 1`] = `
 {
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "./index.js:1",
+              "name": "foo",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "",
+          "type": "class",
+        },
+      ],
+      "name": "index",
+      "type": "package",
+    },
+  ],
   "events": [
     {
+      "defined_class": "",
       "event": "call",
       "id": 1,
       "lineno": 1,

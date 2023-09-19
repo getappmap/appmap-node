@@ -1,62 +1,32 @@
-import { fileURLToPath } from "node:url";
-
 import { ESTree } from "meriyah";
 
+import type AppMap from "./AppMap";
 import { optParameter, parameter, type Parameter } from "./parameter";
 import type { Event as RecorderEvent } from "./recorder";
 import { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
 
-interface BaseEvent {
-  id: number;
-  thread_id: number;
-}
-
-export interface CallEvent extends BaseEvent {
-  event: "call";
-  method_id: string;
-  defined_class?: string;
-  receiver?: Parameter;
-  parameters?: Parameter[];
-  static: boolean;
-  path?: string;
-  lineno?: number;
-}
-
-export interface ReturnEvent extends BaseEvent {
-  event: "return";
-  parent_id: number;
-  return_value?: Parameter;
-}
-
-export type Event = CallEvent | ReturnEvent;
-
-export function toAppMap(event: RecorderEvent): Event {
+export function toAppMap(event: RecorderEvent): AppMap.Event {
   const result = event.type === "call" ? makeCallEvent(event) : makeReturnEvent(event);
   return compactObject(result);
 }
 
-function makeCallEvent(event: RecorderEvent & { type: "call" }): CallEvent {
+function makeCallEvent(event: RecorderEvent & { type: "call" }): AppMap.CallEvent {
   const { this_, id, fun, args } = event;
-  const result: Event = {
+  return {
     event: "call",
     id,
     thread_id: 0,
-    method_id: fun.id ?? "<anonymous>",
+    method_id: fun.id,
     static: !this_,
     receiver: optParameter(this_),
     parameters: resolveParameters(args, fun),
-    defined_class: fun.klass,
+    defined_class: fun.klass ?? "",
+    ...fun.location,
   };
-  if (fun.loc?.source?.startsWith("file://")) {
-    // TODO make it relative to the root directory
-    result.path = fileURLToPath(fun.loc.source);
-    result.lineno = fun.loc.start.line;
-  }
-  return result;
 }
 
-function makeReturnEvent(event: RecorderEvent & { type: "return" }): ReturnEvent {
+function makeReturnEvent(event: RecorderEvent & { type: "return" }): AppMap.ReturnEvent {
   return {
     event: "return",
     thread_id: 0,

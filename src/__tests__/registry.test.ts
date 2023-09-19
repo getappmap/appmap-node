@@ -16,7 +16,8 @@ describe(registry.addFunction, () => {
       generator: false,
       id: "testFun",
       params: [],
-      loc: undefined,
+      location: undefined,
+      static: true,
     });
   });
 });
@@ -52,7 +53,7 @@ describe(registry.addMethod, () => {
       params: [],
       id: "testMethod",
       klass: "TestClass",
-      loc: undefined,
+      location: undefined,
       static: false,
     });
   });

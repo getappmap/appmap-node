@@ -34,7 +34,8 @@ describe(instrument.transform, () => {
       id: "testFun",
       async: false,
       generator: false,
-      loc: undefined,
+      location: undefined,
+      static: true,
     });
   });
 
@@ -64,7 +65,7 @@ describe(instrument.transform, () => {
       static: false,
       async: false,
       generator: false,
-      loc: undefined,
+      location: undefined,
     });
   });
 });

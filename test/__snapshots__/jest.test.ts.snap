@@ -3,8 +3,29 @@
 exports[`mapping Jest tests 1`] = `
 {
   "./tmp/appmap/jest/sum/sums numbers correctly.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "./calc.js:1",
+                "name": "sum",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "",
+            "type": "class",
+          },
+        ],
+        "name": "calc",
+        "type": "package",
+      },
+    ],
     "events": [
       {
+        "defined_class": "",
         "event": "call",
         "id": 1,
         "lineno": 1,

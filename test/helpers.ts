@@ -44,6 +44,7 @@ export function readAppmap(path?: string): AppMap {
   assert(typeof result === "object" && result && "events" in result);
   assert(result.events instanceof Array);
   result.events.forEach(fixEvent);
+  if ("classMap" in result && result.classMap instanceof Array) fixClassMap(result.classMap);
 
   return result;
 }
@@ -64,6 +65,15 @@ function fixEvent(event: unknown) {
 function fixPath(path: string): string {
   if (path.startsWith(target)) return path.replace(target, ".");
   else return path;
+}
+
+function fixClassMap(classMap: unknown[]) {
+  for (const entry of classMap) {
+    if (!(entry && typeof entry === "object")) continue;
+    if ("location" in entry && typeof entry.location === "string")
+      entry.location = fixPath(entry.location);
+    if ("children" in entry && entry.children instanceof Array) fixClassMap(entry.children);
+  }
 }
 
 function ensureBuilt() {

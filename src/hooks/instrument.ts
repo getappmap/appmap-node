@@ -1,4 +1,3 @@
-import assert from "node:assert";
 import path from "node:path";
 import { cwd } from "node:process";
 import { fileURLToPath } from "node:url";
@@ -17,16 +16,14 @@ export function transform(program: ESTree.Program): ESTree.Program {
 }
 
 function FunctionDeclaration(fun: ESTree.FunctionDeclaration) {
+  if (!hasIdentifier(fun)) return;
   fun.body = wrap(fun, record, addFunction(fun));
 }
 
-function isClass(node: ESTree.Node): node is ESTree.ClassDeclaration | ESTree.ClassExpression {
-  return node.type === "ClassDeclaration" || node.type === "ClassExpression";
-}
-
 function MethodDefinition(method: ESTree.MethodDefinition, _: unknown, ancestors: ESTree.Node[]) {
-  const klass = findLast(ancestors, isClass);
-  assert(klass);
+  if (!methodHasName(method)) return;
+  const klass = findLast(ancestors, isNamedClass);
+  if (!klass) return;
   method.value.body = wrap({ ...method.value }, record, addMethod(method, klass));
 }
 
@@ -50,4 +47,22 @@ export function shouldInstrument(url: URL): boolean {
 function isUnrelated(parentPath: string, targetPath: string) {
   const rel = path.relative(parentPath, targetPath);
   return rel === targetPath || rel.startsWith("..");
+}
+
+function hasIdentifier(
+  fun: ESTree.FunctionDeclaration,
+): fun is ESTree.FunctionDeclaration & { id: ESTree.Identifier } {
+  return fun.id !== null;
+}
+
+function isNamedClass(
+  node: ESTree.Node,
+): node is (ESTree.ClassDeclaration | ESTree.ClassExpression) & { id: ESTree.Identifier } {
+  return (node.type === "ClassDeclaration" || node.type === "ClassExpression") && node.id !== null;
+}
+
+function methodHasName(
+  method: ESTree.MethodDefinition,
+): method is ESTree.MethodDefinition & { key: { name: string } } {
+  return method.key !== null && "name" in method.key;
 }

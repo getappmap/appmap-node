@@ -22,9 +22,12 @@ export default class AppMapStream {
     return fd;
   }
 
-  public close(): boolean {
+  public close(extras = {}): boolean {
     if (this.fd === undefined) return false;
-    writeSync(this.fd, "]}");
+    writeSync(this.fd, "]");
+    for (const [k, v] of Object.entries(extras))
+      if (v) writeSync(this.fd, `,${JSON.stringify(k)}:${JSON.stringify(v)}`);
+    writeSync(this.fd, "}");
     closeSync(this.fd);
     return true;
   }

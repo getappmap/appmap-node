@@ -5,6 +5,7 @@ import AppMapStream from "./AppMapStream";
 import { FunctionInfo, functions } from "./registry";
 import { info } from "./message";
 import { rmSync } from "node:fs";
+import { makeClassMap } from "./classMap";
 
 interface CallEvent {
   type: "call";
@@ -24,6 +25,7 @@ export type Event = { id: number } & (CallEvent | ReturnEvent);
 let currentId = 1;
 
 let stream: AppMapStream | undefined;
+const functionsSeen = new Set<FunctionInfo>();
 
 export function record<This, Return>(
   this: This,
@@ -32,6 +34,7 @@ export function record<This, Return>(
   functionIdx: number,
 ): Return {
   const funInfo = functions[functionIdx];
+  functionsSeen.add(funInfo);
   const call: Event = {
     type: "call",
     fun: funInfo,
@@ -39,7 +42,7 @@ export function record<This, Return>(
     id: currentId++,
   };
 
-  if (!funInfo.static && !isGlobal(this)) call.this_ = this;
+  if (!isGlobal(this)) call.this_ = this;
 
   emit(call);
 
@@ -64,12 +67,13 @@ function isGlobal(obj: unknown): obj is typeof globalThis {
 }
 
 export function finishRecording(keep = true) {
-  if (stream?.close()) {
+  if (stream?.close({ classMap: makeClassMap(functionsSeen.keys()) })) {
     if (keep) info("Wrote %s", stream.path);
     else rmSync(stream.path);
   }
   stream = undefined;
   currentId = 1;
+  functionsSeen.clear();
 }
 
 process.on("exit", () => finishRecording(true));
