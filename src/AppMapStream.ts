@@ -1,9 +1,6 @@
 import { closeSync, mkdirSync, openSync, writeSync } from "node:fs";
 import { dirname } from "node:path";
 
-import { toAppMap } from "./event";
-import type { Event } from "./recorder";
-
 const APPMAP_VERSION = "1.12";
 
 export default class AppMapStream {
@@ -36,9 +33,5 @@ export default class AppMapStream {
     if (this.fd === undefined) this.fd = this.open();
     else writeSync(this.fd, ",");
     writeSync(this.fd, JSON.stringify(event));
-  }
-
-  public emitEvent(event: Event) {
-    this.emit(toAppMap(event));
   }
 }

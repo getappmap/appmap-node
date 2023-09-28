@@ -7,7 +7,7 @@ import type { Circus } from "@jest/types";
 import { expressionFor, wrap } from ".";
 import genericTranform from "../transform";
 import { call_, identifier } from "../generate";
-import { finishRecording, start } from "../recorder";
+import { recording, start } from "../recorder";
 import { info } from "../message";
 
 export function shouldInstrument(url: URL): boolean {
@@ -33,7 +33,7 @@ export function patchRuntime(program: ESTree.Program): ESTree.Program {
 }
 
 export function patchCircus(program: ESTree.Program): ESTree.Program {
-  finishRecording(false);
+  recording.abandon();
   info("Detected Jest. Tests will be automatically recorded.");
   program.body.push({
     type: "ExpressionStatement",
@@ -53,7 +53,7 @@ function eventHandler(event: Circus.Event) {
       break;
     case "test_fn_failure":
     case "test_fn_success":
-      finishRecording();
+      recording.finish();
   }
 }
 
