@@ -5,7 +5,7 @@ import { functions } from "./registry";
 import Recording, { writtenAppMaps } from "./Recording";
 import commonPathPrefix from "./util/commonPathPrefix";
 
-export let recording: Recording = new Recording("process", new Date().toISOString());
+export let recording: Recording = new Recording("process", "process", new Date().toISOString());
 
 export function record<This, Return>(
   this: This,
@@ -34,9 +34,9 @@ function isGlobal(obj: unknown): obj is typeof globalThis {
   return typeof obj === "object" && obj !== null && "global" in obj && obj.global === obj;
 }
 
-export function start(type: string, ...names: string[]) {
+export function start(newRecording: Recording) {
   assert(!recording.running);
-  recording = new Recording(type, ...names);
+  recording = newRecording;
 }
 
 process.on("exit", () => {

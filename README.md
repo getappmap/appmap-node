@@ -32,5 +32,4 @@ development, not ready for production use,  and the feature set is currently lim
 - Only captures named `function`s and methods.
 - CommonJS only.
 - Only whole process recording and Jest per-test recordings.
-- No metadata or classmap generation yet.
 - No exception support.

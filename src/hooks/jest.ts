@@ -5,10 +5,11 @@ import type { ESTree } from "meriyah";
 import type { Circus } from "@jest/types";
 
 import { expressionFor, wrap } from ".";
-import genericTranform from "../transform";
 import { call_, identifier } from "../generate";
-import { recording, start } from "../recorder";
 import { info } from "../message";
+import Recording from "../Recording";
+import { recording, start } from "../recorder";
+import genericTranform from "../transform";
 
 export function shouldInstrument(url: URL): boolean {
   return (
@@ -49,11 +50,14 @@ function isId(node: ESTree.Node | null, name: string) {
 function eventHandler(event: Circus.Event) {
   switch (event.name) {
     case "test_fn_start":
-      start("jest", ...testNames(event.test));
+      start(createRecording(event.test));
       break;
     case "test_fn_failure":
+      recording.metadata.test_status = "failed";
+      return recording.finish();
     case "test_fn_success":
-      recording.finish();
+      recording.metadata.test_status = "succeeded";
+      return recording.finish();
   }
 }
 
@@ -70,4 +74,9 @@ function testNames(test: Circus.TestEntry): string[] {
   const names = [test.name];
   for (let block = test.parent; block.parent; block = block.parent) names.push(block.name);
   return names.reverse();
+}
+
+function createRecording(test: Circus.TestEntry): Recording {
+  const recording = new Recording("tests", "jest", ...testNames(test));
+  return recording;
 }

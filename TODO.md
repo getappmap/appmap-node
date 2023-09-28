@@ -3,4 +3,3 @@
 - configurable output path
 - configurable traced packages
 - location paths relative to project root
-- test recording

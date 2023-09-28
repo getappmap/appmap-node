@@ -47,8 +47,8 @@ function resolveParameters(args: unknown[], fun: FunctionInfo): Parameter[] {
   );
 }
 
-function paramName(param: ESTree.Parameter): string | undefined {
-  switch (param.type) {
+function paramName(param: ESTree.Parameter | undefined): string | undefined {
+  switch (param?.type) {
     case "Identifier":
       return param.name;
     case "AssignmentPattern":

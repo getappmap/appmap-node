@@ -3,7 +3,7 @@ import { accessSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { info } from "./message";
-import { version } from "./version";
+import { version } from "./metadata";
 
 const registerPath = resolve(__dirname, "../dist/register.js");
 
