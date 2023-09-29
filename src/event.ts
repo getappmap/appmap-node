@@ -2,37 +2,39 @@ import { ESTree } from "meriyah";
 
 import type AppMap from "./AppMap";
 import { optParameter, parameter, type Parameter } from "./parameter";
-import type { Event as RecorderEvent } from "./recorder";
-import { FunctionInfo } from "./registry";
+import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
 
-export function toAppMap(event: RecorderEvent): AppMap.Event {
-  const result = event.type === "call" ? makeCallEvent(event) : makeReturnEvent(event);
-  return compactObject(result);
-}
-
-function makeCallEvent(event: RecorderEvent & { type: "call" }): AppMap.CallEvent {
-  const { this_, id, fun, args } = event;
-  return {
+export function makeCallEvent(
+  id: number,
+  fun: FunctionInfo,
+  thisArg: unknown,
+  args: unknown[],
+): AppMap.FunctionCallEvent {
+  return compactObject({
     event: "call",
     id,
     thread_id: 0,
     method_id: fun.id,
-    static: !this_,
-    receiver: optParameter(this_),
+    static: !thisArg,
+    receiver: optParameter(thisArg),
     parameters: resolveParameters(args, fun),
     defined_class: fun.klass ?? "",
     ...fun.location,
-  };
+  });
 }
 
-function makeReturnEvent(event: RecorderEvent & { type: "return" }): AppMap.ReturnEvent {
+export function makeReturnEvent(
+  id: number,
+  parentId: number,
+  result: unknown,
+): AppMap.FunctionReturnEvent {
   return {
     event: "return",
     thread_id: 0,
-    id: event.id,
-    parent_id: event.parent_id,
-    return_value: optParameter(event.return_value),
+    id,
+    parent_id: parentId,
+    return_value: optParameter(result),
   };
 }
 
@@ -45,8 +47,8 @@ function resolveParameters(args: unknown[], fun: FunctionInfo): Parameter[] {
   );
 }
 
-function paramName(param: ESTree.Parameter): string | undefined {
-  switch (param.type) {
+function paramName(param: ESTree.Parameter | undefined): string | undefined {
+  switch (param?.type) {
     case "Identifier":
       return param.name;
     case "AssignmentPattern":

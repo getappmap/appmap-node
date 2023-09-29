@@ -1,3 +1,4 @@
+import assert from "node:assert";
 import { spawnSync } from "node:child_process";
 import { accessSync, readFileSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
@@ -5,7 +6,8 @@ import { cwd } from "node:process";
 
 import caller from "caller";
 import { globSync } from "fast-glob";
-import assert from "node:assert";
+
+import type AppMap from "../src/AppMap";
 
 const binPath = resolve(__dirname, "../bin/appmap-node.js");
 
@@ -45,6 +47,8 @@ export function readAppmap(path?: string): AppMap {
   assert(result.events instanceof Array);
   result.events.forEach(fixEvent);
   if ("classMap" in result && result.classMap instanceof Array) fixClassMap(result.classMap);
+  if ("metadata" in result && typeof result.metadata === "object" && result.metadata)
+    fixMetadata(result.metadata as AppMap.Metadata);
 
   return result;
 }
@@ -74,6 +78,11 @@ function fixClassMap(classMap: unknown[]) {
       entry.location = fixPath(entry.location);
     if ("children" in entry && entry.children instanceof Array) fixClassMap(entry.children);
   }
+}
+
+function fixMetadata(metadata: AppMap.Metadata) {
+  if (metadata.recorder.type === "process") metadata.name = "test process recording";
+  if (metadata.language) metadata.language.version = "test node version";
 }
 
 function ensureBuilt() {

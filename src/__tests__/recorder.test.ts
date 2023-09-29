@@ -1,6 +1,8 @@
-import AppMapStream from "../AppMapStream";
+/* eslint-disable @typescript-eslint/unbound-method */
+import AppMap from "../AppMap";
 import { identifier } from "../generate";
 import * as recorder from "../recorder";
+import Recording from "../Recording";
 import { addFunction, functions } from "../registry";
 
 describe(recorder.record, () => {
@@ -15,19 +17,11 @@ describe(recorder.record, () => {
     const result = recorder.record.call("this", fn, ["arg1", "arg2"], index);
     expect(result).toBe("return");
     expect(fn).toBeCalled();
-    expect(emit).nthCalledWith(1, {
-      type: "call",
-      id: 1,
-      fun: functions[index],
-      args: ["arg1", "arg2"],
-      this_: "this",
-    });
-    expect(emit).nthCalledWith(2, {
-      type: "return",
-      id: 2,
-      parent_id: 1,
-      return_value: "return",
-    });
+    expect(Recording.prototype.functionCall).lastCalledWith(functions[index], "this", [
+      "arg1",
+      "arg2",
+    ]);
+    expect(Recording.prototype.functionReturn).lastCalledWith(1, "return");
   });
 
   it("treats functions called with global this as static", () => {
@@ -35,14 +29,14 @@ describe(recorder.record, () => {
       expect(this).toBe(globalThis);
     });
     recorder.record.call(global, fn, [], addTestFn("getThis"));
-    const [[call]] = emit.mock.calls;
+    const [[call]] = jest.mocked(Recording.prototype.functionCall).mock.calls;
     expect(call).not.toHaveProperty("this_");
   });
 });
 
 afterEach(() => {
   functions.splice(0);
-  jest.resetAllMocks();
+  jest.clearAllMocks();
 });
 
 function addTestFn(name: string, ...args: string[]): number {
@@ -55,5 +49,10 @@ function addTestFn(name: string, ...args: string[]): number {
   });
 }
 
-const emit = jest.spyOn(AppMapStream.prototype, "emitEvent");
-jest.mock("../AppMapStream");
+jest.mock("../Recording");
+
+let id = 1;
+jest
+  .mocked(Recording)
+  .prototype.functionCall.mockImplementation(() => ({ id: id++ }) as AppMap.FunctionCallEvent);
+Object.defineProperty(Recording.prototype, "running", { get: () => true });

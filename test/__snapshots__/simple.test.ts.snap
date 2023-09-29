@@ -51,6 +51,24 @@ exports[`mapping a simple script 1`] = `
       "thread_id": 0,
     },
   ],
+  "metadata": {
+    "app": "appmap-node",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "0.0.1",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "ECMAScript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
   "version": "1.12",
 }
 `;

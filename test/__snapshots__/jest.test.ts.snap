@@ -57,6 +57,25 @@ exports[`mapping Jest tests 1`] = `
         "thread_id": 0,
       },
     ],
+    "metadata": {
+      "app": "jest-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "0.0.1",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "ECMAScript",
+        "version": "test node version",
+      },
+      "name": "sum sums numbers correctly",
+      "recorder": {
+        "name": "jest",
+        "type": "tests",
+      },
+      "test_status": "succeeded",
+    },
     "version": "1.12",
   },
 }
