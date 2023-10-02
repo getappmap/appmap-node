@@ -47,6 +47,7 @@ exports[`mapping Jest tests 1`] = `
         "thread_id": 0,
       },
       {
+        "elapsed": 31.337,
         "event": "return",
         "id": 2,
         "parent_id": 1,

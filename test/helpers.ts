@@ -60,10 +60,13 @@ export function readAppmaps(): Record<string, AppMap> {
 }
 
 function fixEvent(event: unknown) {
-  if (!(event && typeof event === "object" && "path" in event)) return;
-  const { path } = event;
-  if (typeof path !== "string") return;
-  event.path = fixPath(path);
+  if (!(event && typeof event === "object")) return;
+  if ("path" in event) {
+    const { path } = event;
+    if (typeof path !== "string") return;
+    event.path = fixPath(path);
+  }
+  if ("elapsed" in event && typeof event.elapsed === "number") event.elapsed = 31.337;
 }
 
 function fixPath(path: string): string {

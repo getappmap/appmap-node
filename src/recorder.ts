@@ -1,4 +1,5 @@
 import assert from "node:assert";
+import { hrtime } from "node:process";
 
 import { info } from "./message";
 import { functions } from "./registry";
@@ -18,10 +19,11 @@ export function record<This, Return>(
   const funInfo = functions[functionIdx];
   const call = recording.functionCall(funInfo, isGlobal(this) ? undefined : this, [...args]);
 
+  const start = getTime();
   // TODO handle exceptions
   const result = fun.apply(this, args);
 
-  recording.functionReturn(call.id, result);
+  recording.functionReturn(call.id, result, getTime() - start);
 
   return result;
 }
@@ -45,3 +47,8 @@ process.on("exit", () => {
   else if (writtenAppMaps.length > 1)
     info("Wrote %d AppMaps to %s", writtenAppMaps.length, commonPathPrefix(writtenAppMaps));
 });
+
+function getTime(): number {
+  const [sec, nano] = hrtime();
+  return sec + nano / 1_000_000_000;
+}

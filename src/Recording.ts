@@ -37,9 +37,9 @@ export default class Recording {
     return event;
   }
 
-  functionReturn(callId: number, result: unknown): AppMap.FunctionReturnEvent {
+  functionReturn(callId: number, result: unknown, elapsed?: number): AppMap.FunctionReturnEvent {
     assert(this.stream);
-    const event = makeReturnEvent(this.nextId++, callId, result);
+    const event = makeReturnEvent(this.nextId++, callId, result, elapsed);
     this.stream.emit(event);
     return event;
   }
