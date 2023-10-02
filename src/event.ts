@@ -28,6 +28,7 @@ export function makeReturnEvent(
   id: number,
   parentId: number,
   result: unknown,
+  elapsed?: number,
 ): AppMap.FunctionReturnEvent {
   return {
     event: "return",
@@ -35,6 +36,7 @@ export function makeReturnEvent(
     id,
     parent_id: parentId,
     return_value: optParameter(result),
+    elapsed,
   };
 }
 
