@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import AppMap from "../AppMap";
-import { identifier } from "../generate";
 import * as recorder from "../recorder";
 import Recording from "../Recording";
-import { addFunction, functions } from "../registry";
+import { functions } from "../registry";
+import { addTestFn } from "./helpers";
 
 describe(recorder.record, () => {
   it("records the function call", () => {
@@ -39,16 +39,6 @@ afterEach(() => {
   functions.splice(0);
   jest.clearAllMocks();
 });
-
-function addTestFn(name: string, ...args: string[]): number {
-  return addFunction({
-    async: false,
-    generator: false,
-    id: identifier(name),
-    params: args.map(identifier),
-    type: "FunctionDeclaration",
-  });
-}
 
 jest.mock("../Recording");
 

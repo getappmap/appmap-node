@@ -9,6 +9,7 @@ import { makeCallEvent, makeReturnEvent } from "./event";
 import type { FunctionInfo } from "./registry";
 import { makeClassMap } from "./classMap";
 import { defaultMetadata } from "./metadata";
+import compactObject from "./util/compactObject";
 
 export default class Recording {
   constructor(type: AppMap.RecorderType, recorder: string, ...names: string[]) {
@@ -44,16 +45,25 @@ export default class Recording {
     return event;
   }
 
+  private eventUpdates: Record<number, AppMap.Event> = {};
+
+  fixup(event: AppMap.Event) {
+    this.eventUpdates[event.id] = event;
+  }
+
   abandon(): void {
     if (this.stream?.close()) rmSync(this.path);
     this.stream = undefined;
   }
 
   finish(): boolean {
-    const written = this.stream?.close({
-      classMap: makeClassMap(this.functionsSeen.keys()),
-      metadata: this.metadata,
-    });
+    const written = this.stream?.close(
+      compactObject({
+        classMap: makeClassMap(this.functionsSeen.keys()),
+        metadata: this.metadata,
+        eventUpdates: Object.keys(this.eventUpdates).length > 0 ? this.eventUpdates : undefined,
+      }),
+    );
     this.stream = undefined;
     if (written) writtenAppMaps.push(this.path);
     return !!written;

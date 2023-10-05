@@ -8,8 +8,20 @@ exports[`mapping a simple script 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:1",
+              "location": "./index.js:13",
+              "name": "immediatePromise",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "./index.js:4",
               "name": "foo",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "./index.js:8",
+              "name": "promised",
               "static": true,
               "type": "function",
             },
@@ -22,12 +34,25 @@ exports[`mapping a simple script 1`] = `
       "type": "package",
     },
   ],
+  "eventUpdates": {
+    "4": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 3,
+      "return_value": {
+        "class": "Promise",
+        "value": "Promise { 'promised return' }",
+      },
+      "thread_id": 0,
+    },
+  },
   "events": [
     {
       "defined_class": "",
       "event": "call",
       "id": 1,
-      "lineno": 1,
+      "lineno": 4,
       "method_id": "foo",
       "parameters": [
         {
@@ -48,6 +73,50 @@ exports[`mapping a simple script 1`] = `
       "return_value": {
         "class": "Number",
         "value": "84",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 3,
+      "lineno": 8,
+      "method_id": "promised",
+      "parameters": [],
+      "path": "./index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 3,
+      "return_value": {
+        "class": "Promise",
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 5,
+      "lineno": 13,
+      "method_id": "immediatePromise",
+      "parameters": [],
+      "path": "./index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "return_value": {
+        "class": "Promise",
+        "value": "Promise { 'immediate' }",
       },
       "thread_id": 0,
     },

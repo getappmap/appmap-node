@@ -5,6 +5,8 @@ import { info } from "./message";
 import { functions } from "./registry";
 import Recording, { writtenAppMaps } from "./Recording";
 import commonPathPrefix from "./util/commonPathPrefix";
+import { isPromise } from "node:util/types";
+import { makeReturnEvent } from "./event";
 
 export let recording: Recording = new Recording("process", "process", new Date().toISOString());
 
@@ -23,7 +25,13 @@ export function record<This, Return>(
   // TODO handle exceptions
   const result = fun.apply(this, args);
 
-  recording.functionReturn(call.id, result, getTime() - start);
+  const ret = recording.functionReturn(call.id, result, getTime() - start);
+
+  if (isPromise(result) && ret.return_value?.value.includes("<pending>"))
+    return result.then(() => {
+      recording.fixup(makeReturnEvent(ret.id, call.id, result, getTime() - start));
+      return result;
+    }) as Return;
 
   return result;
 }

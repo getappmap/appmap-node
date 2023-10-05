@@ -49,6 +49,8 @@ export function readAppmap(path?: string): AppMap {
   if ("classMap" in result && result.classMap instanceof Array) fixClassMap(result.classMap);
   if ("metadata" in result && typeof result.metadata === "object" && result.metadata)
     fixMetadata(result.metadata as AppMap.Metadata);
+  if ("eventUpdates" in result && typeof result.eventUpdates === "object" && result.eventUpdates)
+    Object.values(result.eventUpdates).forEach(fixEvent);
 
   return result;
 }
