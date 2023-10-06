@@ -34,6 +34,7 @@
     "@swc/jest": "^0.2.29",
     "@tsconfig/node16": "^16.1.0",
     "@types/caller": "^1.0.0",
+    "@types/convert-source-map": "^2.0.1",
     "@types/jest": "^29.5.4",
     "@types/node": "^20.5.0",
     "@types/tmp": "^0.2.3",
@@ -55,7 +56,9 @@
     "acorn-walk": "^8.2.0",
     "astring": "^1.8.6",
     "chalk": "<5",
-    "meriyah": "^4.3.7"
+    "convert-source-map": "^2.0.0",
+    "meriyah": "^4.3.7",
+    "source-map-js": "^1.0.2"
   },
   "workspaces": [
     "test/jest"

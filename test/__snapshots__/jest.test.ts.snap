@@ -9,7 +9,7 @@ exports[`mapping Jest tests 1`] = `
           {
             "children": [
               {
-                "location": "./calc.js:1",
+                "location": "calc.js:1",
                 "name": "sum",
                 "static": true,
                 "type": "function",
@@ -42,7 +42,7 @@ exports[`mapping Jest tests 1`] = `
             "value": "2",
           },
         ],
-        "path": "./calc.js",
+        "path": "calc.js",
         "static": true,
         "thread_id": 0,
       },

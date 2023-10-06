@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping a simple script 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "./index.ts:3",
+              "name": "succ",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "",
+          "type": "class",
+        },
+      ],
+      "name": "index",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 1,
+      "lineno": 3,
+      "method_id": "succ",
+      "parameters": [
+        {
+          "class": "Number",
+          "name": "x",
+          "value": "42",
+        },
+      ],
+      "path": "./index.ts",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Number",
+        "value": "43",
+      },
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "appmap-node",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "0.0.1",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "ECMAScript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
