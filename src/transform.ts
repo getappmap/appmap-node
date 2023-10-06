@@ -1,6 +1,5 @@
-import { generate } from "astring";
-import { parse, type ESTree } from "meriyah";
 import assert from "node:assert";
+import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { debuglog } from "node:util";
 import { isNativeError } from "node:util/types";
@@ -8,7 +7,11 @@ import { isNativeError } from "node:util/types";
 import * as instrument from "./hooks/instrument";
 import * as jest from "./hooks/jest";
 import { warn } from "./message";
-import { writeFileSync } from "node:fs";
+
+import { generate } from "astring";
+import { fromSource as getSourceMap } from "convert-source-map";
+import { parse, type ESTree } from "meriyah";
+import applySourceMap from "./applySourceMap";
 
 const treeDebug = debuglog("appmap-tree");
 
@@ -25,6 +28,8 @@ export default function transform(code: string, url: URL, hooks = defaultHooks):
 
   try {
     const tree = parse(code, { source: url.toString(), next: true, loc: true });
+    const sourcemap: unknown = getSourceMap(code)?.sourcemap;
+    if (sourcemap) applySourceMap(tree, sourcemap);
     const xformed = hook.transform(tree);
     if (treeDebug.enabled) dumpTree(xformed, url);
     return generate(xformed);
