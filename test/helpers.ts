@@ -17,7 +17,6 @@ export function runAppmapNode(...args: string[]) {
 
 export function runCommand(command: string, ...args: string[]) {
   const result = spawnSync(command, args, { cwd: target });
-  assert(result.status === 0 && result.error === undefined);
   return result;
 }
 
@@ -29,7 +28,7 @@ export function testDir(path: string) {
 }
 
 export function integrationTest(name: string, fn?: jest.ProvidesCallback, timeout?: number): void {
-  testDir(caller().replace(/\.test\.[tj]s$/, "/"));
+  testDir(caller().replace(/\.test\.[tj]s$/, "/"));  
   test(name, fn, timeout);
 }
 

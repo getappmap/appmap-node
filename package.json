@@ -61,6 +61,7 @@
     "source-map-js": "^1.0.2"
   },
   "workspaces": [
-    "test/jest"
+    "test/jest",
+    "test/mocha"
   ]
 }

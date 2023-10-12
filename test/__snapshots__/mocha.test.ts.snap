@@ -1,0 +1,160 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping Mocha tests 1`] = `
+{
+  "./tmp/appmap/mocha/multiply/calculates power correctly.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "./calc.js:5",
+                "name": "power",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "",
+            "type": "class",
+          },
+        ],
+        "name": "calc",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "",
+        "event": "call",
+        "id": 1,
+        "lineno": 5,
+        "method_id": "power",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "x",
+            "value": "3",
+          },
+          {
+            "class": "Number",
+            "name": "y",
+            "value": "2",
+          },
+        ],
+        "path": "./calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "8",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "mocha-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "0.0.1",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "ECMAScript",
+        "version": "test node version",
+      },
+      "name": "multiply calculates power correctly",
+      "recorder": {
+        "name": "mocha",
+        "type": "tests",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/mocha/multiply/multiplies numbers correctly.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "./calc.js:1",
+                "name": "multiply",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "",
+            "type": "class",
+          },
+        ],
+        "name": "calc",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "multiply",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "x",
+            "value": "2",
+          },
+          {
+            "class": "Number",
+            "name": "y",
+            "value": "5",
+          },
+        ],
+        "path": "./calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "10",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "mocha-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "0.0.1",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "ECMAScript",
+        "version": "test node version",
+      },
+      "name": "multiply multiplies numbers correctly",
+      "recorder": {
+        "name": "mocha",
+        "type": "tests",
+      },
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+}
+`;

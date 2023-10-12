@@ -6,6 +6,7 @@ import { isNativeError } from "node:util/types";
 
 import * as instrument from "./hooks/instrument";
 import * as jest from "./hooks/jest";
+import * as mocha from "./hooks/mocha";
 import { warn } from "./message";
 
 import { generate } from "astring";
@@ -20,7 +21,7 @@ export interface Hook {
   transform(program: ESTree.Program): ESTree.Program;
 }
 
-const defaultHooks: Hook[] = [jest, instrument];
+const defaultHooks: Hook[] = [mocha, jest, instrument];
 
 export default function transform(code: string, url: URL, hooks = defaultHooks): string {
   const hook = hooks.find((h) => h.shouldInstrument(url));
