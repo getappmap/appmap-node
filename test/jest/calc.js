@@ -2,4 +2,9 @@ function sum(x, y) {
   return x + y;
 }
 
-module.exports = { sum };
+function sub(x, y) {
+  // intentionally broken
+  return y - x;
+}
+
+module.exports = { sum, sub };

@@ -2,6 +2,83 @@
 
 exports[`mapping Jest tests 1`] = `
 {
+  "./tmp/appmap/jest/sub/subtracts numbers correctly.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "calc.js:1",
+                "name": "sum",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "",
+            "type": "class",
+          },
+        ],
+        "name": "calc",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "sum",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "x",
+            "value": "1",
+          },
+          {
+            "class": "Number",
+            "name": "y",
+            "value": "2",
+          },
+        ],
+        "path": "calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "3",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "jest-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "0.0.1",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "ECMAScript",
+        "version": "test node version",
+      },
+      "name": "sub subtracts numbers correctly",
+      "recorder": {
+        "name": "jest",
+        "type": "tests",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
   "./tmp/appmap/jest/sum/sums numbers correctly.appmap.json": {
     "classMap": [
       {
