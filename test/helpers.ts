@@ -28,7 +28,7 @@ export function testDir(path: string) {
 }
 
 export function integrationTest(name: string, fn?: jest.ProvidesCallback, timeout?: number): void {
-  testDir(caller().replace(/\.test\.[tj]s$/, "/"));  
+  testDir(caller().replace(/\.test\.[tj]s$/, "/"));
   test(name, fn, timeout);
 }
 
