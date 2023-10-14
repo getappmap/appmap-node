@@ -39,9 +39,7 @@ export function identifier(id: string): ESTree.Identifier {
   };
 }
 
-export function ret(
-  argument: ESTree.Expression | null = null,
-): ESTree.ReturnStatement {
+export function ret(argument: ESTree.Expression | null = null): ESTree.ReturnStatement {
   return {
     type: "ReturnStatement",
     argument,
