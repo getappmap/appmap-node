@@ -1,6 +1,8 @@
+import assert from "node:assert";
 import { spawn } from "node:child_process";
 import { accessSync } from "node:fs";
 import { resolve } from "node:path";
+import { kill, pid } from "node:process";
 
 import { info } from "./message";
 import { version } from "./metadata";
@@ -20,7 +22,13 @@ export function main() {
     runScript(cmd);
   } else {
     // it's a command, spawn it
-    spawn(cmd, args, { stdio: "inherit" });
+    const child = spawn(cmd, args, { stdio: "inherit" });
+    child.on("exit", (code, signal) => {
+      if (code === null) {
+        assert(signal);
+        kill(pid, signal);
+      } else process.exitCode = code;
+    });
   }
 }
 
