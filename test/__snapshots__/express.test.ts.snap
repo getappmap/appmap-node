@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping Express.js requests 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "./index.js:13",
+              "name": "helloWorld",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "",
+          "type": "class",
+        },
+      ],
+      "name": "index",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "event": "call",
+      "http_server_request": {
+        "headers": {
+          "host": "localhost:27627",
+        },
+        "path_info": "/",
+        "protocol": "HTTP/1.1",
+        "request_method": "GET",
+      },
+      "id": 1,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 2,
+      "lineno": 13,
+      "method_id": "helloWorld",
+      "parameters": [
+        {
+          "class": "IncomingMessage",
+          "name": "req",
+          "value": "[IncomingMessage: GET /]",
+        },
+        {
+          "class": "ServerResponse",
+          "name": "res",
+          "value": "[ServerResponse: 200]",
+        },
+        {
+          "class": "Function",
+          "value": "[Function: next]",
+        },
+      ],
+      "path": "./index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 2,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_server_response": {
+        "headers": {
+          "content-length": "12",
+          "content-type": "text/html; charset=utf-8",
+          "etag": "W/"c-Lve95gjOVATpfV8EL5X4nxwjKHE"",
+          "x-powered-by": "Express",
+        },
+        "status_code": 200,
+      },
+      "id": 4,
+      "parent_id": 1,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "http_server_request": {
+        "headers": {
+          "host": "localhost:27627",
+        },
+        "path_info": "/nonexistent",
+        "protocol": "HTTP/1.1",
+        "request_method": "GET",
+      },
+      "id": 5,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_server_response": {
+        "headers": {
+          "content-length": "150",
+          "content-security-policy": "default-src 'none'",
+          "content-type": "text/html; charset=utf-8",
+          "x-content-type-options": "nosniff",
+          "x-powered-by": "Express",
+        },
+        "status_code": 404,
+      },
+      "id": 6,
+      "parent_id": 5,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "express-appmap-node-test",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "ECMAScript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
