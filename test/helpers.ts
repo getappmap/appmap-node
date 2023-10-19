@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { spawnSync } from "node:child_process";
+import { ChildProcessWithoutNullStreams, spawn, spawnSync } from "node:child_process";
 import { accessSync, readFileSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
@@ -13,6 +13,10 @@ const binPath = resolve(__dirname, "../bin/appmap-node.js");
 
 export function runAppmapNode(...args: string[]) {
   return runCommand(process.argv[0], binPath, ...args);
+}
+
+export function spawnAppmapNode(...args: string[]): ChildProcessWithoutNullStreams {
+  return spawn(process.argv[0], [binPath, ...args], { cwd: target });
 }
 
 export function runCommand(command: string, ...args: string[]) {
@@ -67,6 +71,17 @@ function fixEvent(event: unknown) {
     if (typeof path !== "string") return;
     event.path = fixPath(path);
   }
+  if (
+    "http_server_request" in event &&
+    typeof event.http_server_request === "object" &&
+    event.http_server_request &&
+    "headers" in event.http_server_request &&
+    typeof event.http_server_request.headers === "object" &&
+    event.http_server_request.headers &&
+    "connection" in event.http_server_request.headers
+  )
+    // the default of this varies between node versions
+    delete event.http_server_request.headers.connection;
   if ("elapsed" in event && typeof event.elapsed === "number") event.elapsed = 31.337;
 }
 

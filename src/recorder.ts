@@ -1,5 +1,4 @@
 import assert from "node:assert";
-import { hrtime } from "node:process";
 
 import { info } from "./message";
 import { functions } from "./registry";
@@ -7,6 +6,7 @@ import Recording, { writtenAppMaps } from "./Recording";
 import commonPathPrefix from "./util/commonPathPrefix";
 import { isPromise } from "node:util/types";
 import { makeReturnEvent } from "./event";
+import { getTime } from "./util/getTime";
 
 export let recording: Recording = new Recording("process", "process", new Date().toISOString());
 
@@ -55,8 +55,3 @@ process.on("exit", () => {
   else if (writtenAppMaps.length > 1)
     info("Wrote %d AppMaps to %s", writtenAppMaps.length, commonPathPrefix(writtenAppMaps));
 });
-
-function getTime(): number {
-  const [sec, nano] = hrtime();
-  return sec + nano / 1_000_000_000;
-}

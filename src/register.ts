@@ -1,6 +1,8 @@
 import Module from "node:module";
-import transform from "./transform.js";
 import { pathToFileURL } from "node:url";
+
+import requireHook from "./requireHook.js";
+import transform from "./transform.js";
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -17,3 +19,7 @@ Module.prototype._compile = function _compile(code: string, fileName: string): s
   const xformed = transform(code, pathToFileURL(fileName));
   return originalCompile.call(this, xformed, fileName);
 };
+
+Module.prototype.require = new Proxy(Module.prototype.require, {
+  apply: requireHook,
+});

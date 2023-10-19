@@ -1,4 +1,5 @@
-import { inspect } from "util";
+import { IncomingMessage, ServerResponse } from "http";
+import { format, inspect } from "util";
 
 export interface Parameter {
   name?: string;
@@ -10,8 +11,20 @@ export interface Parameter {
 export function parameter(value: unknown): Parameter {
   return {
     class: getClass(value),
-    value: inspect(value),
+    value: stringify(value),
   };
+}
+
+function stringify(value: unknown): string {
+  if (value instanceof IncomingMessage)
+    return format("[IncomingMessage: %s %s]", value.method, value.url);
+  if (value instanceof ServerResponse)
+    return format(
+      "[ServerResponse: %s]",
+      [value.statusCode, value.statusMessage].filter(Boolean).join(" "),
+    );
+
+  return inspect(value, { depth: 1 });
 }
 
 export function optParameter(value: unknown): Parameter | undefined {
