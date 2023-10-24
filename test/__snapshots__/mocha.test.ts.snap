@@ -63,7 +63,7 @@ exports[`mapping Mocha tests 1`] = `
       "client": {
         "name": "appmap-node",
         "url": "https://github.com/getappmap/appmap-node",
-        "version": "0.0.1",
+        "version": "test node-appmap version",
       },
       "language": {
         "engine": "Node.js",
@@ -140,7 +140,7 @@ exports[`mapping Mocha tests 1`] = `
       "client": {
         "name": "appmap-node",
         "url": "https://github.com/getappmap/appmap-node",
-        "version": "0.0.1",
+        "version": "test node-appmap version",
       },
       "language": {
         "engine": "Node.js",

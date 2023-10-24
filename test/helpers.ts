@@ -87,6 +87,7 @@ function fixClassMap(classMap: unknown[]) {
 function fixMetadata(metadata: AppMap.Metadata) {
   if (metadata.recorder.type === "process") metadata.name = "test process recording";
   if (metadata.language) metadata.language.version = "test node version";
+  if (metadata.client.version) metadata.client.version = "test node-appmap version";
 }
 
 function ensureBuilt() {
