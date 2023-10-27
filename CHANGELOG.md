@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/getappmap/appmap-node/compare/v1.0.0...v1.1.0) (2023-10-27)
+
+
+### Features
+
+* Record HTTP requests and responses (server-side) ([f7c5974](https://github.com/getappmap/appmap-node/commit/f7c5974737e3d9b91881297481fe0493b82a8124))
+
 # 1.0.0 (2023-10-24)
 
 
