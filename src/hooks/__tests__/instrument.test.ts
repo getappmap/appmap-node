@@ -22,14 +22,25 @@ describe(instrument.transform, () => {
     `);
     expect(instrument.transform(program)).toStrictEqual(
       parse(`
+        const __appmapFunctionRegistry = [{
+          "async": false,
+          "generator": false,
+          "id": "testFun",
+          "params": [{
+            "type": "Identifier",
+            "name": "arg"
+          }],
+          "static": true
+        }];
+
         function testFun(arg) {
-          return global.AppMap[0].call(this, function testFun(arg) {
+          return global.AppMapRecordHook.call(this, function testFun(arg) {
             return arg + 1;
-          }, arguments, 0);
+          }, arguments, __appmapFunctionRegistry[0]);
         }
       `),
     );
-    expect(registry.functions[0]).toStrictEqual<registry.FunctionInfo>({
+    expect(instrument.transformedFunctionInfos[0]).toStrictEqual<registry.FunctionInfo>({
       params: [{ type: "Identifier", name: "arg" }],
       id: "testFun",
       async: false,
@@ -47,18 +58,31 @@ describe(instrument.transform, () => {
         }
       }
     `);
+
     expect(instrument.transform(program)).toStrictEqual(
       parse(`
+        const __appmapFunctionRegistry = [{
+          "async": false,
+          "generator": false,
+          "id": "foo",
+          "params": [{
+            "type": "Identifier",
+            "name": "value"
+          }],
+          "static": false,
+          "klass": "TestClass"
+        }];
+
         class TestClass {
           foo(value) {
-            return global.AppMap[0].call(this, function (value) {
+            return global.AppMapRecordHook.call(this, function (value) {
               return value + 1;
-            }, arguments, 0);
+            }, arguments, __appmapFunctionRegistry[0]);
           }
         }
       `),
     );
-    expect(registry.functions[0]).toStrictEqual<registry.FunctionInfo>({
+    expect(instrument.transformedFunctionInfos[0]).toStrictEqual<registry.FunctionInfo>({
       params: [{ type: "Identifier", name: "value" }],
       id: "foo",
       klass: "TestClass",
@@ -70,4 +94,4 @@ describe(instrument.transform, () => {
   });
 });
 
-beforeEach(() => registry.functions.splice(0));
+beforeEach(() => instrument.transformedFunctionInfos.splice(0));

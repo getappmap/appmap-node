@@ -1,8 +1,8 @@
 import { identifier } from "../generate";
-import { addFunction } from "../registry";
+import { FunctionInfo, createFunctionInfo } from "../registry";
 
-export function addTestFn(name: string, ...args: string[]): number {
-  return addFunction({
+export function createTestFn(name: string, ...args: string[]): FunctionInfo {
+  return createFunctionInfo({
     async: false,
     generator: false,
     id: identifier(name),

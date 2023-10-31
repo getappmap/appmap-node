@@ -1,11 +1,11 @@
 import assert from "node:assert";
+import { isPromise } from "node:util/types";
 
+import { makeReturnEvent } from "./event";
 import { info } from "./message";
-import { functions } from "./registry";
+import { FunctionInfo } from "./registry";
 import Recording, { writtenAppMaps } from "./Recording";
 import commonPathPrefix from "./util/commonPathPrefix";
-import { isPromise } from "node:util/types";
-import { makeReturnEvent } from "./event";
 import { getTime } from "./util/getTime";
 
 export let recording: Recording = new Recording("process", "process", new Date().toISOString());
@@ -14,12 +14,15 @@ export function record<This, Return>(
   this: This,
   fun: (this: This, ...args: unknown[]) => Return,
   args: unknown[],
-  functionIdx: number,
+  funInfo: FunctionInfo,
 ): Return {
   if (!recording.running) return fun.apply(this, args);
 
-  const funInfo = functions[functionIdx];
-  const call = recording.functionCall(funInfo, isGlobal(this) ? undefined : this, [...args]);
+  const call = recording.functionCall(
+    funInfo,
+    isGlobal(this) || isNullPrototype(this) ? undefined : this,
+    [...args],
+  );
 
   const start = getTime();
   // TODO handle exceptions
@@ -42,6 +45,10 @@ the obj could be coming from somewhere else (eg. in a test it would
 be the test context). */
 function isGlobal(obj: unknown): obj is typeof globalThis {
   return typeof obj === "object" && obj !== null && "global" in obj && obj.global === obj;
+}
+
+function isNullPrototype(obj: unknown) {
+  return obj != null && Object.getPrototypeOf(obj) === null;
 }
 
 export function start(newRecording: Recording) {

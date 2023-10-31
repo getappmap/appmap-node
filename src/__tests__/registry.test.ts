@@ -1,9 +1,9 @@
 import { identifier } from "../generate";
 import * as registry from "../registry";
 
-describe(registry.addFunction, () => {
-  it("adds a function to registry and returns an index", () => {
-    const index = registry.addFunction({
+describe(registry.createFunctionInfo, () => {
+  it("creates a function info", () => {
+    const functionInfo = registry.createFunctionInfo({
       async: false,
       generator: false,
       id: identifier("testFun"),
@@ -11,7 +11,7 @@ describe(registry.addFunction, () => {
       type: "FunctionDeclaration",
     });
 
-    expect(registry.functions[index]).toStrictEqual<registry.FunctionInfo>({
+    expect(functionInfo).toStrictEqual<registry.FunctionInfo>({
       async: false,
       generator: false,
       id: "testFun",
@@ -22,9 +22,9 @@ describe(registry.addFunction, () => {
   });
 });
 
-describe(registry.addMethod, () => {
-  it("adds a method to registry and returns an index", () => {
-    const index = registry.addMethod(
+describe(registry.createMethodInfo, () => {
+  it("creates a method info", () => {
+    const methodInfo = registry.createMethodInfo(
       {
         computed: false,
         key: identifier("testMethod"),
@@ -47,7 +47,7 @@ describe(registry.addMethod, () => {
       },
     );
 
-    expect(registry.functions[index]).toStrictEqual<registry.FunctionInfo>({
+    expect(methodInfo).toStrictEqual<registry.FunctionInfo>({
       async: false,
       generator: false,
       params: [],

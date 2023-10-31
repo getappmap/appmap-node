@@ -4,3 +4,8 @@ integrationTest("mapping a simple script", () => {
   expect(runAppmapNode("index.js").status).toBe(0);
   expect(readAppmap()).toMatchSnapshot();
 });
+
+integrationTest("mapping an mjs script", () => {
+  expect(runAppmapNode("index.mjs").status).toBe(0);
+  expect(readAppmap()).toMatchSnapshot();
+});

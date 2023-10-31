@@ -12,6 +12,19 @@ export function call_(
   };
 }
 
+export function assignment(
+  left: ESTree.Expression,
+  right: ESTree.Expression,
+  operator = "=",
+): ESTree.AssignmentExpression {
+  return {
+    type: "AssignmentExpression",
+    left,
+    operator,
+    right,
+  };
+}
+
 export function member(...ids: ESTree.Expression[]): ESTree.MemberExpression {
   assert(ids.length > 1);
   let result = [...ids];

@@ -1,13 +1,15 @@
 import assert from "node:assert";
-import { spawn } from "node:child_process";
+import { ChildProcess, spawn } from "node:child_process";
 import { accessSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { kill, pid } from "node:process";
 
 import { info } from "./message";
 import { version } from "./metadata";
+import { readPkgUp } from "./util/readPkgUp";
 
 const registerPath = resolve(__dirname, "../dist/register.js");
+const loaderPath = resolve(__dirname, "../dist/loader.js");
 
 export function main() {
   const [cmd, ...args] = process.argv.slice(2);
@@ -17,19 +19,37 @@ export function main() {
   info("Running with appmap-node version %s", version);
   addNodeOptions("--require", registerPath);
 
+  // FIXME: Probably there should be a way to remove this altogether
+  // by changing our custom loader implementation
+  if (isTsEsmLoaderNeeded(cmd, args)) addNodeOptions("--loader", "ts-node/esm");
+
+  addNodeOptions("--loader", loaderPath, "--no-warnings");
+
+  let child: ChildProcess | undefined;
   if (isScript(cmd)) {
-    process.argv.splice(1, 1); // remove ourselves from argv
-    runScript(cmd);
+    if (isESM(cmd)) {
+      // We need to re-spawn to use our custom loader
+      child = spawn(process.argv[0], [cmd, ...args], { stdio: "inherit" });
+    } else {
+      process.argv.splice(1, 1); // remove ourselves from argv
+      runScript(cmd);
+    }
   } else {
     // it's a command, spawn it
-    const child = spawn(cmd, args, { stdio: "inherit" });
-    child.on("exit", (code, signal) => {
-      if (code === null) {
-        assert(signal);
-        kill(pid, signal);
-      } else process.exitCode = code;
-    });
+    child = spawn(cmd, args, { stdio: "inherit" });
   }
+
+  child?.on("exit", (code, signal) => {
+    if (code === null) {
+      assert(signal);
+      kill(pid, signal);
+    } else process.exitCode = code;
+  });
+}
+
+function isTsEsmLoaderNeeded(cmd: string, args: string[]) {
+  // HACK: Ugly way to check if it's ts-node instead of node
+  return [cmd, ...args].includes("ts-node");
 }
 
 function addNodeOptions(...options: string[]) {
@@ -47,6 +67,14 @@ function isScript(arg: string) {
   } catch {
     return false;
   }
+}
+
+function isESM(path: string) {
+  return path.match(/.*\.m[tj]s/) ?? isPackageJsonTypeModule(path);
+}
+
+function isPackageJsonTypeModule(path: string) {
+  return readPkgUp(dirname(path))?.type === "module";
 }
 
 function runScript(path: string) {

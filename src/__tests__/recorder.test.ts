@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import AppMap from "../AppMap";
+import { createTestFn } from "./helpers";
 import * as recorder from "../recorder";
 import Recording from "../Recording";
-import { functions } from "../registry";
-import { addTestFn } from "./helpers";
 
 describe(recorder.record, () => {
   it("records the function call", () => {
@@ -14,14 +13,11 @@ describe(recorder.record, () => {
       jest.advanceTimersByTime(31337);
       return "return";
     });
-    const index = addTestFn("testFun", "param0", "param1");
-    const result = recorder.record.call("this", fn, ["arg1", "arg2"], index);
+    const testFn = createTestFn("testFun", "param0", "param1");
+    const result = recorder.record.call("this", fn, ["arg1", "arg2"], testFn);
     expect(result).toBe("return");
     expect(fn).toBeCalled();
-    expect(Recording.prototype.functionCall).lastCalledWith(functions[index], "this", [
-      "arg1",
-      "arg2",
-    ]);
+    expect(Recording.prototype.functionCall).lastCalledWith(testFn, "this", ["arg1", "arg2"]);
     expect(Recording.prototype.functionReturn).lastCalledWith(1, "return", expect.closeTo(31.337));
   });
 
@@ -29,14 +25,13 @@ describe(recorder.record, () => {
     const fn = jest.fn(function () {
       expect(this).toBe(globalThis);
     });
-    recorder.record.call(global, fn, [], addTestFn("getThis"));
+    recorder.record.call(global, fn, [], createTestFn("getThis"));
     const [[call]] = jest.mocked(Recording.prototype.functionCall).mock.calls;
     expect(call).not.toHaveProperty("this_");
   });
 });
 
 afterEach(() => {
-  functions.splice(0);
   jest.clearAllMocks();
 });
 

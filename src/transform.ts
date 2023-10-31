@@ -4,15 +4,15 @@ import { fileURLToPath } from "node:url";
 import { debuglog } from "node:util";
 import { isNativeError } from "node:util/types";
 
+import { generate } from "astring";
+import { fromSource as getSourceMap, removeComments } from "convert-source-map";
+import { parse, type ESTree } from "meriyah";
+
+import applySourceMap from "./applySourceMap";
 import * as instrument from "./hooks/instrument";
 import * as jest from "./hooks/jest";
 import * as mocha from "./hooks/mocha";
 import { warn } from "./message";
-
-import { generate } from "astring";
-import { fromSource as getSourceMap } from "convert-source-map";
-import { parse, type ESTree } from "meriyah";
-import applySourceMap from "./applySourceMap";
 
 const treeDebug = debuglog("appmap-tree");
 
@@ -23,13 +23,17 @@ export interface Hook {
 
 const defaultHooks: Hook[] = [mocha, jest, instrument];
 
+export function findHook(url: URL, hooks = defaultHooks) {
+  return hooks.find((h) => h.shouldInstrument(url));
+}
+
 export default function transform(code: string, url: URL, hooks = defaultHooks): string {
-  const hook = hooks.find((h) => h.shouldInstrument(url));
+  const hook = findHook(url, hooks);
   if (!hook) return code;
 
   try {
-    const tree = parse(code, { source: url.toString(), next: true, loc: true });
-    const sourcemap: unknown = getSourceMap(code)?.sourcemap;
+    const tree = parse(code, { source: url.toString(), next: true, loc: true, module: true });
+    const sourcemap: unknown = getSourceMap(fixSourceMap(url, code))?.sourcemap;
     if (sourcemap) applySourceMap(tree, sourcemap);
     const xformed = hook.transform(tree);
     if (treeDebug.enabled) dumpTree(xformed, url);
@@ -46,4 +50,22 @@ function dumpTree(xformed: ESTree.Program, url: URL) {
   const path = fileURLToPath(url) + ".appmap-tree.json";
   writeFileSync(path, JSON.stringify(xformed, null, 2));
   treeDebug("wrote transformed tree to %s", path);
+}
+
+// HACK: In node 18/16, when using --loader node-ts/esm
+// sourcemap gets inserted twice to the typescript file. We remove the second one
+// which reflects transpiled files map, instead of the original typescript file map.
+function fixSourceMap(url: URL, code: string): string {
+  const [major] = process.versions.node.split(".").map(Number);
+  if (major >= 20) return code;
+
+  if (![".ts", ".mts", ".tsx"].some((e) => url.pathname.toLowerCase().endsWith(e))) return code;
+
+  let removed = removeComments(code);
+  if (removed.indexOf("//# sourceMappingURL") > -1) {
+    // Correct one remains, it needs to start in new line.
+    removed = removed.replace("//# sourceMappingURL", "\n//# sourceMappingURL");
+    return removed;
+  }
+  return code;
 }

@@ -1,30 +1,93 @@
+import assert from "node:assert";
 import path from "node:path";
 import { cwd } from "node:process";
 import { fileURLToPath } from "node:url";
 
 import { ancestor as walk } from "acorn-walk";
-import { ESTree } from "meriyah";
+import { ESTree, parse } from "meriyah";
 
-import { wrap } from ".";
-import { record } from "../recorder";
-import { addFunction, addMethod } from "../registry";
+import { args as args_, call_, identifier, literal, member, ret, this_ } from "../generate";
+import { FunctionInfo, createMethodInfo, createFunctionInfo } from "../registry";
 import findLast from "../util/findLast";
 
+const __appmapFunctionRegistryIdentifier = identifier("__appmapFunctionRegistry");
+export const transformedFunctionInfos: FunctionInfo[] = [];
+
+function addTransformedFunctionInfo(fi: FunctionInfo): number {
+  transformedFunctionInfos.push(fi);
+  return transformedFunctionInfos.length - 1;
+}
+
 export function transform(program: ESTree.Program): ESTree.Program {
+  transformedFunctionInfos.splice(0);
   walk(program, { FunctionDeclaration, MethodDefinition });
+
+  const functionRegistryAssignment: ESTree.VariableDeclaration = {
+    type: "VariableDeclaration",
+    declarations: [
+      {
+        type: "VariableDeclarator",
+        id: __appmapFunctionRegistryIdentifier,
+        init: {
+          type: "ArrayExpression",
+          elements: transformedFunctionInfos.map(objectLiteralExpression),
+        },
+      },
+    ],
+    kind: "const",
+  };
+  program.body.unshift(functionRegistryAssignment);
+
   return program;
+}
+
+function objectLiteralExpression(obj: object) {
+  const objectExpressionString = JSON.stringify(obj);
+  const parsed = parse(`(${objectExpressionString})`);
+
+  assert(parsed.body.length === 1);
+  assert(parsed.body[0].type === "ExpressionStatement");
+  assert(parsed.body[0].expression.type === "ObjectExpression");
+
+  return parsed.body[0].expression;
+}
+
+function wrapWithRecord(
+  fd: ESTree.FunctionDeclaration | ESTree.FunctionExpression,
+  functionInfo: FunctionInfo,
+) {
+  const wrapped: ESTree.BlockStatement = {
+    type: "BlockStatement",
+    body: [
+      // Statement: global.AppMapRecordHook(function f(...) {...}, __appmapFunctionRegistry[i]);
+      ret(
+        call_(
+          member(...["global", "AppMapRecordHook", "call"].map(identifier)),
+          this_,
+          { ...fd, type: "FunctionExpression" },
+          args_,
+          member(
+            __appmapFunctionRegistryIdentifier,
+            literal(addTransformedFunctionInfo(functionInfo)),
+          ),
+        ),
+      ),
+    ],
+  };
+
+  return wrapped;
 }
 
 function FunctionDeclaration(fun: ESTree.FunctionDeclaration) {
   if (!hasIdentifier(fun)) return;
-  fun.body = wrap(fun, record, addFunction(fun));
+  fun.body = wrapWithRecord(fun, createFunctionInfo(fun));
 }
 
 function MethodDefinition(method: ESTree.MethodDefinition, _: unknown, ancestors: ESTree.Node[]) {
   if (!methodHasName(method)) return;
   const klass = findLast(ancestors, isNamedClass);
   if (!klass) return;
-  method.value.body = wrap({ ...method.value }, record, addMethod(method, klass));
+  method.value.body = wrapWithRecord({ ...method.value }, createMethodInfo(method, klass));
 }
 
 let root = cwd();

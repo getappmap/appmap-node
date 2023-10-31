@@ -1,6 +1,7 @@
 import Module from "node:module";
 import { pathToFileURL } from "node:url";
 
+import { record } from "./recorder.js";
 import requireHook from "./requireHook.js";
 import transform from "./transform.js";
 
@@ -23,3 +24,9 @@ Module.prototype._compile = function _compile(code: string, fileName: string): s
 Module.prototype.require = new Proxy(Module.prototype.require, {
   apply: requireHook,
 });
+
+declare global {
+  // eslint-disable-next-line no-var
+  var AppMapRecordHook: typeof record;
+}
+global.AppMapRecordHook = record;
