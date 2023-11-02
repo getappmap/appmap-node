@@ -8,14 +8,20 @@ exports[`mapping Express.js requests 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:16",
+              "location": "./index.js:21",
               "name": "helloWorld",
               "static": true,
               "type": "function",
             },
             {
-              "location": "./index.js:20",
+              "location": "./index.js:25",
               "name": "api",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "./index.js:29",
+              "name": "postApi",
               "static": true,
               "type": "function",
             },
@@ -28,6 +34,67 @@ exports[`mapping Express.js requests 1`] = `
       "type": "package",
     },
   ],
+  "eventUpdates": {
+    "11": {
+      "event": "call",
+      "http_server_request": {
+        "headers": {
+          "content-type": "application/json",
+          "host": "localhost:27627",
+          "transfer-encoding": "chunked",
+        },
+        "normalized_path_info": "/api/:ident",
+        "path_info": "/api/bar",
+        "protocol": "HTTP/1.1",
+        "request_method": "POST",
+      },
+      "id": 11,
+      "message": [
+        {
+          "class": "String",
+          "name": "ident",
+          "value": "'bar'",
+        },
+        {
+          "class": "String",
+          "name": "key",
+          "value": "'value'",
+        },
+      ],
+      "thread_id": 0,
+    },
+    "7": {
+      "event": "call",
+      "http_server_request": {
+        "headers": {
+          "host": "localhost:27627",
+        },
+        "normalized_path_info": "/api/:ident",
+        "path_info": "/api/foo",
+        "protocol": "HTTP/1.1",
+        "request_method": "GET",
+      },
+      "id": 7,
+      "message": [
+        {
+          "class": "String",
+          "name": "ident",
+          "value": "'foo'",
+        },
+        {
+          "class": "String",
+          "name": "param1",
+          "value": "'3'",
+        },
+        {
+          "class": "String",
+          "name": "param2",
+          "value": "'4'",
+        },
+      ],
+      "thread_id": 0,
+    },
+  },
   "events": [
     {
       "event": "call",
@@ -46,7 +113,7 @@ exports[`mapping Express.js requests 1`] = `
       "defined_class": "",
       "event": "call",
       "id": 2,
-      "lineno": 16,
+      "lineno": 21,
       "method_id": "helloWorld",
       "parameters": [
         {
@@ -127,7 +194,7 @@ exports[`mapping Express.js requests 1`] = `
         "headers": {
           "host": "localhost:27627",
         },
-        "path_info": "/api",
+        "path_info": "/api/foo",
         "protocol": "HTTP/1.1",
         "request_method": "GET",
       },
@@ -150,7 +217,7 @@ exports[`mapping Express.js requests 1`] = `
       "defined_class": "",
       "event": "call",
       "id": 8,
-      "lineno": 20,
+      "lineno": 25,
       "method_id": "api",
       "parameters": [
         {
@@ -188,6 +255,65 @@ exports[`mapping Express.js requests 1`] = `
       },
       "id": 10,
       "parent_id": 7,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "http_server_request": {
+        "headers": {
+          "content-type": "application/json",
+          "host": "localhost:27627",
+          "transfer-encoding": "chunked",
+        },
+        "path_info": "/api/bar",
+        "protocol": "HTTP/1.1",
+        "request_method": "POST",
+      },
+      "id": 11,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 12,
+      "lineno": 29,
+      "method_id": "postApi",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "body",
+          "value": "{ key: 'value' }",
+        },
+      ],
+      "path": "./index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 13,
+      "parent_id": 12,
+      "return_value": {
+        "class": "Object",
+        "value": "{ key: 'value' }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_server_response": {
+        "headers": {
+          "content-length": "15",
+          "content-type": "application/json; charset=utf-8",
+          "etag": "W/"f-IoRYCVqVAgcPwRPZlQQiam/5Cpo"",
+          "x-powered-by": "Express",
+        },
+        "status_code": 200,
+      },
+      "id": 14,
+      "parent_id": 11,
       "thread_id": 0,
     },
   ],
