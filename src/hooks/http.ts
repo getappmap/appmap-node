@@ -1,5 +1,6 @@
 import type http from "node:http";
 import type https from "node:https";
+import { URL } from "node:url";
 
 import type AppMap from "../AppMap";
 import { recording } from "../recorder";
@@ -28,11 +29,13 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
   if (requests.has(request)) return;
   requests.add(request);
   if (!(request.method && request.url)) return;
+  const url = new URL(request.url, "http://example");
   const requestEvent = recording.httpRequest(
     request.method,
-    request.url,
+    url.pathname,
     `HTTP/${request.httpVersion}`,
     normalizeHeaders(request.headers),
+    url.searchParams,
   );
   const startTime = getTime();
   response.once("finish", () => handleResponse(requestEvent, startTime, response));

@@ -1,14 +1,15 @@
 import assert from "node:assert";
 import { rmSync } from "node:fs";
 import { join } from "node:path";
+import { inspect } from "node:util";
 
 import type AppMap from "./AppMap";
 import AppMapStream from "./AppMapStream";
+import { makeClassMap } from "./classMap";
 import { appMapDir } from "./config";
 import { makeCallEvent, makeReturnEvent } from "./event";
-import type { FunctionInfo } from "./registry";
-import { makeClassMap } from "./classMap";
 import { defaultMetadata } from "./metadata";
+import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
 
 export default class Recording {
@@ -50,6 +51,7 @@ export default class Recording {
     path: string,
     protocol?: string,
     headers?: Record<string, string>,
+    params?: URLSearchParams,
   ): AppMap.HttpServerRequestEvent {
     assert(this.stream);
     const event: AppMap.HttpServerRequestEvent = {
@@ -63,6 +65,17 @@ export default class Recording {
       id: this.nextId++,
       thread_id: 0,
     };
+    const query = params && Array.from(params);
+    if (query && query.length > 0) {
+      event.message = [];
+      for (const [name, value] of params) {
+        event.message.push({
+          name,
+          value: inspect(value),
+          class: "String",
+        });
+      }
+    }
     this.stream.emit(event);
     return event;
   }
