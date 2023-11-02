@@ -8,8 +8,14 @@ exports[`mapping Express.js requests 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:13",
+              "location": "./index.js:16",
               "name": "helloWorld",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "./index.js:20",
+              "name": "api",
               "static": true,
               "type": "function",
             },
@@ -40,7 +46,7 @@ exports[`mapping Express.js requests 1`] = `
       "defined_class": "",
       "event": "call",
       "id": 2,
-      "lineno": 13,
+      "lineno": 16,
       "method_id": "helloWorld",
       "parameters": [
         {
@@ -113,6 +119,75 @@ exports[`mapping Express.js requests 1`] = `
       },
       "id": 6,
       "parent_id": 5,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "http_server_request": {
+        "headers": {
+          "host": "localhost:27627",
+        },
+        "path_info": "/api",
+        "protocol": "HTTP/1.1",
+        "request_method": "GET",
+      },
+      "id": 7,
+      "message": [
+        {
+          "class": "String",
+          "name": "param1",
+          "value": "'3'",
+        },
+        {
+          "class": "String",
+          "name": "param2",
+          "value": "'4'",
+        },
+      ],
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 8,
+      "lineno": 20,
+      "method_id": "api",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "query",
+          "value": "{ param1: '3', param2: '4' }",
+        },
+      ],
+      "path": "./index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 9,
+      "parent_id": 8,
+      "return_value": {
+        "class": "Object",
+        "value": "{ api: 'result', param1: '3', param2: '4' }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_server_response": {
+        "headers": {
+          "content-length": "42",
+          "content-type": "application/json; charset=utf-8",
+          "etag": "W/"2a-YHNH/nKM8UUG4pNEEtm91sktuKc"",
+          "x-powered-by": "Express",
+        },
+        "status_code": 200,
+      },
+      "id": 10,
+      "parent_id": 7,
       "thread_id": 0,
     },
   ],
