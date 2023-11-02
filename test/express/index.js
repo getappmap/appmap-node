@@ -1,10 +1,15 @@
 const express = require("express");
+
 const app = express();
 const port = 27627;
 
 app.get("/", helloWorld);
-app.get("/api", (req, res) => {
+app.get("/api/:ident", (req, res) => {
   res.json(api(req.query));
+});
+
+app.post("/api/:ident", express.json(), (req, res) => {
+  res.json(postApi(req.body));
 });
 
 const server = app.listen(port, "localhost", () => {
@@ -19,4 +24,8 @@ function helloWorld(req, res) {
 
 function api(query) {
   return { api: "result", ...query };
+}
+
+function postApi(body) {
+  return body;
 }

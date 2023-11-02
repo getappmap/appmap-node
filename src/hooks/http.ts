@@ -3,6 +3,7 @@ import type https from "node:https";
 import { URL } from "node:url";
 
 import type AppMap from "../AppMap";
+import { Parameter, parameter } from "../parameter";
 import { recording } from "../recorder";
 import { getTime } from "../util/getTime";
 
@@ -27,7 +28,6 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
   // for some reason this event is emitted multiple times for the same request
   // so let's make sure we haven't seen this one before
   if (requests.has(request)) return;
-  requests.add(request);
   if (!(request.method && request.url)) return;
   const url = new URL(request.url, "http://example");
   const requestEvent = recording.httpRequest(
@@ -38,7 +38,47 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
     url.searchParams,
   );
   const startTime = getTime();
-  response.once("finish", () => handleResponse(requestEvent, startTime, response));
+  requests.add(request);
+  response.once("finish", () => {
+    if (fixupEvent(request, requestEvent)) recording.fixup(requestEvent);
+    handleResponse(requestEvent, startTime, response);
+  });
+}
+
+function fixupEvent(req: http.IncomingMessage, event: AppMap.HttpServerRequestEvent): boolean {
+  const normalizedPath = getNormalizedPath(req);
+  const params = [...getParams(req, "params"), ...getParams(req, "body")];
+
+  const pathAvailable = !!normalizedPath && normalizedPath !== event.http_server_request.path_info;
+  const paramsAvailable = params.length > 0;
+
+  if (pathAvailable) event.http_server_request.normalized_path_info = normalizedPath;
+  if (paramsAvailable) (event.message ||= []).unshift(...params);
+
+  return pathAvailable || paramsAvailable;
+}
+
+function getNormalizedPath(req: http.IncomingMessage) {
+  if ("route" in req) {
+    const route = req.route;
+    if (typeof route === "object" && route && "path" in route && typeof route.path === "string")
+      return route.path;
+  }
+}
+
+function getField(obj: object, field: string): unknown {
+  if (field in obj) return (obj as never)[field];
+}
+
+function getParams(req: http.IncomingMessage, field: string): Parameter[] {
+  const params = getField(req, field);
+  if (params && typeof params === "object") {
+    return Object.entries(params).map(([k, v]) => ({
+      name: k,
+      ...parameter(v),
+    }));
+  }
+  return [];
 }
 
 function normalizeHeaders(

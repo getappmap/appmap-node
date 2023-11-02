@@ -10,6 +10,7 @@ import { info } from "../message";
 import Recording from "../Recording";
 import { recording, start } from "../recorder";
 import genericTranform from "../transform";
+import { isId } from "../util/isId";
 
 export function shouldInstrument(url: URL): boolean {
   return (
@@ -41,10 +42,6 @@ export function patchCircus(program: ESTree.Program): ESTree.Program {
     expression: call_(identifier("addEventHandler"), expressionFor(eventHandler)),
   });
   return program;
-}
-
-function isId(node: ESTree.Node | null, name: string) {
-  return node?.type === "Identifier" && node.name === name;
 }
 
 function eventHandler(event: Circus.Event) {
