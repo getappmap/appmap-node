@@ -67,6 +67,7 @@
   "workspaces": [
     "test/express",
     "test/jest",
-    "test/mocha"
+    "test/mocha",
+    "test/vitest"
   ]
 }

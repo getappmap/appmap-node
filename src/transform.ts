@@ -12,6 +12,7 @@ import applySourceMap from "./applySourceMap";
 import * as instrument from "./hooks/instrument";
 import * as jest from "./hooks/jest";
 import * as mocha from "./hooks/mocha";
+import * as vitest from "./hooks/vitest";
 import { warn } from "./message";
 
 const treeDebug = debuglog("appmap-tree");
@@ -21,7 +22,7 @@ export interface Hook {
   transform(program: ESTree.Program): ESTree.Program;
 }
 
-const defaultHooks: Hook[] = [mocha, jest, instrument];
+const defaultHooks: Hook[] = [vitest, mocha, jest, instrument];
 
 export function findHook(url: URL, hooks = defaultHooks) {
   return hooks.find((h) => h.shouldInstrument(url));

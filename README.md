@@ -30,5 +30,5 @@ development, not ready for production use,  and the feature set is currently lim
 - Node 16+ supported.
 - Instruments all the files under current directory that aren't node_modules.
 - Only captures named `function`s and methods.
-- Only whole process recording and Jest per-test recordings.
+- Only whole process recording and Jest, mocha, vitest per-test recordings.
 - No exception support.
