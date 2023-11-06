@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/getappmap/appmap-node/compare/v1.1.0...v1.1.1) (2023-11-06)
+
+
+### Bug Fixes
+
+* Use "javascript" as the language name in metadata ([d46522c](https://github.com/getappmap/appmap-node/commit/d46522c0479f664b3aea40c175fbc07ec1924d50))
+
 # [1.1.0](https://github.com/getappmap/appmap-node/compare/v1.0.0...v1.1.0) (2023-10-27)
 
 
