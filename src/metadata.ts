@@ -20,7 +20,7 @@ export const defaultMetadata: Partial<AppMap.Metadata> & { client: AppMap.Client
     url: pkg.homepage!,
   },
   language: {
-    name: "ECMAScript",
+    name: "javascript",
     engine: "Node.js",
     version: process.version,
   },

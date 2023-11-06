@@ -125,7 +125,7 @@ exports[`mapping Express.js requests 1`] = `
     },
     "language": {
       "engine": "Node.js",
-      "name": "ECMAScript",
+      "name": "javascript",
       "version": "test node version",
     },
     "name": "test process recording",
