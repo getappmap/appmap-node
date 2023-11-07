@@ -80,6 +80,7 @@ function wrapWithRecord(
 
 function FunctionDeclaration(fun: ESTree.FunctionDeclaration) {
   if (!hasIdentifier(fun)) return;
+  if (isNotInteresting(fun)) return;
   fun.body = wrapWithRecord(fun, createFunctionInfo(fun));
 }
 
@@ -105,6 +106,14 @@ export function shouldInstrument(url: URL): boolean {
   if (isUnrelated(root, filePath)) return false;
 
   return true;
+}
+
+function isNotInteresting(fun: ESTree.FunctionDeclaration) {
+  // When we import node:http in ts files "_interop_require_default"
+  // function is injected to the source.
+  if (fun.id?.name === "_interop_require_default") return true;
+
+  return false;
 }
 
 function isUnrelated(parentPath: string, targetPath: string) {

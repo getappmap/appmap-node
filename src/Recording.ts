@@ -45,6 +45,52 @@ export default class Recording {
     return event;
   }
 
+  httpClientRequest(
+    method: string,
+    url: string,
+    headers?: Record<string, string>,
+  ): AppMap.HttpClientRequestEvent {
+    assert(this.stream);
+
+    const event: AppMap.HttpClientRequestEvent = {
+      event: "call",
+      http_client_request: compactObject({
+        request_method: method,
+        url: url,
+        headers: headers,
+      }),
+      id: this.nextId++,
+      thread_id: 0,
+    };
+    this.stream.emit(event);
+
+    return event;
+  }
+
+  httpClientResponse(
+    callId: number,
+    elapsed: number,
+    status: number,
+    headers?: Record<string, string>,
+  ): AppMap.HttpClientResponseEvent {
+    assert(this.stream);
+
+    const event: AppMap.HttpClientResponseEvent = {
+      event: "return",
+      http_client_response: compactObject({
+        status_code: status,
+        headers,
+      }),
+      id: this.nextId++,
+      thread_id: 0,
+      parent_id: callId,
+      elapsed,
+    };
+    this.stream.emit(event);
+
+    return event;
+  }
+
   httpRequest(
     method: string,
     path: string,

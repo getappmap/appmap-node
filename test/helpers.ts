@@ -82,6 +82,22 @@ function fixEvent(event: unknown) {
   )
     // the default of this varies between node versions
     delete event.http_server_request.headers.connection;
+
+  if (
+    "http_client_response" in event &&
+    typeof event.http_client_response === "object" &&
+    event.http_client_response &&
+    "headers" in event.http_client_response &&
+    typeof event.http_client_response.headers === "object" &&
+    event.http_client_response.headers
+  ) {
+    if ("date" in event.http_client_response.headers)
+      delete event.http_client_response.headers.date;
+    if ("connection" in event.http_client_response.headers)
+      delete event.http_client_response.headers.connection;
+    if ("keep-alive" in event.http_client_response.headers)
+      delete event.http_client_response.headers["keep-alive"];
+  }
   if ("elapsed" in event && typeof event.elapsed === "number") event.elapsed = 31.337;
 }
 
