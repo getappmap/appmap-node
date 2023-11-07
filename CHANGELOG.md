@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/getappmap/appmap-node/compare/v1.1.1...v1.2.0) (2023-11-07)
+
+
+### Features
+
+* ESM support ([a5970e7](https://github.com/getappmap/appmap-node/commit/a5970e7c1161c708feb9325ba538ad7e92615af9))
+* Support for Vitest ([cfe7deb](https://github.com/getappmap/appmap-node/commit/cfe7debeb0c1c5304df0ee7b837d45e46db20552))
+
 ## [1.1.1](https://github.com/getappmap/appmap-node/compare/v1.1.0...v1.1.1) (2023-11-06)
 
 
