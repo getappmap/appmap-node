@@ -3,7 +3,7 @@ import type https from "node:https";
 import { URL } from "node:url";
 
 import type AppMap from "../AppMap";
-import { Parameter, parameter } from "../parameter";
+import { parameter } from "../parameter";
 import { recording } from "../recorder";
 import { getTime } from "../util/getTime";
 
@@ -70,7 +70,7 @@ function getField(obj: object, field: string): unknown {
   if (field in obj) return (obj as never)[field];
 }
 
-function getParams(req: http.IncomingMessage, field: string): Parameter[] {
+function getParams(req: http.IncomingMessage, field: string): AppMap.Parameter[] {
   const params = getField(req, field);
   if (params && typeof params === "object") {
     return Object.entries(params).map(([k, v]) => ({

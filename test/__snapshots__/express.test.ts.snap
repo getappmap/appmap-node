@@ -60,6 +60,45 @@ exports[`mapping Express.js requests 1`] = `
           "name": "key",
           "value": "'value'",
         },
+        {
+          "class": "Object",
+          "name": "obj",
+          "properties": [
+            {
+              "class": "Number",
+              "name": "foo",
+            },
+            {
+              "class": "Array",
+              "items": {
+                "class": "Number",
+              },
+              "name": "arr",
+            },
+          ],
+          "value": "{ foo: 42, arr: [ 44 ] }",
+        },
+        {
+          "class": "Array",
+          "items": {
+            "class": "Object",
+            "properties": [
+              {
+                "class": "Number",
+                "name": "foo",
+              },
+            ],
+          },
+          "name": "arr",
+          "size": 2,
+          "value": "[ { foo: 43 }, { foo: 44 } ]",
+        },
+        {
+          "class": "Array",
+          "name": "heterogenous",
+          "size": 2,
+          "value": "[ 42, 'str' ]",
+        },
       ],
       "thread_id": 0,
     },
@@ -223,6 +262,16 @@ exports[`mapping Express.js requests 1`] = `
         {
           "class": "Object",
           "name": "query",
+          "properties": [
+            {
+              "class": "String",
+              "name": "param1",
+            },
+            {
+              "class": "String",
+              "name": "param2",
+            },
+          ],
           "value": "{ param1: '3', param2: '4' }",
         },
       ],
@@ -237,6 +286,20 @@ exports[`mapping Express.js requests 1`] = `
       "parent_id": 8,
       "return_value": {
         "class": "Object",
+        "properties": [
+          {
+            "class": "String",
+            "name": "api",
+          },
+          {
+            "class": "String",
+            "name": "param1",
+          },
+          {
+            "class": "String",
+            "name": "param2",
+          },
+        ],
         "value": "{ api: 'result', param1: '3', param2: '4' }",
       },
       "thread_id": 0,
@@ -282,7 +345,52 @@ exports[`mapping Express.js requests 1`] = `
         {
           "class": "Object",
           "name": "body",
-          "value": "{ key: 'value' }",
+          "properties": [
+            {
+              "class": "String",
+              "name": "key",
+            },
+            {
+              "class": "Object",
+              "name": "obj",
+              "properties": [
+                {
+                  "class": "Number",
+                  "name": "foo",
+                },
+                {
+                  "class": "Array",
+                  "items": {
+                    "class": "Number",
+                  },
+                  "name": "arr",
+                },
+              ],
+            },
+            {
+              "class": "Array",
+              "items": {
+                "class": "Object",
+                "properties": [
+                  {
+                    "class": "Number",
+                    "name": "foo",
+                  },
+                ],
+              },
+              "name": "arr",
+            },
+            {
+              "class": "Array",
+              "name": "heterogenous",
+            },
+          ],
+          "value": "{
+  key: 'value',
+  obj: { foo: 42, arr: [Array] },
+  arr: [ [Object], [Object] ],
+  heterogenous: [ 42, 'str' ]
+}",
         },
       ],
       "path": "./index.js",
@@ -296,7 +404,52 @@ exports[`mapping Express.js requests 1`] = `
       "parent_id": 12,
       "return_value": {
         "class": "Object",
-        "value": "{ key: 'value' }",
+        "properties": [
+          {
+            "class": "String",
+            "name": "key",
+          },
+          {
+            "class": "Object",
+            "name": "obj",
+            "properties": [
+              {
+                "class": "Number",
+                "name": "foo",
+              },
+              {
+                "class": "Array",
+                "items": {
+                  "class": "Number",
+                },
+                "name": "arr",
+              },
+            ],
+          },
+          {
+            "class": "Array",
+            "items": {
+              "class": "Object",
+              "properties": [
+                {
+                  "class": "Number",
+                  "name": "foo",
+                },
+              ],
+            },
+            "name": "arr",
+          },
+          {
+            "class": "Array",
+            "name": "heterogenous",
+          },
+        ],
+        "value": "{
+  key: 'value',
+  obj: { foo: 42, arr: [Array] },
+  arr: [ [Object], [Object] ],
+  heterogenous: [ 42, 'str' ]
+}",
       },
       "thread_id": 0,
     },
@@ -305,9 +458,9 @@ exports[`mapping Express.js requests 1`] = `
       "event": "return",
       "http_server_response": {
         "headers": {
-          "content-length": "15",
+          "content-length": "99",
           "content-type": "application/json; charset=utf-8",
-          "etag": "W/"f-IoRYCVqVAgcPwRPZlQQiam/5Cpo"",
+          "etag": "W/"63-avsgRi3I+MK54okDiWb1V4/K3j8"",
           "x-powered-by": "Express",
         },
         "status_code": 200,

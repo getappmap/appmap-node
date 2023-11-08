@@ -1,7 +1,7 @@
 import { ESTree } from "meriyah";
 
 import type AppMap from "./AppMap";
-import { optParameter, parameter, type Parameter } from "./parameter";
+import { optParameter, parameter } from "./parameter";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
 
@@ -40,9 +40,9 @@ export function makeReturnEvent(
   };
 }
 
-function resolveParameters(args: unknown[], fun: FunctionInfo): Parameter[] {
+function resolveParameters(args: unknown[], fun: FunctionInfo): AppMap.Parameter[] {
   return args.map(
-    (value, index): Parameter => ({
+    (value, index): AppMap.Parameter => ({
       ...parameter(value),
       name: paramName(fun.params[index]),
     }),
