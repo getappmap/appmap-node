@@ -19,7 +19,14 @@ integrationTest("mapping Express.js requests", async () => {
   await new Promise<void>((r) => {
     const req = request("http://localhost:27627/api/bar", { method: "POST" });
     req.appendHeader("Content-Type", "application/json");
-    req.write(JSON.stringify({ key: "value" }));
+    req.write(
+      JSON.stringify({
+        key: "value",
+        obj: { foo: 42, arr: [44] },
+        arr: [{ foo: 43 }, { foo: 44 }],
+        heterogenous: [42, "str"],
+      }),
+    );
     req.end().on("close", r);
   });
   server.kill("SIGINT");
