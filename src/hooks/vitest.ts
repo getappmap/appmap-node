@@ -30,8 +30,8 @@ function shouldListenForInit() {
   const [major, ,] = process.versions.node.split(".").map(Number);
   // There will be 2 threads (#0, #1) in [--no-threads, node 20], so we don't want
   // to listen in thread #1 for other modes in this case. On the other hand,
-  // we don't have thread #2 in [--single-thread node 18/16], but we can listen
-  // in thread #1 because we don't have #1 in [--no-threads node 18/16].
+  // we don't have thread #2 in [--single-thread node 18], but we can listen
+  // in thread #1 because we don't have #1 in [--no-threads node 18].
   // Thus we guarantee that a single thread listens in all node versions and thread modes combinations.
   const threadIdToListenInOtherModes = major >= 20 ? 2 : 1;
   return isNoThreadsModeMainThread || worker.threadId === threadIdToListenInOtherModes;

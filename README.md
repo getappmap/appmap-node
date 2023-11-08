@@ -27,7 +27,7 @@ Currently there is no configurability.
 This is an experimetal rewrite of the original appmap-agent-js. It's still in active
 development, not ready for production use,  and the feature set is currently limited.
 
-- Node 16+ supported.
+- Node 18+ supported.
 - Instruments all the files under current directory that aren't node_modules.
 - Only captures named `function`s and methods.
 - Only whole process recording and Jest, mocha, vitest per-test recordings.

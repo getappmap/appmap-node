@@ -53,7 +53,7 @@ function dumpTree(xformed: ESTree.Program, url: URL) {
   treeDebug("wrote transformed tree to %s", path);
 }
 
-// HACK: In node 18/16, when using --loader node-ts/esm
+// HACK: In node 18, when using --loader node-ts/esm
 // sourcemap gets inserted twice to the typescript file. We remove the second one
 // which reflects transpiled files map, instead of the original typescript file map.
 function fixSourceMap(url: URL, code: string): string {
