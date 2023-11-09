@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/getappmap/appmap-node/compare/v2.0.0...v2.1.0) (2023-11-09)
+
+
+### Features
+
+* Support for mapping HTTP client requests ([55ef2e6](https://github.com/getappmap/appmap-node/commit/55ef2e608550ebfb54cce5051f92a8b5df32e379))
+
 # [2.0.0](https://github.com/getappmap/appmap-node/compare/v1.2.0...v2.0.0) (2023-11-09)
 
 
