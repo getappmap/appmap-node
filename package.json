@@ -15,8 +15,13 @@
     "/dist"
   ],
   "main": "./dist/bin.js",
-  "bin": "bin/appmap-node.js",
-  "repository": "github:getappmap/appmap-node",
+  "bin": {
+    "appmap-node": "bin/appmap-node.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getappmap/appmap-node.git"
+  },
   "packageManager": "yarn@3.6.3",
   "type": "commonjs",
   "engines": {

@@ -2,21 +2,14 @@
 
 Experimental AppMap agent for Node.js. Still in active development.
 
-## Installation
-
-It's not published on npm yet, but you can install with:
-
-    $ yarn pack --install-if-needed
-    $ npm install --global package.tgz
-
 ## Usage
 
 Simply use `appmap-node` in place of `node` command, or prepend `appmap-node` 
 to your tool invocation:
 
-    $ appmap-node foo.js
-    $ appmap-node yarn jest
-    $ appmap-node npx ts-node foo.ts
+    $ npx appmap-node foo.js
+    $ npx appmap-node yarn jest
+    $ npx appmap-node npx ts-node foo.ts
 
 ## Configuration
 
