@@ -1,3 +1,18 @@
+# [2.0.0](https://github.com/getappmap/appmap-node/compare/v1.2.0...v2.0.0) (2023-11-09)
+
+
+### Bug Fixes
+
+* Drop support for Node 16 ([c6ce5c0](https://github.com/getappmap/appmap-node/commit/c6ce5c07ba4302c6591ab704c9ef238739661493))
+
+
+### BREAKING CHANGES
+
+* Support for Node 16 has been removed.
+(It has been deprecated upstream since 2023-09-11.)
+
+Additionally, testing on Node 21 has been added to the CI pipeline.
+
 # [1.2.0](https://github.com/getappmap/appmap-node/compare/v1.1.1...v1.2.0) (2023-11-07)
 
 
