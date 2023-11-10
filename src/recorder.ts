@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import { isPromise } from "node:util/types";
 
+import AppMap from "./AppMap";
 import { makeReturnEvent } from "./event";
 import { info } from "./message";
 import { FunctionInfo } from "./registry";
@@ -30,11 +31,20 @@ export function record<This, Return>(
 
   const ret = recording.functionReturn(call.id, result, getTime() - start);
 
-  if (isPromise(result) && ret.return_value?.value.includes("<pending>"))
+  return fixReturnEventIfPromiseResult(result, ret, call, start) as Return;
+}
+
+export function fixReturnEventIfPromiseResult(
+  result: unknown,
+  returnEvent: AppMap.FunctionReturnEvent,
+  callEvent: AppMap.CallEvent,
+  startTime: number,
+) {
+  if (isPromise(result) && returnEvent.return_value?.value.includes("<pending>"))
     return result.then(() => {
-      recording.fixup(makeReturnEvent(ret.id, call.id, result, getTime() - start));
+      recording.fixup(makeReturnEvent(returnEvent.id, callEvent.id, result, getTime() - startTime));
       return result;
-    }) as Return;
+    });
 
   return result;
 }

@@ -46,6 +46,21 @@ export default class Recording {
     return event;
   }
 
+  sqlQuery(databaseType: string, sql: string): AppMap.SqlQueryEvent {
+    assert(this.stream);
+    const event: AppMap.SqlQueryEvent = {
+      event: "call",
+      sql_query: compactObject({
+        database_type: databaseType,
+        sql,
+      }),
+      id: this.nextId++,
+      thread_id: 0,
+    };
+    this.stream.emit(event);
+    return event;
+  }
+
   httpClientRequest(
     method: string,
     url: string,

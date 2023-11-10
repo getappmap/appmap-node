@@ -41,6 +41,7 @@
     "@types/convert-source-map": "^2.0.1",
     "@types/jest": "^29.5.4",
     "@types/node": "^20.5.0",
+    "@types/pg": "^8.10.9",
     "@types/tmp": "^0.2.3",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
@@ -71,6 +72,7 @@
     "test/express",
     "test/jest",
     "test/mocha",
-    "test/vitest"
+    "test/vitest",
+    "test/postgres"
   ]
 }

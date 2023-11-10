@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping PostgreSQL tests 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "./index.js:4",
+              "name": "main",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "",
+          "type": "class",
+        },
+      ],
+      "name": "index",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 1,
+      "lineno": 4,
+      "method_id": "main",
+      "parameters": [],
+      "path": "./index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 2,
+      "sql_query": {
+        "database_type": "postgres",
+        "sql": "select * from customer where id = 1001",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 2,
+      "return_value": {
+        "class": "Promise",
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 4,
+      "sql_query": {
+        "database_type": "postgres",
+        "sql": "select * from invoice where customer_id = 1001",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 5,
+      "parent_id": 4,
+      "return_value": {
+        "class": "Promise",
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 6,
+      "sql_query": {
+        "database_type": "postgres",
+        "sql": "select * from user where id = $1",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 7,
+      "parent_id": 6,
+      "return_value": {
+        "class": "Promise",
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 8,
+      "parent_id": 1,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "postgresql-appmap-node-test",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
