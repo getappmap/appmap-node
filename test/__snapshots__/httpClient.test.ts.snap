@@ -45,11 +45,22 @@ exports[`mapping http client requests 1`] = `
         {
           "class": "Object",
           "name": "target",
+          "properties": [],
           "value": "{}",
         },
         {
           "class": "Object",
           "name": "all",
+          "properties": [
+            {
+              "class": "Function",
+              "name": "SERVER_PORT",
+            },
+            {
+              "class": "Function",
+              "name": "TEST_HEADER_VALUE",
+            },
+          ],
           "value": "{
   SERVER_PORT: [Function: SERVER_PORT],
   TEST_HEADER_VALUE: [Function: TEST_HEADER_VALUE]
