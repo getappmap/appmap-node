@@ -32,8 +32,8 @@ export function optParameter(value: unknown): AppMap.Parameter | undefined {
 }
 
 function getClass(value: unknown): string {
-  if (value === null) return "object";
   if (typeof value === "undefined") return "undefined";
+  if (value === null || Object.getPrototypeOf(value) === null) return "object";
   return value.constructor.name;
 }
 
