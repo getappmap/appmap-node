@@ -5,6 +5,9 @@ class Klass {
   constructor(public value: unknown) {}
 }
 
+const nullobj = Object.create(null) as Record<string, unknown>;
+nullobj.foo = "bar";
+
 const examples: [unknown, string, string, Partial<AppMap.Parameter>][] = [
   [42, "Number", "42", {}],
   [null, "object", "null", {}],
@@ -14,6 +17,12 @@ const examples: [unknown, string, string, Partial<AppMap.Parameter>][] = [
   [[], "Array", "[]", { size: 0 }],
   [[42, 43], "Array", "[ 42, 43 ]", { size: 2, items: { class: "Number" } }],
   [[42, "foo"], "Array", "[ 42, 'foo' ]", { size: 2 }],
+  [
+    nullobj,
+    "object",
+    "[Object: null prototype] { foo: 'bar' }",
+    { properties: [{ name: "foo", class: "String" }] },
+  ],
 ];
 
 describe(parameter, () => {
