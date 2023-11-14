@@ -12,15 +12,20 @@ import type AppMap from "../src/AppMap";
 const binPath = resolve(__dirname, "../bin/appmap-node.js");
 
 export function runAppmapNode(...args: string[]) {
-  return runCommand(process.argv[0], binPath, ...args);
+  console.debug("Running %s %s", binPath, args.join(" "));
+  const result = spawnSync(process.argv[0], [binPath, ...args], { cwd: target });
+  let message = "";
+  if (result.stdout.length > 0) message += "stdout:\n" + result.stdout.toString();
+  if (result.stderr.length > 0) message += "stderr:\n" + result.stderr.toString();
+  if (message.length > 0) console.debug(message);
+  return result;
 }
 
 export function spawnAppmapNode(...args: string[]): ChildProcessWithoutNullStreams {
-  return spawn(process.argv[0], [binPath, ...args], { cwd: target });
-}
-
-export function runCommand(command: string, ...args: string[]) {
-  const result = spawnSync(command, args, { cwd: target });
+  console.debug("Running %s %s", binPath, args.join(" "));
+  const result = spawn(process.argv[0], [binPath, ...args], { cwd: target });
+  result.stdout.on("data", (chunk: Buffer) => console.debug("stdout: %s", chunk));
+  result.stderr.on("data", (chunk: Buffer) => console.debug("stderr: %s", chunk));
   return result;
 }
 
