@@ -79,6 +79,79 @@ exports[`mapping vitest run  1`] = `
     },
     "version": "1.12",
   },
+  "./tmp/appmap/vitest/exception handling.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "sum.test.js:14",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "sum",
+            "type": "class",
+          },
+        ],
+        "name": "sum",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "",
+        "event": "call",
+        "id": 1,
+        "lineno": 14,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "sum.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 1,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "Error",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
   "./tmp/appmap/vitest/multiplies 0 by 3 to equal 0.appmap.json": {
     "classMap": [
       {
@@ -218,6 +291,10 @@ exports[`mapping vitest run  1`] = `
         "name": "appmap-node",
         "url": "https://github.com/getappmap/appmap-node",
         "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "AssertionError",
+        "message": "expected 25 to be 20 // Object.is equality",
       },
       "language": {
         "engine": "Node.js",
@@ -392,6 +469,79 @@ exports[`mapping vitest run --no-threads 1`] = `
     },
     "version": "1.12",
   },
+  "./tmp/appmap/vitest/exception handling.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "sum.test.js:14",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "sum",
+            "type": "class",
+          },
+        ],
+        "name": "sum",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "",
+        "event": "call",
+        "id": 1,
+        "lineno": 14,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "sum.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 1,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "Error",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
   "./tmp/appmap/vitest/multiplies 0 by 3 to equal 0.appmap.json": {
     "classMap": [
       {
@@ -531,6 +681,10 @@ exports[`mapping vitest run --no-threads 1`] = `
         "name": "appmap-node",
         "url": "https://github.com/getappmap/appmap-node",
         "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "AssertionError",
+        "message": "expected 25 to be 20 // Object.is equality",
       },
       "language": {
         "engine": "Node.js",
@@ -705,6 +859,79 @@ exports[`mapping vitest run --single-thread 1`] = `
     },
     "version": "1.12",
   },
+  "./tmp/appmap/vitest/exception handling.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "sum.test.js:14",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "sum",
+            "type": "class",
+          },
+        ],
+        "name": "sum",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "",
+        "event": "call",
+        "id": 1,
+        "lineno": 14,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "sum.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 1,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "Error",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
   "./tmp/appmap/vitest/multiplies 0 by 3 to equal 0.appmap.json": {
     "classMap": [
       {
@@ -844,6 +1071,10 @@ exports[`mapping vitest run --single-thread 1`] = `
         "name": "appmap-node",
         "url": "https://github.com/getappmap/appmap-node",
         "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "AssertionError",
+        "message": "expected 25 to be 20 // Object.is equality",
       },
       "language": {
         "engine": "Node.js",

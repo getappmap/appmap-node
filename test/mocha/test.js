@@ -12,3 +12,13 @@ describe(multiply.name, function () {
     assert.equal(power(3, 2), 9);
   });
 });
+
+class TestError extends Error {}
+
+function errorOut() {
+  throw new TestError("test error");
+}
+
+describe("exception handling", () => {
+  it("intentionally throws", () => errorOut());
+});

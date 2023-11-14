@@ -5,10 +5,10 @@ import worker from "node:worker_threads";
 import { simple as walk } from "acorn-walk";
 import { type ESTree } from "meriyah";
 
+import Recording from "../Recording";
 import { args as args_, assignment, call_, identifier, literal, member, ret } from "../generate";
 import { info, warn } from "../message";
 import { recording, start } from "../recorder";
-import Recording from "../Recording";
 import genericTransform from "../transform";
 
 function createInitChannel() {
@@ -80,6 +80,10 @@ export async function wrapRunTest(
       break;
     case "fail":
       recording.metadata.test_status = "failed";
+      if (test.result.errors?.length) {
+        const [{ name, message }] = test.result.errors;
+        recording.metadata.exception = { class: name, message };
+      }
       break;
     default:
       warn(`Test result not understood for test ${test.name}: ${test.result?.state}`);
@@ -188,6 +192,7 @@ interface Suite {
 }
 interface TaskResult {
   state?: "pass" | "fail";
+  errors?: Error[];
 }
 
 function testNames(test: Test): string[] {

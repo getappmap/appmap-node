@@ -191,7 +191,7 @@ export default class Recording {
     const written = this.stream?.close(
       compactObject({
         classMap: makeClassMap(this.functionsSeen.keys()),
-        metadata: this.metadata,
+        metadata: compactObject(this.metadata),
         eventUpdates: Object.keys(this.eventUpdates).length > 0 ? this.eventUpdates : undefined,
       }),
     );

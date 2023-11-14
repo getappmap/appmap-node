@@ -8,3 +8,13 @@ test("adds 1 + 2 to equal 3", () => {
 test("subtracts 9 - 2 to equal 7", () => {
   expect(sub(9, 2)).toBe(7);
 });
+
+class TestError extends Error {}
+
+function errorOut() {
+  throw new TestError("test error");
+}
+
+test("exception handling", () => {
+  errorOut();
+});

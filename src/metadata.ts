@@ -4,6 +4,8 @@ import type { PackageJson } from "type-fest";
 
 import type AppMap from "./AppMap";
 import { appName } from "./config";
+import { examineException } from "./event";
+import pick from "./util/pick";
 
 // cannot use import because it's outside src
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -24,3 +26,7 @@ export const defaultMetadata: Partial<AppMap.Metadata> & { client: AppMap.Client
   },
   app: appName,
 };
+
+export function exceptionMetadata(exc: unknown): AppMap.ExceptionMetadata | undefined {
+  return pick(examineException(exc)[0], "class", "message");
+}
