@@ -9,6 +9,7 @@ import Recording from "../Recording";
 import { call_, this_ } from "../generate";
 import { recording, start } from "../recorder";
 import { info } from "../message";
+import { exceptionMetadata } from "../metadata";
 
 export function shouldInstrument(url: URL): boolean {
   return url.pathname.endsWith("/mocha/lib/runner.js");
@@ -64,8 +65,10 @@ function registerEventListeners(runner: EventEmitter) {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  runner.on(EVENT_TEST_FAIL, function (test: Test) {
+  runner.on(EVENT_TEST_FAIL, function (test: Test, err: unknown) {
+    console.log(test);
     recording.metadata.test_status = "failed";
+    recording.metadata.exception = exceptionMetadata(err);
     recording.finish();
   });
 }

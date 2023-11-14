@@ -11,11 +11,13 @@ namespace AppMap {
     source_location?: SourceLocation;
     test_status?: TestStatus;
     test_failure?: TestFailure;
-    exception?: {
-      /* note this is different from Exception in an event */
-      class: string;
-      message?: string;
-    };
+    exception?: ExceptionMetadata;
+  }
+
+  interface ExceptionMetadata {
+    /* note this is different from Exception in an event */
+    class: string;
+    message?: string;
   }
 
   export interface LanguageMetadata {

@@ -2,6 +2,79 @@
 
 exports[`mapping Jest tests 1`] = `
 {
+  "./tmp/appmap/jest/exception handling/intentionally throws.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "test.js:17",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "test",
+            "type": "class",
+          },
+        ],
+        "name": "test",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "",
+        "event": "call",
+        "id": 1,
+        "lineno": 17,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 2,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "jest-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "TestError",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling intentionally throws",
+      "recorder": {
+        "name": "jest",
+        "type": "tests",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
   "./tmp/appmap/jest/sub/subtracts numbers correctly.appmap.json": {
     "classMap": [
       {
@@ -64,6 +137,13 @@ exports[`mapping Jest tests 1`] = `
         "name": "appmap-node",
         "url": "https://github.com/getappmap/appmap-node",
         "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "JestAssertionError",
+        "message": "[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+Expected: [32m-1[39m
+Received: [31m3[39m",
       },
       "language": {
         "engine": "Node.js",

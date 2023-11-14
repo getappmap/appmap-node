@@ -75,7 +75,7 @@ function paramName(param: ESTree.Parameter | undefined): string | undefined {
   }
 }
 
-function examineException(exception: unknown): AppMap.Exception[] {
+export function examineException(exception: unknown): AppMap.Exception[] {
   if (!(typeof exception === "object" && exception)) return [];
   const name = getClass(exception);
   const message =

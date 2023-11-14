@@ -11,3 +11,13 @@ describe(sub, () => {
     expect(sum(1, 2)).toBe(-1);
   });
 });
+
+class TestError extends Error {}
+
+function errorOut() {
+  throw new TestError("test error");
+}
+
+describe("exception handling", () => {
+  it("intentionally throws", errorOut);
+});
