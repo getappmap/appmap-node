@@ -1,3 +1,12 @@
+# [2.2.0](https://github.com/getappmap/appmap-node/compare/v2.1.0...v2.2.0) (2023-11-15)
+
+
+### Features
+
+* Capture HTTP query parameters ([86fd3e6](https://github.com/getappmap/appmap-node/commit/86fd3e647a25818cdd776035ff8772799dfd0a82))
+* Extract normalized routes and parameters in express.js requests ([b756c15](https://github.com/getappmap/appmap-node/commit/b756c156e85f12b98b468e875c3254ed3335fff8))
+* Resolve parameter schema for arrays and objects ([967cbbc](https://github.com/getappmap/appmap-node/commit/967cbbcac7353bea7e7362cac20499b082002b1b))
+
 # [2.1.0](https://github.com/getappmap/appmap-node/compare/v2.0.0...v2.1.0) (2023-11-09)
 
 

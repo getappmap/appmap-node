@@ -1,6 +1,6 @@
 {
   "name": "appmap-node",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "AppMap agent for Node.js",
   "keywords": [
     "AppMap",
@@ -15,9 +15,7 @@
     "/dist"
   ],
   "main": "./dist/bin.js",
-  "bin": {
-    "appmap-node": "bin/appmap-node.js"
-  },
+  "bin": "bin/appmap-node.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/getappmap/appmap-node.git"
