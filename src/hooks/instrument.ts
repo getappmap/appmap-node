@@ -64,7 +64,13 @@ function wrapWithRecord(
         call_(
           member(...["global", "AppMapRecordHook", "call"].map(identifier)),
           this_,
-          { ...fd, type: "FunctionExpression" },
+          {
+            type: "ArrowFunctionExpression",
+            params: fd.params,
+            async: fd.async,
+            body: fd.body ?? { type: "BlockStatement", body: [] },
+            expression: false,
+          },
           args_,
           member(
             __appmapFunctionRegistryIdentifier,

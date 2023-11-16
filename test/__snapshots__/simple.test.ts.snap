@@ -206,3 +206,105 @@ exports[`mapping an mjs script 1`] = `
   "version": "1.12",
 }
 `;
+
+exports[`mapping js class methods containing super keyword 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "./class.js:12",
+              "name": "m1",
+              "static": false,
+              "type": "function",
+            },
+          ],
+          "name": "B",
+          "type": "class",
+        },
+        {
+          "children": [
+            {
+              "location": "./class.js:2",
+              "name": "m1",
+              "static": false,
+              "type": "function",
+            },
+          ],
+          "name": "A",
+          "type": "class",
+        },
+      ],
+      "name": "class",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "defined_class": "B",
+      "event": "call",
+      "id": 1,
+      "lineno": 12,
+      "method_id": "m1",
+      "parameters": [],
+      "path": "./class.js",
+      "receiver": {
+        "class": "B",
+        "value": "B {}",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "A",
+      "event": "call",
+      "id": 2,
+      "lineno": 2,
+      "method_id": "m1",
+      "parameters": [],
+      "path": "./class.js",
+      "receiver": {
+        "class": "B",
+        "value": "B {}",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 2,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 1,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "appmap-node",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;

@@ -32,7 +32,13 @@ export function wrap<This, Args extends unknown[], Return, Data extends LiteralV
         call_(
           member(expressionFor(hook), identifier("call")),
           this_,
-          inner,
+          {
+            type: "ArrowFunctionExpression",
+            params: inner.params,
+            async: inner.async,
+            body: inner.body ?? { type: "BlockStatement", body: [] },
+            expression: false,
+          },
           args_,
           ...args.map(literal),
         ),

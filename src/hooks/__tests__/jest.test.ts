@@ -35,7 +35,7 @@ describe(jestHook.patchRuntime, () => {
           transformFile() {
             return global.AppMap[0].call(
               this,
-              function () {
+              () => {
                 if (false) return 4;
                 return 5;
               },
