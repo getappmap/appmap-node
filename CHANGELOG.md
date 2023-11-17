@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/getappmap/appmap-node/compare/v2.2.0...v2.3.0) (2023-11-17)
+
+
+### Features
+
+* Support for PostgreSQL ([ed68185](https://github.com/getappmap/appmap-node/commit/ed68185e9df74c8c582cc334f2e2a2cbd0408c88))
+
 # [2.2.0](https://github.com/getappmap/appmap-node/compare/v2.1.0...v2.2.0) (2023-11-15)
 
 
