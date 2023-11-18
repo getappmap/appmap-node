@@ -30,6 +30,7 @@ exports[`mapping Sqlite tests 1`] = `
       "parent_id": 1,
       "return_value": {
         "class": "Promise",
+        "object_id": 1,
         "value": "Promise { undefined }",
       },
       "thread_id": 0,
@@ -63,6 +64,7 @@ exports[`mapping Sqlite tests 1`] = `
       "parent_id": 1,
       "return_value": {
         "class": "Promise",
+        "object_id": 1,
         "value": "Promise { <pending> }",
       },
       "thread_id": 0,

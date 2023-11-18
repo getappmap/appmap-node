@@ -1,5 +1,5 @@
 import AppMap from "../AppMap";
-import { optParameter, parameter } from "../parameter";
+import { objectId, optParameter, parameter } from "../parameter";
 
 class Klass {
   constructor(public value: unknown) {}
@@ -29,16 +29,42 @@ describe(parameter, () => {
   it.each([...examples, [undefined, "undefined", "undefined", {}]])(
     "tranforms %s into an AppMap parameter",
     (original, klass, value, schema) =>
-      expect(parameter(original)).toStrictEqual({ class: klass, value, ...schema }),
+      expect(parameter(original)).toMatchObject({ class: klass, value, ...schema }),
   );
 });
 
 describe(optParameter, () => {
   it.each([...examples, [undefined, undefined, undefined, {}]])(
     "tranforms %s into an optional AppMap parameter",
-    (original, klass, value, schema) =>
-      expect(optParameter(original)).toStrictEqual(
-        klass ? { class: klass, value, ...schema } : undefined,
-      ),
+    (original, klass, value, schema) => {
+      if (klass) expect(optParameter(original)).toMatchObject({ class: klass, value, ...schema });
+      else expect(optParameter(original)).toBeUndefined();
+    },
   );
+});
+
+describe(objectId, () => {
+  it("returns different id for different objects", () => {
+    expect(objectId([])).not.toBe(objectId([]));
+    expect(objectId({})).not.toBe(objectId({}));
+  });
+
+  it("returns same id for same objects", () => {
+    const arr = [42];
+    const obj = {};
+    expect(objectId(arr)).toBe(objectId(arr));
+    expect(objectId(obj)).toBe(objectId(obj));
+    expect(objectId(null)).toBe(objectId(null));
+  });
+
+  it("returns the same id even if the object is modified", () => {
+    const arr = [42];
+    const obj: Record<string, unknown> = {};
+    const ids = [objectId(arr), objectId(obj)];
+
+    arr.push(43);
+    obj.bar = "baz";
+
+    expect([objectId(arr), objectId(obj)]).toStrictEqual(ids);
+  });
 });
