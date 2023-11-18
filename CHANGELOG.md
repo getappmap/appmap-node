@@ -1,3 +1,11 @@
+## [2.3.2](https://github.com/getappmap/appmap-node/compare/v2.3.1...v2.3.2) (2023-11-18)
+
+
+### Bug Fixes
+
+* Don't crash when examining null prototype objects ([a8af772](https://github.com/getappmap/appmap-node/commit/a8af772bdc1353726ef75e83386fcaa0a07bdda4))
+* Use package name as the class name for free functions ([a759081](https://github.com/getappmap/appmap-node/commit/a759081557c44247bd0af59902cbbd866e32eb0b)), closes [#30](https://github.com/getappmap/appmap-node/issues/30) [#29](https://github.com/getappmap/appmap-node/issues/29)
+
 ## [2.3.1](https://github.com/getappmap/appmap-node/compare/v2.3.0...v2.3.1) (2023-11-17)
 
 
