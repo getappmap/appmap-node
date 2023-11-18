@@ -11,6 +11,7 @@ export function parameter(value: unknown): AppMap.Parameter {
     ...schema,
     value: stringify(value),
     size: value instanceof Array ? value.length : undefined,
+    object_id: typeof value === "object" ? objectId(value) : undefined,
   });
 }
 
@@ -62,4 +63,14 @@ function propertiesSchema(
   value: Record<string, unknown>,
 ): ({ name: string } & AppMap.ParameterSchema)[] {
   return Object.entries(value).map(([name, v]) => ({ name, ...parameterSchema(v) }));
+}
+
+let nextId = 1;
+const objectIds = new WeakMap<object, number>();
+
+export function objectId(object: object | null): number {
+  if (object === null) return 0;
+  const id = objectIds.get(object) ?? nextId++;
+  if (!objectIds.has(object)) objectIds.set(object, id);
+  return id;
 }

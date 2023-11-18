@@ -42,6 +42,7 @@ exports[`mapping a simple script 1`] = `
       "parent_id": 3,
       "return_value": {
         "class": "Promise",
+        "object_id": 1,
         "value": "Promise { 'promised return' }",
       },
       "thread_id": 0,
@@ -94,6 +95,7 @@ exports[`mapping a simple script 1`] = `
       "parent_id": 3,
       "return_value": {
         "class": "Promise",
+        "object_id": 1,
         "value": "Promise { <pending> }",
       },
       "thread_id": 0,
@@ -116,6 +118,7 @@ exports[`mapping a simple script 1`] = `
       "parent_id": 5,
       "return_value": {
         "class": "Promise",
+        "object_id": 2,
         "value": "Promise { 'immediate' }",
       },
       "thread_id": 0,
@@ -318,6 +321,7 @@ exports[`mapping js class methods and constructors containing super keyword 1`] 
       "path": "./class.js",
       "receiver": {
         "class": "B",
+        "object_id": 1,
         "value": "B {}",
       },
       "static": false,
@@ -333,6 +337,7 @@ exports[`mapping js class methods and constructors containing super keyword 1`] 
       "path": "./class.js",
       "receiver": {
         "class": "B",
+        "object_id": 1,
         "value": "B {}",
       },
       "static": false,
