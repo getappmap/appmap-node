@@ -14,7 +14,7 @@ exports[`mapping PostgreSQL tests 1`] = `
               "type": "function",
             },
           ],
-          "name": "",
+          "name": "index",
           "type": "class",
         },
       ],

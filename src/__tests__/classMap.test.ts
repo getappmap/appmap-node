@@ -21,7 +21,7 @@ describe(makeClassMap, () => {
         children: [
           {
             type: "class",
-            name: "",
+            name: "foo",
             children: [
               { type: "function", name: "foo", static: true, location: "/test/app/src/foo.js:3" },
             ],
@@ -38,7 +38,7 @@ describe(makeClassMap, () => {
             children: [
               {
                 type: "class",
-                name: "",
+                name: "other",
                 children: [
                   {
                     type: "function",
@@ -52,7 +52,7 @@ describe(makeClassMap, () => {
           },
           {
             type: "class",
-            name: "",
+            name: "util",
             children: [
               {
                 type: "function",

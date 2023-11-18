@@ -17,14 +17,15 @@ export function makeClassMap(funs: Iterable<FunctionInfo>): AppMap.ClassMap {
     assert(pkgs.length > 0);
 
     let [tree, classes]: FNode = [root, {}];
+    let pkg = "";
     while (pkgs.length > 0) {
-      const pkg = pkgs.pop()!;
+      pkg = pkgs.pop()!;
       [tree, classes] = tree[pkg] ||= [{}, {}];
     }
     // AppMap spec requires functions to always belong to a class.
     // Free functions are common in JavaScript, so let's
-    // pretend they belong to a class with an empty name.
-    (classes[fun.klass ?? ""] ||= []).push(fun);
+    // pretend they belong to a class with the same name as the package.
+    (classes[fun.klass ?? pkg] ||= []).push(fun);
   }
 
   let result = makeTree(root);

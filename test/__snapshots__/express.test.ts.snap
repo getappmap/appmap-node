@@ -26,7 +26,7 @@ exports[`mapping Express.js requests 1`] = `
               "type": "function",
             },
           ],
-          "name": "",
+          "name": "index",
           "type": "class",
         },
       ],
