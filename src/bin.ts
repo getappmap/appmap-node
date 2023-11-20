@@ -7,6 +7,7 @@ import { kill, pid } from "node:process";
 import { info } from "./message";
 import { version } from "./metadata";
 import { readPkgUp } from "./util/readPkgUp";
+import forwardSignals from "./util/forwardSignals";
 
 const registerPath = resolve(__dirname, "../dist/register.js");
 const loaderPath = resolve(__dirname, "../dist/loader.js");
@@ -32,14 +33,15 @@ export function main() {
       child = spawn(process.argv[0], [cmd, ...args], { stdio: "inherit" });
     } else {
       process.argv.splice(1, 1); // remove ourselves from argv
-      runScript(cmd);
+      return runScript(cmd);
     }
   } else {
     // it's a command, spawn it
     child = spawn(cmd, args, { stdio: "inherit" });
   }
 
-  child?.on("exit", (code, signal) => {
+  forwardSignals(child);
+  child.on("exit", (code, signal) => {
     if (code === null) {
       assert(signal);
       kill(pid, signal);
