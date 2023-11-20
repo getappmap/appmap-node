@@ -15,6 +15,7 @@ import * as mocha from "./hooks/mocha";
 import * as vitest from "./hooks/vitest";
 import { warn } from "./message";
 
+const debug = debuglog("appmap");
 const treeDebug = debuglog("appmap-tree");
 
 export interface Hook {
@@ -42,6 +43,7 @@ export default function transform(code: string, url: URL, hooks = defaultHooks):
   } catch (e) {
     assert(isNativeError(e));
     warn("Error transforming source at %s: %s", url, e.message);
+    if (debug.enabled && e.stack) debug(e.stack);
     return code;
   }
 }
