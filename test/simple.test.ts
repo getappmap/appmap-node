@@ -10,7 +10,7 @@ integrationTest("mapping an mjs script", () => {
   expect(readAppmap()).toMatchSnapshot();
 });
 
-integrationTest("mapping js class methods containing super keyword", () => {
+integrationTest("mapping js class methods and constructors containing super keyword", () => {
   expect(runAppmapNode("class.js").status).toBe(0);
   expect(readAppmap()).toMatchSnapshot();
 });

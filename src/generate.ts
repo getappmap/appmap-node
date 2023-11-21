@@ -52,6 +52,18 @@ export function identifier(id: string): ESTree.Identifier {
   };
 }
 
+export function toArrowFunction(
+  f: ESTree.FunctionExpression | ESTree.FunctionDeclaration,
+): ESTree.ArrowFunctionExpression {
+  return {
+    type: "ArrowFunctionExpression",
+    params: f.params,
+    async: f.async,
+    body: f.body ?? { type: "BlockStatement", body: [] },
+    expression: false,
+  };
+}
+
 export function ret(argument: ESTree.Expression | null = null): ESTree.ReturnStatement {
   return {
     type: "ReturnStatement",

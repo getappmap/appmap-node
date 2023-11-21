@@ -207,7 +207,7 @@ exports[`mapping an mjs script 1`] = `
 }
 `;
 
-exports[`mapping js class methods containing super keyword 1`] = `
+exports[`mapping js class methods and constructors containing super keyword 1`] = `
 {
   "classMap": [
     {
@@ -215,7 +215,13 @@ exports[`mapping js class methods containing super keyword 1`] = `
         {
           "children": [
             {
-              "location": "./class.js:12",
+              "location": "./class.js:16",
+              "name": "constructor",
+              "static": false,
+              "type": "function",
+            },
+            {
+              "location": "./class.js:21",
               "name": "m1",
               "static": false,
               "type": "function",
@@ -228,6 +234,12 @@ exports[`mapping js class methods containing super keyword 1`] = `
           "children": [
             {
               "location": "./class.js:2",
+              "name": "constructor",
+              "static": false,
+              "type": "function",
+            },
+            {
+              "location": "./class.js:6",
               "name": "m1",
               "static": false,
               "type": "function",
@@ -243,10 +255,64 @@ exports[`mapping js class methods containing super keyword 1`] = `
   ],
   "events": [
     {
-      "defined_class": "B",
+      "defined_class": "A",
       "event": "call",
       "id": 1,
-      "lineno": 12,
+      "lineno": 2,
+      "method_id": "constructor",
+      "parameters": [],
+      "path": "./class.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "B",
+      "event": "call",
+      "id": 3,
+      "lineno": 16,
+      "method_id": "constructor",
+      "parameters": [],
+      "path": "./class.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "A",
+      "event": "call",
+      "id": 4,
+      "lineno": 2,
+      "method_id": "constructor",
+      "parameters": [],
+      "path": "./class.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 5,
+      "parent_id": 4,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 3,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "B",
+      "event": "call",
+      "id": 7,
+      "lineno": 21,
       "method_id": "m1",
       "parameters": [],
       "path": "./class.js",
@@ -260,8 +326,8 @@ exports[`mapping js class methods containing super keyword 1`] = `
     {
       "defined_class": "A",
       "event": "call",
-      "id": 2,
-      "lineno": 2,
+      "id": 8,
+      "lineno": 6,
       "method_id": "m1",
       "parameters": [],
       "path": "./class.js",
@@ -275,15 +341,15 @@ exports[`mapping js class methods containing super keyword 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 3,
-      "parent_id": 2,
+      "id": 9,
+      "parent_id": 8,
       "thread_id": 0,
     },
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 4,
-      "parent_id": 1,
+      "id": 10,
+      "parent_id": 7,
       "thread_id": 0,
     },
   ],

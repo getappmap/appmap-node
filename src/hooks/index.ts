@@ -2,12 +2,13 @@ import { ESTree } from "meriyah";
 import {
   call_,
   ret,
-  this_,
   args as args_,
   literal,
   LiteralValue,
   member,
   identifier,
+  toArrowFunction,
+  this_,
 } from "../generate";
 
 type Hook<This, Args extends unknown[], Return, Data extends unknown[]> = (
@@ -22,6 +23,7 @@ type ESFunction = ESTree.FunctionDeclaration | ESTree.FunctionExpression;
 export function wrap<This, Args extends unknown[], Return, Data extends LiteralValue[]>(
   fun: ESFunction,
   hook: Hook<This, Args, Return, Data>,
+  thisIsUndefined: boolean,
   ...args: Data
 ): ESTree.BlockStatement {
   const inner: ESTree.FunctionExpression = { ...fun, type: "FunctionExpression" };
@@ -31,14 +33,8 @@ export function wrap<This, Args extends unknown[], Return, Data extends LiteralV
       ret(
         call_(
           member(expressionFor(hook), identifier("call")),
-          this_,
-          {
-            type: "ArrowFunctionExpression",
-            params: inner.params,
-            async: inner.async,
-            body: inner.body ?? { type: "BlockStatement", body: [] },
-            expression: false,
-          },
+          thisIsUndefined ? identifier("undefined") : this_,
+          toArrowFunction(inner),
           args_,
           ...args.map(literal),
         ),

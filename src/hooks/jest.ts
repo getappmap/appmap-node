@@ -28,7 +28,7 @@ export function patchRuntime(program: ESTree.Program): ESTree.Program {
   walk(program, {
     MethodDefinition(method: ESTree.MethodDefinition) {
       if (!isId(method.key, "transformFile")) return;
-      method.value.body = wrap(method.value, transformJest);
+      method.value.body = wrap(method.value, transformJest, method.kind === "constructor");
     },
   });
   return program;

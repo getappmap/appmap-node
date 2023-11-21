@@ -6,7 +6,16 @@ import { fileURLToPath } from "node:url";
 import { ancestor as walk } from "acorn-walk";
 import { ESTree, parse } from "meriyah";
 
-import { args as args_, call_, identifier, literal, member, ret, this_ } from "../generate";
+import {
+  args as args_,
+  call_,
+  identifier,
+  literal,
+  member,
+  ret,
+  this_,
+  toArrowFunction,
+} from "../generate";
 import { FunctionInfo, createMethodInfo, createFunctionInfo } from "../registry";
 import findLast from "../util/findLast";
 
@@ -55,6 +64,7 @@ function objectLiteralExpression(obj: object) {
 function wrapWithRecord(
   fd: ESTree.FunctionDeclaration | ESTree.FunctionExpression,
   functionInfo: FunctionInfo,
+  thisIsUndefined: boolean,
 ) {
   const wrapped: ESTree.BlockStatement = {
     type: "BlockStatement",
@@ -63,14 +73,8 @@ function wrapWithRecord(
       ret(
         call_(
           member(...["global", "AppMapRecordHook", "call"].map(identifier)),
-          this_,
-          {
-            type: "ArrowFunctionExpression",
-            params: fd.params,
-            async: fd.async,
-            body: fd.body ?? { type: "BlockStatement", body: [] },
-            expression: false,
-          },
+          thisIsUndefined ? identifier("undefined") : this_,
+          toArrowFunction(fd),
           args_,
           member(
             __appmapFunctionRegistryIdentifier,
@@ -87,14 +91,19 @@ function wrapWithRecord(
 function FunctionDeclaration(fun: ESTree.FunctionDeclaration) {
   if (!hasIdentifier(fun)) return;
   if (isNotInteresting(fun)) return;
-  fun.body = wrapWithRecord(fun, createFunctionInfo(fun));
+  fun.body = wrapWithRecord(fun, createFunctionInfo(fun), false);
 }
 
 function MethodDefinition(method: ESTree.MethodDefinition, _: unknown, ancestors: ESTree.Node[]) {
   if (!methodHasName(method)) return;
   const klass = findLast(ancestors, isNamedClass);
   if (!klass) return;
-  method.value.body = wrapWithRecord({ ...method.value }, createMethodInfo(method, klass));
+
+  method.value.body = wrapWithRecord(
+    { ...method.value },
+    createMethodInfo(method, klass),
+    method.kind === "constructor",
+  );
 }
 
 let root = cwd();
