@@ -5,10 +5,10 @@ import { debuglog } from "node:util";
 import { isNativeError } from "node:util/types";
 
 import { generate } from "astring";
-import { fromSource as getSourceMap, removeComments } from "convert-source-map";
+import * as SourceMapConverter from "convert-source-map";
 import { parse, type ESTree } from "meriyah";
+import { RawSourceMap, SourceMapConsumer } from "source-map-js";
 
-import applySourceMap from "./applySourceMap";
 import * as instrument from "./hooks/instrument";
 import * as jest from "./hooks/jest";
 import * as mocha from "./hooks/mocha";
@@ -20,7 +20,7 @@ const treeDebug = debuglog("appmap-tree");
 
 export interface Hook {
   shouldInstrument(url: URL): boolean;
-  transform(program: ESTree.Program): ESTree.Program;
+  transform(program: ESTree.Program, sourcemap?: SourceMapConsumer): ESTree.Program;
 }
 
 const defaultHooks: Hook[] = [vitest, mocha, jest, instrument];
@@ -35,9 +35,7 @@ export default function transform(code: string, url: URL, hooks = defaultHooks):
 
   try {
     const tree = parse(code, { source: url.toString(), next: true, loc: true, module: true });
-    const sourcemap: unknown = getSourceMap(fixSourceMap(url, code))?.sourcemap;
-    if (sourcemap) applySourceMap(tree, sourcemap);
-    const xformed = hook.transform(tree);
+    const xformed = hook.transform(tree, getSourceMap(fixSourceMap(url, code)));
     if (treeDebug.enabled) dumpTree(xformed, url);
     return generate(xformed);
   } catch (e) {
@@ -64,11 +62,16 @@ function fixSourceMap(url: URL, code: string): string {
 
   if (![".ts", ".mts", ".tsx"].some((e) => url.pathname.toLowerCase().endsWith(e))) return code;
 
-  let removed = removeComments(code);
+  let removed = SourceMapConverter.removeComments(code);
   if (removed.indexOf("//# sourceMappingURL") > -1) {
     // Correct one remains, it needs to start in new line.
     removed = removed.replace("//# sourceMappingURL", "\n//# sourceMappingURL");
     return removed;
   }
   return code;
+}
+
+function getSourceMap(code: string): SourceMapConsumer | undefined {
+  const map = SourceMapConverter.fromSource(code);
+  if (map) return new SourceMapConsumer(map.sourcemap as RawSourceMap);
 }
