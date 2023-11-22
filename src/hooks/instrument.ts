@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 import { ancestor as walk } from "acorn-walk";
 import { ESTree, parse } from "meriyah";
+import { SourceMapConsumer } from "source-map-js";
 
 import {
   args as args_,
@@ -16,7 +17,7 @@ import {
   this_,
   toArrowFunction,
 } from "../generate";
-import { FunctionInfo, createMethodInfo, createFunctionInfo } from "../registry";
+import { FunctionInfo, SourceLocation, createMethodInfo, createFunctionInfo } from "../registry";
 import findLast from "../util/findLast";
 
 const __appmapFunctionRegistryIdentifier = identifier("__appmapFunctionRegistry");
@@ -27,9 +28,36 @@ function addTransformedFunctionInfo(fi: FunctionInfo): number {
   return transformedFunctionInfos.length - 1;
 }
 
-export function transform(program: ESTree.Program): ESTree.Program {
+export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer): ESTree.Program {
   transformedFunctionInfos.splice(0);
-  walk(program, { FunctionDeclaration, MethodDefinition });
+
+  const locate = makeLocator(sourceMap);
+
+  walk(program, {
+    FunctionDeclaration(fun: ESTree.FunctionDeclaration) {
+      if (!hasIdentifier(fun)) return;
+
+      const location = locate(fun);
+      if (sourceMap && !location) return; // don't instrument generated code
+
+      fun.body = wrapWithRecord(fun, createFunctionInfo(fun, location), false);
+    },
+
+    MethodDefinition(method: ESTree.MethodDefinition, _: unknown, ancestors: ESTree.Node[]) {
+      if (!methodHasName(method)) return;
+      const klass = findLast(ancestors, isNamedClass);
+      if (!klass) return;
+
+      const location = locate(method);
+      if (sourceMap && !location) return; // don't instrument generated code
+
+      method.value.body = wrapWithRecord(
+        { ...method.value },
+        createMethodInfo(method, klass, location),
+        method.kind === "constructor",
+      );
+    },
+  });
 
   const functionRegistryAssignment: ESTree.VariableDeclaration = {
     type: "VariableDeclaration",
@@ -48,6 +76,25 @@ export function transform(program: ESTree.Program): ESTree.Program {
   program.body.unshift(functionRegistryAssignment);
 
   return program;
+}
+
+function makeLocator(
+  sourceMap?: SourceMapConsumer,
+): (node: ESTree.Node) => SourceLocation | undefined {
+  if (sourceMap)
+    return ({ loc }: ESTree.Node) => {
+      if (!loc?.source) return undefined;
+      const mapped = sourceMap.originalPositionFor(loc.start);
+      if (mapped?.line) return { path: mapped.source, lineno: mapped.line };
+    };
+  else
+    return ({ loc }: ESTree.Node) =>
+      loc?.source
+        ? {
+            path: loc.source.startsWith("file:") ? fileURLToPath(loc.source) : loc.source,
+            lineno: loc.start.line,
+          }
+        : undefined;
 }
 
 function objectLiteralExpression(obj: object) {
@@ -88,24 +135,6 @@ function wrapWithRecord(
   return wrapped;
 }
 
-function FunctionDeclaration(fun: ESTree.FunctionDeclaration) {
-  if (!hasIdentifier(fun)) return;
-  if (isNotInteresting(fun)) return;
-  fun.body = wrapWithRecord(fun, createFunctionInfo(fun), false);
-}
-
-function MethodDefinition(method: ESTree.MethodDefinition, _: unknown, ancestors: ESTree.Node[]) {
-  if (!methodHasName(method)) return;
-  const klass = findLast(ancestors, isNamedClass);
-  if (!klass) return;
-
-  method.value.body = wrapWithRecord(
-    { ...method.value },
-    createMethodInfo(method, klass),
-    method.kind === "constructor",
-  );
-}
-
 let root = cwd();
 
 export function setRoot(path: string) {
@@ -121,14 +150,6 @@ export function shouldInstrument(url: URL): boolean {
   if (isUnrelated(root, filePath)) return false;
 
   return true;
-}
-
-function isNotInteresting(fun: ESTree.FunctionDeclaration) {
-  // When we import node:http in ts files "_interop_require_default"
-  // function is injected to the source.
-  if (fun.id?.name === "_interop_require_default") return true;
-
-  return false;
 }
 
 function isUnrelated(parentPath: string, targetPath: string) {

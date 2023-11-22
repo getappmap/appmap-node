@@ -1,5 +1,3 @@
-import { fileURLToPath } from "node:url";
-
 import type { ESTree } from "meriyah";
 
 export interface SourceLocation {
@@ -17,26 +15,19 @@ export interface FunctionInfo {
   location?: SourceLocation;
 }
 
-function makeLocation(loc: ESTree.SourceLocation | null | undefined): SourceLocation | undefined {
-  if (!loc?.source) return;
-  return {
-    path: loc.source.startsWith("file:") ? fileURLToPath(loc.source) : loc.source,
-    lineno: loc.start.line,
-  };
-}
-
 export function createFunctionInfo(
   fun: ESTree.FunctionDeclaration & {
     id: ESTree.Identifier;
   },
+  location?: SourceLocation,
 ): FunctionInfo {
-  const { async, generator, id, params, loc } = fun;
+  const { async, generator, id, params } = fun;
   const info = {
     async,
     generator,
     id: id.name,
     params,
-    location: makeLocation(loc),
+    location,
     static: true,
   };
   return info;
@@ -45,6 +36,7 @@ export function createFunctionInfo(
 export function createMethodInfo(
   method: ESTree.MethodDefinition & { key: { name: string } },
   klass: (ESTree.ClassDeclaration | ESTree.ClassExpression) & { id: { name: string } },
+  location?: SourceLocation,
 ): FunctionInfo {
   const {
     key,
@@ -57,7 +49,7 @@ export function createMethodInfo(
     params,
     static: method.static,
     klass: klass.id.name,
-    location: makeLocation(method.loc),
+    location,
   };
   return info;
 }

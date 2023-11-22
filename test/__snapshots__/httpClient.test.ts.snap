@@ -23,14 +23,14 @@ exports[`mapping http client requests 1`] = `
     },
   ],
   "eventUpdates": {
-    "4": {
+    "2": {
       "elapsed": 31.337,
       "event": "return",
-      "id": 4,
-      "parent_id": 3,
+      "id": 2,
+      "parent_id": 1,
       "return_value": {
         "class": "Promise",
-        "object_id": 3,
+        "object_id": 1,
         "value": "Promise { undefined }",
       },
       "thread_id": 0,
@@ -41,49 +41,6 @@ exports[`mapping http client requests 1`] = `
       "defined_class": "",
       "event": "call",
       "id": 1,
-      "method_id": "_export",
-      "parameters": [
-        {
-          "class": "Object",
-          "name": "target",
-          "object_id": 1,
-          "properties": [],
-          "value": "{}",
-        },
-        {
-          "class": "Object",
-          "name": "all",
-          "object_id": 2,
-          "properties": [
-            {
-              "class": "Function",
-              "name": "SERVER_PORT",
-            },
-            {
-              "class": "Function",
-              "name": "TEST_HEADER_VALUE",
-            },
-          ],
-          "value": "{
-  SERVER_PORT: [Function: SERVER_PORT],
-  TEST_HEADER_VALUE: [Function: TEST_HEADER_VALUE]
-}",
-        },
-      ],
-      "static": true,
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 2,
-      "parent_id": 1,
-      "thread_id": 0,
-    },
-    {
-      "defined_class": "",
-      "event": "call",
-      "id": 3,
       "lineno": 18,
       "method_id": "makeRequests",
       "parameters": [],
@@ -94,11 +51,11 @@ exports[`mapping http client requests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 4,
-      "parent_id": 3,
+      "id": 2,
+      "parent_id": 1,
       "return_value": {
         "class": "Promise",
-        "object_id": 3,
+        "object_id": 1,
         "value": "Promise { <pending> }",
       },
       "thread_id": 0,
@@ -113,7 +70,7 @@ exports[`mapping http client requests 1`] = `
         "request_method": "GET",
         "url": "http://localhost:27628/endpoint/one",
       },
-      "id": 5,
+      "id": 3,
       "thread_id": 0,
     },
     {
@@ -125,8 +82,8 @@ exports[`mapping http client requests 1`] = `
         },
         "status_code": 200,
       },
-      "id": 6,
-      "parent_id": 5,
+      "id": 4,
+      "parent_id": 3,
       "thread_id": 0,
     },
     {
@@ -138,6 +95,32 @@ exports[`mapping http client requests 1`] = `
         },
         "request_method": "POST",
         "url": "http://localhost:27628/endpoint/two",
+      },
+      "id": 5,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_client_response": {
+        "headers": {
+          "content-type": "text/html",
+          "transfer-encoding": "chunked",
+        },
+        "status_code": 404,
+      },
+      "id": 6,
+      "parent_id": 5,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "http_client_request": {
+        "headers": {
+          "host": "localhost:27628",
+        },
+        "request_method": "GET",
+        "url": "http://localhost:27628/endpoint/three",
       },
       "id": 7,
       "thread_id": 0,
@@ -154,32 +137,6 @@ exports[`mapping http client requests 1`] = `
       },
       "id": 8,
       "parent_id": 7,
-      "thread_id": 0,
-    },
-    {
-      "event": "call",
-      "http_client_request": {
-        "headers": {
-          "host": "localhost:27628",
-        },
-        "request_method": "GET",
-        "url": "http://localhost:27628/endpoint/three",
-      },
-      "id": 9,
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
-      "http_client_response": {
-        "headers": {
-          "content-type": "text/html",
-          "transfer-encoding": "chunked",
-        },
-        "status_code": 404,
-      },
-      "id": 10,
-      "parent_id": 9,
       "thread_id": 0,
     },
   ],
