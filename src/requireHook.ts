@@ -1,5 +1,6 @@
 import httpHook from "./hooks/http";
 import pgHook from "./hooks/pg";
+import sqliteHook from "./hooks/sqlite";
 
 interface Hook {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -7,7 +8,7 @@ interface Hook {
   applicable(id: string): boolean;
 }
 
-const hooks: Hook[] = [httpHook, pgHook];
+const hooks: Hook[] = [httpHook, pgHook, sqliteHook];
 
 export default function requireHook(
   original: NodeJS.Require,

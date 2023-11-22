@@ -1,0 +1,338 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping Sqlite tests 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "./index.js:12",
+              "name": "main",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "index",
+          "type": "class",
+        },
+      ],
+      "name": "index",
+      "type": "package",
+    },
+  ],
+  "eventUpdates": {
+    "3": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise",
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+  },
+  "events": [
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 1,
+      "lineno": 12,
+      "method_id": "main",
+      "parameters": [],
+      "path": "./index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 2,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Database.run'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise",
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 2,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 5,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Database.all'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 7,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Database.get'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 8,
+      "parent_id": 7,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 9,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Database.each'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 10,
+      "parent_id": 9,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 11,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Database.exec'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 12,
+      "parent_id": 11,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 13,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Database.each with row callback'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 14,
+      "parent_id": 13,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 15,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Database.run with params', ? AS a, ? AS b",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 16,
+      "parent_id": 15,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 17,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Database.run with object param', $foo, $bar",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 18,
+      "parent_id": 17,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 19,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Statement.run'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 20,
+      "parent_id": 19,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 21,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Statement.all'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 22,
+      "parent_id": 21,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 23,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Statement.get'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 24,
+      "parent_id": 23,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 25,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Statement.each'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 26,
+      "parent_id": 25,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 27,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Statement.run - prepare once run twice'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 28,
+      "parent_id": 27,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 29,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Statement.run - prepare once run twice'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 30,
+      "parent_id": 29,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 31,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Database.run without a completion callback'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 32,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Stetement.run without a completion callback'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 33,
+      "parent_id": 31,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 34,
+      "parent_id": 32,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "sqlite-appmap-node-test",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
