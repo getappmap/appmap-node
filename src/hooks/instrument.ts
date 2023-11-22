@@ -117,7 +117,7 @@ export function shouldInstrument(url: URL): boolean {
   if (url.pathname.endsWith(".json")) return false;
 
   const filePath = fileURLToPath(url);
-  if (filePath.includes("node_modules")) return false;
+  if (filePath.includes("node_modules") || filePath.includes(".yarn")) return false;
   if (isUnrelated(root, filePath)) return false;
 
   return true;
