@@ -7,7 +7,7 @@ import type AppMap from "./AppMap";
 import AppMapStream from "./AppMapStream";
 import { makeClassMap } from "./classMap";
 import { appMapDir } from "./config";
-import { makeCallEvent, makeReturnEvent } from "./event";
+import { makeCallEvent, makeExceptionEvent, makeReturnEvent } from "./event";
 import { defaultMetadata } from "./metadata";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
@@ -35,6 +35,17 @@ export default class Recording {
     assert(this.stream);
     this.functionsSeen.add(funInfo);
     const event = makeCallEvent(this.nextId++, funInfo, thisArg, args);
+    this.stream.emit(event);
+    return event;
+  }
+
+  functionException(
+    callId: number,
+    exception: unknown,
+    elapsed?: number,
+  ): AppMap.FunctionReturnEvent {
+    assert(this.stream);
+    const event = makeExceptionEvent(this.nextId++, callId, exception, elapsed);
     this.stream.emit(event);
     return event;
   }

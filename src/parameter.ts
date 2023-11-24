@@ -15,7 +15,7 @@ export function parameter(value: unknown): AppMap.Parameter {
   });
 }
 
-function stringify(value: unknown): string {
+export function stringify(value: unknown): string {
   if (value instanceof IncomingMessage)
     return format("[IncomingMessage: %s %s]", value.method, value.url);
   if (value instanceof ServerResponse)
@@ -32,7 +32,7 @@ export function optParameter(value: unknown): AppMap.Parameter | undefined {
   return parameter(value);
 }
 
-function getClass(value: unknown): string {
+export function getClass(value: unknown): string {
   if (typeof value === "undefined") return "undefined";
   if (value === null || Object.getPrototypeOf(value) === null) return "object";
   return value.constructor.name;
