@@ -1,3 +1,10 @@
+## [2.3.3](https://github.com/getappmap/appmap-node/compare/v2.3.2...v2.3.3) (2023-11-24)
+
+
+### Bug Fixes
+
+* call super constructor ([3cb9f84](https://github.com/getappmap/appmap-node/commit/3cb9f840b49443912a6396ec33cc0729c77e1110))
+
 ## [2.3.2](https://github.com/getappmap/appmap-node/compare/v2.3.1...v2.3.2) (2023-11-18)
 
 
