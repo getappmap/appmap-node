@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/getappmap/appmap-node/compare/v2.3.3...v2.4.0) (2023-11-24)
+
+
+### Features
+
+* Support for SQLite ([52b58a9](https://github.com/getappmap/appmap-node/commit/52b58a9fca87df64067ec002b0786681d570aa39))
+
 ## [2.3.3](https://github.com/getappmap/appmap-node/compare/v2.3.2...v2.3.3) (2023-11-24)
 
 
