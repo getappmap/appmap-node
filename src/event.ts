@@ -1,7 +1,7 @@
 import { ESTree } from "meriyah";
 
 import type AppMap from "./AppMap";
-import { optParameter, parameter } from "./parameter";
+import { getClass, objectId, optParameter, parameter, stringify } from "./parameter";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
 
@@ -40,6 +40,22 @@ export function makeReturnEvent(
   };
 }
 
+export function makeExceptionEvent(
+  id: number,
+  parentId: number,
+  exception: unknown,
+  elapsed?: number,
+): AppMap.FunctionReturnEvent {
+  return {
+    event: "return",
+    thread_id: 0,
+    id,
+    parent_id: parentId,
+    elapsed,
+    exceptions: examineException(exception),
+  };
+}
+
 function resolveParameters(args: unknown[], fun: FunctionInfo): AppMap.Parameter[] {
   return args.map(
     (value, index): AppMap.Parameter => ({
@@ -57,4 +73,23 @@ function paramName(param: ESTree.Parameter | undefined): string | undefined {
       return paramName(param.left);
     // TODO: handle other parameter types
   }
+}
+
+function examineException(exception: unknown): AppMap.Exception[] {
+  if (!(typeof exception === "object" && exception)) return [];
+  const name = getClass(exception);
+  const message =
+    "message" in exception && typeof exception.message === "string"
+      ? exception.message
+      : stringify(exception);
+  const cause = "cause" in exception && exception.cause;
+  // TODO establish location (needs to consult soucemap)
+  return [
+    {
+      class: name,
+      message,
+      object_id: objectId(exception),
+    },
+    ...examineException(cause),
+  ];
 }

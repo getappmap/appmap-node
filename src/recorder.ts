@@ -2,10 +2,10 @@ import assert from "node:assert";
 import { isPromise } from "node:util/types";
 
 import AppMap from "./AppMap";
+import Recording, { writtenAppMaps } from "./Recording";
 import { makeReturnEvent } from "./event";
 import { info } from "./message";
 import { FunctionInfo } from "./registry";
-import Recording, { writtenAppMaps } from "./Recording";
 import commonPathPrefix from "./util/commonPathPrefix";
 import { getTime } from "./util/getTime";
 
@@ -26,12 +26,15 @@ export function record<This, Return>(
   );
 
   const start = getTime();
-  // TODO handle exceptions
-  const result = fun.apply(this, args);
 
-  const ret = recording.functionReturn(call.id, result, getTime() - start);
-
-  return fixReturnEventIfPromiseResult(result, ret, call, start) as Return;
+  try {
+    const result = fun.apply(this, args);
+    const ret = recording.functionReturn(call.id, result, getTime() - start);
+    return fixReturnEventIfPromiseResult(result, ret, call, start) as Return;
+  } catch (exn: unknown) {
+    recording.functionException(call.id, exn, getTime() - start);
+    throw exn;
+  }
 }
 
 export function fixReturnEventIfPromiseResult(
