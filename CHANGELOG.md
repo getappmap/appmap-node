@@ -1,3 +1,19 @@
+# [2.5.0](https://github.com/getappmap/appmap-node/compare/v2.4.0...v2.5.0) (2023-11-25)
+
+
+### Bug Fixes
+
+* Forward signals to the child when spawning ([52eddd3](https://github.com/getappmap/appmap-node/commit/52eddd3f039a80c3970b5e5521f77acfa3134f26))
+* Skip instrumenting .yarn files ([ee88945](https://github.com/getappmap/appmap-node/commit/ee88945bc6e996f23768305db105e45fc1e8b3a2))
+
+
+### Features
+
+* Capture exceptions ([18d4f48](https://github.com/getappmap/appmap-node/commit/18d4f48f298d47defbdeeb021dbbfc9f7f732223))
+* Don't instrument generated code ([eacd5f7](https://github.com/getappmap/appmap-node/commit/eacd5f71e857b782aa60e2b6129df656e8d4b57f))
+* Emit metadata.exception in test runs ([84bda66](https://github.com/getappmap/appmap-node/commit/84bda6692314a15a30c2276e0a80b51cbf8f6d80)), closes [#26](https://github.com/getappmap/appmap-node/issues/26)
+* Generate object_ids ([2a226a5](https://github.com/getappmap/appmap-node/commit/2a226a565101b273c1e7f76ac32bcc8b6dd26370))
+
 # [2.4.0](https://github.com/getappmap/appmap-node/compare/v2.3.3...v2.4.0) (2023-11-24)
 
 
