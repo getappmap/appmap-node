@@ -8,7 +8,7 @@ exports[`mapping Sqlite tests 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:12",
+              "location": "./index.js:13",
               "name": "main",
               "static": true,
               "type": "function",
@@ -41,7 +41,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "",
       "event": "call",
       "id": 1,
-      "lineno": 12,
+      "lineno": 13,
       "method_id": "main",
       "parameters": [],
       "path": "./index.js",
@@ -294,26 +294,26 @@ exports[`mapping Sqlite tests 1`] = `
       "thread_id": 0,
     },
     {
-      "event": "call",
+      "elapsed": 31.337,
+      "event": "return",
       "id": 32,
+      "parent_id": 31,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 33,
       "sql_query": {
         "database_type": "sqlite",
-        "sql": "SELECT 'Stetement.run without a completion callback'",
+        "sql": "SELECT 'Statement.run without a completion callback'",
       },
       "thread_id": 0,
     },
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 33,
-      "parent_id": 31,
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
       "id": 34,
-      "parent_id": 32,
+      "parent_id": 33,
       "thread_id": 0,
     },
   ],
