@@ -1,5 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const sqlite = require("sqlite3");
+const { setTimeout } = require("node:timers/promises");
 
 const promisify = (method, thisArg, ...args) =>
   new Promise((resolve, reject) => {
@@ -67,15 +68,9 @@ async function main() {
   // We cannot test commands being called without a completion callback with promisify
   // because promisify already provides the completion callback to resolve the promise.
   // We test this case with no completion callback here wtihout promisifying them.
-  // We are serializing them just to get the same [id, parent_id] pairs
-  // for the events in the appmap snapshot in every test run.
-  db.serialize(
-    function () {
-      db.run("SELECT 'Database.run without a completion callback'");
-      db.prepare("SELECT 'Stetement.run without a completion callback'").run().finalize();
-    },
-    () => db.close(),
-  );
+  db.run("SELECT 'Database.run without a completion callback'");
+  await setTimeout(10); // to serialize the appmap
+  db.prepare("SELECT 'Statement.run without a completion callback'").run().finalize();
 }
 
 main();
