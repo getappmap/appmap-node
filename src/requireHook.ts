@@ -1,4 +1,5 @@
 import httpHook from "./hooks/http";
+import mysqlHook from "./hooks/mysql";
 import pgHook from "./hooks/pg";
 import sqliteHook from "./hooks/sqlite";
 
@@ -8,7 +9,7 @@ interface Hook {
   applicable(id: string): boolean;
 }
 
-const hooks: Hook[] = [httpHook, pgHook, sqliteHook];
+const hooks: Hook[] = [httpHook, mysqlHook, pgHook, sqliteHook];
 
 export default function requireHook(
   original: NodeJS.Require,
