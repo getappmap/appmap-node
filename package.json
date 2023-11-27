@@ -41,6 +41,7 @@
     "@types/caller": "^1.0.0",
     "@types/convert-source-map": "^2.0.1",
     "@types/jest": "^29.5.4",
+    "@types/mysql": "^2.15.24",
     "@types/node": "^20.5.0",
     "@types/pg": "^8.10.9",
     "@types/sqlite3": "^3.1.11",
@@ -74,6 +75,7 @@
     "test/jest",
     "test/mocha",
     "test/vitest",
+    "test/mysql",
     "test/postgres",
     "test/sqlite"
   ]

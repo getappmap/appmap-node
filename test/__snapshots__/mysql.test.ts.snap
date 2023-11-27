@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping MySQL tests 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "./index.js:17",
+              "name": "main",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "index",
+          "type": "class",
+        },
+      ],
+      "name": "index",
+      "type": "package",
+    },
+  ],
+  "eventUpdates": {
+    "3": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 1,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+  },
+  "events": [
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 1,
+      "lineno": 17,
+      "method_id": "main",
+      "parameters": [],
+      "path": "./index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 2,
+      "sql_query": {
+        "database_type": "mysql",
+        "sql": "SELECT 'Connection.query'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 1,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "Error",
+          "message": "connect ECONNREFUSED 127.0.0.1:3306",
+          "object_id": 2,
+        },
+      ],
+      "id": 4,
+      "parent_id": 2,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 5,
+      "sql_query": {
+        "database_type": "mysql",
+        "sql": "SELECT 'Connection.query with values', ?, ?",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "Error",
+          "message": "connect ECONNREFUSED 127.0.0.1:3306",
+          "object_id": 3,
+        },
+      ],
+      "id": 6,
+      "parent_id": 5,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 7,
+      "sql_query": {
+        "database_type": "mysql",
+        "sql": "SELECT 'Connection.query with options'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "Error",
+          "message": "connect ECONNREFUSED 127.0.0.1:3306",
+          "object_id": 4,
+        },
+      ],
+      "id": 8,
+      "parent_id": 7,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 9,
+      "sql_query": {
+        "database_type": "mysql",
+        "sql": "SELECT 'Connection.query without a callback",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "Error",
+          "message": "connect ECONNREFUSED 127.0.0.1:3306",
+          "object_id": 5,
+        },
+      ],
+      "id": 10,
+      "parent_id": 9,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "mysql-appmap-node-test",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
