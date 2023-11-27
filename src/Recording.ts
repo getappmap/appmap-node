@@ -14,7 +14,7 @@ import compactObject from "./util/compactObject";
 
 export default class Recording {
   constructor(type: AppMap.RecorderType, recorder: string, ...names: string[]) {
-    const dirs = [recorder, ...names];
+    const dirs = [recorder, ...names].map(quotePathSegment);
     const name = dirs.pop()!; // it must have at least one element
     this.path = join(appMapDir, ...dirs, makeAppMapFilename(name));
     this.stream = new AppMapStream(this.path);
@@ -210,4 +210,8 @@ export const writtenAppMaps: string[] = [];
 function makeAppMapFilename(name: string): string {
   // TODO make sure it isn't too long
   return name + ".appmap.json";
+}
+
+function quotePathSegment(value: string): string {
+  return value.replaceAll(/[/\\]/g, "-");
 }
