@@ -108,9 +108,18 @@ function fixEvent(event: unknown) {
   if ("elapsed" in event && typeof event.elapsed === "number") event.elapsed = 31.337;
 }
 
+const timestamps: Record<string, string> = {};
+let timestampId = 0;
+
+function fixTimeStamps(str: string): string {
+  return str.replaceAll(
+    /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/g,
+    (ts) => (timestamps[ts] ||= `<timestamp ${timestampId++}>`),
+  );
+}
+
 function fixPath(path: string): string {
-  if (path.startsWith(target)) return path.replace(target, ".");
-  else return path;
+  return fixTimeStamps(path.replace(target, "."));
 }
 
 function fixClassMap(classMap: unknown[]) {
@@ -126,6 +135,7 @@ function fixMetadata(metadata: AppMap.Metadata) {
   if (metadata.recorder.type === "process") metadata.name = "test process recording";
   if (metadata.language) metadata.language.version = "test node version";
   if (metadata.client.version) metadata.client.version = "test node-appmap version";
+  if (metadata.name) metadata.name = fixTimeStamps(metadata.name);
 }
 
 function ensureBuilt() {

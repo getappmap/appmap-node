@@ -1,12 +1,14 @@
 import assert from "node:assert";
-import { ClientRequest } from "node:http";
 import type http from "node:http";
+import { ClientRequest } from "node:http";
 import type https from "node:https";
 import { URL } from "node:url";
 
 import type AppMap from "../AppMap";
+import Recording from "../Recording";
+import { info } from "../message";
 import { parameter } from "../parameter";
-import { recording } from "../recorder";
+import { recording, start } from "../recorder";
 import { getTime } from "../util/getTime";
 
 type HTTP = typeof http | typeof https;
@@ -111,6 +113,7 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
   if (requests.has(request)) return;
   if (!(request.method && request.url)) return;
   const url = new URL(request.url, "http://example");
+  const timestamp = startRequestRecording(url.pathname);
   const requestEvent = recording.httpRequest(
     request.method,
     url.pathname,
@@ -121,8 +124,7 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
   const startTime = getTime();
   requests.add(request);
   response.once("finish", () => {
-    if (fixupEvent(request, requestEvent)) recording.fixup(requestEvent);
-    handleResponse(requestEvent, startTime, response);
+    handleResponse(request, requestEvent, startTime, timestamp, response);
   });
 }
 
@@ -184,16 +186,31 @@ function normalizeHeaders(
 }
 
 function handleResponse(
+  request: http.IncomingMessage,
   requestEvent: AppMap.HttpServerRequestEvent,
   startTime: number,
+  timestamp: string,
   response: http.ServerResponse<http.IncomingMessage>,
 ): void {
+  if (fixupEvent(request, requestEvent)) recording.fixup(requestEvent);
   recording.httpResponse(
     requestEvent.id,
     getTime() - startTime,
     response.statusCode,
     normalizeHeaders(response.getHeaders()),
   );
+  const { request_method, path_info } = requestEvent.http_server_request;
+  recording.metadata.name = `${request_method} ${path_info} (${response.statusCode}) — ${timestamp}`;
+  recording.finish();
+  info("Wrote %s", recording.path);
+  start(); // just so there's always a recording running
+}
+
+function startRequestRecording(pathname: string): string {
+  recording.abandon();
+  const timestamp = new Date().toISOString();
+  start(new Recording("requests", "requests", [timestamp, pathname].join(" ")));
+  return timestamp;
 }
 
 function capitalize(str: string): string {

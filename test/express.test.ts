@@ -1,8 +1,8 @@
 import { request } from "node:http";
-import { integrationTest, readAppmap, spawnAppmapNode } from "./helpers";
+import { integrationTest, readAppmaps, spawnAppmapNode } from "./helpers";
 
 integrationTest("mapping Express.js requests", async () => {
-  expect.assertions(2);
+  expect.assertions(1);
   const server = spawnAppmapNode("index.js");
   await new Promise<void>((r) =>
     server.stdout.on("data", (chunk: Buffer) => {
@@ -31,5 +31,5 @@ integrationTest("mapping Express.js requests", async () => {
   });
   server.kill("SIGINT");
   await new Promise<void>((r) => server.on("close", () => r()));
-  expect(readAppmap()).toMatchSnapshot();
+  expect(readAppmaps()).toMatchSnapshot();
 });

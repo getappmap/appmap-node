@@ -9,7 +9,7 @@ import { FunctionInfo } from "./registry";
 import commonPathPrefix from "./util/commonPathPrefix";
 import { getTime } from "./util/getTime";
 
-export let recording: Recording = new Recording("process", "process", new Date().toISOString());
+export let recording: Recording;
 
 export function record<This, Return>(
   this: This,
@@ -64,10 +64,14 @@ function isNullPrototype(obj: unknown) {
   return obj != null && Object.getPrototypeOf(obj) === null;
 }
 
-export function start(newRecording: Recording) {
-  assert(!recording.running);
+export function start(
+  newRecording: Recording = new Recording("process", "process", new Date().toISOString()),
+) {
+  assert(!recording?.running);
   recording = newRecording;
 }
+
+start();
 
 process.on("exit", () => {
   recording.finish();
