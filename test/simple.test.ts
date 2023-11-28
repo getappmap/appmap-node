@@ -27,3 +27,8 @@ integrationTest("forwarding signals to the child", async () => {
   expect(daemon.exitCode).toBe(42);
   expect(readAppmap()).toMatchSnapshot();
 });
+
+integrationTest("mapping generator functions", () => {
+  expect(runAppmapNode("generator.js").status).toBe(0);
+  expect(readAppmap()).toMatchSnapshot();
+});

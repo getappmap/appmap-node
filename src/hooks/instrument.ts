@@ -16,6 +16,7 @@ import {
   ret,
   this_,
   toArrowFunction,
+  yieldStar,
 } from "../generate";
 import { FunctionInfo, SourceLocation, createMethodInfo, createFunctionInfo } from "../registry";
 import findLast from "../util/findLast";
@@ -45,6 +46,8 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
 
     MethodDefinition(method: ESTree.MethodDefinition, _: unknown, ancestors: ESTree.Node[]) {
       if (!methodHasName(method)) return;
+      // Can't record generator methods because of potential super keyword inside.
+      if (method.value.generator) return;
       const klass = findLast(ancestors, isNamedClass);
       if (!klass) return;
 
@@ -113,15 +116,23 @@ function wrapWithRecord(
   functionInfo: FunctionInfo,
   thisIsUndefined: boolean,
 ) {
+  const statement = fd.generator ? yieldStar : ret;
+  const functionArgument: ESTree.Expression = fd.generator
+    ? { ...fd, type: "FunctionExpression" }
+    : toArrowFunction(fd);
+
   const wrapped: ESTree.BlockStatement = {
     type: "BlockStatement",
     body: [
-      // Statement: global.AppMapRecordHook(function f(...) {...}, __appmapFunctionRegistry[i]);
-      ret(
+      // Pass the function as an arrow function expression beacuse of a potential super keyword inside:
+      //    return global.AppMapRecordHook(this|undefined, (...) => {...}, arguments, __appmapFunctionRegistry[i])
+      // If it's a generator function then pass it as a generator function and yield* the result:
+      //    yield* global.AppMapRecordHook(this|undefined, function* f() {...}, arguments, __appmapFunctionRegistry[i])
+      statement(
         call_(
           member(...["global", "AppMapRecordHook", "call"].map(identifier)),
           thisIsUndefined ? identifier("undefined") : this_,
-          toArrowFunction(fd),
+          functionArgument,
           args_,
           member(
             __appmapFunctionRegistryIdentifier,

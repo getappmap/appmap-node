@@ -71,5 +71,12 @@ export function ret(argument: ESTree.Expression | null = null): ESTree.ReturnSta
   };
 }
 
+export function yieldStar(argument: ESTree.Expression | null = null): ESTree.ExpressionStatement {
+  return {
+    type: "ExpressionStatement",
+    expression: { type: "YieldExpression", delegate: true, argument },
+  };
+}
+
 export const args = identifier("arguments");
 export const this_: ESTree.ThisExpression = { type: "ThisExpression" };

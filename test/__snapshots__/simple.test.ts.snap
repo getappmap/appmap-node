@@ -333,6 +333,75 @@ exports[`mapping an mjs script 1`] = `
 }
 `;
 
+exports[`mapping generator functions 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "./generator.js:1",
+              "name": "f1",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "generator",
+          "type": "class",
+        },
+      ],
+      "name": "generator",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 1,
+      "lineno": 1,
+      "method_id": "f1",
+      "parameters": [],
+      "path": "./generator.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "return_value": {
+        "class": "",
+        "object_id": 1,
+        "value": "Object [Generator] {}",
+      },
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "appmap-node",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
+
 exports[`mapping js class methods and constructors containing super keyword 1`] = `
 {
   "classMap": [
