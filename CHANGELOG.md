@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/getappmap/appmap-node/compare/v2.5.1...v2.6.0) (2023-11-28)
+
+
+### Features
+
+* Support for MySQL ([6edcfd8](https://github.com/getappmap/appmap-node/commit/6edcfd8c7b79e743c9f4e5747a38d7e1b308a85f))
+
 ## [2.5.1](https://github.com/getappmap/appmap-node/compare/v2.5.0...v2.5.1) (2023-11-28)
 
 
