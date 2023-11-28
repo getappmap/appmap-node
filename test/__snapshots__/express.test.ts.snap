@@ -39,9 +39,9 @@ exports[`mapping Express.js requests 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "content-type": "application/json",
-          "host": "localhost:27627",
-          "transfer-encoding": "chunked",
+          "Content-Type": "application/json",
+          "Host": "localhost:27627",
+          "Transfer-Encoding": "chunked",
         },
         "normalized_path_info": "/api/:ident",
         "path_info": "/api/bar",
@@ -109,7 +109,7 @@ exports[`mapping Express.js requests 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "host": "localhost:27627",
+          "Host": "localhost:27627",
         },
         "normalized_path_info": "/api/:ident",
         "path_info": "/api/foo",
@@ -142,7 +142,7 @@ exports[`mapping Express.js requests 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "host": "localhost:27627",
+          "Host": "localhost:27627",
         },
         "path_info": "/",
         "protocol": "HTTP/1.1",
@@ -191,10 +191,10 @@ exports[`mapping Express.js requests 1`] = `
       "event": "return",
       "http_server_response": {
         "headers": {
-          "content-length": "12",
-          "content-type": "text/html; charset=utf-8",
-          "etag": "W/"c-Lve95gjOVATpfV8EL5X4nxwjKHE"",
-          "x-powered-by": "Express",
+          "Content-Length": "12",
+          "Content-Type": "text/html; charset=utf-8",
+          "Etag": "W/"c-Lve95gjOVATpfV8EL5X4nxwjKHE"",
+          "X-Powered-By": "Express",
         },
         "status_code": 200,
       },
@@ -206,7 +206,7 @@ exports[`mapping Express.js requests 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "host": "localhost:27627",
+          "Host": "localhost:27627",
         },
         "path_info": "/nonexistent",
         "protocol": "HTTP/1.1",
@@ -220,11 +220,11 @@ exports[`mapping Express.js requests 1`] = `
       "event": "return",
       "http_server_response": {
         "headers": {
-          "content-length": "150",
-          "content-security-policy": "default-src 'none'",
-          "content-type": "text/html; charset=utf-8",
-          "x-content-type-options": "nosniff",
-          "x-powered-by": "Express",
+          "Content-Length": "150",
+          "Content-Security-Policy": "default-src 'none'",
+          "Content-Type": "text/html; charset=utf-8",
+          "X-Content-Type-Options": "nosniff",
+          "X-Powered-By": "Express",
         },
         "status_code": 404,
       },
@@ -236,7 +236,7 @@ exports[`mapping Express.js requests 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "host": "localhost:27627",
+          "Host": "localhost:27627",
         },
         "path_info": "/api/foo",
         "protocol": "HTTP/1.1",
@@ -316,10 +316,10 @@ exports[`mapping Express.js requests 1`] = `
       "event": "return",
       "http_server_response": {
         "headers": {
-          "content-length": "42",
-          "content-type": "application/json; charset=utf-8",
-          "etag": "W/"2a-YHNH/nKM8UUG4pNEEtm91sktuKc"",
-          "x-powered-by": "Express",
+          "Content-Length": "42",
+          "Content-Type": "application/json; charset=utf-8",
+          "Etag": "W/"2a-YHNH/nKM8UUG4pNEEtm91sktuKc"",
+          "X-Powered-By": "Express",
         },
         "status_code": 200,
       },
@@ -331,9 +331,9 @@ exports[`mapping Express.js requests 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "content-type": "application/json",
-          "host": "localhost:27627",
-          "transfer-encoding": "chunked",
+          "Content-Type": "application/json",
+          "Host": "localhost:27627",
+          "Transfer-Encoding": "chunked",
         },
         "path_info": "/api/bar",
         "protocol": "HTTP/1.1",
@@ -467,10 +467,10 @@ exports[`mapping Express.js requests 1`] = `
       "event": "return",
       "http_server_response": {
         "headers": {
-          "content-length": "99",
-          "content-type": "application/json; charset=utf-8",
-          "etag": "W/"63-avsgRi3I+MK54okDiWb1V4/K3j8"",
-          "x-powered-by": "Express",
+          "Content-Length": "99",
+          "Content-Type": "application/json; charset=utf-8",
+          "Etag": "W/"63-avsgRi3I+MK54okDiWb1V4/K3j8"",
+          "X-Powered-By": "Express",
         },
         "status_code": 200,
       },

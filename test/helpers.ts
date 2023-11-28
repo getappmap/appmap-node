@@ -83,10 +83,10 @@ function fixEvent(event: unknown) {
     "headers" in event.http_server_request &&
     typeof event.http_server_request.headers === "object" &&
     event.http_server_request.headers &&
-    "connection" in event.http_server_request.headers
+    "Connection" in event.http_server_request.headers
   )
     // the default of this varies between node versions
-    delete event.http_server_request.headers.connection;
+    delete event.http_server_request.headers.Connection;
 
   if (
     "http_client_response" in event &&
@@ -96,12 +96,12 @@ function fixEvent(event: unknown) {
     typeof event.http_client_response.headers === "object" &&
     event.http_client_response.headers
   ) {
-    if ("date" in event.http_client_response.headers)
-      delete event.http_client_response.headers.date;
-    if ("connection" in event.http_client_response.headers)
-      delete event.http_client_response.headers.connection;
-    if ("keep-alive" in event.http_client_response.headers)
-      delete event.http_client_response.headers["keep-alive"];
+    if ("Date" in event.http_client_response.headers)
+      delete event.http_client_response.headers.Date;
+    if ("Connection" in event.http_client_response.headers)
+      delete event.http_client_response.headers.Connection;
+    if ("Keep-Alive" in event.http_client_response.headers)
+      delete event.http_client_response.headers["Keep-Alive"];
   }
   if ("elapsed" in event && typeof event.elapsed === "number") event.elapsed = 31.337;
 }
