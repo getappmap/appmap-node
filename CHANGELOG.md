@@ -1,3 +1,10 @@
+## [2.5.1](https://github.com/getappmap/appmap-node/compare/v2.5.0...v2.5.1) (2023-11-28)
+
+
+### Bug Fixes
+
+* Support generator functions and skip generator methods ([37c755e](https://github.com/getappmap/appmap-node/commit/37c755e252b1eb40dd74baceac1dfbea5111f594))
+
 # [2.5.0](https://github.com/getappmap/appmap-node/compare/v2.4.0...v2.5.0) (2023-11-25)
 
 
