@@ -156,10 +156,13 @@ function normalizeHeaders(
 ): Record<string, string> | undefined {
   const result: Record<string, string> = {};
 
-  for (const [k, v] of Object.entries(headers))
+  for (const [k, v] of Object.entries(headers)) {
     if (v === undefined) continue;
-    else if (v instanceof Array) result[k] = v.join("\n");
-    else result[k] = String(v);
+
+    const key = k.split("-").map(capitalize).join("-");
+    if (v instanceof Array) result[key] = v.join("\n");
+    else result[key] = String(v);
+  }
 
   return result;
 }
@@ -175,4 +178,8 @@ function handleResponse(
     response.statusCode,
     normalizeHeaders(response.getHeaders()),
   );
+}
+
+function capitalize(str: string): string {
+  return str[0].toUpperCase() + str.slice(1).toLowerCase();
 }

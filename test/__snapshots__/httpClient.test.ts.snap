@@ -64,8 +64,8 @@ exports[`mapping http client requests 1`] = `
       "event": "call",
       "http_client_request": {
         "headers": {
-          "host": "localhost:27628",
-          "test-header": "This test header is added after ClientRequest creation",
+          "Host": "localhost:27628",
+          "Test-Header": "This test header is added after ClientRequest creation",
         },
         "request_method": "GET",
         "url": "http://localhost:27628/endpoint/one",
@@ -78,7 +78,7 @@ exports[`mapping http client requests 1`] = `
       "event": "return",
       "http_client_response": {
         "headers": {
-          "transfer-encoding": "chunked",
+          "Transfer-Encoding": "chunked",
         },
         "status_code": 200,
       },
@@ -90,8 +90,8 @@ exports[`mapping http client requests 1`] = `
       "event": "call",
       "http_client_request": {
         "headers": {
-          "content-type": "application/json",
-          "host": "localhost:27628",
+          "Content-Type": "application/json",
+          "Host": "localhost:27628",
         },
         "request_method": "POST",
         "url": "http://localhost:27628/endpoint/two",
@@ -104,8 +104,8 @@ exports[`mapping http client requests 1`] = `
       "event": "return",
       "http_client_response": {
         "headers": {
-          "content-type": "text/html",
-          "transfer-encoding": "chunked",
+          "Content-Type": "text/html",
+          "Transfer-Encoding": "chunked",
         },
         "status_code": 404,
       },
@@ -117,7 +117,7 @@ exports[`mapping http client requests 1`] = `
       "event": "call",
       "http_client_request": {
         "headers": {
-          "host": "localhost:27628",
+          "Host": "localhost:27628",
         },
         "request_method": "GET",
         "url": "http://localhost:27628/endpoint/three",
@@ -130,8 +130,8 @@ exports[`mapping http client requests 1`] = `
       "event": "return",
       "http_client_response": {
         "headers": {
-          "content-type": "text/html",
-          "transfer-encoding": "chunked",
+          "Content-Type": "text/html",
+          "Transfer-Encoding": "chunked",
         },
         "status_code": 404,
       },
