@@ -54,6 +54,20 @@ function hookClientRequestApi(mod: HTTP) {
 
 const clientRequests = new WeakSet<http.ClientRequest>();
 
+function hasProtocolHostPath(
+  obj: unknown,
+): obj is { protocol: string; host: string; path?: string } {
+  return (
+    obj != undefined &&
+    typeof obj === "object" &&
+    "protocol" in obj &&
+    typeof obj.protocol === "string" &&
+    "host" in obj &&
+    typeof obj.host === "string" &&
+    "path" in obj
+  );
+}
+
 function handleClientRequest(request: http.ClientRequest) {
   // for some reason proxy construct/apply is called multiple times for the same request
   // so let's make sure we haven't seen this one before
@@ -62,13 +76,32 @@ function handleClientRequest(request: http.ClientRequest) {
 
   const startTime = getTime();
   request.on("finish", () => {
-    const url = new URL(`${request.protocol}//${request.host}${request.path}`);
-    // Setting port to the default port for the protocol makes it empty string.
-    // See: https://nodejs.org/api/url.html#urlport
-    url.port = request.socket?.remotePort + "";
+    // If the http module is mocked with nock library then reqest is an OverridenClientRequest
+    // and it does not have protocol and host properties, instead they are in
+    // request.options object.
+    let urlParts;
+    const requestLike: unknown = request;
+    if (hasProtocolHostPath(requestLike)) urlParts = requestLike;
+    else if (
+      requestLike &&
+      typeof requestLike === "object" &&
+      "options" in requestLike &&
+      hasProtocolHostPath(requestLike.options)
+    )
+      urlParts = requestLike.options;
+
+    let urlString = "unknown";
+    if (urlParts) {
+      const url = new URL(`${urlParts.protocol}//${urlParts.host}${urlParts.path}`);
+      // Setting port to the default port for the protocol makes it empty string.
+      // See: https://nodejs.org/api/url.html#urlport
+      url.port = request.socket?.remotePort + "";
+      urlString = `${url.protocol}//${url.host}${url.pathname}`;
+    }
+
     const clientRequestEvent = recording.httpClientRequest(
       request.method,
-      `${url.protocol}//${url.host}${url.pathname}`,
+      urlString,
       normalizeHeaders(request.getHeaders()),
     );
 
