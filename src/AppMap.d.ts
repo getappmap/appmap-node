@@ -190,7 +190,7 @@ namespace AppMap {
   export type Event = CallEvent | ReturnEvent;
 
   export interface AppMap {
-    version: "1.12";
+    version: string;
     metadata?: Metadata;
     classMap: ClassMap;
     events?: Event[];

@@ -1,0 +1,8 @@
+{
+  "name": "http-client-appmap-node-test",
+  "packageManager": "yarn@3.6.3",
+  "private": true,
+  "dependencies": {
+    "nock": "^13.4.0"
+  }
+}

@@ -8,7 +8,7 @@ exports[`mapping http client requests 1`] = `
         {
           "children": [
             {
-              "location": "./index.ts:18",
+              "location": "./index.ts:19",
               "name": "makeRequests",
               "static": true,
               "type": "function",
@@ -41,7 +41,7 @@ exports[`mapping http client requests 1`] = `
       "defined_class": "",
       "event": "call",
       "id": 1,
-      "lineno": 18,
+      "lineno": 19,
       "method_id": "makeRequests",
       "parameters": [],
       "path": "./index.ts",
@@ -141,7 +141,185 @@ exports[`mapping http client requests 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "http-client-appmap-node-test",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
+
+exports[`mapping mocked http client requests 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "./index.ts:19",
+              "name": "makeRequests",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "./index.ts:39",
+              "name": "mock",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "index",
+          "type": "class",
+        },
+      ],
+      "name": "index",
+      "type": "package",
+    },
+  ],
+  "eventUpdates": {
+    "4": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 3,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 1,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+  },
+  "events": [
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 1,
+      "lineno": 39,
+      "method_id": "mock",
+      "parameters": [],
+      "path": "./index.ts",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 3,
+      "lineno": 19,
+      "method_id": "makeRequests",
+      "parameters": [],
+      "path": "./index.ts",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 3,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 1,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "http_client_request": {
+        "headers": {
+          "Host": "localhost:27628",
+          "Test-Header": "This test header is added after ClientRequest creation",
+        },
+        "url": "http://localhost:27628/endpoint/one",
+      },
+      "id": 5,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_client_response": {
+        "headers": {},
+        "status_code": 200,
+      },
+      "id": 6,
+      "parent_id": 5,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "http_client_request": {
+        "headers": {
+          "Content-Type": "application/json",
+          "Host": "localhost:27628",
+        },
+        "request_method": "POST",
+        "url": "http://localhost:27628/endpoint/two",
+      },
+      "id": 7,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_client_response": {
+        "headers": {},
+        "status_code": 200,
+      },
+      "id": 8,
+      "parent_id": 7,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "http_client_request": {
+        "headers": {
+          "Host": "localhost:27628",
+        },
+        "url": "http://localhost:27628/endpoint/three",
+      },
+      "id": 9,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_client_response": {
+        "headers": {
+          "Content-Type": "text/html",
+        },
+        "status_code": 404,
+      },
+      "id": 10,
+      "parent_id": 9,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "http-client-appmap-node-test",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",

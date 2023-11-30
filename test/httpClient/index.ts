@@ -1,4 +1,5 @@
 import http, { ClientRequest } from "node:http";
+import nock from "nock";
 
 export const SERVER_PORT = 27628;
 export const TEST_HEADER_VALUE = "This test header is added after ClientRequest creation";
@@ -33,6 +34,17 @@ async function makeRequests() {
 
   const r3 = http.get(`http://localhost:${SERVER_PORT}/endpoint/three`);
   await consume(r3);
+}
+
+function mock() {
+  const n = nock(`http://localhost:${SERVER_PORT}`);
+  n.get("/endpoint/one").reply(200, "Hello World!");
+  n.post("/endpoint/two?p1=v1&p2=v2").reply(200, "Hello World!");
+  n.get("/endpoint/three").reply(404, undefined, { "Content-Type": "text/html" });
+}
+
+if (process.argv.includes("--mock")) {
+  mock();
 }
 
 void makeRequests();

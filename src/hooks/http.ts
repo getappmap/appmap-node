@@ -62,7 +62,7 @@ function handleClientRequest(request: http.ClientRequest) {
 
   const startTime = getTime();
   request.on("finish", () => {
-    const url = new URL(`${request.protocol}//${request.host}${request.path}`);
+    const url = extractRequestURL(request);
     // Setting port to the default port for the protocol makes it empty string.
     // See: https://nodejs.org/api/url.html#urlport
     url.port = request.socket?.remotePort + "";
@@ -76,6 +76,17 @@ function handleClientRequest(request: http.ClientRequest) {
       response.once("end", () => handleClientResponse(clientRequestEvent, startTime, response));
     });
   });
+}
+
+function extractRequestURL(request: ClientRequest): URL {
+  let { protocol, host } = request;
+  /* nock OverridenClientRequest stores protocol and host on options instead */
+  if ("options" in request && request.options && typeof request.options === "object") {
+    protocol = getStringField(request.options, "protocol") ?? protocol;
+    host = getStringField(request.options, "host") ?? host;
+  }
+
+  return new URL(`${protocol}//${host}${request.path}`);
 }
 
 function handleClientResponse(
@@ -134,6 +145,11 @@ function getNormalizedPath(req: http.IncomingMessage) {
     if (typeof route === "object" && route && "path" in route && typeof route.path === "string")
       return route.path;
   }
+}
+
+function getStringField(obj: object, field: string): string | undefined {
+  const v = getField(obj, field);
+  if (v && typeof v === "string") return v;
 }
 
 function getField(obj: object, field: string): unknown {

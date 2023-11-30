@@ -4898,6 +4898,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"http-client-appmap-node-test@workspace:test/httpClient":
+  version: 0.0.0-use.local
+  resolution: "http-client-appmap-node-test@workspace:test/httpClient"
+  dependencies:
+    nock: ^13.4.0
+  languageName: unknown
+  linkType: soft
+
 "http-errors@npm:2.0.0":
   version: 2.0.0
   resolution: "http-errors@npm:2.0.0"
@@ -6915,6 +6923,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nock@npm:^13.4.0":
+  version: 13.4.0
+  resolution: "nock@npm:13.4.0"
+  dependencies:
+    debug: ^4.1.0
+    json-stringify-safe: ^5.0.1
+    propagate: ^2.0.0
+  checksum: 30c3751854f9c412df5f99e01eeaef25b2583d3cae80b8c46524acb39d8b7fa61043603472ad94a3adc4b7d1e0f3098e6bb06e787734cbfbde2751891115b311
+  languageName: node
+  linkType: hard
+
 "node-addon-api@npm:^4.2.0":
   version: 4.3.0
   resolution: "node-addon-api@npm:4.3.0"
@@ -8068,6 +8087,13 @@ __metadata:
   dependencies:
     read: ^2.0.0
   checksum: c06948827171612faae321ebaf23ff8bd9ebb3e1e0f37616990bc4b81c663b192e447b3fe3b424211beb0062cec0cfe6ba3ce70c8b448b4aa59752b765dbb302
+  languageName: node
+  linkType: hard
+
+"propagate@npm:^2.0.0":
+  version: 2.0.1
+  resolution: "propagate@npm:2.0.1"
+  checksum: c4febaee2be0979e82fb6b3727878fd122a98d64a7fa3c9d09b0576751b88514a9e9275b1b92e76b364d488f508e223bd7e1dcdc616be4cdda876072fbc2a96c
   languageName: node
   linkType: hard
 

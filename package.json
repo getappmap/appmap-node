@@ -72,6 +72,7 @@
   },
   "workspaces": [
     "test/express",
+    "test/httpClient",
     "test/jest",
     "test/mocha",
     "test/vitest",

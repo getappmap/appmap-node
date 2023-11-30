@@ -43,7 +43,7 @@ export function integrationTest(name: string, fn?: jest.ProvidesCallback, timeou
 
 type AppMap = object & Record<"events", unknown>;
 
-export function readAppmap(path?: string): AppMap {
+export function readAppmap(path?: string): AppMap.AppMap {
   if (!path) {
     const files = globSync(resolve(target, "tmp/**/*.appmap.json"));
     expect(files.length).toBe(1);
@@ -54,18 +54,20 @@ export function readAppmap(path?: string): AppMap {
   assert(typeof result === "object" && result && "events" in result);
   assert(result.events instanceof Array);
   result.events.forEach(fixEvent);
-  if ("classMap" in result && result.classMap instanceof Array) fixClassMap(result.classMap);
+  assert("classMap" in result && result.classMap instanceof Array);
+  assert("version" in result && typeof result.version === "string");
+  fixClassMap(result.classMap);
   if ("metadata" in result && typeof result.metadata === "object" && result.metadata)
     fixMetadata(result.metadata as AppMap.Metadata);
   if ("eventUpdates" in result && typeof result.eventUpdates === "object" && result.eventUpdates)
     Object.values(result.eventUpdates).forEach(fixEvent);
 
-  return result;
+  return result as AppMap.AppMap;
 }
 
-export function readAppmaps(): Record<string, AppMap> {
+export function readAppmaps(): Record<string, AppMap.AppMap> {
   const files = globSync(resolve(target, "tmp/**/*.appmap.json"));
-  const maps = files.map<[string, AppMap]>((path) => [fixPath(path), readAppmap(path)]);
+  const maps = files.map<[string, AppMap.AppMap]>((path) => [fixPath(path), readAppmap(path)]);
   return Object.fromEntries(maps);
 }
 
