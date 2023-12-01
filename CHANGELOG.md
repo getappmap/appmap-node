@@ -1,3 +1,11 @@
+## [2.6.1](https://github.com/getappmap/appmap-node/compare/v2.6.0...v2.6.1) (2023-12-01)
+
+
+### Bug Fixes
+
+* Correct capitalisation of HTTP headers ([4052dea](https://github.com/getappmap/appmap-node/commit/4052deaae0fc9645ad8876b81e08f027799bab2a))
+* Handle HTTP requests intercepted by nock ([982f4b1](https://github.com/getappmap/appmap-node/commit/982f4b1e77bbe6d8f9eb3d2ef56f24d6a0ce8c43)), closes [#47](https://github.com/getappmap/appmap-node/issues/47)
+
 # [2.6.0](https://github.com/getappmap/appmap-node/compare/v2.5.1...v2.6.0) (2023-11-28)
 
 
