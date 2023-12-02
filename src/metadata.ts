@@ -27,6 +27,8 @@ export const defaultMetadata: Partial<AppMap.Metadata> & { client: AppMap.Client
   app: appName,
 };
 
-export function exceptionMetadata(exc: unknown): AppMap.ExceptionMetadata | undefined {
-  return pick(examineException(exc)[0], "class", "message");
+export function exceptionMetadata(error: unknown): AppMap.ExceptionMetadata | undefined {
+  const [exc] = examineException(error);
+  if (exc) return pick(exc, "class", "message");
+  if (typeof error === "string") return { message: error, class: "String" };
 }
