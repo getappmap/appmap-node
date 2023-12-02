@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/getappmap/appmap-node/compare/v2.6.1...v2.7.0) (2023-12-02)
+
+
+### Features
+
+* Request recordings ([16c78e7](https://github.com/getappmap/appmap-node/commit/16c78e7246f62ddce67d9cc8398e52180c4643c7)), closes [#38](https://github.com/getappmap/appmap-node/issues/38)
+
 ## [2.6.1](https://github.com/getappmap/appmap-node/compare/v2.6.0...v2.6.1) (2023-12-01)
 
 
