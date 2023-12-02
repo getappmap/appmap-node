@@ -9,7 +9,7 @@ exports[`mapping Jest tests 1`] = `
           {
             "children": [
               {
-                "location": "test.js:17",
+                "location": "test.js:18",
                 "name": "errorOut",
                 "static": true,
                 "type": "function",
@@ -28,7 +28,7 @@ exports[`mapping Jest tests 1`] = `
         "defined_class": "",
         "event": "call",
         "id": 1,
-        "lineno": 17,
+        "lineno": 18,
         "method_id": "errorOut",
         "parameters": [],
         "path": "test.js",
@@ -67,6 +67,84 @@ exports[`mapping Jest tests 1`] = `
         "version": "test node version",
       },
       "name": "exception handling intentionally throws",
+      "recorder": {
+        "name": "jest",
+        "type": "tests",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/jest/exception handling/times out.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "test.js:22",
+                "name": "wait",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "test",
+            "type": "class",
+          },
+        ],
+        "name": "test",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "",
+        "event": "call",
+        "id": 1,
+        "lineno": 22,
+        "method_id": "wait",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "ms",
+            "value": "20",
+          },
+        ],
+        "path": "test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Promise",
+          "object_id": 3,
+          "value": "Promise { <pending> }",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "jest-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "String",
+        "message": "Exceeded timeout of 10 ms for a test.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling times out",
       "recorder": {
         "name": "jest",
         "type": "tests",

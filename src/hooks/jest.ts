@@ -5,7 +5,6 @@ import { simple as walk } from "acorn-walk";
 import type { ESTree } from "meriyah";
 
 import { expressionFor, wrap } from ".";
-import AppMap from "../AppMap";
 import Recording from "../Recording";
 import { call_, identifier } from "../generate";
 import { info } from "../message";
@@ -53,7 +52,7 @@ function eventHandler(event: Circus.Event) {
       break;
     case "test_fn_failure":
       recording.metadata.test_status = "failed";
-      recording.metadata.exception = extractTestError(event.test.errors);
+      recording.metadata.exception = exceptionMetadata(event.error);
       return recording.finish();
     case "test_fn_success":
       recording.metadata.test_status = "succeeded";
@@ -79,9 +78,4 @@ function testNames(test: Circus.TestEntry): string[] {
 function createRecording(test: Circus.TestEntry): Recording {
   const recording = new Recording("tests", "jest", ...testNames(test));
   return recording;
-}
-
-function extractTestError([error]: Circus.TestError[]): AppMap.ExceptionMetadata | undefined {
-  const exc = (Array.isArray(error) ? error[0] : error) as unknown;
-  if (exc) return exceptionMetadata(exc);
 }
