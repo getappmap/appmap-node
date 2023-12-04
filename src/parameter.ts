@@ -2,6 +2,7 @@ import { IncomingMessage, ServerResponse } from "node:http";
 import { format, inspect, isDeepStrictEqual } from "node:util";
 
 import type AppMap from "./AppMap";
+import { pauseRecorder, resumeRecorder } from "./recorderPause";
 import compactObject from "./util/compactObject";
 
 export function parameter(value: unknown): AppMap.Parameter {
@@ -23,8 +24,11 @@ export function stringify(value: unknown): string {
       "[ServerResponse: %s]",
       [value.statusCode, value.statusMessage].filter(Boolean).join(" "),
     );
-
-  return inspect(value, { depth: 1 });
+  // Pause recorder to prevent potential recursive calls by inspect()
+  pauseRecorder();
+  const result = inspect(value, { depth: 1 });
+  resumeRecorder();
+  return result;
 }
 
 export function optParameter(value: unknown): AppMap.Parameter | undefined {
