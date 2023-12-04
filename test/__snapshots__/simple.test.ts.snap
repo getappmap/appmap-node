@@ -64,6 +64,75 @@ exports[`forwarding signals to the child 1`] = `
 }
 `;
 
+exports[`mapping a custom Error class with a message property 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "./inspect.js:5",
+              "name": "f",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "inspect",
+          "type": "class",
+        },
+      ],
+      "name": "inspect",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 1,
+      "lineno": 5,
+      "method_id": "f",
+      "parameters": [],
+      "path": "./inspect.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "return_value": {
+        "class": "InspectError",
+        "object_id": 1,
+        "value": "[InspectError: Inspect Error]",
+      },
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "appmap-node",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
+
 exports[`mapping a simple script 1`] = `
 {
   "classMap": [

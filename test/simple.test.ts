@@ -32,3 +32,8 @@ integrationTest("mapping generator functions", () => {
   expect(runAppmapNode("generator.js").status).toBe(0);
   expect(readAppmap()).toMatchSnapshot();
 });
+
+integrationTest("mapping a custom Error class with a message property", () => {
+  expect(runAppmapNode("inspect.js").status).toBe(0);
+  expect(readAppmap()).toMatchSnapshot();
+});
