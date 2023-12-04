@@ -2,6 +2,7 @@
 import AppMap from "../AppMap";
 import { createTestFn } from "./helpers";
 import * as recorder from "../recorder";
+import { pauseRecorder, resumeRecorder } from "../recorderPause";
 import Recording from "../Recording";
 
 describe(recorder.record, () => {
@@ -28,6 +29,22 @@ describe(recorder.record, () => {
     recorder.record.call(global, fn, [], createTestFn("getThis"));
     const [[call]] = jest.mocked(Recording.prototype.functionCall).mock.calls;
     expect(call).not.toHaveProperty("this_");
+  });
+
+  it("pauses and resumes recorder", () => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    const f = () => {};
+    const fInfo = createTestFn("testFun", "param0", "param1");
+
+    pauseRecorder();
+
+    recorder.record.call("this", f, ["arg1", "arg2"], fInfo);
+    expect(Recording.prototype.functionCall).toBeCalledTimes(0);
+
+    resumeRecorder();
+
+    recorder.record.call("this", f, ["arg1", "arg2"], fInfo);
+    expect(Recording.prototype.functionCall).toBeCalledTimes(1);
   });
 });
 
