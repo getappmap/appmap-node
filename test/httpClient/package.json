@@ -3,6 +3,7 @@
   "packageManager": "yarn@3.6.3",
   "private": true,
   "dependencies": {
+    "jest": "^29.6.2",
     "nock": "^13.4.0"
   }
 }

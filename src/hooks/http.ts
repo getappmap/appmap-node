@@ -6,7 +6,7 @@ import { URL } from "node:url";
 
 import type AppMap from "../AppMap";
 import Recording from "../Recording";
-import { info } from "../message";
+import { info, warn } from "../message";
 import { parameter } from "../parameter";
 import { recording, start } from "../recorder";
 import { getTime } from "../util/getTime";
@@ -56,6 +56,9 @@ function hookClientRequestApi(mod: HTTP) {
 
 const clientRequests = new WeakSet<http.ClientRequest>();
 
+const warnRecordingNotRunning = (url: URL) =>
+  warn("appmap recording is not running, skipping recording of request %s", url.href);
+
 function handleClientRequest(request: http.ClientRequest) {
   // for some reason proxy construct/apply is called multiple times for the same request
   // so let's make sure we haven't seen this one before
@@ -65,6 +68,12 @@ function handleClientRequest(request: http.ClientRequest) {
   const startTime = getTime();
   request.on("finish", () => {
     const url = extractRequestURL(request);
+    // recording may have finished at this point
+    if (!recording.running) {
+      warnRecordingNotRunning(url);
+      return;
+    }
+
     // Setting port to the default port for the protocol makes it empty string.
     // See: https://nodejs.org/api/url.html#urlport
     url.port = request.socket?.remotePort + "";
@@ -75,7 +84,14 @@ function handleClientRequest(request: http.ClientRequest) {
     );
 
     request.on("response", (response) => {
-      response.once("end", () => handleClientResponse(clientRequestEvent, startTime, response));
+      response.once("end", () => {
+        if (!recording.running) {
+          warnRecordingNotRunning(url);
+          return;
+        }
+
+        handleClientResponse(clientRequestEvent, startTime, response);
+      });
     });
   });
 }
