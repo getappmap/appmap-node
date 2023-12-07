@@ -1,5 +1,70 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`mapping a Jest test 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "test.js:4",
+              "name": "mock",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "test",
+          "type": "class",
+        },
+      ],
+      "name": "test",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 1,
+      "lineno": 4,
+      "method_id": "mock",
+      "parameters": [],
+      "path": "test.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "http-client-appmap-node-test",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "jest recording finished is checked in request finish callback",
+    "recorder": {
+      "name": "jest",
+      "type": "tests",
+    },
+    "test_status": "succeeded",
+  },
+  "version": "1.12",
+}
+`;
+
 exports[`mapping http client requests 1`] = `
 {
   "classMap": [

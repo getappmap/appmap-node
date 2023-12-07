@@ -4902,6 +4902,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "http-client-appmap-node-test@workspace:test/httpClient"
   dependencies:
+    jest: ^29.6.2
     nock: ^13.4.0
   languageName: unknown
   linkType: soft
