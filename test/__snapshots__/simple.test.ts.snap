@@ -1,5 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`finish signal is handled 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "./server.mjs:1",
+              "name": "start",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "server",
+          "type": "class",
+        },
+      ],
+      "name": "server",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "defined_class": "",
+      "event": "call",
+      "id": 1,
+      "lineno": 1,
+      "method_id": "start",
+      "parameters": [],
+      "path": "./server.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "appmap-node",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
+
 exports[`forwarding signals to the child 1`] = `
 {
   "classMap": [

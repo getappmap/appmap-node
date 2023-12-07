@@ -74,9 +74,31 @@ export function start(
 
 start();
 
-process.on("exit", () => {
+function finishRecording() {
   recording.finish();
   if (writtenAppMaps.length === 1) info("Wrote %s", writtenAppMaps[0]);
   else if (writtenAppMaps.length > 1)
     info("Wrote %d AppMaps to %s", writtenAppMaps.length, commonPathPrefix(writtenAppMaps));
-});
+}
+
+process.on("exit", finishRecording);
+
+const finishSignals: NodeJS.Signals[] = ["SIGINT", "SIGTERM"];
+finishSignals.forEach(registerFinishSignalHandler);
+
+function registerFinishSignalHandler(signal: NodeJS.Signals) {
+  // Don't register ours if there are handlers already
+  if (process.listeners(signal).length > 0) return;
+
+  const handler = () => {
+    finishRecording();
+    process.kill(process.pid, signal);
+  };
+
+  process.once(signal, handler);
+
+  process.on("newListener", (eventName) => {
+    // Remove our handler if any other gets installed
+    if (eventName == signal) setImmediate(() => process.off(signal, handler));
+  });
+}
