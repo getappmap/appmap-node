@@ -18,9 +18,10 @@ Currently there is no configurability.
 ## Limitations
 
 This is an experimetal rewrite of the original appmap-agent-js. It's still in active
-development, not ready for production use,  and the feature set is currently limited.
+development, not ready for production use, and the feature set is currently limited.
 
 - Node 18+ supported.
 - Instruments all the files under current directory that aren't node_modules.
 - Only captures named `function`s and methods.
 - Remote recording not supported yet.
+- Http server capture works with node:http, express.js and nest.js (with express.js only).
