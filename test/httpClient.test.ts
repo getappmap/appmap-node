@@ -33,3 +33,8 @@ integrationTest("mapping mocked http client requests", () => {
   expect(JSON.stringify(appMap.events)).toContain(TEST_HEADER_VALUE);
   expect(appMap).toMatchSnapshot();
 });
+
+integrationTest("mapping a Jest test", () => {
+  expect(runAppmapNode("yarn", "jest").status).toBe(0);
+  expect(readAppmap()).toMatchSnapshot();
+});
