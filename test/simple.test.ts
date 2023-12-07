@@ -37,3 +37,14 @@ integrationTest("mapping a custom Error class with a message property", () => {
   expect(runAppmapNode("inspect.js").status).toBe(0);
   expect(readAppmap()).toMatchSnapshot();
 });
+
+integrationTest("finish signal is handled", async () => {
+  const server = spawnAppmapNode("server.mjs");
+  await new Promise<void>((r) =>
+    server.stdout.on("data", (chunk: Buffer) => chunk.toString().includes("starting") && r()),
+  );
+  server.kill("SIGINT");
+  await new Promise((r) => server.once("exit", r));
+
+  expect(readAppmap()).toMatchSnapshot();
+});
