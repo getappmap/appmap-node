@@ -9,6 +9,7 @@ import {
   identifier,
   toArrowFunction,
   this_,
+  memberId,
 } from "../generate";
 
 type Hook<This, Args extends unknown[], Return, Data extends unknown[]> = (
@@ -43,7 +44,7 @@ export function wrap<This, Args extends unknown[], Return, Data extends LiteralV
   };
 }
 
-const globalAppMap = member(...["global", "AppMap"].map(identifier));
+const globalAppMap = memberId("global", "AppMap");
 
 export function expressionFor(obj: unknown): ESTree.Expression {
   return member(globalAppMap, literal(indexFor(obj)));

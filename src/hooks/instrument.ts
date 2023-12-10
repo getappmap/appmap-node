@@ -13,6 +13,7 @@ import {
   identifier,
   literal,
   member,
+  memberId,
   ret,
   this_,
   toArrowFunction,
@@ -130,7 +131,7 @@ function wrapWithRecord(
       //    yield* global.AppMapRecordHook(this|undefined, function* f() {...}, arguments, __appmapFunctionRegistry[i])
       statement(
         call_(
-          member(...["global", "AppMapRecordHook", "call"].map(identifier)),
+          memberId("global", "AppMapRecordHook", "call"),
           thisIsUndefined ? identifier("undefined") : this_,
           functionArgument,
           args_,

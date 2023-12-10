@@ -6,7 +6,16 @@ import { simple as walk } from "acorn-walk";
 import { type ESTree } from "meriyah";
 
 import Recording from "../Recording";
-import { args as args_, assignment, call_, identifier, literal, member, ret } from "../generate";
+import {
+  args as args_,
+  assignment,
+  call_,
+  identifier,
+  literal,
+  member,
+  memberId,
+  ret,
+} from "../generate";
 import { info, warn } from "../message";
 import { recording, start } from "../recorder";
 import genericTransform from "../transform";
@@ -135,17 +144,14 @@ export function transformCode(code: string, path: string): string {
 // Patches …/vite-node/dist/client.mjs ViteNodeRunner.runModule
 function patchRunModule(md: ESTree.MethodDefinition) {
   // Statement: transformed = await import(".../vitest.js").transformCode(transformed, context.__filename)
-  const transformCodeStatement: ESTree.ExpressionStatement = {
-    type: "ExpressionStatement",
-    expression: assignment(
+  const transformCodeStatement = assignment(
+    identifier("transformed"),
+    call_(
+      member(awaitImport(__filename), identifier(transformCode.name)),
       identifier("transformed"),
-      call_(
-        member(awaitImport(__filename), identifier(transformCode.name)),
-        identifier("transformed"),
-        member(...["context", "__filename"].map(identifier)),
-      ),
+      memberId("context", "__filename"),
     ),
-  };
+  );
 
   assert(md.value.body);
   md.value.body.body.unshift(transformCodeStatement);

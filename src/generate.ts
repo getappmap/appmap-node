@@ -16,12 +16,15 @@ export function assignment(
   left: ESTree.Expression,
   right: ESTree.Expression,
   operator = "=",
-): ESTree.AssignmentExpression {
+): ESTree.ExpressionStatement {
   return {
-    type: "AssignmentExpression",
-    left,
-    operator,
-    right,
+    type: "ExpressionStatement",
+    expression: {
+      type: "AssignmentExpression",
+      left,
+      operator,
+      right,
+    },
   };
 }
 
@@ -37,6 +40,10 @@ export function member(...ids: ESTree.Expression[]): ESTree.MemberExpression {
   }
   assert(result[0].type === "MemberExpression");
   return result[0];
+}
+
+export function memberId(...ids: string[]): ESTree.MemberExpression {
+  return member(...ids.map(identifier));
 }
 
 export type LiteralValue = ESTree.Literal["value"];
