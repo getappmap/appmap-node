@@ -6,7 +6,7 @@ import type { ESTree } from "meriyah";
 
 import { expressionFor, wrap } from ".";
 import Recording from "../Recording";
-import { call_, identifier } from "../generate";
+import { assignment, call_, identifier, memberId } from "../generate";
 import { info } from "../message";
 import { exceptionMetadata } from "../metadata";
 import { recording, start } from "../recorder";
@@ -28,12 +28,19 @@ export function transform(program: ESTree.Program): ESTree.Program {
 export function patchRuntime(program: ESTree.Program): ESTree.Program {
   walk(program, {
     MethodDefinition(method: ESTree.MethodDefinition) {
-      if (!isId(method.key, "transformFile")) return;
-      method.value.body = wrap(method.value, transformJest, method.kind === "constructor");
+      if (isId(method.key, "transformFile"))
+        method.value.body = wrap(method.value, transformJest, false);
+      if (method.kind === "constructor") method.value.body?.body.unshift(...passGlobals);
     },
   });
   return program;
 }
+
+// A snippet to install AppMap globals in a Jest environment.
+// Note this is only needed for Jest < 28.
+const passGlobals: ESTree.Statement[] = ["AppMap", "AppMapRecordHook"].map((name) =>
+  assignment(memberId("environment", "global", name), memberId("global", name)),
+);
 
 export function patchCircus(program: ESTree.Program): ESTree.Program {
   recording.abandon();
