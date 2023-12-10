@@ -1,3 +1,12 @@
+## [2.7.1](https://github.com/getappmap/appmap-node/compare/v2.7.0...v2.7.1) (2023-12-10)
+
+
+### Bug Fixes
+
+* Avoid infinite recursion when stringifying ([6e38a11](https://github.com/getappmap/appmap-node/commit/6e38a11c259a50bb9df397827a5939c694fbc3f3))
+* check recording finished in request hook ([73d993c](https://github.com/getappmap/appmap-node/commit/73d993c34bb670ac9fe0da409ae3433e26a26327))
+* Finish recording on SIGINT even without a handler ([5401b46](https://github.com/getappmap/appmap-node/commit/5401b46066fe6b84b76ed2f5d1f56cb541e4131e))
+
 # [2.7.0](https://github.com/getappmap/appmap-node/compare/v2.6.1...v2.7.0) (2023-12-02)
 
 
