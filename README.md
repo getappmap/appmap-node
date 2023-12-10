@@ -23,5 +23,4 @@ development, not ready for production use, and the feature set is currently limi
 - Node 18+ supported.
 - Instruments all the files under current directory that aren't node_modules.
 - Only captures named `function`s and methods.
-- Remote recording not supported yet.
 - Http server capture works with node:http, express.js and nest.js (with express.js only).
