@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import type http from "node:http";
-import { ClientRequest } from "node:http";
+import type { ClientRequest, IncomingMessage, ServerResponse } from "node:http";
 import type https from "node:https";
 import { URL } from "node:url";
 
@@ -13,12 +13,30 @@ import { getTime } from "../util/getTime";
 
 type HTTP = typeof http | typeof https;
 
+// keep track of createServer proxies to avoid double-wrapping
+const proxies = new WeakSet<object>();
+
 export default function httpHook(mod: HTTP) {
-  mod.createServer = new Proxy(mod.createServer, {
-    apply(target, thisArg, argArray: Parameters<typeof mod.createServer>) {
-      return target.apply(thisArg, argArray).prependListener("request", handleRequest);
-    },
-  });
+  if (!proxies.has(mod.createServer)) {
+    const proxy = new Proxy(mod.createServer, {
+      apply(target, thisArg, argArray: Parameters<typeof mod.createServer>) {
+        const server = target.apply(thisArg, argArray);
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        server.emit = new Proxy(server.emit, {
+          apply(target, thisArg, [event, ...args]: [string, ...unknown[]]) {
+            if (event === "request") {
+              const [request, response] = args as [IncomingMessage, ServerResponse];
+              handleRequest(request, response);
+            }
+            return Reflect.apply(target, thisArg, [event, ...args]) as boolean;
+          },
+        });
+        return server;
+      },
+    });
+    proxies.add(proxy);
+    mod.createServer = proxy;
+  }
 
   hookClientRequestApi(mod);
 
@@ -121,12 +139,7 @@ function handleClientResponse(
   );
 }
 
-const requests = new WeakSet<http.IncomingMessage>();
-
 function handleRequest(request: http.IncomingMessage, response: http.ServerResponse) {
-  // for some reason this event is emitted multiple times for the same request
-  // so let's make sure we haven't seen this one before
-  if (requests.has(request)) return;
   if (!(request.method && request.url)) return;
   const url = new URL(request.url, "http://example");
   const timestamp = startRequestRecording(url.pathname);
@@ -138,7 +151,6 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
     url.searchParams,
   );
   const startTime = getTime();
-  requests.add(request);
   response.once("finish", () => {
     handleResponse(request, requestEvent, startTime, timestamp, response);
   });
