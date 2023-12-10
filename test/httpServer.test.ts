@@ -1,6 +1,6 @@
 import { type IncomingMessage, request, OutgoingMessage } from "node:http";
 
-import { integrationTest, readAppmaps, spawnAppmapNode } from "./helpers";
+import { fixAppmap, integrationTest, readAppmaps, spawnAppmapNode } from "./helpers";
 import { ChildProcessWithoutNullStreams } from "child_process";
 
 integrationTest("mapping Express.js requests", async () => {
@@ -17,6 +17,26 @@ integrationTest("mapping node:http requests", async () => {
   await makeRequests();
   await killServer(server);
   expect(readAppmaps()).toMatchSnapshot();
+});
+
+integrationTest("mapping Express.js requests with remote recording", async () => {
+  expect.assertions(1);
+  const server = await spawnServer("express.js");
+  await makeRequest("/_appmap/record", "POST");
+  await makeRequests();
+  const appmap = JSON.parse(await makeRequest("/_appmap/record", "DELETE")) as unknown;
+  expect(fixAppmap(appmap)).toMatchSnapshot();
+  await killServer(server);
+});
+
+integrationTest("mapping node:http requests with remote recording", async () => {
+  expect.assertions(1);
+  const server = await spawnServer("vanilla.js");
+  await makeRequest("/_appmap/record", "POST");
+  await makeRequests();
+  const appmap = JSON.parse(await makeRequest("/_appmap/record", "DELETE")) as unknown;
+  expect(fixAppmap(appmap)).toMatchSnapshot();
+  await killServer(server);
 });
 
 async function makeRequests() {

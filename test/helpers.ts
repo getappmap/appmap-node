@@ -51,18 +51,22 @@ export function readAppmap(path?: string): AppMap.AppMap {
   }
 
   const result = JSON.parse(readFileSync(path, "utf8")) as unknown;
-  assert(typeof result === "object" && result && "events" in result);
-  assert(result.events instanceof Array);
-  result.events.forEach(fixEvent);
-  assert("classMap" in result && result.classMap instanceof Array);
-  assert("version" in result && typeof result.version === "string");
-  fixClassMap(result.classMap);
-  if ("metadata" in result && typeof result.metadata === "object" && result.metadata)
-    fixMetadata(result.metadata as AppMap.Metadata);
-  if ("eventUpdates" in result && typeof result.eventUpdates === "object" && result.eventUpdates)
-    Object.values(result.eventUpdates).forEach(fixEvent);
+  return fixAppmap(result);
+}
 
-  return result as AppMap.AppMap;
+export function fixAppmap(map: unknown): AppMap.AppMap {
+  assert(typeof map === "object" && map && "events" in map);
+  assert(map.events instanceof Array);
+  map.events.forEach(fixEvent);
+  assert("classMap" in map && map.classMap instanceof Array);
+  assert("version" in map && typeof map.version === "string");
+  fixClassMap(map.classMap);
+  if ("metadata" in map && typeof map.metadata === "object" && map.metadata)
+    fixMetadata(map.metadata as AppMap.Metadata);
+  if ("eventUpdates" in map && typeof map.eventUpdates === "object" && map.eventUpdates)
+    Object.values(map.eventUpdates).forEach(fixEvent);
+
+  return map as AppMap.AppMap;
 }
 
 export function readAppmaps(): Record<string, AppMap.AppMap> {

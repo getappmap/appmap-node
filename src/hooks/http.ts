@@ -1,4 +1,5 @@
 import assert from "node:assert";
+import { readFileSync, rmSync } from "node:fs";
 import type http from "node:http";
 import type { ClientRequest, IncomingMessage, ServerResponse } from "node:http";
 import type https from "node:https";
@@ -26,6 +27,10 @@ export default function httpHook(mod: HTTP) {
           apply(target, thisArg, [event, ...args]: [string, ...unknown[]]) {
             if (event === "request") {
               const [request, response] = args as [IncomingMessage, ServerResponse];
+              if (request.url === "/_appmap/record") {
+                handleRemoteRecording(request, response);
+                return true;
+              }
               handleRequest(request, response);
             }
             return Reflect.apply(target, thisArg, [event, ...args]) as boolean;
@@ -139,10 +144,12 @@ function handleClientResponse(
   );
 }
 
+let remoteRunning = false;
+
 function handleRequest(request: http.IncomingMessage, response: http.ServerResponse) {
   if (!(request.method && request.url)) return;
   const url = new URL(request.url, "http://example");
-  const timestamp = startRequestRecording(url.pathname);
+  const timestamp = remoteRunning ? undefined : startRequestRecording(url.pathname);
   const requestEvent = recording.httpRequest(
     request.method,
     url.pathname,
@@ -217,7 +224,7 @@ function handleResponse(
   request: http.IncomingMessage,
   requestEvent: AppMap.HttpServerRequestEvent,
   startTime: number,
-  timestamp: string,
+  timestamp: string | undefined,
   response: http.ServerResponse<http.IncomingMessage>,
 ): void {
   if (fixupEvent(request, requestEvent)) recording.fixup(requestEvent);
@@ -227,6 +234,7 @@ function handleResponse(
     response.statusCode,
     normalizeHeaders(response.getHeaders()),
   );
+  if (remoteRunning) return;
   const { request_method, path_info } = requestEvent.http_server_request;
   recording.metadata.name = `${request_method} ${path_info} (${response.statusCode}) — ${timestamp}`;
   recording.finish();
@@ -243,4 +251,43 @@ function startRequestRecording(pathname: string): string {
 
 function capitalize(str: string): string {
   return str[0].toUpperCase() + str.slice(1).toLowerCase();
+}
+
+function handleRemoteRecording(
+  req: http.IncomingMessage,
+  res: http.ServerResponse<http.IncomingMessage>,
+): void {
+  switch (req.method) {
+    case "GET":
+      res.writeHead(200);
+      res.end(JSON.stringify({ enabled: remoteRunning }));
+      break;
+    case "POST":
+      if (remoteRunning) res.writeHead(409).end("Recording is already in progress");
+      else {
+        res.writeHead(200);
+        remoteRunning = true;
+        res.end("Recording started");
+        info("Remote recording started");
+        recording.abandon();
+        start(new Recording("remote", "remote", new Date().toISOString()));
+      }
+      break;
+    case "DELETE":
+      if (remoteRunning) {
+        remoteRunning = false;
+        if (recording.finish()) {
+          res.writeHead(200);
+          const { path } = recording;
+          res.end(readFileSync(path));
+          rmSync(path);
+        } else res.writeHead(200).end("{}");
+        info("Remote recording finished");
+        start(); // just so there's always a recording running
+      } else res.writeHead(404).end("No recording is in progress");
+      break;
+    default:
+      res.statusCode = 405;
+      res.end("Method Not Allowed");
+  }
 }
