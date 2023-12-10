@@ -12,7 +12,7 @@ app.post("/api/:ident", express.json(), (req, res) => {
   res.json(postApi(req.body));
 });
 
-const server = app.listen(port, "localhost", () => {
+const server = app.listen(port, "127.0.0.1", () => {
   console.log(`Example app listening on port ${port}`);
 });
 

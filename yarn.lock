@@ -4213,14 +4213,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-appmap-node-test@workspace:test/express":
-  version: 0.0.0-use.local
-  resolution: "express-appmap-node-test@workspace:test/express"
-  dependencies:
-    express: ^4.18.2
-  languageName: unknown
-  linkType: soft
-
 "express@npm:^4.18.2":
   version: 4.18.2
   resolution: "express@npm:4.18.2"
@@ -4951,6 +4943,14 @@ __metadata:
   checksum: 48d4fac997917e15f45094852b63b62a46d0c8a4f0b9c6c23ca26d27b8df8d178bed88389e604745e748bd9a01f5023e25093722777f0593c3f052009ff438b6
   languageName: node
   linkType: hard
+
+"http-server-appmap-node-test@workspace:test/httpServer":
+  version: 0.0.0-use.local
+  resolution: "http-server-appmap-node-test@workspace:test/httpServer"
+  dependencies:
+    express: ^4.18.2
+  languageName: unknown
+  linkType: soft
 
 "https-proxy-agent@npm:^5.0.0":
   version: 5.0.1

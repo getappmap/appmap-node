@@ -110,6 +110,7 @@ function fixEvent(event: unknown) {
 
 const timestamps: Record<string, string> = {};
 let timestampId = 0;
+beforeEach(() => (timestampId = 0));
 
 function fixTimeStamps(str: string): string {
   return str.replaceAll(

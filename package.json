@@ -71,8 +71,8 @@
     "source-map-js": "^1.0.2"
   },
   "workspaces": [
-    "test/express",
     "test/httpClient",
+    "test/httpServer",
     "test/jest",
     "test/mocha",
     "test/vitest",
