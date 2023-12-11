@@ -1,3 +1,11 @@
+## [2.7.2](https://github.com/getappmap/appmap-node/compare/v2.7.1...v2.7.2) (2023-12-11)
+
+
+### Bug Fixes
+
+* Correctly handle timed out tests in Jest ([216c4f1](https://github.com/getappmap/appmap-node/commit/216c4f160d4d4605eb2c250fc64eaaefc569010e)), closes [#46](https://github.com/getappmap/appmap-node/issues/46)
+* Handle extension-less files in Node 18 ([1e76555](https://github.com/getappmap/appmap-node/commit/1e76555caeb77d00f60d130f7bdf224cad20e630))
+
 ## [2.7.1](https://github.com/getappmap/appmap-node/compare/v2.7.0...v2.7.1) (2023-12-10)
 
 
