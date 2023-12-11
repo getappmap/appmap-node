@@ -1,3 +1,10 @@
+## [2.7.3](https://github.com/getappmap/appmap-node/compare/v2.7.2...v2.7.3) (2023-12-11)
+
+
+### Bug Fixes
+
+* Support Jest version 27 ([cf710c0](https://github.com/getappmap/appmap-node/commit/cf710c0ea436f6aca609ca9bb621fcf0c6f2cca9)), closes [#53](https://github.com/getappmap/appmap-node/issues/53)
+
 ## [2.7.2](https://github.com/getappmap/appmap-node/compare/v2.7.1...v2.7.2) (2023-12-11)
 
 
