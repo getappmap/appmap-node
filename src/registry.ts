@@ -26,7 +26,7 @@ export function createFunctionInfo(
     async,
     generator,
     id: id.name,
-    params,
+    params: params.map(stripLocation),
     location,
     static: true,
   };
@@ -46,10 +46,16 @@ export function createMethodInfo(
     async,
     generator,
     id: key.name,
-    params,
+    params: params.map(stripLocation),
     static: method.static,
     klass: klass.id.name,
     location,
   };
   return info;
+}
+
+function stripLocation(value: ESTree.Parameter): ESTree.Parameter {
+  const result = { ...value };
+  delete result.loc;
+  return result;
 }
