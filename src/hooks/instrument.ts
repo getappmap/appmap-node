@@ -40,7 +40,7 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
       if (!hasIdentifier(fun)) return;
 
       const location = locate(fun);
-      if (sourceMap && !location) return; // don't instrument generated code
+      if (!location) return; // don't instrument generated code
 
       fun.body = wrapWithRecord(fun, createFunctionInfo(fun, location), false);
     },
@@ -53,7 +53,7 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
       if (!klass) return;
 
       const location = locate(method);
-      if (sourceMap && !location) return; // don't instrument generated code
+      if (!location) return; // don't instrument generated code
 
       method.value.body = wrapWithRecord(
         { ...method.value },

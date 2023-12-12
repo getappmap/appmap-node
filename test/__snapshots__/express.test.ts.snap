@@ -38,7 +38,7 @@ exports[`mapping Express.js requests 1`] = `
         "thread_id": 0,
       },
       {
-        "defined_class": "",
+        "defined_class": "index",
         "event": "call",
         "id": 2,
         "lineno": 21,
@@ -244,7 +244,7 @@ exports[`mapping Express.js requests 1`] = `
         "thread_id": 0,
       },
       {
-        "defined_class": "",
+        "defined_class": "index",
         "event": "call",
         "id": 2,
         "lineno": 25,
@@ -444,7 +444,7 @@ exports[`mapping Express.js requests 1`] = `
         "thread_id": 0,
       },
       {
-        "defined_class": "",
+        "defined_class": "index",
         "event": "call",
         "id": 2,
         "lineno": 29,

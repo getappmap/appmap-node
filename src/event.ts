@@ -19,7 +19,7 @@ export function makeCallEvent(
     static: !thisArg,
     receiver: optParameter(thisArg),
     parameters: resolveParameters(args, fun),
-    defined_class: fun.klass ?? "",
+    defined_class: fun.klassOrPkg,
     ...fun.location,
   });
 }
