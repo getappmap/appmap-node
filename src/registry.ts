@@ -1,3 +1,5 @@
+import { basename } from "node:path";
+
 import type { ESTree } from "meriyah";
 
 export interface SourceLocation {
@@ -11,7 +13,8 @@ export interface FunctionInfo {
   async: boolean;
   params: ESTree.Parameter[];
   static: boolean;
-  klass?: string;
+  /** Class name, or the package name for a free function */
+  klassOrPkg: string;
   location?: SourceLocation;
 }
 
@@ -19,7 +22,7 @@ export function createFunctionInfo(
   fun: ESTree.FunctionDeclaration & {
     id: ESTree.Identifier;
   },
-  location?: SourceLocation,
+  location: SourceLocation,
 ): FunctionInfo {
   const { async, generator, id, params } = fun;
   const info = {
@@ -28,6 +31,7 @@ export function createFunctionInfo(
     id: id.name,
     params: params.map(stripLocation),
     location,
+    klassOrPkg: pkgOfPath(location.path),
     static: true,
   };
   return info;
@@ -48,7 +52,7 @@ export function createMethodInfo(
     id: key.name,
     params: params.map(stripLocation),
     static: method.static,
-    klass: klass.id.name,
+    klassOrPkg: klass.id.name,
     location,
   };
   return info;
@@ -58,4 +62,10 @@ function stripLocation(value: ESTree.Parameter): ESTree.Parameter {
   const result = { ...value };
   delete result.loc;
   return result;
+}
+
+function pkgOfPath(path: string): string {
+  const base = basename(path);
+  if (base.includes(".")) return base.split(".").slice(0, -1).join(".");
+  else return base;
 }

@@ -24,7 +24,7 @@ exports[`mapping a Jest test 1`] = `
   ],
   "events": [
     {
-      "defined_class": "",
+      "defined_class": "test",
       "event": "call",
       "id": 1,
       "lineno": 4,
@@ -103,7 +103,7 @@ exports[`mapping http client requests 1`] = `
   },
   "events": [
     {
-      "defined_class": "",
+      "defined_class": "index",
       "event": "call",
       "id": 1,
       "lineno": 19,
@@ -271,7 +271,7 @@ exports[`mapping mocked http client requests 1`] = `
   },
   "events": [
     {
-      "defined_class": "",
+      "defined_class": "index",
       "event": "call",
       "id": 1,
       "lineno": 39,
@@ -289,7 +289,7 @@ exports[`mapping mocked http client requests 1`] = `
       "thread_id": 0,
     },
     {
-      "defined_class": "",
+      "defined_class": "index",
       "event": "call",
       "id": 3,
       "lineno": 19,

@@ -38,7 +38,7 @@ exports[`mapping MySQL tests 1`] = `
   },
   "events": [
     {
-      "defined_class": "",
+      "defined_class": "index",
       "event": "call",
       "id": 1,
       "lineno": 17,

@@ -25,7 +25,7 @@ exports[`mapping vitest run  1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 1,
@@ -92,7 +92,7 @@ exports[`mapping vitest run  1`] = `
                 "type": "function",
               },
             ],
-            "name": "sum",
+            "name": "sum.test",
             "type": "class",
           },
         ],
@@ -102,7 +102,7 @@ exports[`mapping vitest run  1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "sum.test",
         "event": "call",
         "id": 1,
         "lineno": 14,
@@ -175,7 +175,7 @@ exports[`mapping vitest run  1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 9,
@@ -252,7 +252,7 @@ exports[`mapping vitest run  1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 9,
@@ -333,7 +333,7 @@ exports[`mapping vitest run  1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 5,
@@ -415,7 +415,7 @@ exports[`mapping vitest run --no-threads 1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 1,
@@ -482,7 +482,7 @@ exports[`mapping vitest run --no-threads 1`] = `
                 "type": "function",
               },
             ],
-            "name": "sum",
+            "name": "sum.test",
             "type": "class",
           },
         ],
@@ -492,7 +492,7 @@ exports[`mapping vitest run --no-threads 1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "sum.test",
         "event": "call",
         "id": 1,
         "lineno": 14,
@@ -565,7 +565,7 @@ exports[`mapping vitest run --no-threads 1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 9,
@@ -642,7 +642,7 @@ exports[`mapping vitest run --no-threads 1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 9,
@@ -723,7 +723,7 @@ exports[`mapping vitest run --no-threads 1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 5,
@@ -805,7 +805,7 @@ exports[`mapping vitest run --single-thread 1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 1,
@@ -872,7 +872,7 @@ exports[`mapping vitest run --single-thread 1`] = `
                 "type": "function",
               },
             ],
-            "name": "sum",
+            "name": "sum.test",
             "type": "class",
           },
         ],
@@ -882,7 +882,7 @@ exports[`mapping vitest run --single-thread 1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "sum.test",
         "event": "call",
         "id": 1,
         "lineno": 14,
@@ -955,7 +955,7 @@ exports[`mapping vitest run --single-thread 1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 9,
@@ -1032,7 +1032,7 @@ exports[`mapping vitest run --single-thread 1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 9,
@@ -1113,7 +1113,7 @@ exports[`mapping vitest run --single-thread 1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 5,

@@ -6,11 +6,10 @@ describe(makeClassMap, () => {
   it("creates a classmap from functions", () => {
     const functions: FunctionInfo[] = [
       f("method", "/test/app/src/util.js:17", "Util", false),
-      f("otherFunction", "/test/app/src/util.js:3"),
-      f("foo", "/test/app/src/foo.js:3"),
-      f("noLocation"),
-      f("freeFunction", "/test/app/src/util.js:1"),
-      f("otherFunction", "/test/app/src/util/other.js:1"),
+      f("otherFunction", "/test/app/src/util.js:3", "util"),
+      f("foo", "/test/app/src/foo.js:3", "foo"),
+      f("freeFunction", "/test/app/src/util.js:1", "util"),
+      f("otherFunction", "/test/app/src/util/other.js:1", "other"),
       f("statik", "/test/app/src/util.js:14", "Util"),
     ];
 
@@ -94,8 +93,8 @@ describe(makeClassMap, () => {
 
 function f(
   id: string,
-  loc?: string,
-  klass?: string,
+  loc: string,
+  klass: string,
   static_ = true,
   async = false,
   generator = false,
@@ -111,7 +110,7 @@ function f(
     id,
     params: [],
     static: static_,
-    klass,
+    klassOrPkg: klass,
     location,
   };
 }

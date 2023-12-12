@@ -3,21 +3,25 @@ import * as registry from "../registry";
 
 describe(registry.createFunctionInfo, () => {
   it("creates a function info", () => {
-    const functionInfo = registry.createFunctionInfo({
-      async: false,
-      generator: false,
-      id: identifier("testFun"),
-      params: [],
-      type: "FunctionDeclaration",
-    });
+    const functionInfo = registry.createFunctionInfo(
+      {
+        async: false,
+        generator: false,
+        id: identifier("testFun"),
+        params: [],
+        type: "FunctionDeclaration",
+      },
+      { path: "test.js", lineno: 42 },
+    );
 
     expect(functionInfo).toStrictEqual<registry.FunctionInfo>({
       async: false,
       generator: false,
       id: "testFun",
       params: [],
-      location: undefined,
+      location: { path: "test.js", lineno: 42 },
       static: true,
+      klassOrPkg: "test",
     });
   });
 });
@@ -52,7 +56,7 @@ describe(registry.createMethodInfo, () => {
       generator: false,
       params: [],
       id: "testMethod",
-      klass: "TestClass",
+      klassOrPkg: "TestClass",
       location: undefined,
       static: false,
     });

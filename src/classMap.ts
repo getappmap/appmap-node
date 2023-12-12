@@ -22,10 +22,7 @@ export function makeClassMap(funs: Iterable<FunctionInfo>): AppMap.ClassMap {
       pkg = pkgs.pop()!;
       [tree, classes] = tree[pkg] ||= [{}, {}];
     }
-    // AppMap spec requires functions to always belong to a class.
-    // Free functions are common in JavaScript, so let's
-    // pretend they belong to a class with the same name as the package.
-    (classes[fun.klass ?? pkg] ||= []).push(fun);
+    (classes[fun.klassOrPkg] ||= []).push(fun);
   }
 
   let result = makeTree(root);

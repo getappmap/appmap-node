@@ -25,7 +25,7 @@ exports[`mapping Jest tests 1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "test",
         "event": "call",
         "id": 1,
         "lineno": 18,
@@ -98,7 +98,7 @@ exports[`mapping Jest tests 1`] = `
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "test",
         "event": "call",
         "id": 1,
         "lineno": 22,
@@ -176,7 +176,7 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 1,
@@ -260,7 +260,7 @@ Received: [31m3[39m",
     ],
     "events": [
       {
-        "defined_class": "",
+        "defined_class": "calc",
         "event": "call",
         "id": 1,
         "lineno": 1,

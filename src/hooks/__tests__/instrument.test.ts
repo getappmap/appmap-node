@@ -1,4 +1,6 @@
-import { parse } from "meriyah";
+import { full as walk } from "acorn-walk";
+import { ESTree, parse } from "meriyah";
+
 import * as instrument from "../instrument";
 import * as registry from "../../registry";
 
@@ -15,12 +17,15 @@ describe(instrument.shouldInstrument, () => {
 
 describe(instrument.transform, () => {
   it("instruments function declarations", () => {
-    const program = parse(`
+    const program = parse(
+      `
       function testFun(arg) {
         return arg + 1;
       }
-    `);
-    expect(instrument.transform(program)).toStrictEqual(
+    `,
+      { loc: true, source: "test.js" },
+    );
+    expect(stripLocations(instrument.transform(program))).toStrictEqual(
       parse(`
         const __appmapFunctionRegistry = [{
           "async": false,
@@ -30,6 +35,11 @@ describe(instrument.transform, () => {
             "type": "Identifier",
             "name": "arg"
           }],
+          "location": {
+            "path": "test.js",
+            "lineno": 2
+          },
+          "klassOrPkg": "test",
           "static": true
         }];
 
@@ -45,21 +55,25 @@ describe(instrument.transform, () => {
       id: "testFun",
       async: false,
       generator: false,
-      location: undefined,
+      location: { path: "test.js", lineno: 2 },
       static: true,
+      klassOrPkg: "test",
     });
   });
 
   it("instruments method definitions", () => {
-    const program = parse(`
+    const program = parse(
+      `
       class TestClass {
         foo(value) {
           return value + 1;
         }
       }
-    `);
+    `,
+      { loc: true, source: "test.js" },
+    );
 
-    expect(instrument.transform(program)).toStrictEqual(
+    expect(stripLocations(instrument.transform(program))).toStrictEqual(
       parse(`
         const __appmapFunctionRegistry = [{
           "async": false,
@@ -70,7 +84,11 @@ describe(instrument.transform, () => {
             "name": "value"
           }],
           "static": false,
-          "klass": "TestClass"
+          "klassOrPkg": "TestClass",
+          "location": {
+            "path": "test.js",
+            "lineno": 3
+          }
         }];
 
         class TestClass {
@@ -85,13 +103,25 @@ describe(instrument.transform, () => {
     expect(instrument.transformedFunctionInfos[0]).toStrictEqual<registry.FunctionInfo>({
       params: [{ type: "Identifier", name: "value" }],
       id: "foo",
-      klass: "TestClass",
+      klassOrPkg: "TestClass",
       static: false,
       async: false,
       generator: false,
-      location: undefined,
+      location: {
+        path: "test.js",
+        lineno: 3,
+      },
     });
   });
 });
 
 beforeEach(() => instrument.transformedFunctionInfos.splice(0));
+
+// Return the program with all location information stripped
+function stripLocations(program: ESTree.Program): ESTree.Program {
+  walk(program, (node: ESTree.Node) => {
+    node.loc && delete node.loc;
+    "key" in node && node.key && "loc" in node.key && delete node.key.loc;
+  });
+  return program;
+}

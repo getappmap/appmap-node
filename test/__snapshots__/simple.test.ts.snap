@@ -24,7 +24,7 @@ exports[`finish signal is handled 1`] = `
   ],
   "events": [
     {
-      "defined_class": "",
+      "defined_class": "server",
       "event": "call",
       "id": 1,
       "lineno": 1,
@@ -88,7 +88,7 @@ exports[`forwarding signals to the child 1`] = `
   ],
   "events": [
     {
-      "defined_class": "",
+      "defined_class": "daemon",
       "event": "call",
       "id": 1,
       "lineno": 3,
@@ -152,7 +152,7 @@ exports[`mapping a custom Error class with a message property 1`] = `
   ],
   "events": [
     {
-      "defined_class": "",
+      "defined_class": "inspect",
       "event": "call",
       "id": 1,
       "lineno": 5,
@@ -253,7 +253,7 @@ exports[`mapping a simple script 1`] = `
   },
   "events": [
     {
-      "defined_class": "",
+      "defined_class": "index",
       "event": "call",
       "id": 1,
       "lineno": 17,
@@ -278,7 +278,7 @@ exports[`mapping a simple script 1`] = `
       "thread_id": 0,
     },
     {
-      "defined_class": "",
+      "defined_class": "index",
       "event": "call",
       "id": 3,
       "lineno": 4,
@@ -306,7 +306,7 @@ exports[`mapping a simple script 1`] = `
       "thread_id": 0,
     },
     {
-      "defined_class": "",
+      "defined_class": "index",
       "event": "call",
       "id": 5,
       "lineno": 4,
@@ -334,7 +334,7 @@ exports[`mapping a simple script 1`] = `
       "thread_id": 0,
     },
     {
-      "defined_class": "",
+      "defined_class": "index",
       "event": "call",
       "id": 7,
       "lineno": 8,
@@ -357,7 +357,7 @@ exports[`mapping a simple script 1`] = `
       "thread_id": 0,
     },
     {
-      "defined_class": "",
+      "defined_class": "index",
       "event": "call",
       "id": 9,
       "lineno": 13,
@@ -426,7 +426,7 @@ exports[`mapping an extensionless CommonJS file 1`] = `
   ],
   "events": [
     {
-      "defined_class": "",
+      "defined_class": "extensionless",
       "event": "call",
       "id": 1,
       "lineno": 1,
@@ -490,7 +490,7 @@ exports[`mapping an mjs script 1`] = `
   ],
   "events": [
     {
-      "defined_class": "",
+      "defined_class": "index",
       "event": "call",
       "id": 1,
       "lineno": 1,
@@ -554,7 +554,7 @@ exports[`mapping generator functions 1`] = `
   ],
   "events": [
     {
-      "defined_class": "",
+      "defined_class": "generator",
       "event": "call",
       "id": 1,
       "lineno": 1,
