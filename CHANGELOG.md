@@ -1,3 +1,11 @@
+## [2.7.4](https://github.com/getappmap/appmap-node/compare/v2.7.3...v2.7.4) (2023-12-13)
+
+
+### Bug Fixes
+
+* Apply extension-less workaround regardless of Node version ([430725a](https://github.com/getappmap/appmap-node/commit/430725ab3410f22523db86e8efe68f58b53368c8))
+* Fill in defined_class field even for free functions ([edf9247](https://github.com/getappmap/appmap-node/commit/edf924799fd8b89e8cb71e838dd206b8b2a539dd))
+
 ## [2.7.3](https://github.com/getappmap/appmap-node/compare/v2.7.2...v2.7.3) (2023-12-11)
 
 
