@@ -5,8 +5,9 @@ function foo(x) {
   return x * 2;
 }
 
-async function promised() {
-  await setTimeout(100);
+async function promised(ok = true) {
+  await setTimeout(10);
+  if (!ok) throws();
   return "promised return";
 }
 
@@ -28,4 +29,5 @@ try {
 
 console.log(foo(42));
 promised().then(console.log);
+promised(false).catch(console.log);
 immediatePromise().then(console.log);

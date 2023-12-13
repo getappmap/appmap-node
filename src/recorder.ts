@@ -3,8 +3,9 @@ import { isPromise } from "node:util/types";
 
 import AppMap from "./AppMap";
 import Recording, { writtenAppMaps } from "./Recording";
-import { makeReturnEvent } from "./event";
+import { makeExceptionEvent, makeReturnEvent } from "./event";
 import { info } from "./message";
+import { objectId } from "./parameter";
 import { recorderPaused } from "./recorderPause";
 import { FunctionInfo } from "./registry";
 import commonPathPrefix from "./util/commonPathPrefix";
@@ -45,10 +46,32 @@ export function fixReturnEventIfPromiseResult(
   startTime: number,
 ) {
   if (isPromise(result) && returnEvent.return_value?.value.includes("<pending>"))
-    return result.then(() => {
-      recording.fixup(makeReturnEvent(returnEvent.id, callEvent.id, result, getTime() - startTime));
-      return result;
-    });
+    return result.then(
+      () => {
+        recording.fixup(
+          makeReturnEvent(returnEvent.id, callEvent.id, result, getTime() - startTime),
+        );
+        return result;
+      },
+      (reason) => {
+        const event = makeExceptionEvent(
+          returnEvent.id,
+          callEvent.id,
+          reason,
+          getTime() - startTime,
+        );
+        // add return_value too, so it's not unambiguous whether the function
+        // threw or returned a promise which then rejected
+        event.return_value = {
+          class: "Promise",
+          // don't repeat the exception info
+          value: "Promise { <rejected> }",
+          object_id: objectId(result),
+        };
+        recording.fixup(event);
+        return result;
+      },
+    );
 
   return result;
 }

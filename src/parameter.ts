@@ -70,11 +70,17 @@ function propertiesSchema(
 }
 
 let nextId = 1;
-const objectIds = new WeakMap<object, number>();
+let objectIds = new WeakMap<object, number>();
 
 export function objectId(object: object | null): number {
   if (object === null) return 0;
   const id = objectIds.get(object) ?? nextId++;
   if (!objectIds.has(object)) objectIds.set(object, id);
   return id;
+}
+
+// for testing purposes
+export function resetObjectIds() {
+  nextId = 1;
+  objectIds = new WeakMap();
 }

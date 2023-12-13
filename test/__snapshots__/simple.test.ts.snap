@@ -205,13 +205,13 @@ exports[`mapping a simple script 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:13",
+              "location": "./index.js:14",
               "name": "immediatePromise",
               "static": true,
               "type": "function",
             },
             {
-              "location": "./index.js:17",
+              "location": "./index.js:18",
               "name": "throws",
               "static": true,
               "type": "function",
@@ -238,6 +238,25 @@ exports[`mapping a simple script 1`] = `
     },
   ],
   "eventUpdates": {
+    "10": {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "Error",
+          "message": "throws intentionally",
+          "object_id": 5,
+        },
+      ],
+      "id": 10,
+      "parent_id": 9,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 3,
+        "value": "Promise { <rejected> }",
+      },
+      "thread_id": 0,
+    },
     "8": {
       "elapsed": 31.337,
       "event": "return",
@@ -256,7 +275,7 @@ exports[`mapping a simple script 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 1,
-      "lineno": 17,
+      "lineno": 18,
       "method_id": "throws",
       "parameters": [],
       "path": "./index.js",
@@ -360,9 +379,15 @@ exports[`mapping a simple script 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 9,
-      "lineno": 13,
-      "method_id": "immediatePromise",
-      "parameters": [],
+      "lineno": 8,
+      "method_id": "promised",
+      "parameters": [
+        {
+          "class": "Boolean",
+          "name": "ok",
+          "value": "false",
+        },
+      ],
       "path": "./index.js",
       "static": true,
       "thread_id": 0,
@@ -375,8 +400,56 @@ exports[`mapping a simple script 1`] = `
       "return_value": {
         "class": "Promise",
         "object_id": 3,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "index",
+      "event": "call",
+      "id": 11,
+      "lineno": 14,
+      "method_id": "immediatePromise",
+      "parameters": [],
+      "path": "./index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 12,
+      "parent_id": 11,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 4,
         "value": "Promise { 'immediate' }",
       },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "index",
+      "event": "call",
+      "id": 13,
+      "lineno": 18,
+      "method_id": "throws",
+      "parameters": [],
+      "path": "./index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "Error",
+          "message": "throws intentionally",
+          "object_id": 5,
+        },
+      ],
+      "id": 14,
+      "parent_id": 13,
       "thread_id": 0,
     },
   ],
