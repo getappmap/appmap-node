@@ -6,8 +6,7 @@ import { getTime } from "../util/getTime";
 export default function pgHook(mod: typeof pg) {
   // eslint-disable-next-line @typescript-eslint/unbound-method
   mod.Client.prototype.query = createQueryProxy(mod.Client.prototype.query);
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  mod.Pool.prototype.query = createQueryProxy(mod.Pool.prototype.query);
+  // No need to proxy Pool.query because it calls Client.query internally
   return mod;
 }
 
