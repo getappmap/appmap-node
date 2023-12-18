@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { rmSync } from "node:fs";
+import { renameSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { inspect } from "node:util";
 
@@ -17,7 +17,8 @@ export default class Recording {
     const dirs = [recorder, ...names].map(quotePathSegment);
     const name = dirs.pop()!; // it must have at least one element
     this.path = join(appMapDir, ...dirs, makeAppMapFilename(name));
-    this.stream = new AppMapStream(this.path);
+    this.partPath = this.path + ".part";
+    this.stream = new AppMapStream(this.partPath);
     this.metadata = {
       ...defaultMetadata,
       recorder: { type, name: recorder },
@@ -28,6 +29,7 @@ export default class Recording {
   private nextId = 1;
   private functionsSeen = new Set<FunctionInfo>();
   private stream: AppMapStream | undefined;
+  private partPath: string;
   public readonly path;
   public metadata: AppMap.Metadata;
 
@@ -183,7 +185,7 @@ export default class Recording {
   }
 
   abandon(): void {
-    if (this.stream?.close()) rmSync(this.path);
+    if (this.stream?.close()) rmSync(this.partPath);
     this.stream = undefined;
   }
 
@@ -196,7 +198,10 @@ export default class Recording {
       }),
     );
     this.stream = undefined;
-    if (written) writtenAppMaps.push(this.path);
+    if (written) {
+      renameSync(this.partPath, this.path);
+      writtenAppMaps.push(this.path);
+    }
     return !!written;
   }
 
