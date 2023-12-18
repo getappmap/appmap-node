@@ -1,3 +1,10 @@
+## [2.8.1](https://github.com/getappmap/appmap-node/compare/v2.8.0...v2.8.1) (2023-12-18)
+
+
+### Bug Fixes
+
+* Double sql recording in PostgreSQL ([ea29f64](https://github.com/getappmap/appmap-node/commit/ea29f643820efee5666d5b9b3103fc408ebb2de7))
+
 # [2.8.0](https://github.com/getappmap/appmap-node/compare/v2.7.4...v2.8.0) (2023-12-18)
 
 
