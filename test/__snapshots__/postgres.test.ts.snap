@@ -8,7 +8,7 @@ exports[`mapping PostgreSQL tests 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:4",
+              "location": "./index.js:6",
               "name": "main",
               "static": true,
               "type": "function",
@@ -22,12 +22,76 @@ exports[`mapping PostgreSQL tests 1`] = `
       "type": "package",
     },
   ],
+  "eventUpdates": {
+    "2": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 1,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+    "4": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 3,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 2,
+        "value": "Promise {
+  Result {
+    command: 'SELECT',
+    rowCount: 1,
+    oid: null,
+    rows: [Array],
+    fields: [Array],
+    _parsers: [Array],
+    _types: [TypeOverrides],
+    RowCtor: null,
+    rowAsArray: false,
+    _prebuiltEmptyResultObject: [Object]
+  }
+}",
+      },
+      "thread_id": 0,
+    },
+    "8": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 8,
+      "parent_id": 7,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 3,
+        "value": "Promise {
+  Result {
+    command: 'SELECT',
+    rowCount: 1,
+    oid: null,
+    rows: [Array],
+    fields: [Array],
+    _parsers: [Array],
+    _types: [TypeOverrides],
+    RowCtor: null,
+    rowAsArray: false,
+    _prebuiltEmptyResultObject: [Object]
+  }
+}",
+      },
+      "thread_id": 0,
+    },
+  },
   "events": [
     {
       "defined_class": "index",
       "event": "call",
       "id": 1,
-      "lineno": 4,
+      "lineno": 6,
       "method_id": "main",
       "parameters": [],
       "path": "./index.js",
@@ -35,19 +99,10 @@ exports[`mapping PostgreSQL tests 1`] = `
       "thread_id": 0,
     },
     {
-      "event": "call",
-      "id": 2,
-      "sql_query": {
-        "database_type": "postgres",
-        "sql": "select * from customer where id = 1001",
-      },
-      "thread_id": 0,
-    },
-    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 3,
-      "parent_id": 2,
+      "id": 2,
+      "parent_id": 1,
       "return_value": {
         "class": "Promise",
         "object_id": 1,
@@ -57,18 +112,18 @@ exports[`mapping PostgreSQL tests 1`] = `
     },
     {
       "event": "call",
-      "id": 4,
+      "id": 3,
       "sql_query": {
         "database_type": "postgres",
-        "sql": "select * from invoice where customer_id = 1001",
+        "sql": "select * from pg_config where name = 'BINDIR'",
       },
       "thread_id": 0,
     },
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 5,
-      "parent_id": 4,
+      "id": 4,
+      "parent_id": 3,
       "return_value": {
         "class": "Promise",
         "object_id": 2,
@@ -78,22 +133,26 @@ exports[`mapping PostgreSQL tests 1`] = `
     },
     {
       "event": "call",
-      "id": 6,
+      "id": 5,
       "sql_query": {
         "database_type": "postgres",
-        "sql": "select * from user where id = $1",
+        "sql": "select * from pg_config where name = 'DOCDIR'",
       },
       "thread_id": 0,
     },
     {
       "elapsed": 31.337,
       "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
       "id": 7,
-      "parent_id": 6,
-      "return_value": {
-        "class": "Promise",
-        "object_id": 3,
-        "value": "Promise { <pending> }",
+      "sql_query": {
+        "database_type": "postgres",
+        "sql": "select * from pg_config where name = $1",
       },
       "thread_id": 0,
     },
@@ -101,7 +160,12 @@ exports[`mapping PostgreSQL tests 1`] = `
       "elapsed": 31.337,
       "event": "return",
       "id": 8,
-      "parent_id": 1,
+      "parent_id": 7,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 3,
+        "value": "Promise { <pending> }",
+      },
       "thread_id": 0,
     },
   ],
