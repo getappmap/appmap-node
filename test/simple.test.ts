@@ -1,4 +1,10 @@
-import { runAppmapNode, readAppmap, integrationTest, spawnAppmapNode } from "./helpers";
+import {
+  integrationTest,
+  readAppmap,
+  readAppmaps,
+  runAppmapNode,
+  spawnAppmapNode,
+} from "./helpers";
 
 integrationTest("mapping a simple script", () => {
   expect(runAppmapNode("index.js").status).toBe(0);
@@ -43,6 +49,10 @@ integrationTest("finish signal is handled", async () => {
   await new Promise<void>((r) =>
     server.stdout.on("data", (chunk: Buffer) => chunk.toString().includes("starting") && r()),
   );
+
+  // verify that we don't have any half-written AppMaps
+  expect(Object.entries(readAppmaps())).toHaveLength(0);
+
   server.kill("SIGINT");
   await new Promise((r) => server.once("exit", r));
 
