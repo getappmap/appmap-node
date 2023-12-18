@@ -1,3 +1,10 @@
+# [2.8.0](https://github.com/getappmap/appmap-node/compare/v2.7.4...v2.8.0) (2023-12-18)
+
+
+### Features
+
+* Remote recording ([2e5bea7](https://github.com/getappmap/appmap-node/commit/2e5bea76684a9366e6287c5544730aad33124414)), closes [#42](https://github.com/getappmap/appmap-node/issues/42)
+
 ## [2.7.4](https://github.com/getappmap/appmap-node/compare/v2.7.3...v2.7.4) (2023-12-13)
 
 
