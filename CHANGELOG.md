@@ -1,3 +1,15 @@
+# [2.9.0](https://github.com/getappmap/appmap-node/compare/v2.8.1...v2.9.0) (2023-12-20)
+
+
+### Bug Fixes
+
+* Handle rejected promises ([8507ede](https://github.com/getappmap/appmap-node/commit/8507ede36c1c39458a95cae4278986607bbe2c87))
+
+
+### Features
+
+* Encode resolved promise type in return_value.class ([7a17bed](https://github.com/getappmap/appmap-node/commit/7a17bedada58ac25c3d43dbfe816fc941169b60b))
+
 ## [2.8.1](https://github.com/getappmap/appmap-node/compare/v2.8.0...v2.8.1) (2023-12-18)
 
 
