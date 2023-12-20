@@ -5,7 +5,7 @@ import AppMap from "./AppMap";
 import Recording, { writtenAppMaps } from "./Recording";
 import { makeExceptionEvent, makeReturnEvent } from "./event";
 import { info } from "./message";
-import { objectId } from "./parameter";
+import { getClass, objectId } from "./parameter";
 import { recorderPaused } from "./recorderPause";
 import { FunctionInfo } from "./registry";
 import commonPathPrefix from "./util/commonPathPrefix";
@@ -47,10 +47,15 @@ export function fixReturnEventIfPromiseResult(
 ) {
   if (isPromise(result) && returnEvent.return_value?.value.includes("<pending>"))
     return result.then(
-      () => {
-        recording.fixup(
-          makeReturnEvent(returnEvent.id, callEvent.id, result, getTime() - startTime),
+      (value) => {
+        const newReturn = makeReturnEvent(
+          returnEvent.id,
+          callEvent.id,
+          result,
+          getTime() - startTime,
         );
+        newReturn.return_value!.class = `Promise<${getClass(value)}>`;
+        recording.fixup(newReturn);
         return result;
       },
       (reason) => {

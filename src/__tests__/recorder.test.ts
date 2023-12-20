@@ -66,7 +66,7 @@ describe(recorder.fixReturnEventIfPromiseResult, () => {
     expect(Recording.prototype.fixup).toBeCalledWith({
       ...returnEvent,
       return_value: {
-        class: "Promise",
+        class: "Promise<String>",
         value: "Promise { 'resolved' }",
         object_id: 1,
       },

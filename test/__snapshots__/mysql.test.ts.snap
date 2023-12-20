@@ -29,7 +29,7 @@ exports[`mapping MySQL tests 1`] = `
       "id": 3,
       "parent_id": 1,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<undefined>",
         "object_id": 1,
         "value": "Promise { undefined }",
       },

@@ -94,7 +94,7 @@ exports[`mapping http client requests 1`] = `
       "id": 2,
       "parent_id": 1,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<undefined>",
         "object_id": 1,
         "value": "Promise { undefined }",
       },
@@ -262,7 +262,7 @@ exports[`mapping mocked http client requests 1`] = `
       "id": 2,
       "parent_id": 1,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<undefined>",
         "object_id": 1,
         "value": "Promise { undefined }",
       },
@@ -274,7 +274,7 @@ exports[`mapping mocked http client requests 1`] = `
       "id": 4,
       "parent_id": 3,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<undefined>",
         "object_id": 2,
         "value": "Promise { undefined }",
       },

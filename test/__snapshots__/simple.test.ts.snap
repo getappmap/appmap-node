@@ -263,7 +263,7 @@ exports[`mapping a simple script 1`] = `
       "id": 8,
       "parent_id": 7,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<String>",
         "object_id": 2,
         "value": "Promise { 'promised return' }",
       },
