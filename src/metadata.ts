@@ -3,7 +3,7 @@ import process from "node:process";
 import type { PackageJson } from "type-fest";
 
 import type AppMap from "./AppMap";
-import { appName } from "./config";
+import config from "./config";
 import { examineException } from "./event";
 import pick from "./util/pick";
 
@@ -24,7 +24,7 @@ export const defaultMetadata: Partial<AppMap.Metadata> & { client: AppMap.Client
     engine: "Node.js",
     version: process.version,
   },
-  app: appName,
+  app: config.appName,
 };
 
 export function exceptionMetadata(error: unknown): AppMap.ExceptionMetadata | undefined {

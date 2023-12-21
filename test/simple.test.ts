@@ -63,3 +63,10 @@ integrationTest("mapping an extensionless CommonJS file", () => {
   expect(runAppmapNode("./extensionless").status).toBe(0);
   expect(readAppmap()).toMatchSnapshot();
 });
+
+integrationTest("running a script after changing the current directory", () => {
+  // Need to make sure the appmap "root" stays the same after
+  // appmap-node is run, even if the current directory changes.
+  expect(runAppmapNode("bash", "-c", "cd subproject; node index.js").status).toBe(0);
+  expect(readAppmap()).toBeDefined();
+});

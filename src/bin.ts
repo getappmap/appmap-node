@@ -6,8 +6,9 @@ import { kill, pid } from "node:process";
 
 import { info } from "./message";
 import { version } from "./metadata";
-import { readPkgUp } from "./util/readPkgUp";
 import forwardSignals from "./util/forwardSignals";
+import { readPkgUp } from "./util/readPkgUp";
+import config from "./config";
 
 const registerPath = resolve(__dirname, "../dist/register.js");
 const loaderPath = resolve(__dirname, "../dist/loader.js");
@@ -19,6 +20,7 @@ export function main() {
 
   info("Running with appmap-node version %s", version);
   addNodeOptions("--require", registerPath);
+  config.export();
 
   // FIXME: Probably there should be a way to remove this altogether
   // by changing our custom loader implementation

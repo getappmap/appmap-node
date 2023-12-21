@@ -3,8 +3,19 @@ import { cwd } from "node:process";
 
 import { readPkgUp } from "./util/readPkgUp";
 
-export const root = cwd();
-export const appMapDir = join(root, "tmp", "appmap");
+export class Config {
+  public readonly appmapDir: string;
+  public readonly appName: string;
 
-export const targetPackage = readPkgUp(root);
-export const appName = targetPackage?.name ?? dirname(root);
+  constructor(public readonly root = process.env.APPMAP_ROOT ?? cwd()) {
+    this.appmapDir = join(root, "tmp", "appmap");
+    const targetPackage = readPkgUp(root);
+    this.appName = targetPackage?.name ?? dirname(root);
+  }
+
+  export() {
+    process.env.APPMAP_ROOT = this.root;
+  }
+}
+
+export default new Config();

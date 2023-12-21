@@ -1,12 +1,12 @@
 import assert from "node:assert";
 import path from "node:path";
-import { cwd } from "node:process";
 import { fileURLToPath } from "node:url";
 
 import { ancestor as walk } from "acorn-walk";
 import { ESTree, parse } from "meriyah";
 import { SourceMapConsumer } from "source-map-js";
 
+import config from "../config";
 import {
   args as args_,
   call_,
@@ -19,7 +19,7 @@ import {
   toArrowFunction,
   yieldStar,
 } from "../generate";
-import { FunctionInfo, SourceLocation, createMethodInfo, createFunctionInfo } from "../registry";
+import { FunctionInfo, SourceLocation, createFunctionInfo, createMethodInfo } from "../registry";
 import findLast from "../util/findLast";
 
 const __appmapFunctionRegistryIdentifier = identifier("__appmapFunctionRegistry");
@@ -147,19 +147,13 @@ function wrapWithRecord(
   return wrapped;
 }
 
-let root = cwd();
-
-export function setRoot(path: string) {
-  root = path;
-}
-
 export function shouldInstrument(url: URL): boolean {
   if (url.protocol !== "file:") return false;
   if (url.pathname.endsWith(".json")) return false;
 
   const filePath = fileURLToPath(url);
   if (filePath.includes("node_modules") || filePath.includes(".yarn")) return false;
-  if (isUnrelated(root, filePath)) return false;
+  if (isUnrelated(config.root, filePath)) return false;
 
   return true;
 }
