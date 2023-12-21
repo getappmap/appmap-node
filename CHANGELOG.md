@@ -1,3 +1,10 @@
+# [2.10.0](https://github.com/getappmap/appmap-node/compare/v2.9.0...v2.10.0) (2023-12-21)
+
+
+### Features
+
+* Write AppMaps atomically ([947df8f](https://github.com/getappmap/appmap-node/commit/947df8fd54005e772acf75a8251e73029eb54897))
+
 # [2.9.0](https://github.com/getappmap/appmap-node/compare/v2.8.1...v2.9.0) (2023-12-20)
 
 
