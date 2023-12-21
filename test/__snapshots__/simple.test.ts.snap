@@ -483,7 +483,7 @@ exports[`mapping an extensionless CommonJS file 1`] = `
         {
           "children": [
             {
-              "location": "./extensionless:1",
+              "location": "./extensionless:2",
               "name": "f",
               "static": true,
               "type": "function",
@@ -502,7 +502,7 @@ exports[`mapping an extensionless CommonJS file 1`] = `
       "defined_class": "extensionless",
       "event": "call",
       "id": 1,
-      "lineno": 1,
+      "lineno": 2,
       "method_id": "f",
       "parameters": [],
       "path": "./extensionless",

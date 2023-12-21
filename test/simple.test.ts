@@ -60,6 +60,6 @@ integrationTest("finish signal is handled", async () => {
 });
 
 integrationTest("mapping an extensionless CommonJS file", () => {
-  expect(runAppmapNode("node", "extensionless").status).toBe(0);
+  expect(runAppmapNode("./extensionless").status).toBe(0);
   expect(readAppmap()).toMatchSnapshot();
 });
