@@ -1,11 +1,12 @@
+import { mkdirSync, writeFileSync } from "node:fs";
+import { basename, join } from "node:path";
 import { chdir, cwd } from "node:process";
 
 import tmp from "tmp";
+import YAML from "yaml";
 
-import { Config } from "../config";
-import { basename, join } from "node:path";
-import { mkdirSync, writeFileSync } from "node:fs";
 import { PackageJson } from "type-fest";
+import { Config } from "../config";
 
 tmp.setGracefulCleanup();
 
@@ -35,6 +36,18 @@ describe(Config, () => {
     expect(new Config()).toMatchObject({
       root: dir,
       appmapDir: join(dir, "tmp", "appmap"),
+      appName: "test-package",
+    });
+  });
+
+  it("searches for appmap.yml and uses config from it", () => {
+    writeFileSync("appmap.yml", YAML.stringify({ name: "test-package", appmap_dir: "appmap" }));
+
+    mkdirSync("subdirectory");
+    chdir("subdirectory");
+    expect(new Config()).toMatchObject({
+      root: dir,
+      appmapDir: join(dir, "appmap"),
       appName: "test-package",
     });
   });
