@@ -1,9 +1,12 @@
 import assert from "node:assert";
 import { ChildProcess, spawn } from "node:child_process";
-import { accessSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { accessSync, readFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { kill, pid } from "node:process";
 
+import { parseConfigFileTextToJson } from "typescript";
+
+import { root } from "./config";
 import { info } from "./message";
 import { version } from "./metadata";
 import { readPkgUp } from "./util/readPkgUp";
@@ -49,9 +52,35 @@ export function main() {
   });
 }
 
+function readTsConfigUp(dir: string): string | undefined {
+  try {
+    return readFileSync(join(dir, "tsconfig.json"), "utf-8");
+  } catch {
+    const parent = dirname(dir);
+    if (parent === dir) return;
+    else return readTsConfigUp(parent);
+  }
+}
+
 function isTsEsmLoaderNeeded(cmd: string, args: string[]) {
-  // HACK: Ugly way to check if it's ts-node instead of node
-  return [cmd, ...args].includes("ts-node");
+  // HACK: Ugly way to check
+  const tsConfigTsNodeEsmIsTrue = () => {
+    const tsConfigSource = readTsConfigUp(root);
+    if (tsConfigSource == null) return false;
+
+    const tsConfig: unknown = parseConfigFileTextToJson("", tsConfigSource).config;
+    // Check if ts-node is configured and has esm set to true
+    return (
+      tsConfig != null &&
+      typeof tsConfig == "object" &&
+      "ts-node" in tsConfig &&
+      tsConfig["ts-node"] != null &&
+      typeof tsConfig["ts-node"] == "object" &&
+      "esm" in tsConfig["ts-node"] &&
+      tsConfig["ts-node"].esm == true
+    );
+  };
+  return [cmd, ...args].includes("ts-node") || tsConfigTsNodeEsmIsTrue();
 }
 
 function addNodeOptions(...options: string[]) {
