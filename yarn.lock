@@ -2634,6 +2634,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"appmap-node-typescript-esm-test@workspace:test/typescript-esm":
+  version: 0.0.0-use.local
+  resolution: "appmap-node-typescript-esm-test@workspace:test/typescript-esm"
+  dependencies:
+    "@types/node": ^20.5.0
+    ts-node: ^10.9.1
+    typescript: ^5.1.6
+  languageName: unknown
+  linkType: soft
+
 "appmap-node@workspace:.":
   version: 0.0.0-use.local
   resolution: "appmap-node@workspace:."

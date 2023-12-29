@@ -80,6 +80,7 @@
     "test/mysql",
     "test/postgres",
     "test/sqlite",
-    "test/next"
+    "test/next",
+    "test/typescript-esm"
   ]
 }
