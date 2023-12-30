@@ -12,6 +12,7 @@ import { RawSourceMap, SourceMapConsumer } from "source-map-js";
 import * as instrument from "./hooks/instrument";
 import * as jest from "./hooks/jest";
 import * as mocha from "./hooks/mocha";
+import * as next from "./hooks/next";
 import * as vitest from "./hooks/vitest";
 import { warn } from "./message";
 
@@ -21,9 +22,10 @@ const treeDebug = debuglog("appmap-tree");
 export interface Hook {
   shouldInstrument(url: URL): boolean;
   transform(program: ESTree.Program, sourcemap?: SourceMapConsumer): ESTree.Program;
+  shouldIgnore?(url: URL): boolean;
 }
 
-const defaultHooks: Hook[] = [vitest, mocha, jest, instrument];
+const defaultHooks: Hook[] = [next, vitest, mocha, jest, instrument];
 
 export function findHook(url: URL, hooks = defaultHooks) {
   return hooks.find((h) => h.shouldInstrument(url));
@@ -32,6 +34,8 @@ export function findHook(url: URL, hooks = defaultHooks) {
 export default function transform(code: string, url: URL, hooks = defaultHooks): string {
   const hook = findHook(url, hooks);
   if (!hook) return code;
+
+  if (hooks.some((h) => h.shouldIgnore?.(url))) return code;
 
   try {
     const tree = parse(code, { source: url.toString(), next: true, loc: true, module: true });

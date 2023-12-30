@@ -71,6 +71,16 @@ export function toArrowFunction(
   };
 }
 
+export function awaitImport(source: string): ESTree.AwaitExpression {
+  return {
+    type: "AwaitExpression",
+    argument: {
+      type: "ImportExpression",
+      source: literal(source),
+    },
+  };
+}
+
 export function ret(argument: ESTree.Expression | null = null): ESTree.ReturnStatement {
   return {
     type: "ReturnStatement",

@@ -9,9 +9,9 @@ import Recording from "../Recording";
 import {
   args as args_,
   assignment,
+  awaitImport,
   call_,
   identifier,
-  literal,
   member,
   memberId,
   ret,
@@ -105,16 +105,6 @@ export async function wrapRunTest(
 function createRecording(test: Test): Recording {
   const recording = new Recording("tests", "vitest", ...testNames(test));
   return recording;
-}
-
-function awaitImport(source: string): ESTree.AwaitExpression {
-  return {
-    type: "AwaitExpression",
-    argument: {
-      type: "ImportExpression",
-      source: literal(source),
-    },
-  };
 }
 
 function patchRunTest(fd: ESTree.FunctionDeclaration) {

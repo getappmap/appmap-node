@@ -146,8 +146,20 @@ function handleClientResponse(
 
 let remoteRunning = false;
 
+// TODO: return ![next, ...].some(h => h.shouldIgnoreRequest?.(request))
+function shouldIgnoreRequest(request: http.IncomingMessage) {
+  if (request.url?.includes("/_next/static/")) return true;
+  if (request.url?.includes("/_next/image/")) return true;
+  if (request.url?.endsWith(".ico")) return true;
+  if (request.url?.endsWith(".svg")) return true;
+  return false;
+}
+
 function handleRequest(request: http.IncomingMessage, response: http.ServerResponse) {
   if (!(request.method && request.url)) return;
+
+  if (shouldIgnoreRequest(request)) return;
+
   const url = new URL(request.url, "http://example");
   const timestamp = remoteRunning ? undefined : startRequestRecording(url.pathname);
   const requestEvent = recording.httpRequest(
