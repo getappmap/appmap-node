@@ -1,5 +1,4 @@
 import assert from "node:assert";
-import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { ancestor as walk } from "acorn-walk";
@@ -152,15 +151,7 @@ export function shouldInstrument(url: URL): boolean {
   if (url.pathname.endsWith(".json")) return false;
 
   const filePath = fileURLToPath(url);
-  if (filePath.includes("node_modules") || filePath.includes(".yarn")) return false;
-  if (isUnrelated(config.root, filePath)) return false;
-
-  return true;
-}
-
-function isUnrelated(parentPath: string, targetPath: string) {
-  const rel = path.relative(parentPath, targetPath);
-  return rel === targetPath || rel.startsWith("..");
+  return !!config.packages.match(filePath);
 }
 
 function hasIdentifier(

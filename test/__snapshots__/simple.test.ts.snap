@@ -3,6 +3,11 @@
 exports[`creating a default config file 1`] = `
 "name: test
 appmap_dir: tmp/appmap
+packages:
+  - path: .
+    exclude:
+      - node_modules
+      - .yarn
 "
 `;
 

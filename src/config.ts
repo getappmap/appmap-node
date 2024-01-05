@@ -6,6 +6,7 @@ import { cwd } from "node:process";
 import { PackageJson } from "type-fest";
 import YAML from "yaml";
 
+import PackageMatcher, { Package, parsePackages } from "./PackageMatcher";
 import locateFileUp from "./util/findFileUp";
 import lazyOpt from "./util/lazyOpt";
 import tryOr from "./util/tryOr";
@@ -16,6 +17,7 @@ export class Config {
   public readonly root: string;
   public readonly configPath: string;
   public readonly default: boolean;
+  public readonly packages: PackageMatcher;
 
   constructor(pwd = cwd()) {
     const configDir = locateFileUp("appmap.yml", process.env.APPMAP_ROOT ?? pwd);
@@ -33,6 +35,16 @@ export class Config {
     this.relativeAppmapDir = config?.appmap_dir ?? join("tmp", "appmap");
 
     this.appName = config?.name ?? targetPackage()?.name ?? basename(root);
+
+    this.packages = new PackageMatcher(
+      root,
+      config?.packages ?? [
+        {
+          path: ".",
+          exclude: ["node_modules", ".yarn"],
+        },
+      ],
+    );
   }
 
   private absoluteAppmapDir?: string;
@@ -48,6 +60,7 @@ export class Config {
     return {
       name: this.appName,
       appmap_dir: this.relativeAppmapDir,
+      packages: this.packages,
     };
   }
 }
@@ -55,6 +68,7 @@ export class Config {
 interface ConfigFile {
   appmap_dir?: string;
   name?: string;
+  packages?: Package[];
 }
 
 function readConfigFile(path: string | undefined): ConfigFile | undefined {
@@ -66,6 +80,8 @@ function readConfigFile(path: string | undefined): ConfigFile | undefined {
   assert(typeof config === "object");
   if ("name" in config) result.name = String(config.name);
   if ("appmap_dir" in config) result.appmap_dir = String(config.appmap_dir);
+  if ("packages" in config) result.packages = parsePackages(config.packages);
+
   return result;
 }
 

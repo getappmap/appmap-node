@@ -13,7 +13,17 @@ to your tool invocation:
 
 ## Configuration
 
-Currently there is no configurability.
+You can create `appmap.yml` config file; if not found, a default one will be created:
+
+```yaml
+name: application-name  # from package.json by default
+appmap_dir: tmp/appmap
+packages:
+- path: .  # paths to instrument, relative to appmap.yml location
+  exclude:
+  - node_modules
+  - .yaml
+```
 
 ## Limitations
 
@@ -21,6 +31,5 @@ This is an experimetal rewrite of the original appmap-agent-js. It's still in ac
 development, not ready for production use, and the feature set is currently limited.
 
 - Node 18+ supported.
-- Instruments all the files under current directory that aren't node_modules.
 - Only captures named `function`s and methods.
 - Http server capture works with node:http, express.js and nest.js (with express.js only).
