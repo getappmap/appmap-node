@@ -6,6 +6,7 @@ import type { NodeLoaderHooksAPI2 } from "ts-node";
 import { warn } from "./message";
 import transform, { findHook } from "./transform";
 import { readPkgUp } from "./util/readPkgUp";
+import { forceRequire } from "./register";
 
 export const load: NodeLoaderHooksAPI2["load"] = async function load(url, context, defaultLoad) {
   const urlObj = new URL(url);
@@ -39,6 +40,11 @@ export const load: NodeLoaderHooksAPI2["load"] = async function load(url, contex
     } else warn("Empty source: " + url);
     return original;
   }
+
+  // For these modules, we preempt import with CommonJS require
+  // to allow our hooks to modify the loaded module in cache
+  // (which is shared between ESM and CJS for builtins at least).
+  if (["node:http", "node:https", "http", "https"].includes(url)) forceRequire(url);
 
   return defaultLoad(url, context, defaultLoad);
 };

@@ -65,6 +65,115 @@ exports[`mapping a Jest test 1`] = `
 }
 `;
 
+exports[`mapping http client requests (ESM) 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "./esm.mjs:6",
+              "name": "makeRequest",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "esm",
+          "type": "class",
+        },
+      ],
+      "name": "esm",
+      "type": "package",
+    },
+  ],
+  "eventUpdates": {
+    "2": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 1,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+  },
+  "events": [
+    {
+      "defined_class": "esm",
+      "event": "call",
+      "id": 1,
+      "lineno": 6,
+      "method_id": "makeRequest",
+      "parameters": [],
+      "path": "./esm.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 1,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "http_client_request": {
+        "headers": {
+          "Host": "localhost:27628",
+          "Test-Header": "This test header is added after ClientRequest creation",
+        },
+        "request_method": "GET",
+        "url": "http://localhost:27628/endpoint/one",
+      },
+      "id": 3,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_client_response": {
+        "headers": {
+          "Transfer-Encoding": "chunked",
+        },
+        "status_code": 200,
+      },
+      "id": 4,
+      "parent_id": 3,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "http-client-appmap-node-test",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
+
 exports[`mapping http client requests 1`] = `
 {
   "classMap": [
