@@ -1,5 +1,7 @@
+import assert from "node:assert";
 import Module from "node:module";
 import { pathToFileURL } from "node:url";
+import worker from "node:worker_threads";
 
 import { record } from "./recorder.js";
 import requireHook from "./requireHook.js";
@@ -30,3 +32,24 @@ declare global {
   var AppMapRecordHook: typeof record;
 }
 global.AppMapRecordHook = record;
+
+export function createEsmRequireChannel() {
+  return new worker.BroadcastChannel("appmap-node/register/esm-require");
+}
+
+function listenForEsmRequires() {
+  const esmRequireChannel = createEsmRequireChannel();
+  esmRequireChannel.onmessage = (message: unknown) => {
+    assert(
+      message != null &&
+        typeof message == "object" &&
+        "data" in message &&
+        typeof message.data == "string",
+    );
+    Module.createRequire(__filename)(message.data);
+  };
+  // Allow thread to exit if this is the only handle left
+  esmRequireChannel.unref();
+}
+
+listenForEsmRequires();

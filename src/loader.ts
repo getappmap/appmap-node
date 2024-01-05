@@ -1,3 +1,4 @@
+import { createRequire } from "node:module";
 import path from "node:path";
 import { URL } from "node:url";
 
@@ -5,7 +6,10 @@ import type { NodeLoaderHooksAPI2 } from "ts-node";
 
 import { targetPackage } from "./config";
 import { warn } from "./message";
+import { createEsmRequireChannel } from "./register";
 import transform, { findHook } from "./transform";
+
+const moduleUrlsToRequire = ["node:http", "node:https"];
 
 export const load: NodeLoaderHooksAPI2["load"] = async function load(url, context, defaultLoad) {
   const urlObj = new URL(url);
@@ -34,6 +38,18 @@ export const load: NodeLoaderHooksAPI2["load"] = async function load(url, contex
       };
     } else warn("Empty source: " + url);
     return original;
+  }
+
+  if (moduleUrlsToRequire.includes(url)) {
+    const [major, minor, ,] = process.versions.node.split(".").map(Number);
+    if (major == 18 && minor < 19) createRequire(__filename)(url);
+    else {
+      // In node 18.19+ module loading is in a separate thread,
+      // we have to "require" it in the target thread.
+      const channel = createEsmRequireChannel();
+      channel.postMessage(url);
+      channel.close();
+    }
   }
 
   return defaultLoad(url, context, defaultLoad);
