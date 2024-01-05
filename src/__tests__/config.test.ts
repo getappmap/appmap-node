@@ -1,5 +1,5 @@
 import { mkdirSync, writeFileSync } from "node:fs";
-import { basename, join } from "node:path";
+import { basename } from "node:path";
 import { chdir, cwd } from "node:process";
 
 import tmp from "tmp";
@@ -15,7 +15,7 @@ describe(Config, () => {
     process.env.APPMAP_ROOT = "/test/app";
     expect(new Config()).toMatchObject({
       root: "/test/app",
-      appmapDir: "/test/app/tmp/appmap",
+      relativeAppmapDir: "tmp/appmap",
       appName: "app",
     });
   });
@@ -23,7 +23,7 @@ describe(Config, () => {
   it("uses the current directory for root", () => {
     expect(new Config()).toMatchObject({
       root: dir,
-      appmapDir: join(dir, "tmp", "appmap"),
+      relativeAppmapDir: "tmp/appmap",
       appName: basename(dir),
     });
   });
@@ -35,7 +35,7 @@ describe(Config, () => {
     chdir("subdirectory");
     expect(new Config()).toMatchObject({
       root: dir,
-      appmapDir: join(dir, "tmp", "appmap"),
+      relativeAppmapDir: "tmp/appmap",
       appName: "test-package",
     });
   });
@@ -47,7 +47,7 @@ describe(Config, () => {
     chdir("subdirectory");
     expect(new Config()).toMatchObject({
       root: dir,
-      appmapDir: join(dir, "appmap"),
+      relativeAppmapDir: "appmap",
       appName: "test-package",
     });
   });

@@ -1,9 +1,16 @@
+import { cpSync, mkdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+
+import tmp from "tmp";
+
 import {
   integrationTest,
   readAppmap,
   readAppmaps,
+  resolveTarget,
   runAppmapNode,
   spawnAppmapNode,
+  testDir,
 } from "./helpers";
 
 integrationTest("mapping a simple script", () => {
@@ -69,4 +76,20 @@ integrationTest("running a script after changing the current directory", () => {
   // appmap-node is run, even if the current directory changes.
   expect(runAppmapNode("bash", "-c", "cd subproject; node index.js").status).toBe(0);
   expect(readAppmap()).toBeDefined();
+});
+
+integrationTest("creating a default config file", () => {
+  const index = resolveTarget("index.js");
+  const target = tmp.dirSync({ unsafeCleanup: true });
+  mkdirSync(join(target.name, "test"));
+  testDir(join(target.name, "test"));
+
+  cpSync(index, resolveTarget("index.js"));
+
+  const cfgPath = resolveTarget("appmap.yml");
+  expect(runAppmapNode("index.js").status).toBe(0);
+  expect(readAppmap()).toBeDefined();
+
+  // check that the default config file was written
+  expect(readFileSync(cfgPath, "utf8")).toMatchSnapshot();
 });

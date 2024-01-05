@@ -33,7 +33,12 @@ let target = cwd();
 
 export function testDir(path: string) {
   target = resolve(path);
-  beforeEach(() => rmSync(resolve(target, "tmp"), { recursive: true, force: true }));
+}
+
+beforeEach(() => rmSync(resolveTarget("tmp"), { recursive: true, force: true }));
+
+export function resolveTarget(...path: string[]): string {
+  return resolve(target, ...path);
 }
 
 export function integrationTest(name: string, fn?: jest.ProvidesCallback, timeout?: number): void {

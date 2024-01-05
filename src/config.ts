@@ -11,14 +11,14 @@ import lazyOpt from "./util/lazyOpt";
 import tryOr from "./util/tryOr";
 
 export class Config {
-  public readonly appmapDir: string;
+  public readonly relativeAppmapDir: string;
   public readonly appName: string;
   public readonly root: string;
+  public readonly configPath: string;
+  public readonly default: boolean;
 
   constructor(pwd = cwd()) {
     const configDir = locateFileUp("appmap.yml", process.env.APPMAP_ROOT ?? pwd);
-    const config = readConfigFile(configDir);
-
     const packageDir = lazyOpt(() => locateFileUp("package.json", process.env.APPMAP_ROOT ?? pwd));
     const targetPackage = packageDir.then((dir) =>
       tryOr(() => JSON.parse(readFileSync(join(dir, "package.json"), "utf8")) as PackageJson),
@@ -26,13 +26,29 @@ export class Config {
 
     const root = (this.root = process.env.APPMAP_ROOT ?? configDir ?? packageDir() ?? pwd);
 
-    this.appmapDir = config?.appmap_dir ?? join(root, "tmp", "appmap");
+    this.configPath = join(root, "appmap.yml");
+    const config = readConfigFile(this.configPath);
+    this.default = !config;
+
+    this.relativeAppmapDir = config?.appmap_dir ?? join("tmp", "appmap");
 
     this.appName = config?.name ?? targetPackage()?.name ?? basename(root);
   }
 
+  private absoluteAppmapDir?: string;
+  get appmapDir() {
+    return (this.absoluteAppmapDir ||= resolve(this.root, this.relativeAppmapDir));
+  }
+
   export() {
     process.env.APPMAP_ROOT = this.root;
+  }
+
+  toJSON(): ConfigFile {
+    return {
+      name: this.appName,
+      appmap_dir: this.relativeAppmapDir,
+    };
   }
 }
 
@@ -41,15 +57,15 @@ interface ConfigFile {
   name?: string;
 }
 
-function readConfigFile(dir: string | undefined): ConfigFile | undefined {
-  if (!dir) return;
-  const config = tryOr(() => YAML.parse(readFileSync(join(dir, "appmap.yml"), "utf8")) as unknown);
+function readConfigFile(path: string | undefined): ConfigFile | undefined {
+  if (!path) return;
+  const config = tryOr(() => YAML.parse(readFileSync(path, "utf8")) as unknown);
   if (!config) return;
 
   const result: ConfigFile = {};
   assert(typeof config === "object");
   if ("name" in config) result.name = String(config.name);
-  if ("appmap_dir" in config) result.appmap_dir = resolve(dir, String(config.appmap_dir));
+  if ("appmap_dir" in config) result.appmap_dir = String(config.appmap_dir);
   return result;
 }
 

@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`creating a default config file 1`] = `
+"name: test
+appmap_dir: tmp/appmap
+"
+`;
+
 exports[`finish signal is handled 1`] = `
 {
   "classMap": [
@@ -43,7 +49,7 @@ exports[`finish signal is handled 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -107,7 +113,7 @@ exports[`forwarding signals to the child 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -176,7 +182,7 @@ exports[`mapping a custom Error class with a message property 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -454,7 +460,7 @@ exports[`mapping a simple script 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -518,7 +524,7 @@ exports[`mapping an extensionless CommonJS file 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -582,7 +588,7 @@ exports[`mapping an mjs script 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -651,7 +657,7 @@ exports[`mapping generator functions 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -821,7 +827,7 @@ exports[`mapping js class methods and constructors containing super keyword 1`] 
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
