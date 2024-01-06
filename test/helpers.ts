@@ -46,6 +46,11 @@ export function integrationTest(name: string, fn?: jest.ProvidesCallback, timeou
   test(name, fn, timeout);
 }
 
+integrationTest.only = function (name: string, fn?: jest.ProvidesCallback, timeout?: number): void {
+  testDir(caller().replace(/\.test\.[tj]s$/, "/"));
+  test.only(name, fn, timeout);
+};
+
 type AppMap = object & Record<"events", unknown>;
 
 export function readAppmap(path?: string): AppMap.AppMap {

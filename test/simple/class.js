@@ -1,5 +1,6 @@
 class A {
   constructor() {
+    this.skippedMethod();
     console.log("A.constructor()");
   }
 
@@ -9,6 +10,14 @@ class A {
   m2() {
     console.log("A.m2()");
     return "return m2";
+  }
+
+  skippedMethod() {
+    console.log("A.skippedMethod()");
+  }
+
+  static skipped() {
+    console.log("A.skipped()");
   }
 }
 
@@ -21,6 +30,7 @@ class B extends A {
   m1() {
     super.m1();
     console.log("B.m1()");
+    A.skipped();
   }
 }
 

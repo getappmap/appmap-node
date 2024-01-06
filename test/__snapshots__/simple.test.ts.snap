@@ -216,13 +216,13 @@ exports[`mapping a simple script 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:14",
+              "location": "./index.js:15",
               "name": "immediatePromise",
               "static": true,
               "type": "function",
             },
             {
-              "location": "./index.js:18",
+              "location": "./index.js:19",
               "name": "throws",
               "static": true,
               "type": "function",
@@ -234,7 +234,7 @@ exports[`mapping a simple script 1`] = `
               "type": "function",
             },
             {
-              "location": "./index.js:8",
+              "location": "./index.js:9",
               "name": "promised",
               "static": true,
               "type": "function",
@@ -286,7 +286,7 @@ exports[`mapping a simple script 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 1,
-      "lineno": 18,
+      "lineno": 19,
       "method_id": "throws",
       "parameters": [],
       "path": "./index.js",
@@ -367,7 +367,7 @@ exports[`mapping a simple script 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 7,
-      "lineno": 8,
+      "lineno": 9,
       "method_id": "promised",
       "parameters": [],
       "path": "./index.js",
@@ -390,7 +390,7 @@ exports[`mapping a simple script 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 9,
-      "lineno": 8,
+      "lineno": 9,
       "method_id": "promised",
       "parameters": [
         {
@@ -419,7 +419,7 @@ exports[`mapping a simple script 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 11,
-      "lineno": 14,
+      "lineno": 15,
       "method_id": "immediatePromise",
       "parameters": [],
       "path": "./index.js",
@@ -442,7 +442,7 @@ exports[`mapping a simple script 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 13,
-      "lineno": 18,
+      "lineno": 19,
       "method_id": "throws",
       "parameters": [],
       "path": "./index.js",
@@ -691,37 +691,37 @@ exports[`mapping js class methods and constructors containing super keyword 1`] 
         {
           "children": [
             {
-              "location": "./class.js:16",
-              "name": "constructor",
-              "static": false,
-              "type": "function",
-            },
-            {
-              "location": "./class.js:21",
-              "name": "m1",
-              "static": false,
-              "type": "function",
-            },
-          ],
-          "name": "B",
-          "type": "class",
-        },
-        {
-          "children": [
-            {
               "location": "./class.js:2",
               "name": "constructor",
               "static": false,
               "type": "function",
             },
             {
-              "location": "./class.js:6",
+              "location": "./class.js:7",
               "name": "m1",
               "static": false,
               "type": "function",
             },
           ],
           "name": "A",
+          "type": "class",
+        },
+        {
+          "children": [
+            {
+              "location": "./class.js:25",
+              "name": "constructor",
+              "static": false,
+              "type": "function",
+            },
+            {
+              "location": "./class.js:30",
+              "name": "m1",
+              "static": false,
+              "type": "function",
+            },
+          ],
+          "name": "B",
           "type": "class",
         },
       ],
@@ -752,7 +752,7 @@ exports[`mapping js class methods and constructors containing super keyword 1`] 
       "defined_class": "B",
       "event": "call",
       "id": 3,
-      "lineno": 16,
+      "lineno": 25,
       "method_id": "constructor",
       "parameters": [],
       "path": "./class.js",
@@ -788,7 +788,7 @@ exports[`mapping js class methods and constructors containing super keyword 1`] 
       "defined_class": "B",
       "event": "call",
       "id": 7,
-      "lineno": 21,
+      "lineno": 30,
       "method_id": "m1",
       "parameters": [],
       "path": "./class.js",
@@ -804,7 +804,7 @@ exports[`mapping js class methods and constructors containing super keyword 1`] 
       "defined_class": "A",
       "event": "call",
       "id": 8,
-      "lineno": 6,
+      "lineno": 7,
       "method_id": "m1",
       "parameters": [],
       "path": "./class.js",

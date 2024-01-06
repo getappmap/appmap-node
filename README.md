@@ -20,9 +20,12 @@ name: application-name  # from package.json by default
 appmap_dir: tmp/appmap
 packages:
 - path: .  # paths to instrument, relative to appmap.yml location
-  exclude:
-  - node_modules
-  - .yaml
+  exclude:  # code to exclude from instrumentation
+  - node_modules  # these paths are excluded by default
+  - .yaml  # if you create your own config file, you probably want to add them too
+  # You can also exclude methods and functions by name:
+  # - functionName
+  # - Klass.method
 ```
 
 ## Limitations

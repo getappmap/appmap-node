@@ -1,4 +1,5 @@
 import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 export default class PackageMatcher extends Array<Package> {
   constructor(
@@ -16,6 +17,7 @@ export default class PackageMatcher extends Array<Package> {
   }
 
   match(path: string): Package | undefined {
+    if (path.startsWith("file:")) path = fileURLToPath(path);
     const pkg = this.find((pkg) => path.startsWith(this.resolve(pkg.path)));
     return pkg?.exclude?.find((ex) => path.includes(ex)) ? undefined : pkg;
   }
