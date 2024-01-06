@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`creating a default config file 1`] = `
+"name: test
+appmap_dir: tmp/appmap
+packages:
+  - path: .
+    exclude:
+      - node_modules
+      - .yarn
+"
+`;
+
 exports[`finish signal is handled 1`] = `
 {
   "classMap": [
@@ -43,7 +54,7 @@ exports[`finish signal is handled 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -107,7 +118,7 @@ exports[`forwarding signals to the child 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -176,7 +187,7 @@ exports[`mapping a custom Error class with a message property 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -205,13 +216,13 @@ exports[`mapping a simple script 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:14",
+              "location": "./index.js:15",
               "name": "immediatePromise",
               "static": true,
               "type": "function",
             },
             {
-              "location": "./index.js:18",
+              "location": "./index.js:19",
               "name": "throws",
               "static": true,
               "type": "function",
@@ -223,7 +234,7 @@ exports[`mapping a simple script 1`] = `
               "type": "function",
             },
             {
-              "location": "./index.js:8",
+              "location": "./index.js:9",
               "name": "promised",
               "static": true,
               "type": "function",
@@ -275,7 +286,7 @@ exports[`mapping a simple script 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 1,
-      "lineno": 18,
+      "lineno": 19,
       "method_id": "throws",
       "parameters": [],
       "path": "./index.js",
@@ -356,7 +367,7 @@ exports[`mapping a simple script 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 7,
-      "lineno": 8,
+      "lineno": 9,
       "method_id": "promised",
       "parameters": [],
       "path": "./index.js",
@@ -379,7 +390,7 @@ exports[`mapping a simple script 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 9,
-      "lineno": 8,
+      "lineno": 9,
       "method_id": "promised",
       "parameters": [
         {
@@ -408,7 +419,7 @@ exports[`mapping a simple script 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 11,
-      "lineno": 14,
+      "lineno": 15,
       "method_id": "immediatePromise",
       "parameters": [],
       "path": "./index.js",
@@ -431,7 +442,7 @@ exports[`mapping a simple script 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 13,
-      "lineno": 18,
+      "lineno": 19,
       "method_id": "throws",
       "parameters": [],
       "path": "./index.js",
@@ -454,7 +465,7 @@ exports[`mapping a simple script 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -483,7 +494,7 @@ exports[`mapping an extensionless CommonJS file 1`] = `
         {
           "children": [
             {
-              "location": "./extensionless:1",
+              "location": "./extensionless:2",
               "name": "f",
               "static": true,
               "type": "function",
@@ -502,7 +513,7 @@ exports[`mapping an extensionless CommonJS file 1`] = `
       "defined_class": "extensionless",
       "event": "call",
       "id": 1,
-      "lineno": 1,
+      "lineno": 2,
       "method_id": "f",
       "parameters": [],
       "path": "./extensionless",
@@ -518,7 +529,7 @@ exports[`mapping an extensionless CommonJS file 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -582,7 +593,7 @@ exports[`mapping an mjs script 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -651,7 +662,7 @@ exports[`mapping generator functions 1`] = `
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",
@@ -680,37 +691,37 @@ exports[`mapping js class methods and constructors containing super keyword 1`] 
         {
           "children": [
             {
-              "location": "./class.js:16",
-              "name": "constructor",
-              "static": false,
-              "type": "function",
-            },
-            {
-              "location": "./class.js:21",
-              "name": "m1",
-              "static": false,
-              "type": "function",
-            },
-          ],
-          "name": "B",
-          "type": "class",
-        },
-        {
-          "children": [
-            {
               "location": "./class.js:2",
               "name": "constructor",
               "static": false,
               "type": "function",
             },
             {
-              "location": "./class.js:6",
+              "location": "./class.js:7",
               "name": "m1",
               "static": false,
               "type": "function",
             },
           ],
           "name": "A",
+          "type": "class",
+        },
+        {
+          "children": [
+            {
+              "location": "./class.js:25",
+              "name": "constructor",
+              "static": false,
+              "type": "function",
+            },
+            {
+              "location": "./class.js:30",
+              "name": "m1",
+              "static": false,
+              "type": "function",
+            },
+          ],
+          "name": "B",
           "type": "class",
         },
       ],
@@ -741,7 +752,7 @@ exports[`mapping js class methods and constructors containing super keyword 1`] 
       "defined_class": "B",
       "event": "call",
       "id": 3,
-      "lineno": 16,
+      "lineno": 25,
       "method_id": "constructor",
       "parameters": [],
       "path": "./class.js",
@@ -777,7 +788,7 @@ exports[`mapping js class methods and constructors containing super keyword 1`] 
       "defined_class": "B",
       "event": "call",
       "id": 7,
-      "lineno": 21,
+      "lineno": 30,
       "method_id": "m1",
       "parameters": [],
       "path": "./class.js",
@@ -793,7 +804,7 @@ exports[`mapping js class methods and constructors containing super keyword 1`] 
       "defined_class": "A",
       "event": "call",
       "id": 8,
-      "lineno": 6,
+      "lineno": 7,
       "method_id": "m1",
       "parameters": [],
       "path": "./class.js",
@@ -821,7 +832,7 @@ exports[`mapping js class methods and constructors containing super keyword 1`] 
     },
   ],
   "metadata": {
-    "app": "appmap-node",
+    "app": "simple",
     "client": {
       "name": "appmap-node",
       "url": "https://github.com/getappmap/appmap-node",

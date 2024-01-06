@@ -1,11 +1,18 @@
 import { full as walk } from "acorn-walk";
 import { ESTree, parse } from "meriyah";
 
-import * as instrument from "../instrument";
+import config from "../../config";
+import PackageMatcher from "../../PackageMatcher";
 import * as registry from "../../registry";
+import * as instrument from "../instrument";
 
 describe(instrument.shouldInstrument, () => {
-  instrument.setRoot("/test");
+  jest.replaceProperty(config, "root", "/test");
+  jest.replaceProperty(
+    config,
+    "packages",
+    new PackageMatcher("/test", [{ path: ".", exclude: ["node_modules"] }]),
+  );
   test.each([
     ["node:test", false],
     ["file:///test/test.json", false],
@@ -125,3 +132,5 @@ function stripLocations(program: ESTree.Program): ESTree.Program {
   });
   return program;
 }
+
+jest.mock("../../config");

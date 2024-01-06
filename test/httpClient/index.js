@@ -1,9 +1,9 @@
-import http, { ClientRequest } from "node:http";
+const http = require("node:http");
 
-export const SERVER_PORT = 27628;
-export const TEST_HEADER_VALUE = "This test header is added after ClientRequest creation";
+const SERVER_PORT = 27628;
+const TEST_HEADER_VALUE = "This test header is added after ClientRequest creation";
 
-const consume = (request: ClientRequest) => {
+const consume = (request) => {
   return new Promise((resolve) => {
     request.on("response", (response) => {
       response.on("data", () => {
@@ -35,8 +35,8 @@ async function makeRequests() {
   await consume(r3);
 }
 
-async function mocked() {
-  const nock = (await import("nock")).default;
+function mocked() {
+  const nock = require("nock");
   const n = nock(`http://localhost:${SERVER_PORT}`);
   n.get("/endpoint/one").reply(200, "Hello World!");
   n.post("/endpoint/two?p1=v1&p2=v2").reply(200, "Hello World!");
@@ -44,5 +44,5 @@ async function mocked() {
   void makeRequests();
 }
 
-if (process.argv.includes("--mock")) void mocked();
-else void makeRequests();
+if (process.argv.includes("--mock")) mocked();
+else makeRequests();

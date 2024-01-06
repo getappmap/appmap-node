@@ -73,7 +73,7 @@ exports[`mapping http client requests 1`] = `
         {
           "children": [
             {
-              "location": "./index.ts:18",
+              "location": "./index.js:18",
               "name": "makeRequests",
               "static": true,
               "type": "function",
@@ -109,7 +109,7 @@ exports[`mapping http client requests 1`] = `
       "lineno": 18,
       "method_id": "makeRequests",
       "parameters": [],
-      "path": "./index.ts",
+      "path": "./index.js",
       "static": true,
       "thread_id": 0,
     },
@@ -235,13 +235,13 @@ exports[`mapping mocked http client requests 1`] = `
         {
           "children": [
             {
-              "location": "./index.ts:18",
+              "location": "./index.js:18",
               "name": "makeRequests",
               "static": true,
               "type": "function",
             },
             {
-              "location": "./index.ts:38",
+              "location": "./index.js:38",
               "name": "mocked",
               "static": true,
               "type": "function",
@@ -256,26 +256,14 @@ exports[`mapping mocked http client requests 1`] = `
     },
   ],
   "eventUpdates": {
-    "2": {
+    "3": {
       "elapsed": 31.337,
       "event": "return",
-      "id": 2,
-      "parent_id": 1,
+      "id": 3,
+      "parent_id": 2,
       "return_value": {
         "class": "Promise<undefined>",
         "object_id": 1,
-        "value": "Promise { undefined }",
-      },
-      "thread_id": 0,
-    },
-    "4": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 4,
-      "parent_id": 3,
-      "return_value": {
-        "class": "Promise<undefined>",
-        "object_id": 2,
         "value": "Promise { undefined }",
       },
       "thread_id": 0,
@@ -289,15 +277,26 @@ exports[`mapping mocked http client requests 1`] = `
       "lineno": 38,
       "method_id": "mocked",
       "parameters": [],
-      "path": "./index.ts",
+      "path": "./index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "index",
+      "event": "call",
+      "id": 2,
+      "lineno": 18,
+      "method_id": "makeRequests",
+      "parameters": [],
+      "path": "./index.js",
       "static": true,
       "thread_id": 0,
     },
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 2,
-      "parent_id": 1,
+      "id": 3,
+      "parent_id": 2,
       "return_value": {
         "class": "Promise",
         "object_id": 1,
@@ -306,26 +305,10 @@ exports[`mapping mocked http client requests 1`] = `
       "thread_id": 0,
     },
     {
-      "defined_class": "index",
-      "event": "call",
-      "id": 3,
-      "lineno": 18,
-      "method_id": "makeRequests",
-      "parameters": [],
-      "path": "./index.ts",
-      "static": true,
-      "thread_id": 0,
-    },
-    {
       "elapsed": 31.337,
       "event": "return",
       "id": 4,
-      "parent_id": 3,
-      "return_value": {
-        "class": "Promise",
-        "object_id": 2,
-        "value": "Promise { <pending> }",
-      },
+      "parent_id": 1,
       "thread_id": 0,
     },
     {

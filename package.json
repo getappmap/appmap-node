@@ -68,7 +68,8 @@
     "chalk": "<5",
     "convert-source-map": "^2.0.0",
     "meriyah": "^4.3.7",
-    "source-map-js": "^1.0.2"
+    "source-map-js": "^1.0.2",
+    "yaml": "^2.3.4"
   },
   "workspaces": [
     "test/httpClient",

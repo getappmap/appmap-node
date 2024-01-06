@@ -6,7 +6,7 @@ import { inspect } from "node:util";
 import type AppMap from "./AppMap";
 import AppMapStream from "./AppMapStream";
 import { makeClassMap } from "./classMap";
-import { appMapDir } from "./config";
+import config from "./config";
 import { makeCallEvent, makeExceptionEvent, makeReturnEvent } from "./event";
 import { defaultMetadata } from "./metadata";
 import type { FunctionInfo } from "./registry";
@@ -16,7 +16,7 @@ export default class Recording {
   constructor(type: AppMap.RecorderType, recorder: string, ...names: string[]) {
     const dirs = [recorder, ...names].map(quotePathSegment);
     const name = dirs.pop()!; // it must have at least one element
-    this.path = join(appMapDir, ...dirs, makeAppMapFilename(name));
+    this.path = join(config.appmapDir, ...dirs, makeAppMapFilename(name));
     this.partPath = this.path + ".part";
     this.stream = new AppMapStream(this.partPath);
     this.metadata = {

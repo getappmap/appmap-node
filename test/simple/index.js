@@ -2,6 +2,7 @@
 const { setTimeout } = require("timers/promises");
 
 function foo(x) {
+  skipped();
   return x * 2;
 }
 
@@ -18,6 +19,10 @@ function immediatePromise() {
 function throws() {
   console.log("going to throw");
   throw new Error("throws intentionally");
+}
+
+function skipped() {
+  console.log("skipped");
 }
 
 try {
