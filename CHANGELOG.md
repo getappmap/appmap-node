@@ -1,3 +1,10 @@
+# [2.11.0](https://github.com/getappmap/appmap-node/compare/v2.10.0...v2.11.0) (2024-01-10)
+
+
+### Features
+
+* Next.js support (SWC - v12, v13, v14) ([#71](https://github.com/getappmap/appmap-node/issues/71)) ([a7a0ef6](https://github.com/getappmap/appmap-node/commit/a7a0ef638d4c26e6f26b9deb173571bcb3311a18))
+
 # [2.10.0](https://github.com/getappmap/appmap-node/compare/v2.9.0...v2.10.0) (2023-12-21)
 
 
