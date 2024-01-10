@@ -171,7 +171,7 @@ exports[`mapping a Next.js appmap 1`] = `
       },
     ],
     "metadata": {
-      "app": "nextjs-example",
+      "app": "next-appmap-node-test",
       "client": {
         "name": "appmap-node",
         "url": "https://github.com/getappmap/appmap-node",
