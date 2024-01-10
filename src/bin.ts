@@ -1,13 +1,16 @@
 import assert from "node:assert";
 import { ChildProcess, spawn } from "node:child_process";
-import { accessSync } from "node:fs";
+import { accessSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { kill, pid } from "node:process";
 
+import YAML from "yaml";
+
 import { info } from "./message";
 import { version } from "./metadata";
-import { readPkgUp } from "./util/readPkgUp";
 import forwardSignals from "./util/forwardSignals";
+import { readPkgUp } from "./util/readPkgUp";
+import config from "./config";
 
 const registerPath = resolve(__dirname, "../dist/register.js");
 const loaderPath = resolve(__dirname, "../dist/loader.js");
@@ -19,6 +22,11 @@ export function main() {
 
   info("Running with appmap-node version %s", version);
   addNodeOptions("--require", registerPath);
+  if (config.default) {
+    info("Writing default config to %s", config.configPath);
+    writeFileSync(config.configPath, YAML.stringify(config));
+  } else info("Using config file %s", config.configPath);
+  config.export();
 
   // FIXME: Probably there should be a way to remove this altogether
   // by changing our custom loader implementation

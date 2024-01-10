@@ -1,0 +1,7 @@
+name: simple
+appmap_dir: tmp/appmap
+packages:
+- path: .
+  exclude:
+  - skipped
+  - A.skippedMethod

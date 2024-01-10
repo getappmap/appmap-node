@@ -1,12 +1,12 @@
 import assert from "node:assert";
-import path from "node:path";
-import { cwd } from "node:process";
 import { fileURLToPath } from "node:url";
+import { debuglog } from "node:util";
 
 import { ancestor as walk } from "acorn-walk";
 import { ESTree, parse } from "meriyah";
 import { SourceMapConsumer } from "source-map-js";
 
+import config from "../config";
 import {
   args as args_,
   call_,
@@ -19,8 +19,10 @@ import {
   toArrowFunction,
   yieldStar,
 } from "../generate";
-import { FunctionInfo, SourceLocation, createMethodInfo, createFunctionInfo } from "../registry";
+import { FunctionInfo, SourceLocation, createFunctionInfo, createMethodInfo } from "../registry";
 import findLast from "../util/findLast";
+
+const debug = debuglog("appmap:instrument");
 
 const __appmapFunctionRegistryIdentifier = identifier("__appmapFunctionRegistry");
 export const transformedFunctionInfos: FunctionInfo[] = [];
@@ -32,12 +34,15 @@ function addTransformedFunctionInfo(fi: FunctionInfo): number {
 
 export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer): ESTree.Program {
   transformedFunctionInfos.splice(0);
+  const source = program.loc?.source;
+  const pkg = source ? config.packages.match(source) : undefined;
 
   const locate = makeLocator(sourceMap);
 
   walk(program, {
     FunctionDeclaration(fun: ESTree.FunctionDeclaration) {
       if (!hasIdentifier(fun)) return;
+      if (pkg?.exclude?.includes(fun.id.name)) return;
 
       const location = locate(fun);
       if (!location) return; // don't instrument generated code
@@ -52,9 +57,20 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
       const klass = findLast(ancestors, isNamedClass);
       if (!klass) return;
 
+      const { name } = method.key;
+      const qname = [klass.id.name, name].join(".");
+
+      // Not sure why eslint complains here, ?? is the wrong operator
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      if (pkg?.exclude?.includes(name) || pkg?.exclude?.includes(qname)) {
+        debug(`Excluding ${qname}`);
+        return;
+      }
+
       const location = locate(method);
       if (!location) return; // don't instrument generated code
 
+      debug(`Instrumenting ${qname}`);
       method.value.body = wrapWithRecord(
         { ...method.value },
         createMethodInfo(method, klass, location),
@@ -147,26 +163,12 @@ function wrapWithRecord(
   return wrapped;
 }
 
-let root = cwd();
-
-export function setRoot(path: string) {
-  root = path;
-}
-
 export function shouldInstrument(url: URL): boolean {
   if (url.protocol !== "file:") return false;
   if (url.pathname.endsWith(".json")) return false;
 
   const filePath = fileURLToPath(url);
-  if (filePath.includes("node_modules") || filePath.includes(".yarn")) return false;
-  if (isUnrelated(root, filePath)) return false;
-
-  return true;
-}
-
-function isUnrelated(parentPath: string, targetPath: string) {
-  const rel = path.relative(parentPath, targetPath);
-  return rel === targetPath || rel.startsWith("..");
+  return !!config.packages.match(filePath);
 }
 
 function hasIdentifier(

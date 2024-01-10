@@ -1,7 +1,9 @@
 import http from "node:http";
 
 import { integrationTest, readAppmap, runAppmapNode, spawnAppmapNode } from "./helpers";
-import { SERVER_PORT, TEST_HEADER_VALUE } from "./httpClient";
+
+export const SERVER_PORT = 27628;
+export const TEST_HEADER_VALUE = "This test header is added after ClientRequest creation";
 
 integrationTest("mapping http client requests", async () => {
   const server = http
@@ -15,7 +17,7 @@ integrationTest("mapping http client requests", async () => {
       }
     })
     .listen(SERVER_PORT);
-  const client = spawnAppmapNode("yarn", "exec", "ts-node", "index.ts");
+  const client = spawnAppmapNode("index.js");
   await new Promise<void>((r) => client.on("close", () => r()));
   server.close();
   const appMap = readAppmap();
@@ -26,7 +28,7 @@ integrationTest("mapping http client requests", async () => {
 });
 
 integrationTest("mapping mocked http client requests", () => {
-  expect(runAppmapNode("yarn", "exec", "ts-node", "index.ts", "--mock").status).toBe(0);
+  expect(runAppmapNode("index.js", "--mock").status).toBe(0);
   const appMap = readAppmap();
 
   // Make sure we capture the headers modified/added after ClientRequest creation.
