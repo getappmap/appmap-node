@@ -1,0 +1,194 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping a Next.js appmap 1`] = `
+{
+  "./tmp/appmap/requests/<timestamp 0> -hello.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "./app/hello/route.ts:2",
+                "name": "GET",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "route",
+            "type": "class",
+          },
+        ],
+        "name": "route",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "event": "call",
+        "http_server_request": {
+          "headers": {
+            "Host": "localhost:3000",
+          },
+          "path_info": "/hello",
+          "protocol": "HTTP/1.1",
+          "request_method": "GET",
+        },
+        "id": 1,
+        "thread_id": 0,
+      },
+      {
+        "defined_class": "route",
+        "event": "call",
+        "id": 2,
+        "lineno": 2,
+        "method_id": "GET",
+        "parameters": [
+          {
+            "class": "bound NextRequest",
+            "object_id": 1,
+            "value": "NextRequest [Request] {
+  [Symbol(realm)]: { settingsObject: [Object] },
+  [Symbol(state)]: {
+    method: 'GET',
+    localURLsOnly: false,
+    unsafeRequest: false,
+    body: null,
+    client: [Object],
+    reservedClient: null,
+    replacesClientId: '',
+    window: 'client',
+    keepalive: false,
+    serviceWorkers: 'all',
+    initiator: '',
+    destination: '',
+    priority: null,
+    origin: 'client',
+    policyContainer: 'client',
+    referrer: 'client',
+    referrerPolicy: '',
+    mode: 'cors',
+    useCORSPreflightFlag: false,
+    credentials: 'same-origin',
+    useCredentials: false,
+    cache: 'default',
+    redirect: 'follow',
+    integrity: '',
+    cryptoGraphicsNonceMetadata: '',
+    parserMetadata: '',
+    reloadNavigation: false,
+    historyNavigation: false,
+    userActivation: false,
+    taintedOrigin: false,
+    redirectCount: 0,
+    responseTainting: 'basic',
+    preventNoCacheCacheControlHeaderModification: false,
+    done: false,
+    timingAllowFailed: false,
+    headersList: [HeadersList],
+    urlList: [Array],
+    url: URL {}
+  },
+  [Symbol(signal)]: AbortSignal { aborted: false },
+  [Symbol(abortController)]: AbortController { signal: [AbortSignal] },
+  [Symbol(headers)]: HeadersList {
+    cookies: null,
+    [Symbol(headers map)]: [Map],
+    [Symbol(headers map sorted)]: [Array]
+  },
+  [Symbol(internal request)]: {
+    cookies: [RequestCookies],
+    geo: {},
+    ip: undefined,
+    nextUrl: [NextURL],
+    url: 'http://localhost:3000/hello'
+  }
+}",
+          },
+          {
+            "class": "Object",
+            "object_id": 2,
+            "properties": [
+              {
+                "class": "undefined",
+                "name": "params",
+              },
+            ],
+            "value": "{ params: undefined }",
+          },
+        ],
+        "path": "./app/hello/route.ts",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 3,
+        "parent_id": 2,
+        "return_value": {
+          "class": "NextResponse",
+          "object_id": 3,
+          "value": "NextResponse [Response] {
+  [Symbol(realm)]: { settingsObject: {} },
+  [Symbol(state)]: {
+    aborted: false,
+    rangeRequested: false,
+    timingAllowPassed: false,
+    requestIncludesCredentials: false,
+    type: 'default',
+    status: 200,
+    timingInfo: null,
+    cacheState: '',
+    statusText: '',
+    headersList: [HeadersList],
+    urlList: [],
+    body: [Object]
+  },
+  [Symbol(headers)]: HeadersList {
+    cookies: null,
+    [Symbol(headers map)]: [Map],
+    [Symbol(headers map sorted)]: null
+  },
+  [Symbol(internal response)]: { cookies: [ResponseCookies], url: undefined }
+}",
+        },
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "http_server_response": {
+          "headers": {
+            "Content-Type": "application/json",
+            "Vary": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Url",
+          },
+          "status_code": 200,
+        },
+        "id": 4,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "next-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "GET /hello (200) — <timestamp 0>",
+      "recorder": {
+        "name": "requests",
+        "type": "requests",
+      },
+    },
+    "version": "1.12",
+  },
+}
+`;

@@ -78,6 +78,7 @@
     "test/vitest",
     "test/mysql",
     "test/postgres",
-    "test/sqlite"
+    "test/sqlite",
+    "test/next"
   ]
 }
