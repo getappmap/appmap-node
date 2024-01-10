@@ -1,3 +1,19 @@
+# [2.12.0](https://github.com/getappmap/appmap-node/compare/v2.11.0...v2.12.0) (2024-01-10)
+
+
+### Bug Fixes
+
+* Make sure AppMap root stays constant after launch ([1429711](https://github.com/getappmap/appmap-node/commit/14297111df675b8cd9695f10f2f1c161e389ca35))
+* Use package.json location as project root ([0bcfe0b](https://github.com/getappmap/appmap-node/commit/0bcfe0b17b7fce8d0e77049de97622e8023937f9))
+
+
+### Features
+
+* Allow excluding functions by name from instrumentation ([3a9f5ba](https://github.com/getappmap/appmap-node/commit/3a9f5ba227c4d5a75ab4709f6e62b49cb71b78a1))
+* Allow specifying instrumented files ([5a2cc29](https://github.com/getappmap/appmap-node/commit/5a2cc290e6cec714e013dcd652a690b362857a90))
+* Support a config file ([3fe9a10](https://github.com/getappmap/appmap-node/commit/3fe9a10e0415f289a079f020b7e48c59e4629a5a))
+* Write a default config file if none found ([08f3af2](https://github.com/getappmap/appmap-node/commit/08f3af2999e378aa4a4c51b9c212ea404d407219))
+
 # [2.11.0](https://github.com/getappmap/appmap-node/compare/v2.10.0...v2.11.0) (2024-01-10)
 
 
