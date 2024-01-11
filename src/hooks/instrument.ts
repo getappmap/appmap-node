@@ -79,6 +79,9 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
     },
   });
 
+  if (transformedFunctionInfos.length === 0) return program;
+
+  // Add a global variable to hold the function registry (see recorder.ts)
   const functionRegistryAssignment: ESTree.VariableDeclaration = {
     type: "VariableDeclaration",
     declarations: [
