@@ -1,3 +1,10 @@
+## [2.12.1](https://github.com/getappmap/appmap-node/compare/v2.12.0...v2.12.1) (2024-01-12)
+
+
+### Bug Fixes
+
+* Add '--loader ts-node/esm' node options if esm: true in tsconfig.json ([1f2438b](https://github.com/getappmap/appmap-node/commit/1f2438bf8766276c65a56245d9473e59f0a6291a))
+
 # [2.12.0](https://github.com/getappmap/appmap-node/compare/v2.11.0...v2.12.0) (2024-01-10)
 
 
