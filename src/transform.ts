@@ -18,6 +18,7 @@ import { warn } from "./message";
 
 const debug = debuglog("appmap");
 const treeDebug = debuglog("appmap-tree");
+const sourceDebug = debuglog("appmap-source");
 
 export interface Hook {
   shouldInstrument(url: URL): boolean;
@@ -41,7 +42,13 @@ export default function transform(code: string, url: URL, hooks = defaultHooks):
     const tree = parse(code, { source: url.toString(), next: true, loc: true, module: true });
     const xformed = hook.transform(tree, getSourceMap(fixSourceMap(url, code)));
     if (treeDebug.enabled) dumpTree(xformed, url);
-    return generate(xformed);
+    const src = generate(xformed);
+    if (sourceDebug.enabled) {
+      const outputPath = fileURLToPath(url) + ".xformed";
+      writeFileSync(outputPath, src);
+      sourceDebug("wrote transformed source to %s", outputPath);
+    }
+    return src;
   } catch (e) {
     assert(isNativeError(e));
     warn("Error transforming source at %s: %s", url, e.message);
