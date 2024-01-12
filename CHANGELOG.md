@@ -1,3 +1,10 @@
+# [2.13.0](https://github.com/getappmap/appmap-node/compare/v2.12.1...v2.13.0) (2024-01-12)
+
+
+### Features
+
+* Http capture support in ESM ([3d5cd6d](https://github.com/getappmap/appmap-node/commit/3d5cd6d6c2f59b5cea8827f08705348acc9371d3))
+
 ## [2.12.1](https://github.com/getappmap/appmap-node/compare/v2.12.0...v2.12.1) (2024-01-12)
 
 
