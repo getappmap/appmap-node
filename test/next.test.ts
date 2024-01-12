@@ -21,8 +21,8 @@ integrationTest(
   "mapping a Next.js appmap",
   async () => {
     const app = await spawnNextJsApp();
-    const response = await makeRequest("/hello");
-    console.log("Response", response);
+    await makeRequest("/hello");
+    await makeRequest("/about");
 
     app.kill("SIGINT");
     await new Promise((r) => app.once("exit", r));
