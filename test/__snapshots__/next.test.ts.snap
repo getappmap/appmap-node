@@ -112,5 +112,159 @@ exports[`mapping a Next.js appmap 1`] = `
     },
     "version": "1.12",
   },
+  "./tmp/appmap/requests/<timestamp 1> -about.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "./pages/about.tsx:2",
+                "name": "About",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "about",
+            "type": "class",
+          },
+        ],
+        "name": "about",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "event": "call",
+        "http_server_request": {
+          "headers": {
+            "Host": "localhost:3000",
+          },
+          "path_info": "/about",
+          "protocol": "HTTP/1.1",
+          "request_method": "GET",
+        },
+        "id": 1,
+        "thread_id": 0,
+      },
+      {
+        "defined_class": "about",
+        "event": "call",
+        "id": 2,
+        "lineno": 2,
+        "method_id": "About",
+        "parameters": [
+          {
+            "class": "Object",
+            "object_id": 4,
+            "properties": [],
+            "value": "{}",
+          },
+          {
+            "class": "Object",
+            "object_id": 5,
+            "properties": [],
+            "value": "{}",
+          },
+        ],
+        "path": "./pages/about.tsx",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 3,
+        "parent_id": 2,
+        "return_value": {
+          "class": "Object",
+          "object_id": 6,
+          "properties": [
+            {
+              "class": "Symbol",
+              "name": "$$typeof",
+            },
+            {
+              "class": "String",
+              "name": "type",
+            },
+            {
+              "class": "object",
+              "name": "key",
+            },
+            {
+              "class": "object",
+              "name": "ref",
+            },
+            {
+              "class": "Object",
+              "name": "props",
+              "properties": [
+                {
+                  "class": "String",
+                  "name": "children",
+                },
+              ],
+            },
+            {
+              "class": "object",
+              "name": "_owner",
+            },
+            {
+              "class": "Object",
+              "name": "_store",
+              "properties": [],
+            },
+          ],
+          "value": "{
+  '$$typeof': Symbol(react.element),
+  type: 'div',
+  key: null,
+  ref: null,
+  props: { children: 'About' },
+  _owner: null,
+  _store: {}
+}",
+        },
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "http_server_response": {
+          "headers": {
+            "Cache-Control": "no-store, must-revalidate",
+            "Content-Length": "1333",
+            "Content-Type": "text/html; charset=utf-8",
+            "Vary": "Accept-Encoding",
+            "X-Powered-By": "Next.js",
+          },
+          "status_code": 200,
+        },
+        "id": 4,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "next-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "GET /about (200) — <timestamp 1>",
+      "recorder": {
+        "name": "requests",
+        "type": "requests",
+      },
+    },
+    "version": "1.12",
+  },
 }
 `;
