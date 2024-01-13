@@ -1,3 +1,10 @@
+## [2.13.1](https://github.com/getappmap/appmap-node/compare/v2.13.0...v2.13.1) (2024-01-13)
+
+
+### Bug Fixes
+
+* Remove typescript runtime dependency ([b7dcb28](https://github.com/getappmap/appmap-node/commit/b7dcb28ac726f1be77a2b08641ae612b7bc12409))
+
 # [2.13.0](https://github.com/getappmap/appmap-node/compare/v2.12.1...v2.13.0) (2024-01-12)
 
 
