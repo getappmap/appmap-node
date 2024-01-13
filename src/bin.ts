@@ -4,7 +4,7 @@ import { accessSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { kill, pid } from "node:process";
 
-import { parseConfigFileTextToJson } from "typescript";
+import stripJsonComments from "strip-json-comments";
 import YAML from "yaml";
 
 import config from "./config";
@@ -74,7 +74,7 @@ function isTsEsmLoaderNeeded(cmd: string, args: string[]) {
     const tsConfigSource = readTsConfigUp(config.root);
     if (tsConfigSource == null) return false;
 
-    const tsConfig: unknown = parseConfigFileTextToJson("", tsConfigSource).config;
+    const tsConfig: unknown = JSON.parse(stripJsonComments(tsConfigSource));
     // Check if ts-node is configured and has esm set to true
     return (
       tsConfig != null &&

@@ -69,6 +69,7 @@
     "convert-source-map": "^2.0.0",
     "meriyah": "^4.3.7",
     "source-map-js": "^1.0.2",
+    "strip-json-comments": "^3",
     "yaml": "^2.3.4"
   },
   "workspaces": [

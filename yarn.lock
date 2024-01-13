@@ -2679,6 +2679,7 @@ __metadata:
     prettier: ^3.0.2
     semantic-release: ^22.0.5
     source-map-js: ^1.0.2
+    strip-json-comments: ^3
     tmp: ^0.2.1
     ts-node: ^10.9.1
     type-fest: ^4.3.2
@@ -9340,7 +9341,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-json-comments@npm:3.1.1, strip-json-comments@npm:^3.1.1":
+"strip-json-comments@npm:3.1.1, strip-json-comments@npm:^3, strip-json-comments@npm:^3.1.1":
   version: 3.1.1
   resolution: "strip-json-comments@npm:3.1.1"
   checksum: 492f73e27268f9b1c122733f28ecb0e7e8d8a531a6662efbd08e22cccb3f9475e90a1b82cab06a392f6afae6d2de636f977e231296400d0ec5304ba70f166443
