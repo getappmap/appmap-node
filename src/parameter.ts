@@ -26,7 +26,7 @@ export function stringify(value: unknown): string {
     );
   // Pause recorder to prevent potential recursive calls by inspect()
   pauseRecorder();
-  const result = inspect(value, { depth: 1 });
+  const result = inspect(value, { depth: 1, customInspect: false });
   resumeRecorder();
   return result;
 }

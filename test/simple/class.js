@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { inspect } = require("util");
+
 class A {
   constructor() {
     this.skippedMethod();
@@ -31,6 +34,10 @@ class B extends A {
     super.m1();
     console.log("B.m1()");
     A.skipped();
+  }
+
+  [inspect.custom]() {
+    throw "Broken custom inspect implementation";
   }
 }
 

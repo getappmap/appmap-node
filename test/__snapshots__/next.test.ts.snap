@@ -89,12 +89,21 @@ exports[`mapping a Next.js appmap 1`] = `
     urlList: [Array],
     url: URL {}
   },
-  [Symbol(signal)]: AbortSignal { aborted: false },
-  [Symbol(abortController)]: AbortController { signal: [AbortSignal] },
-  [Symbol(headers)]: HeadersList {
-    cookies: null,
-    [Symbol(headers map)]: [Map],
-    [Symbol(headers map sorted)]: [Array]
+  [Symbol(signal)]: AbortSignal {
+    [Symbol(kEvents)]: SafeMap(0) [Map] {},
+    [Symbol(events.maxEventTargetListeners)]: 10,
+    [Symbol(events.maxEventTargetListenersWarned)]: false,
+    [Symbol(kHandlers)]: SafeMap(0) [Map] {},
+    [Symbol(kAborted)]: false,
+    [Symbol(kReason)]: undefined,
+    [Symbol(kComposite)]: false,
+    [Symbol(realm)]: [Object]
+  },
+  [Symbol(abortController)]: AbortController {},
+  [Symbol(headers)]: Headers {
+    [Symbol(headers list)]: [HeadersList],
+    [Symbol(guard)]: 'request',
+    [Symbol(realm)]: [Object]
   },
   [Symbol(internal request)]: {
     cookies: [RequestCookies],
@@ -145,10 +154,10 @@ exports[`mapping a Next.js appmap 1`] = `
     urlList: [],
     body: [Object]
   },
-  [Symbol(headers)]: HeadersList {
-    cookies: null,
-    [Symbol(headers map)]: [Map],
-    [Symbol(headers map sorted)]: null
+  [Symbol(headers)]: Headers {
+    [Symbol(headers list)]: [HeadersList],
+    [Symbol(guard)]: 'response',
+    [Symbol(realm)]: [Object]
   },
   [Symbol(internal response)]: { cookies: [ResponseCookies], url: undefined }
 }",
