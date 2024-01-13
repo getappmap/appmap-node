@@ -69,7 +69,7 @@ async function main() {
   // because promisify already provides the completion callback to resolve the promise.
   // We test this case with no completion callback here wtihout promisifying them.
   db.run("SELECT 'Database.run without a completion callback'");
-  await setTimeout(10); // to serialize the appmap
+  await setTimeout(50); // to serialize the appmap
   db.prepare("SELECT 'Statement.run without a completion callback'").run().finalize();
 }
 
