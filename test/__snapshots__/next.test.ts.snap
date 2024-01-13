@@ -47,72 +47,7 @@ exports[`mapping a Next.js appmap 1`] = `
           {
             "class": "bound NextRequest",
             "object_id": 1,
-            "value": "NextRequest [Request] {
-  [Symbol(realm)]: { settingsObject: [Object] },
-  [Symbol(state)]: {
-    method: 'GET',
-    localURLsOnly: false,
-    unsafeRequest: false,
-    body: null,
-    client: [Object],
-    reservedClient: null,
-    replacesClientId: '',
-    window: 'client',
-    keepalive: false,
-    serviceWorkers: 'all',
-    initiator: '',
-    destination: '',
-    priority: null,
-    origin: 'client',
-    policyContainer: 'client',
-    referrer: 'client',
-    referrerPolicy: '',
-    mode: 'cors',
-    useCORSPreflightFlag: false,
-    credentials: 'same-origin',
-    useCredentials: false,
-    cache: 'default',
-    redirect: 'follow',
-    integrity: '',
-    cryptoGraphicsNonceMetadata: '',
-    parserMetadata: '',
-    reloadNavigation: false,
-    historyNavigation: false,
-    userActivation: false,
-    taintedOrigin: false,
-    redirectCount: 0,
-    responseTainting: 'basic',
-    preventNoCacheCacheControlHeaderModification: false,
-    done: false,
-    timingAllowFailed: false,
-    headersList: [HeadersList],
-    urlList: [Array],
-    url: URL {}
-  },
-  [Symbol(signal)]: AbortSignal {
-    [Symbol(kEvents)]: SafeMap(0) [Map] {},
-    [Symbol(events.maxEventTargetListeners)]: 10,
-    [Symbol(events.maxEventTargetListenersWarned)]: false,
-    [Symbol(kHandlers)]: SafeMap(0) [Map] {},
-    [Symbol(kAborted)]: false,
-    [Symbol(kReason)]: undefined,
-    [Symbol(kComposite)]: false,
-    [Symbol(realm)]: [Object]
-  },
-  [Symbol(abortController)]: AbortController {},
-  [Symbol(headers)]: Headers {
-    [Symbol(headers list)]: [HeadersList],
-    [Symbol(guard)]: 'request',
-    [Symbol(realm)]: [Object]
-  },
-  [Symbol(internal request)]: {
-    cookies: [RequestCookies],
-    geo: {},
-    ip: undefined,
-    nextUrl: [NextURL],
-    url: 'http://localhost:3000/hello'
-  }
-}",
+            "value": "NextRequest",
           },
           {
             "class": "Object",
@@ -138,29 +73,7 @@ exports[`mapping a Next.js appmap 1`] = `
         "return_value": {
           "class": "NextResponse",
           "object_id": 3,
-          "value": "NextResponse [Response] {
-  [Symbol(realm)]: { settingsObject: {} },
-  [Symbol(state)]: {
-    aborted: false,
-    rangeRequested: false,
-    timingAllowPassed: false,
-    requestIncludesCredentials: false,
-    type: 'default',
-    status: 200,
-    timingInfo: null,
-    cacheState: '',
-    statusText: '',
-    headersList: [HeadersList],
-    urlList: [],
-    body: [Object]
-  },
-  [Symbol(headers)]: Headers {
-    [Symbol(headers list)]: [HeadersList],
-    [Symbol(guard)]: 'response',
-    [Symbol(realm)]: [Object]
-  },
-  [Symbol(internal response)]: { cookies: [ResponseCookies], url: undefined }
-}",
+          "value": "NextResponse",
         },
         "thread_id": 0,
       },

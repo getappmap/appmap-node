@@ -120,6 +120,15 @@ function fixEvent(event: unknown) {
       delete event.http_client_response.headers["Keep-Alive"];
   }
   if ("elapsed" in event && typeof event.elapsed === "number") event.elapsed = 31.337;
+  if ("parameters" in event && event.parameters instanceof Array)
+    event.parameters.forEach(fixValue);
+  if ("return_value" in event) fixValue(event.return_value);
+}
+
+function fixValue(value: unknown): void {
+  if (value && typeof value === "object" && "value" in value && typeof value.value === "string") {
+    if (value.value.startsWith("Next")) value.value = value.value.split(" ")[0];
+  }
 }
 
 const timestamps: Record<string, string> = {};
