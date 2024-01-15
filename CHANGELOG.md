@@ -1,3 +1,10 @@
+## [2.13.2](https://github.com/getappmap/appmap-node/compare/v2.13.1...v2.13.2) (2024-01-15)
+
+
+### Bug Fixes
+
+* Don't use custom inspect implementations when stringifying ([a0fc800](https://github.com/getappmap/appmap-node/commit/a0fc8006aace9848be77d7a5736908b54a79efde)), closes [#75](https://github.com/getappmap/appmap-node/issues/75)
+
 ## [2.13.1](https://github.com/getappmap/appmap-node/compare/v2.13.0...v2.13.1) (2024-01-13)
 
 
