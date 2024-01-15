@@ -5,11 +5,12 @@
     "noImplicitAny": true,
     "sourceMap": true,
     "strict": true,
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
   "ts-node": {
     "swc": true
   },
-  "include": ["src/**/*", "test/**/*"],
+  "include": ["src/**/*", "test/**/*", "types/**/*"],
   "exclude": ["src/coverage/**/*"]
 }
