@@ -79,7 +79,6 @@ exports[`mapping Express.js requests 1`] = `
           "headers": {
             "Content-Length": "12",
             "Content-Type": "text/html; charset=utf-8",
-            "Etag": "W/"c-Lve95gjOVATpfV8EL5X4nxwjKHE"",
             "X-Powered-By": "Express",
           },
           "status_code": 200,
@@ -304,7 +303,6 @@ exports[`mapping Express.js requests 1`] = `
           "headers": {
             "Content-Length": "42",
             "Content-Type": "application/json; charset=utf-8",
-            "Etag": "W/"2a-YHNH/nKM8UUG4pNEEtm91sktuKc"",
             "X-Powered-By": "Express",
           },
           "status_code": 200,
@@ -570,7 +568,6 @@ exports[`mapping Express.js requests 1`] = `
           "headers": {
             "Content-Length": "99",
             "Content-Type": "application/json; charset=utf-8",
-            "Etag": "W/"63-avsgRi3I+MK54okDiWb1V4/K3j8"",
             "X-Powered-By": "Express",
           },
           "status_code": 200,
@@ -796,7 +793,6 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         "headers": {
           "Content-Length": "12",
           "Content-Type": "text/html; charset=utf-8",
-          "Etag": "W/"c-Lve95gjOVATpfV8EL5X4nxwjKHE"",
           "X-Powered-By": "Express",
         },
         "status_code": 200,
@@ -921,7 +917,6 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         "headers": {
           "Content-Length": "42",
           "Content-Type": "application/json; charset=utf-8",
-          "Etag": "W/"2a-YHNH/nKM8UUG4pNEEtm91sktuKc"",
           "X-Powered-By": "Express",
         },
         "status_code": 200,
@@ -1072,7 +1067,6 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         "headers": {
           "Content-Length": "99",
           "Content-Type": "application/json; charset=utf-8",
-          "Etag": "W/"63-avsgRi3I+MK54okDiWb1V4/K3j8"",
           "X-Powered-By": "Express",
         },
         "status_code": 200,
