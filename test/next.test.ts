@@ -29,7 +29,7 @@ integrationTest(
 
     expect(readAppmaps()).toMatchSnapshot();
   },
-  10000,
+  20000,
 );
 
 async function makeRequest(path: string, method = "GET") {

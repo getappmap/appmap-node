@@ -28,22 +28,26 @@ export function assignment(
   };
 }
 
-export function member(...ids: ESTree.Expression[]): ESTree.MemberExpression {
-  assert(ids.length > 1);
-  let result = [...ids];
-  while (result.length > 1) {
-    const [object, property, ...rest] = result;
-    result = [
-      { type: "MemberExpression", object, property, computed: property.type !== "Identifier" },
-      ...rest,
-    ];
+export function member(
+  object: ESTree.Expression,
+  ...ids: (ESTree.Expression | string)[]
+): ESTree.MemberExpression {
+  for (const id of ids) {
+    const property = typeof id === "string" ? identifier(id) : id;
+    object = {
+      type: "MemberExpression",
+      object,
+      property,
+      computed: property.type !== "Identifier",
+    };
   }
-  assert(result[0].type === "MemberExpression");
-  return result[0];
+
+  assert(object.type === "MemberExpression");
+  return object;
 }
 
-export function memberId(...ids: string[]): ESTree.MemberExpression {
-  return member(...ids.map(identifier));
+export function memberId(base: string, ...ids: string[]): ESTree.MemberExpression {
+  return member(identifier(base), ...ids);
 }
 
 export type LiteralValue = ESTree.Literal["value"];
