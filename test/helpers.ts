@@ -92,37 +92,28 @@ function fixEvent(event: unknown) {
     if (typeof path !== "string") return;
     event.path = fixPath(path);
   }
-  if (
-    "http_server_request" in event &&
-    typeof event.http_server_request === "object" &&
-    event.http_server_request &&
-    "headers" in event.http_server_request &&
-    typeof event.http_server_request.headers === "object" &&
-    event.http_server_request.headers &&
-    "Connection" in event.http_server_request.headers
-  )
-    // the default of this varies between node versions
-    delete event.http_server_request.headers.Connection;
 
-  if (
-    "http_client_response" in event &&
-    typeof event.http_client_response === "object" &&
-    event.http_client_response &&
-    "headers" in event.http_client_response &&
-    typeof event.http_client_response.headers === "object" &&
-    event.http_client_response.headers
-  ) {
-    if ("Date" in event.http_client_response.headers)
-      delete event.http_client_response.headers.Date;
-    if ("Connection" in event.http_client_response.headers)
-      delete event.http_client_response.headers.Connection;
-    if ("Keep-Alive" in event.http_client_response.headers)
-      delete event.http_client_response.headers["Keep-Alive"];
-  }
+  for (const http of [
+    "http_server_request",
+    "http_server_response",
+    "http_client_request",
+    "http_client_response",
+  ])
+    if (http in event) fixHttp((event as Record<string, unknown>)[http]);
+
   if ("elapsed" in event && typeof event.elapsed === "number") event.elapsed = 31.337;
   if ("parameters" in event && event.parameters instanceof Array)
     event.parameters.forEach(fixValue);
   if ("return_value" in event) fixValue(event.return_value);
+}
+
+function fixHttp(http: unknown) {
+  if (!(http && typeof http === "object" && "headers" in http)) return;
+  const { headers } = http;
+  if (headers && typeof headers === "object") {
+    for (const header of ["Date", "Connection", "Keep-Alive", "Etag"])
+      if (header in headers) delete (headers as Record<string, unknown>)[header];
+  }
 }
 
 function fixValue(value: unknown): void {
