@@ -2,7 +2,7 @@
 
 exports[`mapping Jest tests 1`] = `
 {
-  "./tmp/appmap/jest/exception handling/intentionally throws.appmap.json": {
+  "./tmp/appmap/jest/exception_handling/intentionally_throws.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -75,7 +75,7 @@ exports[`mapping Jest tests 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/jest/exception handling/times out.appmap.json": {
+  "./tmp/appmap/jest/exception_handling/times_out.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -153,7 +153,7 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
     },
     "version": "1.12",
   },
-  "./tmp/appmap/jest/sub/subtracts numbers correctly.appmap.json": {
+  "./tmp/appmap/jest/sub/subtracts_numbers_correctly.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -237,7 +237,7 @@ Received: [31m3[39m",
     },
     "version": "1.12",
   },
-  "./tmp/appmap/jest/sum/sums numbers correctly.appmap.json": {
+  "./tmp/appmap/jest/sum/sums_numbers_correctly.appmap.json": {
     "classMap": [
       {
         "children": [

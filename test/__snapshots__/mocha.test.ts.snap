@@ -2,7 +2,7 @@
 
 exports[`mapping Mocha tests 1`] = `
 {
-  "./tmp/appmap/mocha/exception handling/intentionally throws.appmap.json": {
+  "./tmp/appmap/mocha/exception_handling/intentionally_throws.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -75,7 +75,7 @@ exports[`mapping Mocha tests 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/mocha/multiply/calculates power correctly.appmap.json": {
+  "./tmp/appmap/mocha/multiply/calculates_power_correctly.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -156,7 +156,7 @@ exports[`mapping Mocha tests 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/mocha/multiply/multiplies numbers correctly.appmap.json": {
+  "./tmp/appmap/mocha/multiply/multiplies_numbers_correctly.appmap.json": {
     "classMap": [
       {
         "children": [
