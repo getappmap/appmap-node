@@ -18,7 +18,7 @@ exports[`esm-loader is loaded when required 1`] = `
           "type": "class",
         },
       ],
-      "name": "index",
+      "name": "typescript-esm",
       "type": "package",
     },
   ],

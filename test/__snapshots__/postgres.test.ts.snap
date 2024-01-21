@@ -18,7 +18,7 @@ exports[`mapping PostgreSQL tests 1`] = `
           "type": "class",
         },
       ],
-      "name": "index",
+      "name": "postgres",
       "type": "package",
     },
   ],

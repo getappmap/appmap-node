@@ -14,15 +14,14 @@ export function makeClassMap(funs: Iterable<FunctionInfo>): AppMap.ClassMap {
   for (const fun of sortFunctions(funs)) {
     if (!fun.location) continue;
     const pkgs = fun.location.path.replace(/\..+$/, "").split(sep).reverse();
-    assert(pkgs.length > 0);
+    if (pkgs.length > 1) pkgs.shift(); // remove the file name (e.g. "foo.js")
 
     let [tree, classes]: FNode = [root, {}];
-    let pkg = "";
     while (pkgs.length > 0) {
-      pkg = pkgs.pop()!;
+      const pkg = pkgs.pop()!;
       [tree, classes] = tree[pkg] ||= [{}, {}];
     }
-    (classes[fun.klassOrPkg] ||= []).push(fun);
+    (classes[fun.klassOrFile] ||= []).push(fun);
   }
 
   let result = makeTree(root);

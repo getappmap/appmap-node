@@ -46,7 +46,7 @@ describe(instrument.transform, () => {
             "path": "test.js",
             "lineno": 2
           },
-          "klassOrPkg": "test",
+          "klassOrFile": "test",
           "static": true
         }];
 
@@ -64,7 +64,7 @@ describe(instrument.transform, () => {
       generator: false,
       location: { path: "test.js", lineno: 2 },
       static: true,
-      klassOrPkg: "test",
+      klassOrFile: "test",
     });
   });
 
@@ -91,7 +91,7 @@ describe(instrument.transform, () => {
             "name": "value"
           }],
           "static": false,
-          "klassOrPkg": "TestClass",
+          "klassOrFile": "TestClass",
           "location": {
             "path": "test.js",
             "lineno": 3
@@ -110,7 +110,7 @@ describe(instrument.transform, () => {
     expect(instrument.transformedFunctionInfos[0]).toStrictEqual<registry.FunctionInfo>({
       params: [{ type: "Identifier", name: "value" }],
       id: "foo",
-      klassOrPkg: "TestClass",
+      klassOrFile: "TestClass",
       static: false,
       async: false,
       generator: false,

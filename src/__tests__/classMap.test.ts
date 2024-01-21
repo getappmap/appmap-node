@@ -16,24 +16,11 @@ describe(makeClassMap, () => {
     expect(makeClassMap(functions)).toStrictEqual<AppMap.ClassMap>([
       {
         type: "package",
-        name: "foo",
-        children: [
-          {
-            type: "class",
-            name: "foo",
-            children: [
-              { type: "function", name: "foo", static: true, location: "/test/app/src/foo.js:3" },
-            ],
-          },
-        ],
-      },
-      {
-        type: "package",
-        name: "util",
+        name: "src",
         children: [
           {
             type: "package",
-            name: "other",
+            name: "util",
             children: [
               {
                 type: "class",
@@ -47,6 +34,13 @@ describe(makeClassMap, () => {
                   },
                 ],
               },
+            ],
+          },
+          {
+            type: "class",
+            name: "foo",
+            children: [
+              { type: "function", name: "foo", static: true, location: "/test/app/src/foo.js:3" },
             ],
           },
           {
@@ -110,7 +104,7 @@ function f(
     id,
     params: [],
     static: static_,
-    klassOrPkg: klass,
+    klassOrFile: klass,
     location,
   };
 }

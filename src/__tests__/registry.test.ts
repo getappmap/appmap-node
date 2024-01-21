@@ -21,7 +21,7 @@ describe(registry.createFunctionInfo, () => {
       params: [],
       location: { path: "test.js", lineno: 42 },
       static: true,
-      klassOrPkg: "test",
+      klassOrFile: "test",
     });
   });
 });
@@ -56,7 +56,7 @@ describe(registry.createMethodInfo, () => {
       generator: false,
       params: [],
       id: "testMethod",
-      klassOrPkg: "TestClass",
+      klassOrFile: "TestClass",
       location: undefined,
       static: false,
     });
