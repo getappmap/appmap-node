@@ -2,7 +2,7 @@
 
 exports[`mapping Express.js requests 1`] = `
 {
-  "./tmp/appmap/requests/<timestamp 0> -.appmap.json": {
+  "./tmp/appmap/requests/<timestamp 0>_-.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -109,7 +109,7 @@ exports[`mapping Express.js requests 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/requests/<timestamp 1> -nonexistent.appmap.json": {
+  "./tmp/appmap/requests/<timestamp 1>_-nonexistent.appmap.json": {
     "classMap": [],
     "events": [
       {
@@ -163,7 +163,7 @@ exports[`mapping Express.js requests 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/requests/<timestamp 2> -api-foo.appmap.json": {
+  "./tmp/appmap/requests/<timestamp 2>_-api-foo.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -334,7 +334,7 @@ exports[`mapping Express.js requests 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/requests/<timestamp 3> -api-bar.appmap.json": {
+  "./tmp/appmap/requests/<timestamp 3>_-api-bar.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -1106,7 +1106,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
 
 exports[`mapping node:http requests 1`] = `
 {
-  "./tmp/appmap/requests/<timestamp 0> -.appmap.json": {
+  "./tmp/appmap/requests/<timestamp 0>_-.appmap.json": {
     "classMap": [],
     "events": [
       {
@@ -1154,7 +1154,7 @@ exports[`mapping node:http requests 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/requests/<timestamp 1> -nonexistent.appmap.json": {
+  "./tmp/appmap/requests/<timestamp 1>_-nonexistent.appmap.json": {
     "classMap": [],
     "events": [
       {
@@ -1202,7 +1202,7 @@ exports[`mapping node:http requests 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/requests/<timestamp 2> -api-foo.appmap.json": {
+  "./tmp/appmap/requests/<timestamp 2>_-api-foo.appmap.json": {
     "classMap": [],
     "events": [
       {
@@ -1262,7 +1262,7 @@ exports[`mapping node:http requests 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/requests/<timestamp 3> -api-bar.appmap.json": {
+  "./tmp/appmap/requests/<timestamp 3>_-api-bar.appmap.json": {
     "classMap": [],
     "events": [
       {

@@ -218,5 +218,6 @@ function makeAppMapFilename(name: string): string {
 }
 
 function quotePathSegment(value: string): string {
-  return value.replaceAll(/[/\\]/g, "-");
+  // note replacing spaces isn't strictly necessary improves UX
+  return value.replaceAll(/[/\\]/g, "-").replaceAll(" ", "_");
 }

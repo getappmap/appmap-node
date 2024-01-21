@@ -2,7 +2,7 @@
 
 exports[`mapping vitest run  1`] = `
 {
-  "./tmp/appmap/vitest/adds 1 + 2 to equal 3.appmap.json": {
+  "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -79,7 +79,7 @@ exports[`mapping vitest run  1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/vitest/exception handling.appmap.json": {
+  "./tmp/appmap/vitest/exception_handling.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -152,7 +152,7 @@ exports[`mapping vitest run  1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/vitest/multiplies 0 by 3 to equal 0.appmap.json": {
+  "./tmp/appmap/vitest/multiplies_0_by_3_to_equal_0.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -229,7 +229,7 @@ exports[`mapping vitest run  1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/vitest/multiplies 5 by 4 to equal 20.appmap.json": {
+  "./tmp/appmap/vitest/multiplies_5_by_4_to_equal_20.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -310,7 +310,7 @@ exports[`mapping vitest run  1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/vitest/subtracts 9 - 2 to equal 7.appmap.json": {
+  "./tmp/appmap/vitest/subtracts_9_-_2_to_equal_7.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -392,7 +392,7 @@ exports[`mapping vitest run  1`] = `
 
 exports[`mapping vitest run --no-threads 1`] = `
 {
-  "./tmp/appmap/vitest/adds 1 + 2 to equal 3.appmap.json": {
+  "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -469,7 +469,7 @@ exports[`mapping vitest run --no-threads 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/vitest/exception handling.appmap.json": {
+  "./tmp/appmap/vitest/exception_handling.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -542,7 +542,7 @@ exports[`mapping vitest run --no-threads 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/vitest/multiplies 0 by 3 to equal 0.appmap.json": {
+  "./tmp/appmap/vitest/multiplies_0_by_3_to_equal_0.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -619,7 +619,7 @@ exports[`mapping vitest run --no-threads 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/vitest/multiplies 5 by 4 to equal 20.appmap.json": {
+  "./tmp/appmap/vitest/multiplies_5_by_4_to_equal_20.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -700,7 +700,7 @@ exports[`mapping vitest run --no-threads 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/vitest/subtracts 9 - 2 to equal 7.appmap.json": {
+  "./tmp/appmap/vitest/subtracts_9_-_2_to_equal_7.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -782,7 +782,7 @@ exports[`mapping vitest run --no-threads 1`] = `
 
 exports[`mapping vitest run --single-thread 1`] = `
 {
-  "./tmp/appmap/vitest/adds 1 + 2 to equal 3.appmap.json": {
+  "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -859,7 +859,7 @@ exports[`mapping vitest run --single-thread 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/vitest/exception handling.appmap.json": {
+  "./tmp/appmap/vitest/exception_handling.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -932,7 +932,7 @@ exports[`mapping vitest run --single-thread 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/vitest/multiplies 0 by 3 to equal 0.appmap.json": {
+  "./tmp/appmap/vitest/multiplies_0_by_3_to_equal_0.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -1009,7 +1009,7 @@ exports[`mapping vitest run --single-thread 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/vitest/multiplies 5 by 4 to equal 20.appmap.json": {
+  "./tmp/appmap/vitest/multiplies_5_by_4_to_equal_20.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -1090,7 +1090,7 @@ exports[`mapping vitest run --single-thread 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/vitest/subtracts 9 - 2 to equal 7.appmap.json": {
+  "./tmp/appmap/vitest/subtracts_9_-_2_to_equal_7.appmap.json": {
     "classMap": [
       {
         "children": [

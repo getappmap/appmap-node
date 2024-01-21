@@ -2,7 +2,7 @@
 
 exports[`mapping a Next.js appmap 1`] = `
 {
-  "./tmp/appmap/requests/<timestamp 0> -hello.appmap.json": {
+  "./tmp/appmap/requests/<timestamp 0>_-hello.appmap.json": {
     "classMap": [
       {
         "children": [
