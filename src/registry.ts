@@ -14,7 +14,7 @@ export interface FunctionInfo {
   params: ESTree.Parameter[];
   static: boolean;
   /** Class name, or the package name for a free function */
-  klassOrPkg: string;
+  klassOrFile: string;
   location?: SourceLocation;
 }
 
@@ -31,7 +31,7 @@ export function createFunctionInfo(
     id: id.name,
     params: params.map(stripLocation),
     location,
-    klassOrPkg: pkgOfPath(location.path),
+    klassOrFile: pkgOfPath(location.path),
     static: true,
   };
   return info;
@@ -52,7 +52,7 @@ export function createMethodInfo(
     id: key.name,
     params: params.map(stripLocation),
     static: method.static,
-    klassOrPkg: klass.id.name,
+    klassOrFile: klass.id.name,
     location,
   };
   return info;

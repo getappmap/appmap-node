@@ -19,7 +19,7 @@ exports[`mapping a Next.js appmap 1`] = `
             "type": "class",
           },
         ],
-        "name": "route",
+        "name": "hello",
         "type": "package",
       },
     ],

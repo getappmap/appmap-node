@@ -18,7 +18,7 @@ exports[`mapping Sqlite tests 1`] = `
           "type": "class",
         },
       ],
-      "name": "index",
+      "name": "sqlite",
       "type": "package",
     },
   ],

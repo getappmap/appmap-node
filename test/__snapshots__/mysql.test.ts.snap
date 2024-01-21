@@ -18,7 +18,7 @@ exports[`mapping MySQL tests 1`] = `
           "type": "class",
         },
       ],
-      "name": "index",
+      "name": "mysql",
       "type": "package",
     },
   ],
