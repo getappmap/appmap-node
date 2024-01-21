@@ -2,8 +2,12 @@
   "ts-node": {
     "esm": true
   },
+  "files": ["index.ts"],
   "compilerOptions": {
     "strictNullChecks": true,
-    "module": "ESNext" /* Specify what module code is generated. */
+    "module": "ESNext" /* Specify what module code is generated. */,
+    "rootDir": "./" /* Specify the root folder within your source files. */,
+    "types": ["node"],
+    "sourceMap": true
   }
 }

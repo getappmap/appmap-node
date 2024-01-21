@@ -1,6 +1,6 @@
 import assert from "node:assert";
-import { writeFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { readFileSync, writeFileSync } from "node:fs";
+import { URL, fileURLToPath } from "node:url";
 import { debuglog } from "node:util";
 import { isNativeError } from "node:util/types";
 
@@ -40,7 +40,7 @@ export default function transform(code: string, url: URL, hooks = defaultHooks):
 
   try {
     const tree = parse(code, { source: url.toString(), next: true, loc: true, module: true });
-    const xformed = hook.transform(tree, getSourceMap(fixSourceMap(url, code)));
+    const xformed = hook.transform(tree, getSourceMap(url, code));
     if (treeDebug.enabled) dumpTree(xformed, url);
     const src = generate(xformed);
     if (sourceDebug.enabled) {
@@ -64,25 +64,41 @@ function dumpTree(xformed: ESTree.Program, url: URL) {
   treeDebug("wrote transformed tree to %s", path);
 }
 
-// HACK: In node 18, when using --loader node-ts/esm
-// sourcemap gets inserted twice to the typescript file. We remove the second one
-// which reflects transpiled files map, instead of the original typescript file map.
-function fixSourceMap(url: URL, code: string): string {
-  const [major] = process.versions.node.split(".").map(Number);
-  if (major >= 20) return code;
-
-  if (![".ts", ".mts", ".tsx"].some((e) => url.pathname.toLowerCase().endsWith(e))) return code;
-
-  let removed = SourceMapConverter.removeComments(code);
-  if (removed.indexOf("//# sourceMappingURL") > -1) {
-    // Correct one remains, it needs to start in new line.
-    removed = removed.replace("//# sourceMappingURL", "\n//# sourceMappingURL");
-    return removed;
+function getSourceMap(url: URL, code: string): SourceMapConsumer | undefined {
+  if (
+    process.versions.node.split(".").map(Number) < [18, 19] &&
+    [".ts", ".mts", ".tsx"].some((e) => url.pathname.toLowerCase().endsWith(e))
+  ) {
+    // HACK: In node 18.18, when using --loader node-ts/esm
+    // sourcemap gets inserted twice to the typescript file. We remove the second one
+    // which reflects transpiled files map, instead of the original typescript file map.
+    code = SourceMapConverter.removeComments(code);
+    if (code.indexOf("//# sourceMappingURL") > -1)
+      // Correct one remains, it needs to start in new line.
+      code.replace("//# sourceMappingURL", "\n//# sourceMappingURL");
   }
-  return code;
+
+  const readFile = (filename: string) => {
+    const fileUrl = new URL(filename, url);
+    switch (fileUrl.protocol) {
+      case "file:":
+        return readFileSync(fileUrl, "utf8");
+      case "data:":
+        return parseDataUrl(fileUrl);
+      default:
+        throw new Error(`unhandled protocol reading source map: ${fileUrl.protocol}`);
+    }
+  };
+
+  const map = SourceMapConverter.fromMapFileSource(code, readFile);
+  if (map) return new SourceMapConsumer(map.sourcemap as RawSourceMap);
 }
 
-function getSourceMap(code: string): SourceMapConsumer | undefined {
-  const map = SourceMapConverter.fromSource(code);
-  if (map) return new SourceMapConsumer(map.sourcemap as RawSourceMap);
+function parseDataUrl(fileUrl: URL) {
+  assert(fileUrl.protocol === "data:");
+  const [type, data] = fileUrl.pathname.split(",", 2);
+  return Buffer.from(
+    decodeURIComponent(data),
+    type.endsWith("base64") ? "base64" : "utf8",
+  ).toString("utf8");
 }
