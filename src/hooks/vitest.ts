@@ -114,7 +114,7 @@ function patchRunTest(fd: ESTree.FunctionDeclaration) {
       // Statement: return await import(".../vitest.js").wrapRunTest(function runTest(...) {...}, arguments);
       ret(
         call_(
-          member(awaitImport(__filename), identifier(wrapRunTest.name)),
+          member(awaitImport(pathToFileURL(__filename).href), identifier(wrapRunTest.name)),
           { ...fd, type: "FunctionExpression" },
           args_,
         ),
@@ -137,7 +137,7 @@ function patchRunModule(md: ESTree.MethodDefinition) {
   const transformCodeStatement = assignment(
     identifier("transformed"),
     call_(
-      member(awaitImport(__filename), identifier(transformCode.name)),
+      member(awaitImport(pathToFileURL(__filename).href), identifier(transformCode.name)),
       identifier("transformed"),
       memberId("context", "__filename"),
     ),

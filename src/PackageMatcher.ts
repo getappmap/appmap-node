@@ -1,25 +1,37 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import fwdSlashPath from "./util/fwdSlashPath";
 
 export default class PackageMatcher extends Array<Package> {
   constructor(
     private root: string,
     packages: Package[],
   ) {
+    // Normalize path separators
+    packages.forEach((p) => {
+      p.path = fwdSlashPath(p.path);
+      if (p.exclude)
+        for (let i = 0; i < p.exclude.length; i++) p.exclude[i] = fwdSlashPath(p.exclude[i]);
+    });
+
     super(...packages);
-    this.resolved = new Map(packages.map(({ path }) => [path, resolve(root, path)]));
+    this.resolved = new Map(packages.map(({ path }) => [path, fwdSlashPath(resolve(root, path))]));
   }
 
   private resolved: Map<string, string>;
 
   private resolve(path: string) {
-    return this.resolved.get(path) ?? resolve(this.root, path);
+    return this.resolved.get(path) ?? fwdSlashPath(resolve(this.root, path));
   }
 
   match(path: string): Package | undefined {
     if (path.startsWith("file:")) path = fileURLToPath(path);
-    const pkg = this.find((pkg) => path.startsWith(this.resolve(pkg.path)));
-    return pkg?.exclude?.find((ex) => path.includes(ex)) ? undefined : pkg;
+
+    // Make sure passed path is forward slashed
+    const fixedPath = fwdSlashPath(path);
+
+    const pkg = this.find((pkg) => fixedPath.startsWith(this.resolve(pkg.path)));
+    return pkg?.exclude?.find((ex) => fixedPath.includes(ex)) ? undefined : pkg;
   }
 }
 

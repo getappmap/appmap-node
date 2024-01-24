@@ -8,6 +8,7 @@ import YAML from "yaml";
 
 import PackageMatcher from "../PackageMatcher";
 import { Config } from "../config";
+import { fixAbsPath } from "../hooks/__tests__/fixAbsPath";
 
 tmp.setGracefulCleanup();
 
@@ -98,10 +99,12 @@ describe(Config, () => {
 describe(PackageMatcher, () => {
   it("matches packages", () => {
     const pkg = { path: ".", exclude: ["node_modules", ".yarn"] };
-    const matcher = new PackageMatcher("/test/app", [pkg]);
-    expect(matcher.match("/test/app/lib/foo.js")).toEqual(pkg);
-    expect(matcher.match("/other/app/lib/foo.js")).toBeUndefined();
-    expect(matcher.match("/test/app/node_modules/lib/foo.js")).toBeUndefined();
-    expect(matcher.match("/test/app/.yarn/lib/foo.js")).toBeUndefined();
+    const matcher = new PackageMatcher(fixAbsPath("/test/app"), [pkg]);
+    expect(matcher.match(fixAbsPath("/test/app/lib/foo.js"))).toEqual(pkg);
+    if (process.platform == "win32")
+      expect(matcher.match(fixAbsPath("\\test\\app\\lib\\foo.js"))).toEqual(pkg);
+    expect(matcher.match(fixAbsPath("/other/app/lib/foo.js"))).toBeUndefined();
+    expect(matcher.match(fixAbsPath("/test/app/node_modules/lib/foo.js"))).toBeUndefined();
+    expect(matcher.match(fixAbsPath("/test/app/.yarn/lib/foo.js"))).toBeUndefined();
   });
 });

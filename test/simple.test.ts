@@ -13,6 +13,8 @@ import {
   testDir,
 } from "./helpers";
 
+const integrationTestSkipOnWindows = process.platform == "win32" ? test.skip : integrationTest;
+
 integrationTest("mapping a simple script", () => {
   expect(runAppmapNode("index.js").status).toBe(0);
   expect(readAppmap()).toMatchSnapshot();
@@ -28,7 +30,7 @@ integrationTest("mapping js class methods and constructors containing super keyw
   expect(readAppmap()).toMatchSnapshot();
 });
 
-integrationTest("forwarding signals to the child", async () => {
+integrationTestSkipOnWindows("forwarding signals to the child", async () => {
   const daemon = spawnAppmapNode("daemon.mjs");
   await new Promise<void>((r) =>
     daemon.stdout.on("data", (chunk: Buffer) => chunk.toString().includes("starting") && r()),
@@ -51,7 +53,7 @@ integrationTest("mapping a custom Error class with a message property", () => {
   expect(readAppmap()).toMatchSnapshot();
 });
 
-integrationTest("finish signal is handled", async () => {
+integrationTestSkipOnWindows("finish signal is handled", async () => {
   const server = spawnAppmapNode("server.mjs");
   await new Promise<void>((r) =>
     server.stdout.on("data", (chunk: Buffer) => chunk.toString().includes("starting") && r()),
@@ -67,14 +69,21 @@ integrationTest("finish signal is handled", async () => {
 });
 
 integrationTest("mapping an extensionless CommonJS file", () => {
-  expect(runAppmapNode("./extensionless").status).toBe(0);
+  const args = ["./extensionless"];
+  if (process.platform == "win32") args.unshift("node");
+  expect(runAppmapNode(...args).status).toBe(0);
   expect(readAppmap()).toMatchSnapshot();
 });
 
 integrationTest("running a script after changing the current directory", () => {
   // Need to make sure the appmap "root" stays the same after
   // appmap-node is run, even if the current directory changes.
-  expect(runAppmapNode("bash", "-c", "cd subproject; node index.js").status).toBe(0);
+  const args =
+    process.platform == "win32"
+      ? ["cd subproject & node subproject.js"]
+      : ["bash", "-c", "cd subproject; node subproject.js"];
+
+  expect(runAppmapNode(...args).status).toBe(0);
   expect(readAppmap()).toBeDefined();
 });
 

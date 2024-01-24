@@ -112,7 +112,7 @@ exports[`mapping a Next.js appmap 1`] = `
     },
     "version": "1.12",
   },
-  "./tmp/appmap/requests/<timestamp 1> -about.appmap.json": {
+  "./tmp/appmap/requests/<timestamp 1>_-about.appmap.json": {
     "classMap": [
       {
         "children": [
@@ -129,7 +129,7 @@ exports[`mapping a Next.js appmap 1`] = `
             "type": "class",
           },
         ],
-        "name": "about",
+        "name": "pages",
         "type": "package",
       },
     ],

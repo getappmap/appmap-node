@@ -2,23 +2,25 @@ import { full as walk } from "acorn-walk";
 import { ESTree, parse } from "meriyah";
 
 import config from "../../config";
+import { fixAbsPath } from "./fixAbsPath";
+import * as instrument from "../instrument";
 import PackageMatcher from "../../PackageMatcher";
 import * as registry from "../../registry";
-import * as instrument from "../instrument";
 
 describe(instrument.shouldInstrument, () => {
-  jest.replaceProperty(config, "root", "/test");
+  jest.replaceProperty(config, "root", fixAbsPath("/test"));
   jest.replaceProperty(
     config,
     "packages",
-    new PackageMatcher("/test", [{ path: ".", exclude: ["node_modules"] }]),
+    new PackageMatcher(fixAbsPath("/test"), [{ path: ".", exclude: ["node_modules"] }]),
   );
+
   test.each([
     ["node:test", false],
-    ["file:///test/test.json", false],
-    ["file:///var/test.js", false],
-    ["file:///test/test.js", true],
-    ["file:///test/node_modules/test.js", false],
+    [fixAbsPath("file:///test/test.json"), false],
+    [fixAbsPath("file:///var/test.js"), false],
+    [fixAbsPath("file:///test/test.js"), true],
+    [fixAbsPath("file:///test/node_modules/test.js"), false],
   ])("%s", (url, expected) => expect(instrument.shouldInstrument(new URL(url))).toBe(expected));
 });
 

@@ -47,6 +47,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
       - run: yarn
+      - run: yarn prepack
       - run: yarn test
       - run: node test/smoketest.mjs
 

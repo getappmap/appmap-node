@@ -3,6 +3,7 @@ import { ChildProcess, spawn } from "node:child_process";
 import { accessSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { kill, pid } from "node:process";
+import { pathToFileURL } from "node:url";
 
 import stripJsonComments from "strip-json-comments";
 import YAML from "yaml";
@@ -14,7 +15,10 @@ import forwardSignals from "./util/forwardSignals";
 import { readPkgUp } from "./util/readPkgUp";
 
 const registerPath = resolve(__dirname, "../dist/register.js");
-const loaderPath = resolve(__dirname, "../dist/loader.js");
+// We need to convert c: to file:// in Windows because:
+// "Error: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader.
+// On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'"
+const loaderPath = pathToFileURL(resolve(__dirname, "../dist/loader.js")).href;
 
 export function main() {
   const [cmd, ...args] = process.argv.slice(2);
@@ -46,7 +50,14 @@ export function main() {
     }
   } else {
     // it's a command, spawn it
-    child = spawn(cmd, args, { stdio: "inherit" });
+
+    // We need to give shell: true in Windows because we get "Error: spawn yarn ENOENT"
+    // for example when the cmd is yarn. Looks like it needs the full path of the
+    // executable otherwise.
+    // Related articles:
+    // - https://stackoverflow.com/questions/37459717/error-spawn-enoent-on-windows
+    // - https://github.com/nodejs/node/issues/7367#issuecomment-238594729
+    child = spawn(cmd, args, { stdio: "inherit", shell: process.platform == "win32" });
   }
 
   forwardSignals(child);
