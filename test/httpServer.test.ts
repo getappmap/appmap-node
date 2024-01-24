@@ -7,6 +7,8 @@ integrationTest("mapping Express.js requests", async () => {
   expect.assertions(1);
   const server = await spawnServer("express.js");
   await makeRequests();
+  // Wait for the last request to finish
+  await awaitStdoutOnData(server, "api-bar.appmap.json");
   await killServer(server);
   expect(readAppmaps()).toMatchSnapshot();
 });
@@ -15,6 +17,8 @@ integrationTest("mapping node:http requests", async () => {
   expect.assertions(1);
   const server = await spawnServer("vanilla.js");
   await makeRequests();
+  // Wait for the last request to finish
+  await awaitStdoutOnData(server, "api-bar.appmap.json");
   await killServer(server);
   expect(readAppmaps()).toMatchSnapshot();
 });
@@ -39,6 +43,14 @@ integrationTest("mapping node:http requests with remote recording", async () => 
   await killServer(server);
 });
 
+async function awaitStdoutOnData(server: ChildProcessWithoutNullStreams, searchString: string) {
+  await new Promise<void>((r) =>
+    server.stdout.on("data", (chunk: Buffer) => {
+      if (chunk.toString().includes(searchString)) r();
+    }),
+  );
+}
+
 async function makeRequests() {
   await makeRequest("");
   await makeRequest("/nonexistent");
@@ -58,11 +70,7 @@ async function makeRequests() {
 
 async function spawnServer(script: string) {
   const server = spawnAppmapNode(script);
-  await new Promise<void>((r) =>
-    server.stdout.on("data", (chunk: Buffer) => {
-      if (chunk.toString().includes("listening")) r();
-    }),
-  );
+  await awaitStdoutOnData(server, "listening");
   return server;
 }
 

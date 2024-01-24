@@ -42,6 +42,9 @@ const files = glob.globSync("tmp/**/*.appmap.json");
 assert(files.length === 1);
 
 function runCommand(command, ...args) {
-  const { status } = spawnSync(command, args, { stdio: "inherit" });
+  const { status } = spawnSync(command, args, {
+    stdio: "inherit",
+    shell: process.platform == "win32",
+  });
   assert(status === 0);
 }

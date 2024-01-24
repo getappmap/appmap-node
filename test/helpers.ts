@@ -8,6 +8,7 @@ import caller from "caller";
 import { globSync } from "fast-glob";
 
 import type AppMap from "../src/AppMap";
+import fwdSlashPath from "../src/util/fwdSlashPath";
 
 const binPath = resolve(__dirname, "../bin/appmap-node.js");
 
@@ -29,13 +30,13 @@ export function spawnAppmapNode(...args: string[]): ChildProcessWithoutNullStrea
   return result;
 }
 
-let target = cwd();
+let target = fwdSlashPath(cwd());
 
 export function testDir(path: string) {
-  target = resolve(path);
+  target = fwdSlashPath(resolve(path));
 }
 
-beforeEach(() => rmSync(resolveTarget("tmp"), { recursive: true, force: true }));
+beforeEach(() => rmSync(resolveTarget("tmp"), { recursive: true, force: true, maxRetries: 3 }));
 
 export function resolveTarget(...path: string[]): string {
   return resolve(target, ...path);
@@ -55,7 +56,7 @@ type AppMap = object & Record<"events", unknown>;
 
 export function readAppmap(path?: string): AppMap.AppMap {
   if (!path) {
-    const files = globSync(resolve(target, "tmp/**/*.appmap.json"));
+    const files = globSync(fwdSlashPath(resolve(target, "tmp/**/*.appmap.json")));
     expect(files.length).toBe(1);
     [path] = files;
   }
@@ -80,7 +81,7 @@ export function fixAppmap(map: unknown): AppMap.AppMap {
 }
 
 export function readAppmaps(): Record<string, AppMap.AppMap> {
-  const files = globSync(resolve(target, "tmp/**/*.appmap.json"));
+  const files = globSync(fwdSlashPath(resolve(target, "tmp/**/*.appmap.json")));
   const maps = files.map<[string, AppMap.AppMap]>((path) => [fixPath(path), readAppmap(path)]);
   return Object.fromEntries(maps);
 }
@@ -128,13 +129,13 @@ beforeEach(() => (timestampId = 0));
 
 function fixTimeStamps(str: string): string {
   return str.replaceAll(
-    /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/g,
-    (ts) => (timestamps[ts] ||= `<timestamp ${timestampId++}>`),
+    /\d{4}-\d{2}-\d{2}T\d{2}[:-]\d{2}[:-]\d{2}\.\d{3}Z/g,
+    (ts) => (timestamps[ts.replaceAll(":", "-")] ||= `<timestamp ${timestampId++}>`),
   );
 }
 
 function fixPath(path: string): string {
-  return fixTimeStamps(path.replace(target, "."));
+  return fixTimeStamps(fwdSlashPath(path).replace(target, "."));
 }
 
 function fixClassMap(classMap: unknown[]) {

@@ -1,5 +1,4 @@
 import assert from "node:assert";
-import { sep } from "node:path";
 
 import type AppMap from "./AppMap";
 import type { FunctionInfo, SourceLocation } from "./registry";
@@ -13,7 +12,8 @@ export function makeClassMap(funs: Iterable<FunctionInfo>): AppMap.ClassMap {
   // sorting isn't strictly necessary, but it provides for a stable output
   for (const fun of sortFunctions(funs)) {
     if (!fun.location) continue;
-    const pkgs = fun.location.path.replace(/\..+$/, "").split(sep).reverse();
+    // fun.location can contain "/" as separator even in Windows
+    const pkgs = fun.location.path.replace(/\..+$/, "").split(/[/\\]/).reverse();
     if (pkgs.length > 1) pkgs.shift(); // remove the file name (e.g. "foo.js")
 
     let [tree, classes]: FNode = [root, {}];

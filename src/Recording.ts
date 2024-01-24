@@ -217,7 +217,8 @@ function makeAppMapFilename(name: string): string {
   return name + ".appmap.json";
 }
 
+const charsToQuote = process.platform == "win32" ? /[/\\:<>*"|?]/g : /[/\\]/g;
 function quotePathSegment(value: string): string {
   // note replacing spaces isn't strictly necessary improves UX
-  return value.replaceAll(/[/\\]/g, "-").replaceAll(" ", "_");
+  return value.replaceAll(charsToQuote, "-").replaceAll(" ", "_");
 }

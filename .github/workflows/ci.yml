@@ -41,6 +41,16 @@ jobs:
         env:
           POSTGRES_URL: postgres://postgres:postgres@localhost:5432
 
+  windows-test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: yarn
+      - run: yarn prepack
+      - run: yarn test
+      - run: node test/smoketest.mjs
+
   release:
     runs-on: ubuntu-latest
     permissions:

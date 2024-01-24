@@ -1,4 +1,6 @@
 import { parse } from "meriyah";
+
+import { fixAbsPath } from "./fixAbsPath";
 import * as jestHook from "../jest";
 import transform from "../../transform";
 
@@ -53,9 +55,11 @@ describe(jestHook.patchRuntime, () => {
 describe(jestHook.transformJest, () => {
   it("pushes jest transformed code through appmap hooks", () => {
     jest.mocked(transform).mockReturnValue("transformed test code");
-    const result = jestHook.transformJest.call(undefined, () => "test code", ["/test/test.js"]);
+    const result = jestHook.transformJest.call(undefined, () => "test code", [
+      fixAbsPath("/test/test.js"),
+    ]);
     expect(result).toBe("transformed test code");
-    expect(transform).toBeCalledWith("test code", new URL("file:///test/test.js"));
+    expect(transform).toBeCalledWith("test code", new URL(fixAbsPath("file:///test/test.js")));
   });
 });
 

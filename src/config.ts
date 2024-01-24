@@ -32,7 +32,7 @@ export class Config {
     const config = readConfigFile(this.configPath);
     this.default = !config;
 
-    this.relativeAppmapDir = config?.appmap_dir ?? join("tmp", "appmap");
+    this.relativeAppmapDir = config?.appmap_dir ?? "tmp/appmap";
 
     this.appName = config?.name ?? targetPackage()?.name ?? basename(root);
 
