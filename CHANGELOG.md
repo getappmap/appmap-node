@@ -1,3 +1,17 @@
+# [2.14.0](https://github.com/getappmap/appmap-node/compare/v2.13.2...v2.14.0) (2024-01-24)
+
+
+### Bug Fixes
+
+* Hook next with a webpack instead of hooking swc ([9b44adf](https://github.com/getappmap/appmap-node/commit/9b44adf062d54ac996e9cb6c081a00dcc3b742ae)), closes [#76](https://github.com/getappmap/appmap-node/issues/76)
+* Windows support ([#89](https://github.com/getappmap/appmap-node/issues/89)) ([7d88965](https://github.com/getappmap/appmap-node/commit/7d88965fe5f7f204d04462a3b716904fb363e672))
+
+
+### Features
+
+* Packages in the classmap now model directories exclusively ([0786a48](https://github.com/getappmap/appmap-node/commit/0786a4862d860a4cf32dd801e002948a5520f969)), closes [#93](https://github.com/getappmap/appmap-node/issues/93)
+* Replace spaces in filenames with underscores ([734a5eb](https://github.com/getappmap/appmap-node/commit/734a5eba1b46517ec28cd3c04e6ab1b4dd85372f)), closes [#94](https://github.com/getappmap/appmap-node/issues/94)
+
 ## [2.13.2](https://github.com/getappmap/appmap-node/compare/v2.13.1...v2.13.2) (2024-01-15)
 
 
