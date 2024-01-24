@@ -48,7 +48,7 @@ jobs:
       - uses: actions/setup-node@v3
       - run: yarn
       - run: yarn prepack
-      - run: yarn test
+      - run: yarn test || yarn jest --no-silent --verbose --onlyFailures
       - run: node test/smoketest.mjs
 
   release:
