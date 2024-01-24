@@ -1,3 +1,10 @@
+## [2.14.1](https://github.com/getappmap/appmap-node/compare/v2.14.0...v2.14.1) (2024-01-24)
+
+
+### Bug Fixes
+
+* Handle external source maps ([01d9a09](https://github.com/getappmap/appmap-node/commit/01d9a09043f065ef2ea63b2fcb20f8d154688b55)), closes [#96](https://github.com/getappmap/appmap-node/issues/96)
+
 # [2.14.0](https://github.com/getappmap/appmap-node/compare/v2.13.2...v2.14.0) (2024-01-24)
 
 
