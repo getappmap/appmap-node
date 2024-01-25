@@ -42,10 +42,18 @@ export function getClass(value: unknown): string {
   return value.constructor.name;
 }
 
-function parameterSchema(value: unknown): AppMap.ParameterSchema {
+function parameterSchema(value: unknown, objectsSeen?: Set<object>): AppMap.ParameterSchema {
   const result: AppMap.ParameterSchema = { class: getClass(value) };
-  if (value instanceof Array) result.items = itemsSchema(value);
-  else if (isSimpleObject(value)) result.properties = propertiesSchema(value);
+
+  // Handle circular references to prevent stack overflow
+  if (objectsSeen == null) objectsSeen = new Set();
+  if (value && typeof value === "object") {
+    if (objectsSeen.has(value)) return result;
+    objectsSeen.add(value);
+  }
+
+  if (value instanceof Array) result.items = itemsSchema(value, objectsSeen);
+  else if (isSimpleObject(value)) result.properties = propertiesSchema(value, objectsSeen);
   return result;
 }
 
@@ -54,19 +62,24 @@ function isSimpleObject(value: unknown): value is Record<string, unknown> {
   return Object.getPrototypeOf(value) === null || value.constructor === Object;
 }
 
-function itemsSchema([head, ...tail]: unknown[]): AppMap.ParameterSchema | undefined {
+function itemsSchema(
+  [head, ...tail]: unknown[],
+  objectsSeen?: Set<object>,
+): AppMap.ParameterSchema | undefined {
   if (!head) return;
 
-  const schema = parameterSchema(head);
-  for (const item of tail) if (!isDeepStrictEqual(schema, parameterSchema(item))) return;
+  const schema = parameterSchema(head, objectsSeen);
+  for (const item of tail)
+    if (!isDeepStrictEqual(schema, parameterSchema(item, objectsSeen))) return;
 
   return schema;
 }
 
 function propertiesSchema(
   value: Record<string, unknown>,
+  objectsSeen?: Set<object>,
 ): ({ name: string } & AppMap.ParameterSchema)[] {
-  return Object.entries(value).map(([name, v]) => ({ name, ...parameterSchema(v) }));
+  return Object.entries(value).map(([name, v]) => ({ name, ...parameterSchema(v, objectsSeen) }));
 }
 
 let nextId = 1;

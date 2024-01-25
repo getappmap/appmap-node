@@ -68,3 +68,22 @@ describe(objectId, () => {
     expect([objectId(arr), objectId(obj)]).toStrictEqual(ids);
   });
 });
+
+describe(parameter, () => {
+  it("transforms circular references", () => {
+    class Circular {
+      name?: string;
+      favorite?: Circular;
+      items?: Circular[];
+    }
+
+    const obj = new Object() as Circular;
+    obj.name = "Selfish";
+
+    obj.favorite = obj;
+    expect(parameter(obj).class).toBe("Object");
+
+    obj.items = [obj];
+    expect(parameter(obj).class).toBe("Object");
+  });
+});
