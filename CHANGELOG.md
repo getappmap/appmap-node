@@ -1,3 +1,10 @@
+## [2.14.2](https://github.com/getappmap/appmap-node/compare/v2.14.1...v2.14.2) (2024-01-25)
+
+
+### Bug Fixes
+
+* Stack overflow in circularly referenced parameter objects ([5886b63](https://github.com/getappmap/appmap-node/commit/5886b63442b397d9e37af20fc41764d91b28264d))
+
 ## [2.14.1](https://github.com/getappmap/appmap-node/compare/v2.14.0...v2.14.1) (2024-01-24)
 
 
