@@ -39,7 +39,15 @@ export function optParameter(value: unknown): AppMap.Parameter | undefined {
 export function getClass(value: unknown): string {
   if (typeof value === "undefined") return "undefined";
   if (value === null || Object.getPrototypeOf(value) === null) return "object";
-  return value.constructor.name;
+
+  // tRPC proxies the object and throws an error when its constructor is accessed.
+  // "Error: Tried to access "$types.constructor" which is not available at runtime"
+  // https://github.com/trpc/trpc/blob/774b75c7a9bdbde1a85741a8baa24be06ad3e207/packages/server/src/core/initTRPC.ts#L131
+  try {
+    return value.constructor.name;
+  } catch {
+    return "unknown";
+  }
 }
 
 function parameterSchema(value: unknown, objectsSeen?: Set<object>): AppMap.ParameterSchema {
