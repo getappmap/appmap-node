@@ -44,7 +44,7 @@ export async function injectConfig(loadConfig: () => Promise<NextConfig>): Promi
   const orig = result.webpack;
   result.webpack = (config: webpack.Configuration, context) => {
     if (orig) config = orig(config, context) as webpack.Configuration;
-    if (context.isServer) {
+    if (context.isServer && context.nextRuntime !== "edge") {
       assert(config.module?.rules);
       config.module.rules.unshift({
         test: /\.(tsx|ts|js|cjs|mjs|jsx)$/,
