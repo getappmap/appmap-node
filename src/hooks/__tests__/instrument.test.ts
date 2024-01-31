@@ -32,7 +32,7 @@ describe(instrument.transform, () => {
         return arg + 1;
       }
     `,
-      { loc: true, source: "test.js" },
+      { loc: true, source: fixAbsPath("/test/test.js") },
     );
     expect(stripLocations(instrument.transform(program))).toStrictEqual(
       parse(`
@@ -79,7 +79,7 @@ describe(instrument.transform, () => {
         }
       }
     `,
-      { loc: true, source: "test.js" },
+      { loc: true, source: fixAbsPath("/test/test.js") },
     );
 
     expect(stripLocations(instrument.transform(program))).toStrictEqual(

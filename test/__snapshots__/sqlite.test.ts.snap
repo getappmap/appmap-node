@@ -8,7 +8,7 @@ exports[`mapping Sqlite tests 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:13",
+              "location": "index.js:13",
               "name": "main",
               "static": true,
               "type": "function",
@@ -18,7 +18,7 @@ exports[`mapping Sqlite tests 1`] = `
           "type": "class",
         },
       ],
-      "name": "sqlite",
+      "name": "sqlite-appmap-node-test",
       "type": "package",
     },
   ],
@@ -44,7 +44,7 @@ exports[`mapping Sqlite tests 1`] = `
       "lineno": 13,
       "method_id": "main",
       "parameters": [],
-      "path": "./index.js",
+      "path": "index.js",
       "static": true,
       "thread_id": 0,
     },

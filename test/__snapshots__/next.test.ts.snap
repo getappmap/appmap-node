@@ -9,7 +9,7 @@ exports[`mapping a Next.js appmap 1`] = `
           {
             "children": [
               {
-                "location": "./app/hello/route.ts:2",
+                "location": "app/hello/route.ts:2",
                 "name": "GET",
                 "static": true,
                 "type": "function",
@@ -61,7 +61,7 @@ exports[`mapping a Next.js appmap 1`] = `
             "value": "{ params: undefined }",
           },
         ],
-        "path": "./app/hello/route.ts",
+        "path": "app/hello/route.ts",
         "static": true,
         "thread_id": 0,
       },
@@ -119,7 +119,7 @@ exports[`mapping a Next.js appmap 1`] = `
           {
             "children": [
               {
-                "location": "./pages/about.tsx:2",
+                "location": "pages/about.tsx:2",
                 "name": "About",
                 "static": true,
                 "type": "function",
@@ -167,7 +167,7 @@ exports[`mapping a Next.js appmap 1`] = `
             "value": "{}",
           },
         ],
-        "path": "./pages/about.tsx",
+        "path": "pages/about.tsx",
         "static": true,
         "thread_id": 0,
       },

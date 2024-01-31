@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import AppMap from "../AppMap";
 import { makeClassMap } from "../classMap";
+import config from "../config";
 import { FunctionInfo, SourceLocation } from "../registry";
 
 describe(makeClassMap, () => {
@@ -41,12 +42,17 @@ describe(makeClassMap, () => {
     );
   });
 
-  it("only creates a package for a file if absolutely required", () => {
+  it("uses the app name as the top level package if required", () => {
+    jest.replaceProperty(config, "appName", "testApp");
     // if a path is just a file, the class would have been
     // toplevel which is prohibited by the spec
     check([f("fun", "util.js:42", "util"), f("other", "src/other.js:42", "other")], {
-      util: { c_util: ["fun@util.js:42"] },
-      src: { c_other: ["other@src/other.js:42"] },
+      testApp: {
+        c_util: ["fun@util.js:42"],
+        src: {
+          c_other: ["other@src/other.js:42"],
+        },
+      },
     });
   });
 });

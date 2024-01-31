@@ -1,6 +1,8 @@
-import { basename } from "node:path";
+import { basename, relative } from "node:path";
 
 import type { ESTree } from "meriyah";
+
+import config from "./config";
 
 export interface SourceLocation {
   path: string;
@@ -30,7 +32,7 @@ export function createFunctionInfo(
     generator,
     id: id.name,
     params: params.map(stripLocation),
-    location,
+    location: relativeLocation(location),
     klassOrFile: pkgOfPath(location.path),
     static: true,
   };
@@ -53,7 +55,7 @@ export function createMethodInfo(
     params: params.map(stripLocation),
     static: method.static,
     klassOrFile: klass.id.name,
-    location,
+    location: relativeLocation(location),
   };
   return info;
 }
@@ -68,4 +70,13 @@ function pkgOfPath(path: string): string {
   const base = basename(path);
   if (base.includes(".")) return base.split(".").slice(0, -1).join(".");
   else return base;
+}
+
+// return location relative to config.root
+function relativeLocation(location: SourceLocation | undefined): SourceLocation | undefined {
+  if (!location) return undefined;
+  return {
+    path: relative(config.root, location.path),
+    lineno: location.lineno,
+  };
 }

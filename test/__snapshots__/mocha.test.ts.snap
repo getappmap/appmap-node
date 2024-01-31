@@ -9,7 +9,7 @@ exports[`mapping Mocha tests 1`] = `
           {
             "children": [
               {
-                "location": "./test.js:18",
+                "location": "test.js:18",
                 "name": "errorOut",
                 "static": true,
                 "type": "function",
@@ -19,7 +19,7 @@ exports[`mapping Mocha tests 1`] = `
             "type": "class",
           },
         ],
-        "name": "mocha",
+        "name": "mocha-appmap-node-test",
         "type": "package",
       },
     ],
@@ -31,7 +31,7 @@ exports[`mapping Mocha tests 1`] = `
         "lineno": 18,
         "method_id": "errorOut",
         "parameters": [],
-        "path": "./test.js",
+        "path": "test.js",
         "static": true,
         "thread_id": 0,
       },
@@ -82,7 +82,7 @@ exports[`mapping Mocha tests 1`] = `
           {
             "children": [
               {
-                "location": "./calc.js:5",
+                "location": "calc.js:5",
                 "name": "power",
                 "static": true,
                 "type": "function",
@@ -92,7 +92,7 @@ exports[`mapping Mocha tests 1`] = `
             "type": "class",
           },
         ],
-        "name": "mocha",
+        "name": "mocha-appmap-node-test",
         "type": "package",
       },
     ],
@@ -115,7 +115,7 @@ exports[`mapping Mocha tests 1`] = `
             "value": "2",
           },
         ],
-        "path": "./calc.js",
+        "path": "calc.js",
         "static": true,
         "thread_id": 0,
       },
@@ -163,7 +163,7 @@ exports[`mapping Mocha tests 1`] = `
           {
             "children": [
               {
-                "location": "./calc.js:1",
+                "location": "calc.js:1",
                 "name": "multiply",
                 "static": true,
                 "type": "function",
@@ -173,7 +173,7 @@ exports[`mapping Mocha tests 1`] = `
             "type": "class",
           },
         ],
-        "name": "mocha",
+        "name": "mocha-appmap-node-test",
         "type": "package",
       },
     ],
@@ -196,7 +196,7 @@ exports[`mapping Mocha tests 1`] = `
             "value": "5",
           },
         ],
-        "path": "./calc.js",
+        "path": "calc.js",
         "static": true,
         "thread_id": 0,
       },

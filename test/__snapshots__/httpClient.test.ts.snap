@@ -18,7 +18,7 @@ exports[`mapping a Jest test 1`] = `
           "type": "class",
         },
       ],
-      "name": "test",
+      "name": "http-client-appmap-node-test",
       "type": "package",
     },
   ],
@@ -73,7 +73,7 @@ exports[`mapping http client requests (ESM) 1`] = `
         {
           "children": [
             {
-              "location": "./esm.mjs:6",
+              "location": "esm.mjs:6",
               "name": "makeRequest",
               "static": true,
               "type": "function",
@@ -83,7 +83,7 @@ exports[`mapping http client requests (ESM) 1`] = `
           "type": "class",
         },
       ],
-      "name": "httpClient",
+      "name": "http-client-appmap-node-test",
       "type": "package",
     },
   ],
@@ -109,7 +109,7 @@ exports[`mapping http client requests (ESM) 1`] = `
       "lineno": 6,
       "method_id": "makeRequest",
       "parameters": [],
-      "path": "./esm.mjs",
+      "path": "esm.mjs",
       "static": true,
       "thread_id": 0,
     },
@@ -182,7 +182,7 @@ exports[`mapping http client requests 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:18",
+              "location": "index.js:18",
               "name": "makeRequests",
               "static": true,
               "type": "function",
@@ -192,7 +192,7 @@ exports[`mapping http client requests 1`] = `
           "type": "class",
         },
       ],
-      "name": "httpClient",
+      "name": "http-client-appmap-node-test",
       "type": "package",
     },
   ],
@@ -218,7 +218,7 @@ exports[`mapping http client requests 1`] = `
       "lineno": 18,
       "method_id": "makeRequests",
       "parameters": [],
-      "path": "./index.js",
+      "path": "index.js",
       "static": true,
       "thread_id": 0,
     },
@@ -344,13 +344,13 @@ exports[`mapping mocked http client requests 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:18",
+              "location": "index.js:18",
               "name": "makeRequests",
               "static": true,
               "type": "function",
             },
             {
-              "location": "./index.js:38",
+              "location": "index.js:38",
               "name": "mocked",
               "static": true,
               "type": "function",
@@ -360,7 +360,7 @@ exports[`mapping mocked http client requests 1`] = `
           "type": "class",
         },
       ],
-      "name": "httpClient",
+      "name": "http-client-appmap-node-test",
       "type": "package",
     },
   ],
@@ -386,7 +386,7 @@ exports[`mapping mocked http client requests 1`] = `
       "lineno": 38,
       "method_id": "mocked",
       "parameters": [],
-      "path": "./index.js",
+      "path": "index.js",
       "static": true,
       "thread_id": 0,
     },
@@ -397,7 +397,7 @@ exports[`mapping mocked http client requests 1`] = `
       "lineno": 18,
       "method_id": "makeRequests",
       "parameters": [],
-      "path": "./index.js",
+      "path": "index.js",
       "static": true,
       "thread_id": 0,
     },

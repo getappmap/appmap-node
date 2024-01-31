@@ -8,7 +8,7 @@ exports[`mapping MySQL tests 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:17",
+              "location": "index.js:17",
               "name": "main",
               "static": true,
               "type": "function",
@@ -18,7 +18,7 @@ exports[`mapping MySQL tests 1`] = `
           "type": "class",
         },
       ],
-      "name": "mysql",
+      "name": "mysql-appmap-node-test",
       "type": "package",
     },
   ],
@@ -44,7 +44,7 @@ exports[`mapping MySQL tests 1`] = `
       "lineno": 17,
       "method_id": "main",
       "parameters": [],
-      "path": "./index.js",
+      "path": "index.js",
       "static": true,
       "thread_id": 0,
     },

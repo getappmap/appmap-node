@@ -1,6 +1,7 @@
 import assert from "node:assert";
 
 import type AppMap from "./AppMap";
+import config from "./config";
 import type { FunctionInfo, SourceLocation } from "./registry";
 
 type FNode = [FTree, Record<string, FunctionInfo[]>];
@@ -13,9 +14,9 @@ export function makeClassMap(funs: Iterable<FunctionInfo>): AppMap.ClassMap {
   for (const fun of sortFunctions(funs)) {
     if (!fun.location) continue;
     // fun.location can contain "/" as separator even in Windows
-    const pkgs = fun.location.path.split(/[/\\]/).reverse();
-    if (pkgs.length > 1) pkgs.shift(); // remove the file name (e.g. "foo.js")
-    else pkgs.push(pkgs.pop()!.replace(/\.[^.]*$/, "")); // remove the suffix
+    const pkgs = fun.location.path.split(/[/\\]/).reverse().slice(1);
+    // add app name as fallback top level package
+    pkgs.push(config.appName);
 
     let [tree, classes]: FNode = [root, {}];
     while (pkgs.length > 0) {
