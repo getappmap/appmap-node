@@ -8,7 +8,7 @@ exports[`mapping PostgreSQL tests 1`] = `
         {
           "children": [
             {
-              "location": "./index.js:6",
+              "location": "index.js:6",
               "name": "main",
               "static": true,
               "type": "function",
@@ -18,7 +18,7 @@ exports[`mapping PostgreSQL tests 1`] = `
           "type": "class",
         },
       ],
-      "name": "postgres",
+      "name": "postgresql-appmap-node-test",
       "type": "package",
     },
   ],
@@ -94,7 +94,7 @@ exports[`mapping PostgreSQL tests 1`] = `
       "lineno": 6,
       "method_id": "main",
       "parameters": [],
-      "path": "./index.js",
+      "path": "index.js",
       "static": true,
       "thread_id": 0,
     },

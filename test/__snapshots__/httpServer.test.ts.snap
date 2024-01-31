@@ -9,7 +9,7 @@ exports[`mapping Express.js requests 1`] = `
           {
             "children": [
               {
-                "location": "./express.js:21",
+                "location": "express.js:21",
                 "name": "helloWorld",
                 "static": true,
                 "type": "function",
@@ -19,7 +19,7 @@ exports[`mapping Express.js requests 1`] = `
             "type": "class",
           },
         ],
-        "name": "httpServer",
+        "name": "http-server-appmap-node-test",
         "type": "package",
       },
     ],
@@ -61,7 +61,7 @@ exports[`mapping Express.js requests 1`] = `
             "value": "[Function: next]",
           },
         ],
-        "path": "./express.js",
+        "path": "express.js",
         "static": true,
         "thread_id": 0,
       },
@@ -169,7 +169,7 @@ exports[`mapping Express.js requests 1`] = `
           {
             "children": [
               {
-                "location": "./express.js:25",
+                "location": "express.js:25",
                 "name": "api",
                 "static": true,
                 "type": "function",
@@ -179,7 +179,7 @@ exports[`mapping Express.js requests 1`] = `
             "type": "class",
           },
         ],
-        "name": "httpServer",
+        "name": "http-server-appmap-node-test",
         "type": "package",
       },
     ],
@@ -266,7 +266,7 @@ exports[`mapping Express.js requests 1`] = `
             "value": "{ param1: '3', param2: '4' }",
           },
         ],
-        "path": "./express.js",
+        "path": "express.js",
         "static": true,
         "thread_id": 0,
       },
@@ -339,7 +339,7 @@ exports[`mapping Express.js requests 1`] = `
           {
             "children": [
               {
-                "location": "./express.js:29",
+                "location": "express.js:29",
                 "name": "postApi",
                 "static": true,
                 "type": "function",
@@ -349,7 +349,7 @@ exports[`mapping Express.js requests 1`] = `
             "type": "class",
           },
         ],
-        "name": "httpServer",
+        "name": "http-server-appmap-node-test",
         "type": "package",
       },
     ],
@@ -500,7 +500,7 @@ exports[`mapping Express.js requests 1`] = `
 }",
           },
         ],
-        "path": "./express.js",
+        "path": "express.js",
         "static": true,
         "thread_id": 0,
       },
@@ -608,19 +608,19 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         {
           "children": [
             {
-              "location": "./express.js:21",
+              "location": "express.js:21",
               "name": "helloWorld",
               "static": true,
               "type": "function",
             },
             {
-              "location": "./express.js:25",
+              "location": "express.js:25",
               "name": "api",
               "static": true,
               "type": "function",
             },
             {
-              "location": "./express.js:29",
+              "location": "express.js:29",
               "name": "postApi",
               "static": true,
               "type": "function",
@@ -630,7 +630,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
           "type": "class",
         },
       ],
-      "name": "httpServer",
+      "name": "http-server-appmap-node-test",
       "type": "package",
     },
   ],
@@ -775,7 +775,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
           "value": "[Function: next]",
         },
       ],
-      "path": "./express.js",
+      "path": "express.js",
       "static": true,
       "thread_id": 0,
     },
@@ -880,7 +880,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
           "value": "{ param1: '3', param2: '4' }",
         },
       ],
-      "path": "./express.js",
+      "path": "express.js",
       "static": true,
       "thread_id": 0,
     },
@@ -999,7 +999,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
 }",
         },
       ],
-      "path": "./express.js",
+      "path": "express.js",
       "static": true,
       "thread_id": 0,
     },

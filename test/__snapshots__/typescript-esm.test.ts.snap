@@ -8,7 +8,7 @@ exports[`esm-loader is loaded when required 1`] = `
         {
           "children": [
             {
-              "location": "./index.ts:1",
+              "location": "index.ts:1",
               "name": "run",
               "static": true,
               "type": "function",
@@ -18,7 +18,7 @@ exports[`esm-loader is loaded when required 1`] = `
           "type": "class",
         },
       ],
-      "name": "typescript-esm",
+      "name": "appmap-node-typescript-esm-test",
       "type": "package",
     },
   ],
@@ -30,7 +30,7 @@ exports[`esm-loader is loaded when required 1`] = `
       "lineno": 1,
       "method_id": "run",
       "parameters": [],
-      "path": "./index.ts",
+      "path": "index.ts",
       "static": true,
       "thread_id": 0,
     },
