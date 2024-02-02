@@ -1,11 +1,10 @@
-import { full as walk } from "acorn-walk";
+import { generate } from "astring";
 import { ESTree, parse } from "meriyah";
 
 import config from "../../config";
 import { fixAbsPath } from "./fixAbsPath";
 import * as instrument from "../instrument";
 import PackageMatcher from "../../PackageMatcher";
-import * as registry from "../../registry";
 
 describe(instrument.shouldInstrument, () => {
   jest.replaceProperty(config, "root", fixAbsPath("/test"));
@@ -34,8 +33,9 @@ describe(instrument.transform, () => {
     `,
       { loc: true, source: fixAbsPath("/test/test.js") },
     );
-    expect(stripLocations(instrument.transform(program))).toStrictEqual(
-      parse(`
+    expectProgram(
+      instrument.transform(program),
+      `
         const __appmapFunctionRegistry = [{
           "async": false,
           "generator": false,
@@ -57,17 +57,8 @@ describe(instrument.transform, () => {
             return arg + 1;
           }, arguments, __appmapFunctionRegistry[0]);
         }
-      `),
+      `,
     );
-    expect(instrument.transformedFunctionInfos[0]).toStrictEqual<registry.FunctionInfo>({
-      params: [{ type: "Identifier", name: "arg" }],
-      id: "testFun",
-      async: false,
-      generator: false,
-      location: { path: "test.js", lineno: 2 },
-      static: true,
-      klassOrFile: "test",
-    });
   });
 
   it("instruments method definitions", () => {
@@ -82,8 +73,9 @@ describe(instrument.transform, () => {
       { loc: true, source: fixAbsPath("/test/test.js") },
     );
 
-    expect(stripLocations(instrument.transform(program))).toStrictEqual(
-      parse(`
+    expectProgram(
+      instrument.transform(program),
+      `
         const __appmapFunctionRegistry = [{
           "async": false,
           "generator": false,
@@ -107,32 +99,13 @@ describe(instrument.transform, () => {
             }, arguments, __appmapFunctionRegistry[0]);
           }
         }
-      `),
+      `,
     );
-    expect(instrument.transformedFunctionInfos[0]).toStrictEqual<registry.FunctionInfo>({
-      params: [{ type: "Identifier", name: "value" }],
-      id: "foo",
-      klassOrFile: "TestClass",
-      static: false,
-      async: false,
-      generator: false,
-      location: {
-        path: "test.js",
-        lineno: 3,
-      },
-    });
   });
 });
 
-beforeEach(() => instrument.transformedFunctionInfos.splice(0));
-
-// Return the program with all location information stripped
-function stripLocations(program: ESTree.Program): ESTree.Program {
-  walk(program, (node: ESTree.Node) => {
-    node.loc && delete node.loc;
-    "key" in node && node.key && "loc" in node.key && delete node.key.loc;
-  });
-  return program;
+function expectProgram(actual: ESTree.Program, expected: string) {
+  expect(generate(actual)).toEqual(generate(parse(expected)));
 }
 
 jest.mock("../../config");
