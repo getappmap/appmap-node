@@ -21,6 +21,7 @@ import {
 } from "../generate";
 import { FunctionInfo, SourceLocation, createFunctionInfo, createMethodInfo } from "../registry";
 import findLast from "../util/findLast";
+import { isId } from "../util/isId";
 
 const debug = debuglog("appmap:instrument");
 
@@ -47,7 +48,7 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
       const location = locate(fun);
       if (!location) return; // don't instrument generated code
 
-      fun.body = wrapWithRecord(fun, createFunctionInfo(fun, location), false);
+      fun.body = wrapFunction(fun, createFunctionInfo(fun, location), false);
     },
 
     MethodDefinition(method: ESTree.MethodDefinition, _: unknown, ancestors: ESTree.Node[]) {
@@ -71,11 +72,48 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
       if (!location) return; // don't instrument generated code
 
       debug(`Instrumenting ${qname}`);
-      method.value.body = wrapWithRecord(
+      method.value.body = wrapFunction(
         { ...method.value },
         createMethodInfo(method, klass, location),
         method.kind === "constructor",
       );
+    },
+
+    // instrument arrow functions
+    ArrowFunctionExpression(fun: ESTree.ArrowFunctionExpression, _, ancestors: ESTree.Node[]) {
+      const location = locate(fun);
+      if (!location) return; // don't instrument generated code
+
+      const [declaration, declarator] = ancestors.slice(-3);
+      switch (declarator.type) {
+        // instrument consts
+        case "VariableDeclarator": {
+          if (!(declaration.type === "VariableDeclaration" && declaration.kind === "const")) return;
+          const { id } = declarator;
+          if (!isId(id)) return;
+          if (pkg?.exclude?.includes(id.name)) return;
+          assert(declarator.init === fun);
+
+          debug(`Instrumenting ${id.name}`);
+          declarator.init = wrapLambda(
+            fun,
+            createFunctionInfo({ ...fun, id, generator: false }, location),
+          );
+          break;
+        }
+        // instrument CommonJS exports
+        case "AssignmentExpression": {
+          const id = exportName(declarator.left);
+          if (!id || pkg?.exclude?.includes(id.name)) return;
+
+          debug(`Instrumenting ${id.name}`);
+          declarator.right = wrapLambda(
+            fun,
+            createFunctionInfo({ ...fun, id, generator: false }, location),
+          );
+          break;
+        }
+      }
     },
   });
 
@@ -99,6 +137,25 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
   program.body.unshift(functionRegistryAssignment);
 
   return program;
+}
+
+function wrapLambda(
+  lambda: ESTree.ArrowFunctionExpression,
+  functionInfo: FunctionInfo,
+): ESTree.ArrowFunctionExpression {
+  const args = identifier("args");
+  return {
+    type: "ArrowFunctionExpression",
+    async: false,
+    expression: false,
+    params: [
+      {
+        type: "RestElement",
+        argument: args,
+      },
+    ],
+    body: wrapCallable(lambda, functionInfo, identifier("undefined"), args),
+  };
 }
 
 function makeLocator(
@@ -131,15 +188,33 @@ function objectLiteralExpression(obj: object) {
   return parsed.body[0].expression;
 }
 
-function wrapWithRecord(
+function wrapCallable(
+  fd: ESTree.FunctionDeclaration | ESTree.FunctionExpression | ESTree.ArrowFunctionExpression,
+  functionInfo: FunctionInfo,
+  thisArg: ESTree.Expression,
+  argsArg: ESTree.Expression,
+): ESTree.CallExpression {
+  const functionArgument: ESTree.Expression =
+    fd.type === "ArrowFunctionExpression"
+      ? fd
+      : fd.generator
+      ? { ...fd, type: "FunctionExpression" }
+      : toArrowFunction(fd);
+  return call_(
+    memberId("global", "AppMapRecordHook", "call"),
+    thisArg,
+    functionArgument,
+    argsArg,
+    member(__appmapFunctionRegistryIdentifier, literal(addTransformedFunctionInfo(functionInfo))),
+  );
+}
+
+function wrapFunction(
   fd: ESTree.FunctionDeclaration | ESTree.FunctionExpression,
   functionInfo: FunctionInfo,
   thisIsUndefined: boolean,
-) {
+): ESTree.BlockStatement {
   const statement = fd.generator ? yieldStar : ret;
-  const functionArgument: ESTree.Expression = fd.generator
-    ? { ...fd, type: "FunctionExpression" }
-    : toArrowFunction(fd);
 
   const wrapped: ESTree.BlockStatement = {
     type: "BlockStatement",
@@ -149,16 +224,7 @@ function wrapWithRecord(
       // If it's a generator function then pass it as a generator function and yield* the result:
       //    yield* global.AppMapRecordHook(this|undefined, function* f() {...}, arguments, __appmapFunctionRegistry[i])
       statement(
-        call_(
-          memberId("global", "AppMapRecordHook", "call"),
-          thisIsUndefined ? identifier("undefined") : this_,
-          functionArgument,
-          args_,
-          member(
-            __appmapFunctionRegistryIdentifier,
-            literal(addTransformedFunctionInfo(functionInfo)),
-          ),
-        ),
+        wrapCallable(fd, functionInfo, thisIsUndefined ? identifier("undefined") : this_, args_),
       ),
     ],
   };
@@ -190,4 +256,13 @@ function methodHasName(
   method: ESTree.MethodDefinition,
 ): method is ESTree.MethodDefinition & { key: { name: string } } {
   return method.key !== null && "name" in method.key;
+}
+
+// returns the export name if expr is a CommonJS export member
+function exportName(expr: ESTree.Expression): ESTree.Identifier | undefined {
+  if (expr.type === "MemberExpression" && isId(expr.object, "exports")) {
+    const { property } = expr;
+    if (isId(property)) return property;
+  }
+  return undefined;
 }

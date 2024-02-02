@@ -102,10 +102,219 @@ describe(instrument.transform, () => {
       `,
     );
   });
+
+  it("instruments const lambdas", () => {
+    const program = parse(
+      `
+      const outer = arg => arg + 42;
+
+      export const testFun = arg => {
+        var s42 = y => y - 42;
+        let s43 = y => y - 43;
+        const inner = x => s42(x) * 2;
+        return inner(arg);
+      };
+    `,
+      { loc: true, source: fixAbsPath("/test/test.js"), module: true },
+    );
+
+    expectProgram(
+      instrument.transform(program),
+      `
+      const __appmapFunctionRegistry = [
+        {
+          "async": false,
+          "generator": false,
+          "id": "outer",
+          "params": [
+            {
+              "type": "Identifier",
+              "name": "arg",
+            },
+          ],
+          "location": {
+            "path": "test.js",
+            "lineno": 2,
+          },
+          "klassOrFile": "test",
+          "static": true,
+        },
+        {
+          "async": false,
+          "generator": false,
+          "id": "inner",
+          "params": [
+            {
+              "type": "Identifier",
+              "name": "x",
+            },
+          ],
+          "location": {
+            "path": "test.js",
+            "lineno": 7,
+          },
+          "klassOrFile": "test",
+          "static": true,
+        },
+        {
+          "async": false,
+          "generator": false,
+          "id": "testFun",
+          "params": [
+            {
+              "type": "Identifier",
+              "name": "arg",
+            },
+          ],
+          "location": {
+            "path": "test.js",
+            "lineno": 4,
+          },
+          "klassOrFile": "test",
+          "static": true,
+        },
+      ];
+
+      const outer = (...args) => global.AppMapRecordHook.call(
+        undefined,
+        (arg) => arg + 42,
+        args,
+        __appmapFunctionRegistry[0],
+      );
+
+      export const testFun = (...args) =>
+        global.AppMapRecordHook.call(
+          undefined,
+          (arg) => {
+            var s42 = y => y - 42;
+            let s43 = y => y - 43;
+            const inner = (...args) =>
+              global.AppMapRecordHook.call(
+                undefined,
+                (x) => s42(x) * 2,
+                args,
+                __appmapFunctionRegistry[1],
+              );
+            return inner(arg);
+          },
+          args,
+          __appmapFunctionRegistry[2],
+        );
+    `,
+    );
+  });
+
+  it("instruments CommonJS exported named lambdas", () => {
+    const program = parse(
+      `
+      exports.testFun = arg => {
+        const inner = x => x *2;
+        return inner(arg);
+      };
+    `,
+      { loc: true, source: fixAbsPath("/test/test.js"), module: true },
+    );
+
+    expectProgram(
+      instrument.transform(program),
+      `
+      const __appmapFunctionRegistry = [
+        {
+          "async": false,
+          "generator": false,
+          "id": "inner",
+          "params": [
+            {
+              "type": "Identifier",
+              "name": "x",
+            },
+          ],
+          "location": {
+            "path": "test.js",
+            "lineno": 3,
+          },
+          "klassOrFile": "test",
+          "static": true,
+        },
+        {
+          "async": false,
+          "generator": false,
+          "id": "testFun",
+          "params": [
+            {
+              "type": "Identifier",
+              "name": "arg",
+            },
+          ],
+          "location": {
+            "path": "test.js",
+            "lineno": 2,
+          },
+          "klassOrFile": "test",
+          "static": true,
+        },
+      ];
+
+      exports.testFun = (...args) =>
+        global.AppMapRecordHook.call(
+          undefined,
+          (arg) => {
+            const inner = (...args) =>
+              global.AppMapRecordHook.call(
+                undefined,
+                (x) => x * 2,
+                args,
+                __appmapFunctionRegistry[0],
+              );
+            return inner(arg);
+          },
+          args,
+          __appmapFunctionRegistry[1],
+        );
+    `,
+    );
+  });
+
+  it("instruments const lambdas which are later CommonJS exported", () => {
+    const program = parse(
+      `
+      const testFun = x => x * 2
+
+      exports.testFun = testFun;
+    `,
+      { loc: true, source: fixAbsPath("/test/test.js"), module: true },
+    );
+
+    expectProgram(
+      instrument.transform(program),
+      `
+        const __appmapFunctionRegistry = [{
+          "async": false,
+          "generator": false,
+          "id": "testFun",
+          "params": [{
+            "type": "Identifier",
+            "name": "x"
+          }],
+          "location": {
+            "path": "test.js",
+            "lineno": 2
+          },
+          "klassOrFile": "test",
+          "static": true
+        }];
+
+        const testFun = (...args) => global.AppMapRecordHook.call(undefined, x => x * 2,
+          args, __appmapFunctionRegistry[0]);
+
+        exports.testFun = testFun;
+      `,
+    );
+  });
 });
 
 function expectProgram(actual: ESTree.Program, expected: string) {
-  expect(generate(actual)).toEqual(generate(parse(expected)));
+  expect(generate(actual)).toEqual(generate(parse(expected, { module: true })));
 }
 
 jest.mock("../../config");
