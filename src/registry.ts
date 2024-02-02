@@ -21,7 +21,7 @@ export interface FunctionInfo {
 }
 
 export function createFunctionInfo(
-  fun: ESTree.FunctionDeclaration & {
+  fun: Omit<ESTree.FunctionDeclaration, "type" | "body"> & {
     id: ESTree.Identifier;
   },
   location: SourceLocation,
