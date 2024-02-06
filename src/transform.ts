@@ -5,7 +5,6 @@ import { debuglog } from "node:util";
 import { isNativeError } from "node:util/types";
 
 import { generate } from "astring";
-import * as SourceMapConverter from "convert-source-map";
 import { parse, type ESTree } from "meriyah";
 import { RawSourceMap, SourceMapConsumer } from "source-map-js";
 
@@ -64,34 +63,32 @@ function dumpTree(xformed: ESTree.Program, url: URL) {
   treeDebug("wrote transformed tree to %s", path);
 }
 
-function getSourceMap(url: URL, code: string): SourceMapConsumer | undefined {
-  if (
-    process.versions.node.split(".").map(Number) < [18, 19] &&
-    [".ts", ".mts", ".tsx"].some((e) => url.pathname.toLowerCase().endsWith(e))
-  ) {
-    // HACK: In node 18.18, when using --loader node-ts/esm
-    // sourcemap gets inserted twice to the typescript file. We remove the second one
-    // which reflects transpiled files map, instead of the original typescript file map.
-    code = SourceMapConverter.removeComments(code);
-    if (code.indexOf("//# sourceMappingURL") > -1)
-      // Correct one remains, it needs to start in new line.
-      code.replace("//# sourceMappingURL", "\n//# sourceMappingURL");
+function getSourceMap(fileUrl: URL, code: string): SourceMapConsumer | undefined {
+  const sourceMappingUrl = code.match(/\/\/# sourceMappingURL=(.*)/)?.[1];
+  if (!sourceMappingUrl) return;
+
+  const sourceMapUrl = new URL(sourceMappingUrl, fileUrl);
+
+  let sourceMap: RawSourceMap;
+
+  switch (sourceMapUrl.protocol) {
+    case "data:":
+      sourceMap = JSON.parse(parseDataUrl(sourceMapUrl)) as RawSourceMap;
+      break;
+    case "file:":
+      fileUrl = sourceMapUrl;
+      sourceMap = JSON.parse(readFileSync(fileURLToPath(sourceMapUrl), "utf8")) as RawSourceMap;
+      break;
+    default:
+      throw new Error(`Unsupported source map protocol: ${sourceMapUrl.protocol}`);
   }
 
-  const readFile = (filename: string) => {
-    const fileUrl = new URL(filename, url);
-    switch (fileUrl.protocol) {
-      case "file:":
-        return readFileSync(fileUrl, "utf8");
-      case "data:":
-        return parseDataUrl(fileUrl);
-      default:
-        throw new Error(`unhandled protocol reading source map: ${fileUrl.protocol}`);
-    }
-  };
+  sourceMap.sources = sourceMap.sources.map((source) => {
+    const url = new URL((sourceMap.sourceRoot ?? "") + source, fileUrl);
+    return url.protocol === "file:" ? fileURLToPath(url) : url.toString();
+  });
 
-  const map = SourceMapConverter.fromMapFileSource(code, readFile);
-  if (map) return new SourceMapConsumer(map.sourcemap as RawSourceMap);
+  return new SourceMapConsumer(sourceMap);
 }
 
 function parseDataUrl(fileUrl: URL) {
