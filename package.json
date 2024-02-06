@@ -70,7 +70,6 @@
     "acorn-walk": "^8.2.0",
     "astring": "^1.8.6",
     "chalk": "<5",
-    "convert-source-map": "^2.0.0",
     "meriyah": "^4.3.7",
     "source-map-js": "^1.0.2",
     "strip-json-comments": "^3",
