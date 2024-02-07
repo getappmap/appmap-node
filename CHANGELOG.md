@@ -1,3 +1,18 @@
+# [2.15.0](https://github.com/getappmap/appmap-node/compare/v2.14.2...v2.15.0) (2024-02-07)
+
+
+### Bug Fixes
+
+* Correctly handle dots in paths ([7168e56](https://github.com/getappmap/appmap-node/commit/7168e56bdb564fc8b62fcc7ce87478aaa307dcc4)), closes [#104](https://github.com/getappmap/appmap-node/issues/104)
+* Handle relative paths in source maps correctly ([a35df7e](https://github.com/getappmap/appmap-node/commit/a35df7ef134260e3b630637b0023abbae2d9cbbe))
+* Handle tRPC proxy error in object constructor access ([c0b53dd](https://github.com/getappmap/appmap-node/commit/c0b53dda727164c9fc7859722b2c06a109efe577))
+* Skip transformation for next edge runtime ([9997353](https://github.com/getappmap/appmap-node/commit/9997353faf38823606bc60e9004a1bcd9d90122d))
+
+
+### Features
+
+* Use relative paths in appmaps ([62105e3](https://github.com/getappmap/appmap-node/commit/62105e3d1dd80f114d8f98985dc07bed457148af)), closes [#100](https://github.com/getappmap/appmap-node/issues/100)
+
 ## [2.14.2](https://github.com/getappmap/appmap-node/compare/v2.14.1...v2.14.2) (2024-01-25)
 
 
