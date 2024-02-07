@@ -52,6 +52,8 @@ integrationTest.only = function (name: string, fn?: jest.ProvidesCallback, timeo
   test.only(name, fn, timeout);
 };
 
+integrationTest.if = (condition: boolean) => (condition ? integrationTest : test.skip);
+
 type AppMap = object & Record<"events", unknown>;
 
 export function readAppmap(path?: string): AppMap.AppMap {
@@ -119,7 +121,10 @@ function fixHttp(http: unknown) {
 
 function fixValue(value: unknown): void {
   if (value && typeof value === "object" && "value" in value && typeof value.value === "string") {
-    if (value.value.startsWith("Next")) value.value = value.value.split(" ")[0];
+    const v = value.value;
+    if (v.startsWith("Next")) value.value = value.value.split(" ")[0];
+    else if (v.includes("ObjectId"))
+      value.value = v.replaceAll(/ObjectId\('.*'\)/g, "ObjectId('test')");
   }
 }
 

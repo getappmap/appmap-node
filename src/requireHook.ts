@@ -1,4 +1,5 @@
 import httpHook from "./hooks/http";
+import mongoHook from "./hooks/mongo";
 import mysqlHook from "./hooks/mysql";
 import pgHook from "./hooks/pg";
 import prismaHook from "./hooks/prisma";
@@ -10,7 +11,7 @@ interface Hook {
   applicable(id: string): boolean;
 }
 
-const hooks: Hook[] = [httpHook, mysqlHook, pgHook, sqliteHook, prismaHook];
+const hooks: Hook[] = [httpHook, mongoHook, mysqlHook, pgHook, sqliteHook, prismaHook];
 
 export default function requireHook(
   original: NodeJS.Require,

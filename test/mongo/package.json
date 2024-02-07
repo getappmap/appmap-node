@@ -1,0 +1,8 @@
+{
+  "name": "mongo-appmap-node-test",
+  "packageManager": "yarn@3.6.3",
+  "private": true,
+  "dependencies": {
+    "mongodb": "^6.3.0"
+  }
+}

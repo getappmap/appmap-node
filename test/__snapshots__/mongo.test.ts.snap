@@ -1,0 +1,508 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping MongoDB tests 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "location": "mongodb/test:1",
+                  "name": "drop",
+                  "static": false,
+                  "type": "function",
+                },
+                {
+                  "location": "mongodb/test:2",
+                  "name": "insertOne",
+                  "static": false,
+                  "type": "function",
+                },
+                {
+                  "location": "mongodb/test:3",
+                  "name": "updateOne",
+                  "static": false,
+                  "type": "function",
+                },
+                {
+                  "location": "mongodb/test:4",
+                  "name": "findOne",
+                  "static": false,
+                  "type": "function",
+                },
+                {
+                  "location": "mongodb/test:5",
+                  "name": "find",
+                  "static": false,
+                  "type": "function",
+                },
+                {
+                  "location": "mongodb/test:6",
+                  "name": "countDocuments",
+                  "static": false,
+                  "type": "function",
+                },
+              ],
+              "name": "test",
+              "type": "class",
+            },
+          ],
+          "name": "mongodb",
+          "type": "package",
+        },
+        {
+          "children": [
+            {
+              "location": "index.js:7",
+              "name": "work",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "index",
+          "type": "class",
+        },
+      ],
+      "name": "mongo-appmap-node-test",
+      "type": "package",
+    },
+  ],
+  "eventUpdates": {
+    "10": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 10,
+      "parent_id": 9,
+      "return_value": {
+        "class": "Promise<Object>",
+        "object_id": 10,
+        "value": "Promise {
+  {
+    acknowledged: true,
+    modifiedCount: 1,
+    upsertedId: null,
+    upsertedCount: 0,
+    matchedCount: 1
+  }
+}",
+      },
+      "thread_id": 0,
+    },
+    "14": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 14,
+      "parent_id": 11,
+      "return_value": {
+        "class": "Promise<Object>",
+        "object_id": 14,
+        "value": "Promise { { _id: new ObjectId('test'), a: 3 } }",
+      },
+      "thread_id": 0,
+    },
+    "16": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 16,
+      "parent_id": 15,
+      "return_value": {
+        "class": "Promise<Number>",
+        "object_id": 15,
+        "value": "Promise { 2 }",
+      },
+      "thread_id": 0,
+    },
+    "3": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 2,
+      "return_value": {
+        "class": "Promise<Boolean>",
+        "object_id": 2,
+        "value": "Promise { true }",
+      },
+      "thread_id": 0,
+    },
+    "4": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 3,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+    "6": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "return_value": {
+        "class": "Promise<Object>",
+        "object_id": 5,
+        "value": "Promise {
+  {
+    acknowledged: true,
+    insertedId: new ObjectId('test')
+  }
+}",
+      },
+      "thread_id": 0,
+    },
+    "8": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 8,
+      "parent_id": 7,
+      "return_value": {
+        "class": "Promise<Object>",
+        "object_id": 7,
+        "value": "Promise {
+  {
+    acknowledged: true,
+    insertedId: new ObjectId('test')
+  }
+}",
+      },
+      "thread_id": 0,
+    },
+  },
+  "events": [
+    {
+      "defined_class": "index",
+      "event": "call",
+      "id": 1,
+      "lineno": 7,
+      "method_id": "work",
+      "parameters": [],
+      "path": "index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "test",
+      "event": "call",
+      "id": 2,
+      "lineno": 1,
+      "method_id": "drop",
+      "parameters": [],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 2,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 2,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 3,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "test",
+      "event": "call",
+      "id": 5,
+      "lineno": 2,
+      "method_id": "insertOne",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "doc",
+          "object_id": 4,
+          "properties": [
+            {
+              "class": "Number",
+              "name": "a",
+            },
+          ],
+          "value": "{ a: 1 }",
+        },
+      ],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 5,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "test",
+      "event": "call",
+      "id": 7,
+      "lineno": 2,
+      "method_id": "insertOne",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "doc",
+          "object_id": 6,
+          "properties": [
+            {
+              "class": "Number",
+              "name": "a",
+            },
+          ],
+          "value": "{ a: 2 }",
+        },
+      ],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 8,
+      "parent_id": 7,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 7,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "test",
+      "event": "call",
+      "id": 9,
+      "lineno": 3,
+      "method_id": "updateOne",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "filter",
+          "object_id": 8,
+          "properties": [
+            {
+              "class": "Number",
+              "name": "a",
+            },
+          ],
+          "value": "{ a: 1 }",
+        },
+        {
+          "class": "Object",
+          "name": "update",
+          "object_id": 9,
+          "properties": [
+            {
+              "class": "Object",
+              "name": "$set",
+              "properties": [
+                {
+                  "class": "Number",
+                  "name": "a",
+                },
+              ],
+            },
+          ],
+          "value": "{ '$set': { a: 3 } }",
+        },
+      ],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 10,
+      "parent_id": 9,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 10,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "test",
+      "event": "call",
+      "id": 11,
+      "lineno": 4,
+      "method_id": "findOne",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "filter",
+          "object_id": 11,
+          "properties": [
+            {
+              "class": "Number",
+              "name": "a",
+            },
+          ],
+          "value": "{ a: 3 }",
+        },
+      ],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "test",
+      "event": "call",
+      "id": 12,
+      "lineno": 5,
+      "method_id": "find",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "filter",
+          "object_id": 11,
+          "properties": [
+            {
+              "class": "Number",
+              "name": "a",
+            },
+          ],
+          "value": "{ a: 3 }",
+        },
+        {
+          "class": "Object",
+          "name": "options",
+          "object_id": 12,
+          "properties": [],
+          "value": "{}",
+        },
+      ],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 13,
+      "parent_id": 12,
+      "return_value": {
+        "class": "FindCursor",
+        "object_id": 13,
+        "value": "[FindCursor appmap-node.test]",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 14,
+      "parent_id": 11,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 14,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "test",
+      "event": "call",
+      "id": 15,
+      "lineno": 6,
+      "method_id": "countDocuments",
+      "parameters": [],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 16,
+      "parent_id": 15,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 15,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "mongo-appmap-node-test",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
