@@ -16,6 +16,24 @@ export function parameter(value: unknown): AppMap.Parameter {
   });
 }
 
+const kCustomInspect = Symbol("AppMap.customInspect");
+
+export function setCustomInspect<T>(value: T, customInspect: (v: T) => string): T {
+  if (value !== null && typeof value === "object" && !(kCustomInspect in value))
+    Object.defineProperty(value, kCustomInspect, {
+      value: customInspect,
+      enumerable: false,
+      writable: true,
+    });
+  return value;
+}
+
+function doInspect(value: unknown): string {
+  if (typeof value === "object" && value && kCustomInspect in value)
+    return (value as { [kCustomInspect]: (v: typeof value) => string })[kCustomInspect](value);
+  return inspect(value, { depth: 1, customInspect: false });
+}
+
 export function stringify(value: unknown): string {
   if (value instanceof IncomingMessage)
     return format("[IncomingMessage: %s %s]", value.method, value.url);
@@ -26,7 +44,7 @@ export function stringify(value: unknown): string {
     );
   // Pause recorder to prevent potential recursive calls by inspect()
   pauseRecorder();
-  const result = inspect(value, { depth: 1, customInspect: false });
+  const result = doInspect(value);
   resumeRecorder();
   return result;
 }
