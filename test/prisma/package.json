@@ -1,0 +1,9 @@
+{
+  "name": "prisma",
+  "packageManager": "yarn@3.6.3",
+  "private": true,
+  "dependencies": {
+    "@prisma/client": "5.9.1",
+    "prisma": "^5.9.1"
+  }
+}
