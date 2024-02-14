@@ -38,6 +38,7 @@ export default class PackageMatcher extends Array<Package> {
 export interface Package {
   path: string;
   exclude?: string[];
+  prisma?: string; // custom prisma client module id
 }
 
 export function parsePackages(packages: unknown): Package[] | undefined {
@@ -50,6 +51,8 @@ export function parsePackages(packages: unknown): Package[] | undefined {
     else if (typeof pkg === "object" && pkg !== null && "path" in pkg) {
       const entry: Package = { path: String(pkg.path) };
       if ("exclude" in pkg) entry.exclude = Array.isArray(pkg.exclude) ? pkg.exclude : [];
+      if ("prisma" in pkg && pkg.prisma != null && typeof pkg.prisma === "string")
+        entry.prisma = pkg.prisma;
       result.push(entry);
     }
   }

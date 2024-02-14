@@ -1,0 +1,673 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping Prisma tests 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "location": "@prisma/client/Post:1",
+                      "name": "deleteMany",
+                      "static": true,
+                      "type": "function",
+                    },
+                  ],
+                  "name": "Post",
+                  "type": "class",
+                },
+                {
+                  "children": [
+                    {
+                      "location": "@prisma/client/User:2",
+                      "name": "deleteMany",
+                      "static": true,
+                      "type": "function",
+                    },
+                    {
+                      "location": "@prisma/client/User:3",
+                      "name": "create",
+                      "static": true,
+                      "type": "function",
+                    },
+                    {
+                      "location": "@prisma/client/User:4",
+                      "name": "findMany",
+                      "static": true,
+                      "type": "function",
+                    },
+                  ],
+                  "name": "User",
+                  "type": "class",
+                },
+              ],
+              "name": "client",
+              "type": "package",
+            },
+          ],
+          "name": "@prisma",
+          "type": "package",
+        },
+        {
+          "children": [
+            {
+              "location": "script.js:6",
+              "name": "main",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "script",
+          "type": "class",
+        },
+      ],
+      "name": "prisma-appmap-node-test",
+      "type": "package",
+    },
+  ],
+  "eventUpdates": {
+    "16": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 16,
+      "parent_id": 15,
+      "return_value": {
+        "class": "Promise<Object>",
+        "object_id": 5,
+        "value": "Promise { { id: 1, email: 'alice@prisma.io', name: 'Alice' } }",
+      },
+      "thread_id": 0,
+    },
+    "2": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 1,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+    "20": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 20,
+      "parent_id": 19,
+      "return_value": {
+        "class": "Promise<Object>",
+        "object_id": 7,
+        "value": "Promise { { id: 2, email: 'bob@prisma.io', name: 'Bob' } }",
+      },
+      "thread_id": 0,
+    },
+    "32": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 32,
+      "parent_id": 31,
+      "return_value": {
+        "class": "Promise<Array>",
+        "object_id": 10,
+        "value": "Promise { [ [Object] ] }",
+      },
+      "thread_id": 0,
+    },
+    "4": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 3,
+      "return_value": {
+        "class": "Promise<Object>",
+        "object_id": 2,
+        "value": "Promise { { count: 0 } }",
+      },
+      "thread_id": 0,
+    },
+    "8": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 8,
+      "parent_id": 7,
+      "return_value": {
+        "class": "Promise<Object>",
+        "object_id": 3,
+        "value": "Promise { { count: 0 } }",
+      },
+      "thread_id": 0,
+    },
+  },
+  "events": [
+    {
+      "defined_class": "script",
+      "event": "call",
+      "id": 1,
+      "lineno": 6,
+      "method_id": "main",
+      "parameters": [],
+      "path": "script.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 1,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "Post",
+      "event": "call",
+      "id": 3,
+      "lineno": 1,
+      "method_id": "deleteMany",
+      "parameters": [
+        {
+          "class": "undefined",
+          "name": "data",
+          "value": "undefined",
+        },
+        {
+          "class": "undefined",
+          "name": "include",
+          "value": "undefined",
+        },
+        {
+          "class": "undefined",
+          "name": "where",
+          "value": "undefined",
+        },
+      ],
+      "path": "@prisma/client/Post",
+      "receiver": {
+        "class": "String",
+        "value": "'Post'",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 3,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 2,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 5,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "DELETE FROM \`main\`.\`Post\` WHERE 1=1",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "User",
+      "event": "call",
+      "id": 7,
+      "lineno": 2,
+      "method_id": "deleteMany",
+      "parameters": [
+        {
+          "class": "undefined",
+          "name": "data",
+          "value": "undefined",
+        },
+        {
+          "class": "undefined",
+          "name": "include",
+          "value": "undefined",
+        },
+        {
+          "class": "undefined",
+          "name": "where",
+          "value": "undefined",
+        },
+      ],
+      "path": "@prisma/client/User",
+      "receiver": {
+        "class": "String",
+        "value": "'User'",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 8,
+      "parent_id": 7,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 3,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 9,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "DELETE FROM \`main\`.\`User\` WHERE 1=1",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 10,
+      "parent_id": 9,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 11,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "delete from sqlite_sequence where name='Post'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 12,
+      "parent_id": 11,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 13,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "delete from sqlite_sequence where name='User'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 14,
+      "parent_id": 13,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "User",
+      "event": "call",
+      "id": 15,
+      "lineno": 3,
+      "method_id": "create",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "data",
+          "object_id": 4,
+          "properties": [
+            {
+              "class": "String",
+              "name": "name",
+            },
+            {
+              "class": "String",
+              "name": "email",
+            },
+          ],
+          "value": "{ name: 'Alice', email: 'alice@prisma.io' }",
+        },
+        {
+          "class": "undefined",
+          "name": "include",
+          "value": "undefined",
+        },
+        {
+          "class": "undefined",
+          "name": "where",
+          "value": "undefined",
+        },
+      ],
+      "path": "@prisma/client/User",
+      "receiver": {
+        "class": "String",
+        "value": "'User'",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 16,
+      "parent_id": 15,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 5,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 17,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "INSERT INTO \`main\`.\`User\` (\`email\`, \`name\`) VALUES (?,?) RETURNING \`id\` AS \`id\`, \`email\` AS \`email\`, \`name\` AS \`name\`",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 18,
+      "parent_id": 17,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "User",
+      "event": "call",
+      "id": 19,
+      "lineno": 3,
+      "method_id": "create",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "data",
+          "object_id": 6,
+          "properties": [
+            {
+              "class": "String",
+              "name": "name",
+            },
+            {
+              "class": "String",
+              "name": "email",
+            },
+            {
+              "class": "Object",
+              "name": "posts",
+              "properties": [
+                {
+                  "class": "Object",
+                  "name": "create",
+                  "properties": [
+                    {
+                      "class": "String",
+                      "name": "title",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          "value": "{ name: 'Bob', email: 'bob@prisma.io', posts: { create: [Object] } }",
+        },
+        {
+          "class": "undefined",
+          "name": "include",
+          "value": "undefined",
+        },
+        {
+          "class": "undefined",
+          "name": "where",
+          "value": "undefined",
+        },
+      ],
+      "path": "@prisma/client/User",
+      "receiver": {
+        "class": "String",
+        "value": "'User'",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 20,
+      "parent_id": 19,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 7,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 21,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "BEGIN",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 22,
+      "parent_id": 21,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 23,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "INSERT INTO \`main\`.\`User\` (\`email\`, \`name\`) VALUES (?,?) RETURNING \`id\` AS \`id\`",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 24,
+      "parent_id": 23,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 25,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "INSERT INTO \`main\`.\`Post\` (\`title\`, \`published\`, \`authorId\`) VALUES (?,?,?) RETURNING \`id\` AS \`id\`",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 26,
+      "parent_id": 25,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 27,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT \`main\`.\`User\`.\`id\`, \`main\`.\`User\`.\`email\`, \`main\`.\`User\`.\`name\` FROM \`main\`.\`User\` WHERE \`main\`.\`User\`.\`id\` = ? LIMIT ? OFFSET ?",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 28,
+      "parent_id": 27,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 29,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "COMMIT",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 30,
+      "parent_id": 29,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "User",
+      "event": "call",
+      "id": 31,
+      "lineno": 4,
+      "method_id": "findMany",
+      "parameters": [
+        {
+          "class": "undefined",
+          "name": "data",
+          "value": "undefined",
+        },
+        {
+          "class": "Object",
+          "name": "include",
+          "object_id": 8,
+          "properties": [
+            {
+              "class": "Boolean",
+              "name": "posts",
+            },
+          ],
+          "value": "{ posts: true }",
+        },
+        {
+          "class": "Object",
+          "name": "where",
+          "object_id": 9,
+          "properties": [
+            {
+              "class": "Object",
+              "name": "name",
+              "properties": [
+                {
+                  "class": "String",
+                  "name": "contains",
+                },
+              ],
+            },
+          ],
+          "value": "{ name: { contains: 'Bob' } }",
+        },
+      ],
+      "path": "@prisma/client/User",
+      "receiver": {
+        "class": "String",
+        "value": "'User'",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 32,
+      "parent_id": 31,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 10,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 33,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT \`main\`.\`User\`.\`id\`, \`main\`.\`User\`.\`email\`, \`main\`.\`User\`.\`name\` FROM \`main\`.\`User\` WHERE \`main\`.\`User\`.\`name\` LIKE ? LIMIT ? OFFSET ?",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 34,
+      "parent_id": 33,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 35,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT \`main\`.\`Post\`.\`id\`, \`main\`.\`Post\`.\`title\`, \`main\`.\`Post\`.\`content\`, \`main\`.\`Post\`.\`published\`, \`main\`.\`Post\`.\`authorId\` FROM \`main\`.\`Post\` WHERE \`main\`.\`Post\`.\`authorId\` IN (?) LIMIT ? OFFSET ?",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 36,
+      "parent_id": 35,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 37,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 1",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 38,
+      "parent_id": 37,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "prisma-appmap-node-test",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;

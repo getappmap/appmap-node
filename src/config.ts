@@ -52,6 +52,14 @@ export class Config {
     return (this.absoluteAppmapDir ||= resolve(this.root, this.relativeAppmapDir));
   }
 
+  get prismaClientModuleIds(): string[] {
+    const result = ["@prisma/client"];
+    this.packages.forEach((p) => {
+      if (p.prisma) result.push(p.prisma);
+    });
+    return result;
+  }
+
   export() {
     process.env.APPMAP_ROOT = this.root;
   }
