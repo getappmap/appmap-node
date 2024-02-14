@@ -1,4 +1,4 @@
-import { IncomingMessage, ServerResponse } from "node:http";
+import { ClientRequest, IncomingMessage, ServerResponse } from "node:http";
 import { format, inspect, isDeepStrictEqual } from "node:util";
 
 import type AppMap from "./AppMap";
@@ -37,6 +37,7 @@ function doInspect(value: unknown): string {
 export function stringify(value: unknown): string {
   if (value instanceof IncomingMessage)
     return format("[IncomingMessage: %s %s]", value.method, value.url);
+  if (value instanceof ClientRequest) return formatClientRequest(value);
   if (value instanceof ServerResponse)
     return format(
       "[ServerResponse: %s]",
@@ -47,6 +48,16 @@ export function stringify(value: unknown): string {
   const result = doInspect(value);
   resumeRecorder();
   return result;
+}
+
+function formatClientRequest(value: ClientRequest): string {
+  const result = ["[ClientRequest: "];
+  if (value.method) result.push(value.method, " ");
+  if (value.protocol) result.push(value.protocol, "//");
+  if (value.host) result.push(value.host);
+  if (value.path) result.push(value.path);
+  result.push("]");
+  return result.join("");
 }
 
 export function optParameter(value: unknown): AppMap.Parameter | undefined {
