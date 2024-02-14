@@ -6,8 +6,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
       - run: yarn
       - run: yarn lint
 
@@ -35,8 +35,8 @@ jobs:
           - 27017:27017
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{matrix.node-version}}
       - run: yarn
@@ -49,8 +49,8 @@ jobs:
   windows-test:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
       - run: yarn
       - run: yarn prepack
       - run: yarn test || yarn jest --no-silent --verbose --onlyFailures
@@ -66,11 +66,11 @@ jobs:
     if: github.ref_name == 'main'
     needs: [lint, test]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.SEMANTIC_RELEASE_BOT_GITHUB_TOKEN }}
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
       - run: yarn
       - run: yarn prepack
       - run: yarn semantic-release
