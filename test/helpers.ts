@@ -122,9 +122,10 @@ function fixHttp(http: unknown) {
 function fixValue(value: unknown): void {
   if (value && typeof value === "object" && "value" in value && typeof value.value === "string") {
     const v = value.value;
-    if (v.startsWith("Next")) value.value = value.value.split(" ")[0];
+    if (v.startsWith("Next")) value.value = v.split(" ")[0];
     else if (v.includes("ObjectId"))
       value.value = v.replaceAll(/ObjectId\('.*'\)/g, "ObjectId('test')");
+    else value.value = v.replaceAll(/\s+\[Symbol.*/g, "");
   }
 }
 
