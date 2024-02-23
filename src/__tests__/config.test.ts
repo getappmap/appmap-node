@@ -12,6 +12,16 @@ import { fixAbsPath } from "../hooks/__tests__/fixAbsPath";
 
 tmp.setGracefulCleanup();
 
+// https://github.com/nodejs/node/issues/11422
+// On MacOS, temp paths can be reported as '/var/folders/...'
+// or '/private/var/folders/...' based on the API call.
+// One is symlink to the other.
+// This fix prevents needless test failures on local MacOS.
+function fixMacOsTmpPath(path: string) {
+  if (path?.startsWith("/var/folders")) return `/private${path}`;
+  return path;
+}
+
 describe(Config, () => {
   it("respects environment variables", () => {
     process.env.APPMAP_ROOT = "/test/app";
@@ -28,7 +38,7 @@ describe(Config, () => {
 
   it("uses the current directory for root", () => {
     expect(new Config()).toMatchObject({
-      root: dir,
+      root: fixMacOsTmpPath(dir),
       relativeAppmapDir: "tmp/appmap",
       appName: basename(dir),
     });
@@ -40,7 +50,7 @@ describe(Config, () => {
     mkdirSync("subdirectory");
     chdir("subdirectory");
     expect(new Config()).toMatchObject({
-      root: dir,
+      root: fixMacOsTmpPath(dir),
       relativeAppmapDir: "tmp/appmap",
       appName: "test-package",
     });
@@ -59,10 +69,13 @@ describe(Config, () => {
     mkdirSync("subdirectory");
     chdir("subdirectory");
     expect(new Config()).toMatchObject({
-      root: dir,
+      root: fixMacOsTmpPath(dir),
       relativeAppmapDir: "appmap",
       appName: "test-package",
-      packages: new PackageMatcher(dir, [{ path: ".", exclude: ["excluded"] }, { path: "../lib" }]),
+      packages: new PackageMatcher(fixMacOsTmpPath(dir), [
+        { path: ".", exclude: ["excluded"] },
+        { path: "../lib" },
+      ]),
     });
   });
 
@@ -79,10 +92,12 @@ describe(Config, () => {
     mkdirSync("subdirectory");
     chdir("subdirectory");
     expect(new Config()).toMatchObject({
-      root: dir,
+      root: fixMacOsTmpPath(dir),
       relativeAppmapDir: "appmap",
       appName: "test-package",
-      packages: new PackageMatcher(dir, [{ path: ".", exclude: ["node_modules", ".yarn"] }]),
+      packages: new PackageMatcher(fixMacOsTmpPath(dir), [
+        { path: ".", exclude: ["node_modules", ".yarn"] },
+      ]),
     });
   });
 
