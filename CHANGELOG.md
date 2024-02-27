@@ -1,3 +1,10 @@
+# [2.16.0](https://github.com/getappmap/appmap-node/compare/v2.15.0...v2.16.0) (2024-02-27)
+
+
+### Features
+
+* Prisma support ([93242e1](https://github.com/getappmap/appmap-node/commit/93242e18343d62c98976ca0cc417bda9890886e7))
+
 # [2.15.0](https://github.com/getappmap/appmap-node/compare/v2.14.2...v2.15.0) (2024-02-07)
 
 
