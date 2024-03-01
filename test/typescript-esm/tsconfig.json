@@ -9,6 +9,6 @@
     "rootDir": "src" /* Specify the root folder within your source files. */,
     "outDir": "dist",
     "types": ["node"],
-    "sourceMap": true
+    "sourceMap": true, /* Trailing comma needs to be parsed correctly */
   }
 }
