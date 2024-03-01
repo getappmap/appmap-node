@@ -1,3 +1,10 @@
+## [2.16.1](https://github.com/getappmap/appmap-node/compare/v2.16.0...v2.16.1) (2024-03-01)
+
+
+### Bug Fixes
+
+* Properly parse tsconfig.json ([2a1f409](https://github.com/getappmap/appmap-node/commit/2a1f4093c6091e1a30ee7396baed07698bbba789))
+
 # [2.16.0](https://github.com/getappmap/appmap-node/compare/v2.15.0...v2.16.0) (2024-02-27)
 
 
