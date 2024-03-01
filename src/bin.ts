@@ -5,7 +5,7 @@ import { dirname, join, resolve } from "node:path";
 import { kill, pid } from "node:process";
 import { pathToFileURL } from "node:url";
 
-import stripJsonComments from "strip-json-comments";
+import json5 from "json5";
 import YAML from "yaml";
 
 import config from "./config";
@@ -85,7 +85,7 @@ function isTsEsmLoaderNeeded(cmd: string, args: string[]) {
     const tsConfigSource = readTsConfigUp(config.root);
     if (tsConfigSource == null) return false;
 
-    const tsConfig: unknown = JSON.parse(stripJsonComments(tsConfigSource));
+    const tsConfig: unknown = json5.parse(tsConfigSource);
     // Check if ts-node is configured and has esm set to true
     return (
       tsConfig != null &&
