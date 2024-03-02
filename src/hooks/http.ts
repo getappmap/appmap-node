@@ -6,6 +6,7 @@ import type https from "node:https";
 import { URL } from "node:url";
 
 import type AppMap from "../AppMap";
+import config from "../config";
 import Recording from "../Recording";
 import { info, warn } from "../message";
 import { parameter } from "../parameter";
@@ -107,13 +108,17 @@ function handleClientRequest(request: http.ClientRequest) {
     );
 
     request.on("response", (response) => {
+      const capture = new BodyCapture();
+      response.on("data", (chunk: Chunk) => {
+        capture.push(chunk);
+      });
+
       response.once("end", () => {
         if (!recording.running) {
           warnRecordingNotRunning(url);
           return;
         }
-
-        handleClientResponse(clientRequestEvent, startTime, response);
+        handleClientResponse(clientRequestEvent, startTime, response, capture);
       });
     });
   });
@@ -134,6 +139,7 @@ function handleClientResponse(
   requestEvent: AppMap.HttpClientRequestEvent,
   startTime: number,
   response: http.IncomingMessage,
+  capture: BodyCapture,
 ): void {
   assert(response.statusCode != undefined);
   recording.httpClientResponse(
@@ -141,6 +147,9 @@ function handleClientResponse(
     getTime() - startTime,
     response.statusCode,
     normalizeHeaders(response.headers),
+    capture.createReturnValue(
+      response.headers["content-type"]?.startsWith("application/json") ?? false,
+    ),
   );
 }
 
@@ -153,6 +162,92 @@ function shouldIgnoreRequest(request: http.IncomingMessage) {
   if (request.url?.endsWith(".ico")) return true;
   if (request.url?.endsWith(".svg")) return true;
   return false;
+}
+
+type Chunk = string | Buffer | Uint8Array;
+class BodyCapture {
+  private chunks: Buffer[] = [];
+  private currentLength = 0;
+  private totalBodyLength = 0;
+
+  push(chunk: Chunk, encoding?: BufferEncoding) {
+    if (!chunk) return;
+    this.totalBodyLength += chunk.length;
+    if (config.responseBodyMaxLength <= this.currentLength) return;
+
+    if (typeof chunk === "string") chunk = Buffer.from(chunk, encoding);
+    this.chunks.push(Buffer.from(chunk));
+    this.currentLength += chunk.length;
+  }
+
+  createReturnValue(isJson: boolean) {
+    let returnValue: AppMap.Parameter | undefined;
+    let caputuredBodyString: string = Buffer.concat(this.chunks).toString("utf8");
+    if (caputuredBodyString.length > config.responseBodyMaxLength)
+      caputuredBodyString = caputuredBodyString.substring(0, config.responseBodyMaxLength);
+
+    if (caputuredBodyString.length > 0) {
+      // If it's truncated add the rider
+      if (this.totalBodyLength > caputuredBodyString.length) {
+        const truncatedLength = this.totalBodyLength - caputuredBodyString.length;
+        caputuredBodyString += `... (${truncatedLength} more characters)`;
+      } else if (isJson) {
+        // Not truncated, try to parse JSON and make it a Parameter
+        try {
+          const obj: unknown = JSON.parse(caputuredBodyString);
+          returnValue = parameter(obj);
+        } catch {
+          /* Cannot be parsed */
+        }
+      }
+      if (returnValue == undefined)
+        returnValue = { class: "[ResponseBody]", value: caputuredBodyString };
+    }
+    return returnValue;
+  }
+}
+
+function captureResponseBody(response: http.ServerResponse, capture: BodyCapture) {
+  const originalWrite = response.write.bind(response);
+  const originalEnd = response.end.bind(response);
+
+  type WriteCallback = (error: Error | null | undefined) => void;
+
+  response.write = function (
+    chunk: Chunk,
+    encoding?: BufferEncoding | WriteCallback,
+    callback?: WriteCallback,
+  ) {
+    if (typeof encoding === "function") {
+      callback = encoding;
+      encoding = undefined;
+    }
+
+    capture.push(chunk, encoding);
+
+    if (encoding != null) return originalWrite(chunk, encoding, callback);
+    return originalWrite(chunk, callback);
+  };
+
+  type EndCallback = () => void;
+
+  response.end = function (
+    chunk?: Chunk | EndCallback,
+    encoding?: BufferEncoding | EndCallback,
+    callback?: EndCallback,
+  ) {
+    if (!chunk || typeof chunk === "function") {
+      return originalEnd(chunk);
+    } else if (typeof encoding === "function") {
+      callback = encoding;
+      encoding = undefined;
+    }
+
+    capture.push(chunk, encoding);
+
+    if (encoding != null) return originalEnd(chunk, encoding, callback);
+    return originalEnd(chunk, callback);
+  };
 }
 
 function handleRequest(request: http.IncomingMessage, response: http.ServerResponse) {
@@ -169,9 +264,13 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
     normalizeHeaders(request.headers),
     url.searchParams,
   );
+
+  const capture = new BodyCapture();
+  captureResponseBody(response, capture);
+
   const startTime = getTime();
   response.once("finish", () => {
-    handleResponse(request, requestEvent, startTime, timestamp, response);
+    handleResponse(request, requestEvent, startTime, timestamp, response, capture);
   });
 }
 
@@ -238,13 +337,19 @@ function handleResponse(
   startTime: number,
   timestamp: string | undefined,
   response: http.ServerResponse<http.IncomingMessage>,
+  capture: BodyCapture,
 ): void {
   if (fixupEvent(request, requestEvent)) recording.fixup(requestEvent);
+
+  const contentType = response.getHeader("Content-Type");
+  const isJson = typeof contentType == "string" && contentType.startsWith("application/json");
+
   recording.httpResponse(
     requestEvent.id,
     getTime() - startTime,
     response.statusCode,
     normalizeHeaders(response.getHeaders()),
+    capture.createReturnValue(isJson),
   );
   if (remoteRunning) return;
   const { request_method, path_info } = requestEvent.http_server_request;
