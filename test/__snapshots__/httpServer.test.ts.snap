@@ -81,6 +81,10 @@ exports[`mapping Express.js requests 1`] = `
             "Content-Type": "text/html; charset=utf-8",
             "X-Powered-By": "Express",
           },
+          "return_value": {
+            "class": "[ResponseBody]",
+            "value": "Hello World!",
+          },
           "status_code": 200,
         },
         "id": 4,
@@ -134,6 +138,20 @@ exports[`mapping Express.js requests 1`] = `
             "Content-Type": "text/html; charset=utf-8",
             "X-Content-Type-Options": "nosniff",
             "X-Powered-By": "Express",
+          },
+          "return_value": {
+            "class": "[ResponseBody]",
+            "value": "<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot GET /nonexistent</pre>
+</body>
+</html>
+",
           },
           "status_code": 404,
         },
@@ -305,6 +323,25 @@ exports[`mapping Express.js requests 1`] = `
             "Content-Type": "application/json; charset=utf-8",
             "X-Powered-By": "Express",
           },
+          "return_value": {
+            "class": "Object",
+            "object_id": 5,
+            "properties": [
+              {
+                "class": "String",
+                "name": "api",
+              },
+              {
+                "class": "String",
+                "name": "param1",
+              },
+              {
+                "class": "String",
+                "name": "param2",
+              },
+            ],
+            "value": "{ api: 'result', param1: '3', param2: '4' }",
+          },
           "status_code": 200,
         },
         "id": 4,
@@ -382,7 +419,7 @@ exports[`mapping Express.js requests 1`] = `
           {
             "class": "Object",
             "name": "obj",
-            "object_id": 6,
+            "object_id": 7,
             "properties": [
               {
                 "class": "Number",
@@ -410,14 +447,14 @@ exports[`mapping Express.js requests 1`] = `
               ],
             },
             "name": "arr",
-            "object_id": 7,
+            "object_id": 8,
             "size": 2,
             "value": "[ { foo: 43 }, { foo: 44 } ]",
           },
           {
             "class": "Array",
             "name": "heterogenous",
-            "object_id": 8,
+            "object_id": 9,
             "size": 2,
             "value": "[ 42, 'str' ]",
           },
@@ -451,7 +488,7 @@ exports[`mapping Express.js requests 1`] = `
           {
             "class": "Object",
             "name": "body",
-            "object_id": 5,
+            "object_id": 6,
             "properties": [
               {
                 "class": "String",
@@ -511,7 +548,7 @@ exports[`mapping Express.js requests 1`] = `
         "parent_id": 2,
         "return_value": {
           "class": "Object",
-          "object_id": 5,
+          "object_id": 6,
           "properties": [
             {
               "class": "String",
@@ -569,6 +606,56 @@ exports[`mapping Express.js requests 1`] = `
             "Content-Length": "99",
             "Content-Type": "application/json; charset=utf-8",
             "X-Powered-By": "Express",
+          },
+          "return_value": {
+            "class": "Object",
+            "object_id": 10,
+            "properties": [
+              {
+                "class": "String",
+                "name": "key",
+              },
+              {
+                "class": "Object",
+                "name": "obj",
+                "properties": [
+                  {
+                    "class": "Number",
+                    "name": "foo",
+                  },
+                  {
+                    "class": "Array",
+                    "items": {
+                      "class": "Number",
+                    },
+                    "name": "arr",
+                  },
+                ],
+              },
+              {
+                "class": "Array",
+                "items": {
+                  "class": "Object",
+                  "properties": [
+                    {
+                      "class": "Number",
+                      "name": "foo",
+                    },
+                  ],
+                },
+                "name": "arr",
+              },
+              {
+                "class": "Array",
+                "name": "heterogenous",
+              },
+            ],
+            "value": "{
+  key: 'value',
+  obj: { foo: 42, arr: [Array] },
+  arr: [ [Object], [Object] ],
+  heterogenous: [ 42, 'str' ]
+}",
           },
           "status_code": 200,
         },
@@ -663,7 +750,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         {
           "class": "Object",
           "name": "obj",
-          "object_id": 6,
+          "object_id": 7,
           "properties": [
             {
               "class": "Number",
@@ -691,14 +778,14 @@ exports[`mapping Express.js requests with remote recording 1`] = `
             ],
           },
           "name": "arr",
-          "object_id": 7,
+          "object_id": 8,
           "size": 2,
           "value": "[ { foo: 43 }, { foo: 44 } ]",
         },
         {
           "class": "Array",
           "name": "heterogenous",
-          "object_id": 8,
+          "object_id": 9,
           "size": 2,
           "value": "[ 42, 'str' ]",
         },
@@ -795,6 +882,10 @@ exports[`mapping Express.js requests with remote recording 1`] = `
           "Content-Type": "text/html; charset=utf-8",
           "X-Powered-By": "Express",
         },
+        "return_value": {
+          "class": "[ResponseBody]",
+          "value": "Hello World!",
+        },
         "status_code": 200,
       },
       "id": 4,
@@ -824,6 +915,20 @@ exports[`mapping Express.js requests with remote recording 1`] = `
           "Content-Type": "text/html; charset=utf-8",
           "X-Content-Type-Options": "nosniff",
           "X-Powered-By": "Express",
+        },
+        "return_value": {
+          "class": "[ResponseBody]",
+          "value": "<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot GET /nonexistent</pre>
+</body>
+</html>
+",
         },
         "status_code": 404,
       },
@@ -919,6 +1024,25 @@ exports[`mapping Express.js requests with remote recording 1`] = `
           "Content-Type": "application/json; charset=utf-8",
           "X-Powered-By": "Express",
         },
+        "return_value": {
+          "class": "Object",
+          "object_id": 5,
+          "properties": [
+            {
+              "class": "String",
+              "name": "api",
+            },
+            {
+              "class": "String",
+              "name": "param1",
+            },
+            {
+              "class": "String",
+              "name": "param2",
+            },
+          ],
+          "value": "{ api: 'result', param1: '3', param2: '4' }",
+        },
         "status_code": 200,
       },
       "id": 10,
@@ -950,7 +1074,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         {
           "class": "Object",
           "name": "body",
-          "object_id": 5,
+          "object_id": 6,
           "properties": [
             {
               "class": "String",
@@ -1010,7 +1134,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
       "parent_id": 12,
       "return_value": {
         "class": "Object",
-        "object_id": 5,
+        "object_id": 6,
         "properties": [
           {
             "class": "String",
@@ -1068,6 +1192,56 @@ exports[`mapping Express.js requests with remote recording 1`] = `
           "Content-Length": "99",
           "Content-Type": "application/json; charset=utf-8",
           "X-Powered-By": "Express",
+        },
+        "return_value": {
+          "class": "Object",
+          "object_id": 10,
+          "properties": [
+            {
+              "class": "String",
+              "name": "key",
+            },
+            {
+              "class": "Object",
+              "name": "obj",
+              "properties": [
+                {
+                  "class": "Number",
+                  "name": "foo",
+                },
+                {
+                  "class": "Array",
+                  "items": {
+                    "class": "Number",
+                  },
+                  "name": "arr",
+                },
+              ],
+            },
+            {
+              "class": "Array",
+              "items": {
+                "class": "Object",
+                "properties": [
+                  {
+                    "class": "Number",
+                    "name": "foo",
+                  },
+                ],
+              },
+              "name": "arr",
+            },
+            {
+              "class": "Array",
+              "name": "heterogenous",
+            },
+          ],
+          "value": "{
+  key: 'value',
+  obj: { foo: 42, arr: [Array] },
+  arr: [ [Object], [Object] ],
+  heterogenous: [ 42, 'str' ]
+}",
         },
         "status_code": 200,
       },

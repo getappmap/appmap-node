@@ -6,10 +6,14 @@ import { cwd } from "node:process";
 import { PackageJson } from "type-fest";
 import YAML from "yaml";
 
+import { warn } from "./message";
 import PackageMatcher, { Package, parsePackages } from "./PackageMatcher";
 import locateFileUp from "./util/findFileUp";
 import lazyOpt from "./util/lazyOpt";
 import tryOr from "./util/tryOr";
+
+const responseBodyMaxLengthDefault = 10000;
+const kResponseBodyMaxLengthEnvar = "APPMAP_RESPONSE_BODY_MAX_LENGTH";
 
 export class Config {
   public readonly relativeAppmapDir: string;
@@ -18,6 +22,7 @@ export class Config {
   public readonly configPath: string;
   public readonly default: boolean;
   public readonly packages: PackageMatcher;
+  public readonly responseBodyMaxLength: number;
 
   constructor(pwd = cwd()) {
     const configDir = locateFileUp("appmap.yml", process.env.APPMAP_ROOT ?? pwd);
@@ -45,6 +50,17 @@ export class Config {
         },
       ],
     );
+
+    let envResponseBodyMaxLength: number | undefined;
+    if (process.env[kResponseBodyMaxLengthEnvar] != undefined) {
+      const value = parseInt(process.env[kResponseBodyMaxLengthEnvar]);
+      envResponseBodyMaxLength = value >= 0 ? value : undefined;
+      if (envResponseBodyMaxLength == undefined)
+        warn(`Environment variable ${kResponseBodyMaxLengthEnvar} must be a non-negative integer.`);
+    }
+
+    this.responseBodyMaxLength =
+      envResponseBodyMaxLength ?? config?.response_body_max_length ?? responseBodyMaxLengthDefault;
   }
 
   private absoluteAppmapDir?: string;
@@ -77,6 +93,7 @@ interface ConfigFile {
   appmap_dir?: string;
   name?: string;
   packages?: Package[];
+  response_body_max_length?: number;
 }
 
 function readConfigFile(path: string | undefined): ConfigFile | undefined {
@@ -89,6 +106,10 @@ function readConfigFile(path: string | undefined): ConfigFile | undefined {
   if ("name" in config) result.name = String(config.name);
   if ("appmap_dir" in config) result.appmap_dir = String(config.appmap_dir);
   if ("packages" in config) result.packages = parsePackages(config.packages);
+  if ("response_body_max_length" in config) {
+    const value = parseInt(String(config.response_body_max_length));
+    result.response_body_max_length = value >= 0 ? value : undefined;
+  }
 
   return result;
 }

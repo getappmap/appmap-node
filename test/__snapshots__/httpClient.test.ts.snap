@@ -145,6 +145,10 @@ exports[`mapping http client requests (ESM) 1`] = `
         "headers": {
           "Transfer-Encoding": "chunked",
         },
+        "return_value": {
+          "class": "[ResponseBody]",
+          "value": "Hello World!",
+        },
         "status_code": 200,
       },
       "id": 4,
@@ -254,6 +258,10 @@ exports[`mapping http client requests 1`] = `
         "headers": {
           "Transfer-Encoding": "chunked",
         },
+        "return_value": {
+          "class": "[ResponseBody]",
+          "value": "Hello World!",
+        },
         "status_code": 200,
       },
       "id": 4,
@@ -313,6 +321,77 @@ exports[`mapping http client requests 1`] = `
       "parent_id": 7,
       "thread_id": 0,
     },
+    {
+      "event": "call",
+      "http_client_request": {
+        "headers": {
+          "Host": "localhost:27628",
+        },
+        "request_method": "GET",
+        "url": "http://localhost:27628/endpoint/json/one",
+      },
+      "id": 9,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_client_response": {
+        "headers": {
+          "Content-Type": "application/json",
+          "Transfer-Encoding": "chunked",
+        },
+        "return_value": {
+          "class": "Object",
+          "object_id": 2,
+          "properties": [
+            {
+              "class": "String",
+              "name": "foo",
+            },
+            {
+              "class": "Number",
+              "name": "bar",
+            },
+          ],
+          "value": "{ foo: 'xyz', bar: 1 }",
+        },
+        "status_code": 200,
+      },
+      "id": 10,
+      "parent_id": 9,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "http_client_request": {
+        "headers": {
+          "Host": "localhost:27628",
+        },
+        "request_method": "GET",
+        "url": "http://localhost:27628/endpoint/json/two",
+      },
+      "id": 11,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_client_response": {
+        "headers": {
+          "Content-Type": "application/json",
+          "Transfer-Encoding": "chunked",
+        },
+        "return_value": {
+          "class": "[ResponseBody]",
+          "value": "{"foo":"0123456789-0123456789-0123456789-012345678... (22 more characters)",
+        },
+        "status_code": 200,
+      },
+      "id": 12,
+      "parent_id": 11,
+      "thread_id": 0,
+    },
   ],
   "metadata": {
     "app": "http-client-appmap-node-test",
@@ -350,7 +429,7 @@ exports[`mapping mocked http client requests 1`] = `
               "type": "function",
             },
             {
-              "location": "index.js:38",
+              "location": "index.js:44",
               "name": "mocked",
               "static": true,
               "type": "function",
@@ -383,7 +462,7 @@ exports[`mapping mocked http client requests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 1,
-      "lineno": 38,
+      "lineno": 44,
       "method_id": "mocked",
       "parameters": [],
       "path": "index.js",
@@ -437,6 +516,10 @@ exports[`mapping mocked http client requests 1`] = `
       "event": "return",
       "http_client_response": {
         "headers": {},
+        "return_value": {
+          "class": "[ResponseBody]",
+          "value": "Hello World!",
+        },
         "status_code": 200,
       },
       "id": 6,
@@ -461,6 +544,10 @@ exports[`mapping mocked http client requests 1`] = `
       "event": "return",
       "http_client_response": {
         "headers": {},
+        "return_value": {
+          "class": "[ResponseBody]",
+          "value": "Hello World!",
+        },
         "status_code": 200,
       },
       "id": 8,
@@ -489,6 +576,54 @@ exports[`mapping mocked http client requests 1`] = `
       },
       "id": 10,
       "parent_id": 9,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "http_client_request": {
+        "headers": {
+          "Host": "localhost:27628",
+        },
+        "url": "http://localhost:27628/endpoint/json/one",
+      },
+      "id": 11,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_client_response": {
+        "headers": {
+          "Content-Type": "application/json",
+        },
+        "status_code": 200,
+      },
+      "id": 12,
+      "parent_id": 11,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "http_client_request": {
+        "headers": {
+          "Host": "localhost:27628",
+        },
+        "url": "http://localhost:27628/endpoint/json/two",
+      },
+      "id": 13,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_client_response": {
+        "headers": {
+          "Content-Type": "application/json",
+        },
+        "status_code": 200,
+      },
+      "id": 14,
+      "parent_id": 13,
       "thread_id": 0,
     },
   ],

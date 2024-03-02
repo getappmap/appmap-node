@@ -1,2 +1,3 @@
 name: http-client-appmap-node-test
 appmap_dir: tmp/appmap
+response_body_max_length: 50

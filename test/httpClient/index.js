@@ -33,6 +33,12 @@ async function makeRequests() {
 
   const r3 = http.get(`http://localhost:${SERVER_PORT}/endpoint/three`);
   await consume(r3);
+
+  const j1 = http.get(`http://localhost:${SERVER_PORT}/endpoint/json/one`);
+  await consume(j1);
+
+  const j2 = http.get(`http://localhost:${SERVER_PORT}/endpoint/json/two`);
+  await consume(j2);
 }
 
 function mocked() {
@@ -41,6 +47,9 @@ function mocked() {
   n.get("/endpoint/one").reply(200, "Hello World!");
   n.post("/endpoint/two?p1=v1&p2=v2").reply(200, "Hello World!");
   n.get("/endpoint/three").reply(404, undefined, { "Content-Type": "text/html" });
+
+  n.get("/endpoint/json/one").reply(200, undefined, { "Content-Type": "application/json" });
+  n.get("/endpoint/json/two").reply(200, undefined, { "Content-Type": "application/json" });
   void makeRequests();
 }
 

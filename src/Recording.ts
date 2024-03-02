@@ -101,6 +101,7 @@ export default class Recording {
     elapsed: number,
     status: number,
     headers?: Record<string, string>,
+    returnValue?: AppMap.Parameter,
   ): AppMap.HttpClientResponseEvent {
     assert(this.stream);
 
@@ -109,6 +110,7 @@ export default class Recording {
       http_client_response: compactObject({
         status_code: status,
         headers,
+        return_value: returnValue,
       }),
       id: this.nextId++,
       thread_id: 0,
@@ -159,6 +161,7 @@ export default class Recording {
     elapsed: number,
     status: number,
     headers?: Record<string, string>,
+    returnValue?: AppMap.Parameter,
   ): AppMap.HttpServerResponseEvent {
     assert(this.stream);
 
@@ -167,6 +170,7 @@ export default class Recording {
       http_server_response: compactObject({
         status_code: status,
         headers,
+        return_value: returnValue,
       }),
       id: this.nextId++,
       thread_id: 0,

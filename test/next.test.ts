@@ -35,7 +35,17 @@ integrationTest(
 
     app.kill("SIGINT");
     await new Promise((r) => app.once("exit", r));
-    expect(readAppmaps()).toMatchSnapshot();
+    const appMaps = readAppmaps();
+    // Delete response body captures because they will be different in every run
+    Object.values(appMaps).forEach(
+      (a) =>
+        a.events?.forEach((e) => {
+          if ("http_server_response" in e) delete e.http_server_response.return_value;
+          if ("http_client_response" in e) delete e.http_client_response.return_value;
+        }),
+    );
+
+    expect(appMaps).toMatchSnapshot();
 
     // We need to kill the next process explicitly on Windows
     // because it's spawn-ed with "shell: true" and app is the shell process.

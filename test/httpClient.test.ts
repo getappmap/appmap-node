@@ -11,6 +11,16 @@ const httpClientRequestsTest = async (script: string) => {
       if (req.url?.startsWith("/endpoint/one") ?? req.url?.startsWith("endpoint/two")) {
         res.write("Hello World!");
         res.end();
+      } else if (req.url?.startsWith("/endpoint/json/one")) {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.write(JSON.stringify({ foo: "xyz", bar: 1 }));
+        res.end();
+      } else if (req.url?.startsWith("/endpoint/json/two")) {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.write(
+          JSON.stringify({ foo: "0123456789-0123456789-0123456789-0123456789-0123456789", bar: 2 }),
+        );
+        res.end();
       } else {
         res.writeHead(404, { "Content-Type": "text/html" });
         res.end();
