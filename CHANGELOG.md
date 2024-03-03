@@ -1,3 +1,10 @@
+# [2.18.0](https://github.com/getappmap/appmap-node/compare/v2.17.0...v2.18.0) (2024-03-03)
+
+
+### Features
+
+* Capture response body ([b939b95](https://github.com/getappmap/appmap-node/commit/b939b953ae19257e18ca9c54910c0aa0c6a2bf32))
+
 # [2.17.0](https://github.com/getappmap/appmap-node/compare/v2.16.1...v2.17.0) (2024-03-01)
 
 
