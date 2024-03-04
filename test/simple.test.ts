@@ -20,6 +20,11 @@ integrationTest("mapping a simple script", () => {
   expect(readAppmap()).toMatchSnapshot();
 });
 
+integrationTest("mapping a simple script with space in name", () => {
+  expect(runAppmapNode("name with space.js").status).toBe(0);
+  expect(readAppmap()).toMatchSnapshot();
+});
+
 integrationTest("mapping an mjs script", () => {
   expect(runAppmapNode("index.mjs").status).toBe(0);
   expect(readAppmap()).toMatchSnapshot();

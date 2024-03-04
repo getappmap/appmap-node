@@ -486,6 +486,70 @@ exports[`mapping a simple script 1`] = `
 }
 `;
 
+exports[`mapping a simple script with space in name 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "name with space.js:1",
+              "name": "bar",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "name with space",
+          "type": "class",
+        },
+      ],
+      "name": "simple",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "defined_class": "name with space",
+      "event": "call",
+      "id": 1,
+      "lineno": 1,
+      "method_id": "bar",
+      "parameters": [],
+      "path": "name with space.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "simple",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
+
 exports[`mapping an extensionless CommonJS file 1`] = `
 {
   "classMap": [

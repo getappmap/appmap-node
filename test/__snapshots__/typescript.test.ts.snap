@@ -8,7 +8,19 @@ exports[`mapping a simple script 1`] = `
         {
           "children": [
             {
-              "location": "index.ts:3",
+              "location": "a b.ts:1",
+              "name": "f",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "a b",
+          "type": "class",
+        },
+        {
+          "children": [
+            {
+              "location": "index.ts:4",
               "name": "succ",
               "static": true,
               "type": "function",
@@ -24,10 +36,32 @@ exports[`mapping a simple script 1`] = `
   ],
   "events": [
     {
-      "defined_class": "index",
+      "defined_class": "a b",
       "event": "call",
       "id": 1,
-      "lineno": 3,
+      "lineno": 1,
+      "method_id": "f",
+      "parameters": [],
+      "path": "a b.ts",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Number",
+        "value": "1",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "index",
+      "event": "call",
+      "id": 3,
+      "lineno": 4,
       "method_id": "succ",
       "parameters": [
         {
@@ -43,8 +77,8 @@ exports[`mapping a simple script 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 2,
-      "parent_id": 1,
+      "id": 4,
+      "parent_id": 3,
       "return_value": {
         "class": "Number",
         "value": "43",
