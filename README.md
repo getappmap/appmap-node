@@ -1,6 +1,8 @@
 # appmap-node
 
-Experimental AppMap agent for Node.js. Still in active development.
+AppMap agent for Node.js.
+
+See the [official documentation](https://appmap.io/docs/reference/appmap-node.html) for full reference.
 
 ## Usage
 
@@ -27,12 +29,3 @@ packages:
   # - functionName
   # - Klass.method
 ```
-
-## Limitations
-
-This is an experimetal rewrite of the original appmap-agent-js. It's still in active
-development, not ready for production use, and the feature set is currently limited.
-
-- Node 18+ supported.
-- Only captures named `function`s and methods.
-- Http server capture works with node:http, express.js and nest.js (with express.js only).
