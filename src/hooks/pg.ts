@@ -1,6 +1,6 @@
 import type pg from "pg";
 
-import { fixReturnEventIfPromiseResult, recording } from "../recorder";
+import { recording } from "../recorder";
 import { getTime } from "../util/getTime";
 
 export default function pgHook(mod: typeof pg) {
@@ -31,9 +31,8 @@ function createQueryProxy(
       const call = recording.sqlQuery("postgres", sql);
       const start = getTime();
       const result = target.apply(thisArg, argArray);
-      const ret = recording.functionReturn(call.id, result, start);
-
-      return fixReturnEventIfPromiseResult(result, ret, call, start);
+      recording.functionReturn(call.id, result, start);
+      return result;
     },
   });
 }

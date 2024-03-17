@@ -5,7 +5,7 @@ import type prisma from "@prisma/client";
 
 import type AppMap from "../AppMap";
 import { getTime } from "../util/getTime";
-import { fixReturnEventIfPromiseResult, recording } from "../recorder";
+import { recording } from "../recorder";
 import { FunctionInfo } from "../registry";
 import config from "../config";
 
@@ -129,8 +129,8 @@ function createProxy<T extends (...args: unknown[]) => unknown>(
         const start = getTime();
         try {
           const result = target.apply(thisArg, argArray);
-          const ret = recording.functionReturn(prismaCall.id, result, start);
-          return fixReturnEventIfPromiseResult(result, ret, prismaCall, start);
+          recording.functionReturn(prismaCall.id, result, start);
+          return result;
         } catch (exn: unknown) {
           recording.functionException(prismaCall.id, exn, start);
           throw exn;

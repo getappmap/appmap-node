@@ -1,11 +1,7 @@
 import assert from "node:assert";
-import { isPromise } from "node:util/types";
 
-import AppMap from "./AppMap";
 import Recording, { writtenAppMaps } from "./Recording";
-import { makeExceptionEvent, makeReturnEvent } from "./event";
 import { info } from "./message";
-import { getClass, objectId } from "./parameter";
 import { recorderPaused } from "./recorderPause";
 import { FunctionInfo } from "./registry";
 import commonPathPrefix from "./util/commonPathPrefix";
@@ -31,54 +27,12 @@ export function record<This, Return>(
 
   try {
     const result = fun.apply(this, args);
-    const ret = recording.functionReturn(call.id, result, start);
-    return fixReturnEventIfPromiseResult(result, ret, call, start) as Return;
+    recording.functionReturn(call.id, result, start);
+    return result;
   } catch (exn: unknown) {
     recording.functionException(call.id, exn, start);
     throw exn;
   }
-}
-
-export function fixReturnEventIfPromiseResult(
-  result: unknown,
-  returnEvent: AppMap.FunctionReturnEvent,
-  callEvent: AppMap.CallEvent,
-  startTime: number,
-) {
-  if (isPromise(result) && returnEvent.return_value?.value.includes("<pending>"))
-    return result.then(
-      (value) => {
-        const newReturn = makeReturnEvent(
-          returnEvent.id,
-          callEvent.id,
-          result,
-          getTime() - startTime,
-        );
-        newReturn.return_value!.class = `Promise<${getClass(value)}>`;
-        recording.fixup(newReturn);
-        return result;
-      },
-      (reason) => {
-        const event = makeExceptionEvent(
-          returnEvent.id,
-          callEvent.id,
-          reason,
-          getTime() - startTime,
-        );
-        // add return_value too, so it's not unambiguous whether the function
-        // threw or returned a promise which then rejected
-        event.return_value = {
-          class: "Promise",
-          // don't repeat the exception info
-          value: "Promise { <rejected> }",
-          object_id: objectId(result),
-        };
-        recording.fixup(event);
-        return result;
-      },
-    );
-
-  return result;
 }
 
 /* Detect a global-ish object, perhaps coming from a different context.

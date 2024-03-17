@@ -3,7 +3,7 @@ import { inspect } from "node:util";
 import type mongodb from "mongodb";
 
 import { identifier } from "../generate";
-import { fixReturnEventIfPromiseResult, recording } from "../recorder";
+import { recording } from "../recorder";
 import { FunctionInfo } from "../registry";
 import { getTime } from "../util/getTime";
 import { setCustomInspect } from "../parameter";
@@ -119,12 +119,10 @@ function patchMethod<K extends MethodLikeKeys<mongodb.Collection>>(
     const startTime = getTime();
 
     try {
-      const result = Reflect.apply(original, this, args) as unknown;
-      setCustomInspect(result, customInspect);
-      const returnEvent = recording.functionReturn(callEvent.id, result, startTime);
-      return fixReturnEventIfPromiseResult(result, returnEvent, callEvent, startTime) as ReturnType<
-        typeof original
-      >;
+      const result = Reflect.apply(original, this, args) as ReturnType<typeof original>;
+      void setCustomInspect(result, customInspect);
+      recording.functionReturn(callEvent.id, result, startTime);
+      return result;
     } catch (exn: unknown) {
       recording.functionException(callEvent.id, exn, startTime);
       throw exn;
