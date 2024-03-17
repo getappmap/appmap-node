@@ -4,7 +4,6 @@ import Recording from "../Recording";
 import { resetObjectIds } from "../parameter";
 import * as recorder from "../recorder";
 import { pauseRecorder, resumeRecorder } from "../recorderControl";
-import { getTime } from "../util/getTime";
 import { createTestFn } from "./helpers";
 
 describe(recorder.record, () => {
@@ -48,83 +47,6 @@ describe(recorder.record, () => {
     recorder.record.call("this", f, ["arg1", "arg2"], fInfo);
     expect(Recording.prototype.functionCall).toBeCalledTimes(1);
   });
-});
-
-describe(recorder.fixReturnEventsIfPromiseResult, () => {
-  it("records a fix up after the promise resolves", async () => {
-    const promise = Promise.resolve("resolved");
-    const result = recorder.fixReturnEventsIfPromiseResult(
-      recorder.getActiveRecordings().slice(0, 1),
-      promise,
-      [returnEvent],
-      [callEvent],
-      getTime(),
-    );
-
-    await expect(result).resolves.toBe("resolved");
-
-    expect(Recording.prototype.fixup).toBeCalledTimes(1);
-    expect(Recording.prototype.fixup).toBeCalledWith({
-      ...returnEvent,
-      return_value: {
-        class: "Promise<String>",
-        value: "Promise { 'resolved' }",
-        object_id: 1,
-      },
-      elapsed: 0,
-    });
-  });
-
-  it("records a fix up after the promise rejects", async () => {
-    const promise = Promise.reject(new Error("test"));
-    const result = recorder.fixReturnEventsIfPromiseResult(
-      recorder.getActiveRecordings().slice(0, 1),
-      promise,
-      [returnEvent],
-      [callEvent],
-      getTime(),
-    );
-    await expect(result).rejects.toThrowError("test");
-
-    expect(Recording.prototype.fixup).toBeCalledTimes(1);
-
-    // this should have both return_value and exceptions
-    expect(Recording.prototype.fixup).toBeCalledWith({
-      ...returnEvent,
-      return_value: {
-        class: "Promise",
-        value: "Promise { <rejected> }",
-        object_id: 2,
-      },
-      exceptions: [
-        {
-          class: "Error",
-          message: "test",
-          object_id: 1,
-        },
-      ],
-      elapsed: 0,
-    });
-  });
-
-  const callEvent: AppMap.FunctionCallEvent = {
-    event: "call",
-    defined_class: "Test",
-    id: 42,
-    method_id: "test",
-    static: true,
-    thread_id: 0,
-  };
-  const returnEvent: AppMap.FunctionReturnEvent = {
-    event: "return",
-    id: 43,
-    parent_id: 42,
-    thread_id: 0,
-    return_value: {
-      class: "Promise",
-      value: "Promise { <pending> }",
-    },
-  };
 });
 
 afterEach(() => {

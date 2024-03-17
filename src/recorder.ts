@@ -1,13 +1,10 @@
 import assert from "node:assert";
-import { isPromise } from "node:util/types";
 
 import type * as AppMap from "./AppMap";
 import config from "./config";
 import Recording, { writtenAppMaps } from "./Recording";
-import { makeExceptionEvent, makeReturnEvent } from "./event";
 import { info } from "./message";
 import { Package } from "./PackageMatcher";
-import { getClass, objectId } from "./parameter";
 import { shouldRecord } from "./recorderControl";
 import { FunctionInfo } from "./registry";
 import commonPathPrefix from "./util/commonPathPrefix";
@@ -79,16 +76,10 @@ export function record<This, Return>(
   const startTime = getTime();
   try {
     const result = fun.apply(this, args);
-    const returnEvents = recordings.map((recording, idx) =>
+    recordings.forEach((recording, idx) =>
       recording.functionReturn(callEvents[idx].id, result, startTime),
     );
-    return fixReturnEventsIfPromiseResult(
-      recordings,
-      result,
-      returnEvents,
-      callEvents,
-      startTime,
-    ) as Return;
+    return result;
   } catch (exn: unknown) {
     recordings.map((recording, idx) =>
       recording.functionException(callEvents[idx].id, exn, startTime),
@@ -97,64 +88,6 @@ export function record<This, Return>(
   } finally {
     recordCallPackageStack.pop();
   }
-}
-
-export function fixReturnEventsIfPromiseResult(
-  recordings: Recording[],
-  result: unknown,
-  returnEvents: AppMap.FunctionReturnEvent[],
-  callEvents: AppMap.CallEvent[],
-  startTime: number,
-) {
-  // returnEvents would have the same return_value, in case of multiple recordings.
-  if (isPromise(result) && returnEvents[0].return_value?.value.includes("<pending>"))
-    return result.then(
-      (value) => {
-        const elapsed = getTime() - startTime;
-        const promiseClass = `Promise<${getClass(value)}>`;
-        recordings.map((recording, idx) => {
-          // If the recording is not active after promise resolution
-          // don't attempt to record an eventUpdate.
-          if (!isActive(recording)) return;
-          const newReturn = makeReturnEvent(
-            returnEvents[idx].id,
-            callEvents[idx].id,
-            result,
-            elapsed,
-          );
-          newReturn.return_value!.class = promiseClass;
-          recording.fixup(newReturn);
-        });
-        return result;
-      },
-      (reason) => {
-        const elapsed = getTime() - startTime;
-        recordings.map((recording, idx) => {
-          // If the recording is not active after promise resolution
-          // don't attempt to record an eventUpdate.
-          if (!isActive(recording)) return;
-          const event = makeExceptionEvent(
-            returnEvents[idx].id,
-            callEvents[idx].id,
-            reason,
-            elapsed,
-          );
-          // add return_value too, so it's not unambiguous whether the function
-          // threw or returned a promise which then rejected
-          event.return_value = {
-            class: "Promise",
-            // don't repeat the exception info
-            value: "Promise { <rejected> }",
-            object_id: objectId(result),
-          };
-          recording.fixup(event);
-        });
-
-        return result;
-      },
-    );
-
-  return result;
 }
 
 /* Detect a global-ish object, perhaps coming from a different context.
