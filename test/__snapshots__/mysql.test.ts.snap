@@ -34,56 +34,6 @@ exports[`mapping MySQL tests 1`] = `
       "type": "package",
     },
   ],
-  "eventUpdates": {
-    "13": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 13,
-      "parent_id": 11,
-      "return_value": {
-        "class": "Promise<undefined>",
-        "object_id": 7,
-        "value": "Promise { undefined }",
-      },
-      "thread_id": 0,
-    },
-    "19": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 19,
-      "parent_id": 17,
-      "return_value": {
-        "class": "Promise<undefined>",
-        "object_id": 11,
-        "value": "Promise { undefined }",
-      },
-      "thread_id": 0,
-    },
-    "6": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 6,
-      "parent_id": 4,
-      "return_value": {
-        "class": "Promise<undefined>",
-        "object_id": 2,
-        "value": "Promise { undefined }",
-      },
-      "thread_id": 0,
-    },
-    "7": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 7,
-      "parent_id": 1,
-      "return_value": {
-        "class": "Promise<undefined>",
-        "object_id": 3,
-        "value": "Promise { undefined }",
-      },
-      "thread_id": 0,
-    },
-  },
   "events": [
     {
       "defined_class": "index",
@@ -268,30 +218,6 @@ exports[`mapping MySQL tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 6,
-      "parent_id": 4,
-      "return_value": {
-        "class": "Promise",
-        "object_id": 2,
-        "value": "Promise { <pending> }",
-      },
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 7,
-      "parent_id": 1,
-      "return_value": {
-        "class": "Promise",
-        "object_id": 3,
-        "value": "Promise { <pending> }",
-      },
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
       "exceptions": [
         {
           "class": "Error",
@@ -301,6 +227,18 @@ exports[`mapping MySQL tests 1`] = `
       ],
       "id": 8,
       "parent_id": 5,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 4,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 2,
+        "value": "Promise { undefined }",
+      },
       "thread_id": 0,
     },
     {
@@ -481,18 +419,6 @@ exports[`mapping MySQL tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 13,
-      "parent_id": 11,
-      "return_value": {
-        "class": "Promise",
-        "object_id": 7,
-        "value": "Promise { <pending> }",
-      },
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
       "exceptions": [
         {
           "class": "Error",
@@ -502,6 +428,18 @@ exports[`mapping MySQL tests 1`] = `
       ],
       "id": 14,
       "parent_id": 12,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 13,
+      "parent_id": 11,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 7,
+        "value": "Promise { undefined }",
+      },
       "thread_id": 0,
     },
     {
@@ -683,18 +621,6 @@ exports[`mapping MySQL tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 19,
-      "parent_id": 17,
-      "return_value": {
-        "class": "Promise",
-        "object_id": 11,
-        "value": "Promise { <pending> }",
-      },
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
       "exceptions": [
         {
           "class": "Error",
@@ -704,6 +630,18 @@ exports[`mapping MySQL tests 1`] = `
       ],
       "id": 20,
       "parent_id": 18,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 19,
+      "parent_id": 17,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 11,
+        "value": "Promise { undefined }",
+      },
       "thread_id": 0,
     },
     {
@@ -805,6 +743,18 @@ exports[`mapping MySQL tests 1`] = `
       ],
       "id": 24,
       "parent_id": 23,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 7,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 3,
+        "value": "Promise { undefined }",
+      },
       "thread_id": 0,
     },
   ],

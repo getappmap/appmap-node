@@ -1,4 +1,4 @@
-import assert from "node:assert";
+import { AsyncLocalStorage } from "node:async_hooks";
 import { renameSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { inspect } from "node:util";
@@ -14,6 +14,7 @@ import { parameter } from "./parameter";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
 import { getTime } from "./util/getTime";
+import { warn } from "./message";
 
 export default class Recording {
   constructor(type: AppMap.RecorderType, recorder: string, ...names: string[]) {
@@ -31,16 +32,15 @@ export default class Recording {
 
   private nextId = 1;
   private functionsSeen = new Set<FunctionInfo>();
-  private stream: AppMapStream | undefined;
+  private stream: AppMapStream;
   private partPath: string;
   public readonly path;
   public metadata: AppMap.Metadata;
 
   functionCall(funInfo: FunctionInfo, thisArg: unknown, args: unknown[]): AppMap.FunctionCallEvent {
-    assert(this.stream);
     this.functionsSeen.add(funInfo);
     const event = makeCallEvent(this.nextId++, funInfo, thisArg, args);
-    this.stream.emit(event);
+    this.emit(event);
     return event;
   }
 
@@ -49,19 +49,17 @@ export default class Recording {
     exception: unknown,
     startTime?: number,
   ): AppMap.FunctionReturnEvent {
-    assert(this.stream);
     const elapsed = startTime ? getTime() - startTime : undefined;
     const event = makeExceptionEvent(this.nextId++, callId, exception, elapsed);
-    this.stream.emit(event);
+    this.emit(event);
     return event;
   }
 
   functionReturn(callId: number, result: unknown, startTime?: number): AppMap.FunctionReturnEvent {
-    assert(this.stream);
     const elapsed = startTime ? getTime() - startTime : undefined;
     const event = makeReturnEvent(this.nextId++, callId, result, elapsed);
     if (isPromise(result)) this.fixupPromise(event, result, startTime);
-    this.stream.emit(event);
+    this.emit(event);
     return event;
   }
 
@@ -84,7 +82,6 @@ export default class Recording {
   }
 
   sqlQuery(databaseType: string, sql: string): AppMap.SqlQueryEvent {
-    assert(this.stream);
     const event: AppMap.SqlQueryEvent = {
       event: "call",
       sql_query: compactObject({
@@ -94,7 +91,7 @@ export default class Recording {
       id: this.nextId++,
       thread_id: 0,
     };
-    this.stream.emit(event);
+    this.emit(event);
     return event;
   }
 
@@ -103,8 +100,6 @@ export default class Recording {
     url: string,
     headers?: Record<string, string>,
   ): AppMap.HttpClientRequestEvent {
-    assert(this.stream);
-
     const event: AppMap.HttpClientRequestEvent = {
       event: "call",
       http_client_request: compactObject({
@@ -115,7 +110,7 @@ export default class Recording {
       id: this.nextId++,
       thread_id: 0,
     };
-    this.stream.emit(event);
+    this.emit(event);
 
     return event;
   }
@@ -127,8 +122,6 @@ export default class Recording {
     headers?: Record<string, string>,
     returnValue?: AppMap.Parameter,
   ): AppMap.HttpClientResponseEvent {
-    assert(this.stream);
-
     const event: AppMap.HttpClientResponseEvent = {
       event: "return",
       http_client_response: compactObject({
@@ -141,7 +134,7 @@ export default class Recording {
       parent_id: callId,
       elapsed,
     };
-    this.stream.emit(event);
+    this.emit(event);
 
     return event;
   }
@@ -153,7 +146,6 @@ export default class Recording {
     headers?: Record<string, string>,
     params?: URLSearchParams,
   ): AppMap.HttpServerRequestEvent {
-    assert(this.stream);
     const event: AppMap.HttpServerRequestEvent = {
       event: "call",
       http_server_request: compactObject({
@@ -176,7 +168,7 @@ export default class Recording {
         });
       }
     }
-    this.stream.emit(event);
+    this.emit(event);
     return event;
   }
 
@@ -187,8 +179,6 @@ export default class Recording {
     headers?: Record<string, string>,
     returnValue?: AppMap.Parameter,
   ): AppMap.HttpServerResponseEvent {
-    assert(this.stream);
-
     const event: AppMap.HttpServerResponseEvent = {
       event: "return",
       http_server_response: compactObject({
@@ -201,7 +191,7 @@ export default class Recording {
       parent_id: callId,
       elapsed,
     };
-    this.stream.emit(event);
+    this.emit(event);
 
     return event;
   }
@@ -209,15 +199,21 @@ export default class Recording {
   private eventUpdates: Record<number, AppMap.Event> = {};
 
   fixup(event: AppMap.Event) {
-    this.eventUpdates[event.id] = event;
+    if (this.bufferedEvents.has(event.id)) {
+      const buffered = this.bufferedEvents.get(event.id)!;
+      if (event === buffered) return;
+      else Object.assign(buffered, event);
+    } else this.eventUpdates[event.id] = event;
   }
 
   abandon(): void {
-    if (this.stream?.close()) rmSync(this.partPath);
-    this.stream = undefined;
+    if (this.running && this.stream?.close()) rmSync(this.partPath);
+    this.running = false;
   }
 
   finish(): boolean {
+    if (!this.running) return false;
+    passEvents(this.stream, this.rootBuffer);
     const written = this.stream?.close(
       compactObject({
         classMap: makeClassMap(this.functionsSeen.keys()),
@@ -225,18 +221,56 @@ export default class Recording {
         eventUpdates: Object.keys(this.eventUpdates).length > 0 ? this.eventUpdates : undefined,
       }),
     );
-    this.stream = undefined;
     if (written) {
       renameSync(this.partPath, this.path);
       writtenAppMaps.push(this.path);
     }
+    this.running = false;
     return !!written;
   }
 
-  get running(): boolean {
-    return !!this.stream;
+  public running = true;
+
+  private bufferedEvents = new Map<number, AppMap.Event>();
+
+  public emit(event: AppMap.Event) {
+    if (!this.running) {
+      warn("event emitted while recording not running");
+      return;
+    }
+    if (this.buffering) {
+      this.bufferedEvents.set(event.id, event);
+      this.buffer.push(event);
+    } else this.stream.push(event);
+  }
+
+  private rootBuffer: EventBuffer = [];
+  private localBuffer = new AsyncLocalStorage<EventBuffer>();
+
+  private get buffering(): boolean {
+    return this.rootBuffer.length > 0;
+  }
+
+  private get buffer(): EventBuffer {
+    return this.localBuffer.getStore() ?? this.rootBuffer;
+  }
+
+  public fork<T>(fun: () => T): T {
+    const forked: EventBuffer = [];
+    this.buffer.push(forked);
+    return this.localBuffer.run(forked, fun);
   }
 }
+
+function passEvents(stream: AppMapStream, buffer: EventBuffer) {
+  for (const event of buffer) {
+    if (Array.isArray(event)) passEvents(stream, event);
+    else stream.push(event);
+  }
+}
+
+type EventOrBuffer = AppMap.Event | EventBuffer;
+type EventBuffer = EventOrBuffer[];
 
 export const writtenAppMaps: string[] = [];
 

@@ -29,7 +29,7 @@ export default class AppMapStream {
     return true;
   }
 
-  public emit(event: unknown) {
+  public push(event: unknown) {
     if (this.fd === undefined) this.fd = this.open();
     else writeSync(this.fd, ",");
     writeSync(this.fd, JSON.stringify(event));

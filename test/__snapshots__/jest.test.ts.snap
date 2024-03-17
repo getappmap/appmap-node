@@ -174,32 +174,6 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
         "type": "package",
       },
     ],
-    "eventUpdates": {
-      "2": {
-        "elapsed": 31.337,
-        "event": "return",
-        "id": 2,
-        "parent_id": 1,
-        "return_value": {
-          "class": "Promise<undefined>",
-          "object_id": 1,
-          "value": "Promise { undefined }",
-        },
-        "thread_id": 0,
-      },
-      "4": {
-        "elapsed": 31.337,
-        "event": "return",
-        "id": 4,
-        "parent_id": 3,
-        "return_value": {
-          "class": "Promise<undefined>",
-          "object_id": 2,
-          "value": "Promise { undefined }",
-        },
-        "thread_id": 0,
-      },
-    },
     "events": [
       {
         "defined_class": "asyncLib.test",
@@ -224,9 +198,9 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
         "id": 2,
         "parent_id": 1,
         "return_value": {
-          "class": "Promise",
+          "class": "Promise<undefined>",
           "object_id": 1,
-          "value": "Promise { <pending> }",
+          "value": "Promise { undefined }",
         },
         "thread_id": 0,
       },
@@ -253,9 +227,9 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
         "id": 4,
         "parent_id": 3,
         "return_value": {
-          "class": "Promise",
+          "class": "Promise<undefined>",
           "object_id": 2,
-          "value": "Promise { <pending> }",
+          "value": "Promise { undefined }",
         },
         "thread_id": 0,
       },

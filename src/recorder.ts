@@ -26,7 +26,9 @@ export function record<This, Return>(
   const start = getTime();
 
   try {
-    const result = fun.apply(this, args);
+    const result = funInfo.async
+      ? recording.fork(() => fun.apply(this, args))
+      : fun.apply(this, args);
     recording.functionReturn(call.id, result, start);
     return result;
   } catch (exn: unknown) {

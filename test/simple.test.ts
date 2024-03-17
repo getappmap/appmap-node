@@ -87,6 +87,11 @@ integrationTest("running a script after changing the current directory", () => {
   expect(readAppmap()).toBeDefined();
 });
 
+integrationTest("mapping a script with tangled async functions", () => {
+  expect(runAppmapNode("async.mjs").status).toBe(0);
+  expect(readAppmap()).toMatchSnapshot();
+});
+
 integrationTest("creating a default config file", () => {
   const index = resolveTarget("index.js");
   const target = tmp.dirSync({ unsafeCleanup: true });
@@ -101,9 +106,4 @@ integrationTest("creating a default config file", () => {
 
   // check that the default config file was written
   expect(readFileSync(cfgPath, "utf8")).toMatchSnapshot();
-});
-
-integrationTest.only("mapping a script with tangled async functions", () => {
-  expect(runAppmapNode("async.mjs").status).toBe(0);
-  expect(readAppmap()).toMatchSnapshot();
 });
