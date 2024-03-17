@@ -12,6 +12,7 @@ import { getDefaultMetadata } from "./metadata";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
 import { shouldRecord } from "./recorderControl";
+import { getTime } from "./util/getTime";
 
 export default class Recording {
   constructor(type: AppMap.RecorderType, recorder: string, ...names: string[]) {
@@ -44,14 +45,16 @@ export default class Recording {
   functionException(
     callId: number,
     exception: unknown,
-    elapsed?: number,
+    startTime?: number,
   ): AppMap.FunctionReturnEvent {
+    const elapsed = startTime ? getTime() - startTime : undefined;
     const event = makeExceptionEvent(this.nextId++, callId, exception, elapsed);
     this.emit(event);
     return event;
   }
 
-  functionReturn(callId: number, result: unknown, elapsed?: number): AppMap.FunctionReturnEvent {
+  functionReturn(callId: number, result: unknown, startTime?: number): AppMap.FunctionReturnEvent {
+    const elapsed = startTime ? getTime() - startTime : undefined;
     const event = makeReturnEvent(this.nextId++, callId, result, elapsed);
     this.emit(event);
     return event;
