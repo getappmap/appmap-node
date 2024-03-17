@@ -151,15 +151,13 @@ function createPrismaClientMethodProxy<T extends (...args: unknown[]) => unknown
         try {
           const result = target.apply(thisArg, argArray);
 
-          const elapsed = getTime() - startTime;
           const returnEvents = recordings.map((recording, idx) =>
-            recording.functionReturn(calls[idx].id, result, elapsed),
+            recording.functionReturn(calls[idx].id, result, startTime),
           );
           return fixReturnEventsIfPromiseResult(recordings, result, returnEvents, calls, startTime);
         } catch (exn: unknown) {
-          const elapsed = getTime() - startTime;
           recordings.forEach((recording, idx) =>
-            recording.functionException(calls[idx].id, exn, elapsed),
+            recording.functionException(calls[idx].id, exn, startTime),
           );
           throw exn;
         }
@@ -194,8 +192,10 @@ function attachSqlHook(thisArg: unknown) {
     const recordings = getActiveRecordings();
     const callEvents = recordings.map((recording) => recording.sqlQuery(dbType, queryEvent.query));
     const elapsedSec = queryEvent.duration / 1000.0;
+    // Give a startTime so that functionReturn calculates same elapsedSec
+    const startTime = getTime() - elapsedSec;
     recordings.forEach((recording, idx) =>
-      recording.functionReturn(callEvents[idx].id, undefined, elapsedSec),
+      recording.functionReturn(callEvents[idx].id, undefined, startTime),
     );
   });
 }

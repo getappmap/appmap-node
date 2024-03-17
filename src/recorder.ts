@@ -79,10 +79,8 @@ export function record<This, Return>(
   const startTime = getTime();
   try {
     const result = fun.apply(this, args);
-
-    const elapsed = getTime() - startTime;
     const returnEvents = recordings.map((recording, idx) =>
-      recording.functionReturn(callEvents[idx].id, result, elapsed),
+      recording.functionReturn(callEvents[idx].id, result, startTime),
     );
     return fixReturnEventsIfPromiseResult(
       recordings,
@@ -92,9 +90,8 @@ export function record<This, Return>(
       startTime,
     ) as Return;
   } catch (exn: unknown) {
-    const elapsed = getTime() - startTime;
     recordings.map((recording, idx) =>
-      recording.functionException(callEvents[idx].id, exn, elapsed),
+      recording.functionException(callEvents[idx].id, exn, startTime),
     );
     throw exn;
   } finally {

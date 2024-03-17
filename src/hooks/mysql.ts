@@ -53,17 +53,16 @@ function createQueryProxy(query: mysql.QueryFunction) {
           : undefined;
 
       const newCallback: mysql.queryCallback = (err, results, fields) => {
-        const elapsed = getTime() - startTime;
         if (err)
           recordings.forEach(
             (recording, idx) =>
-              isActive(recording) && recording.functionException(callEvents[idx].id, err, elapsed),
+              isActive(recording) && recording.functionException(callEvents[idx].id, err, startTime),
           );
         else
           recordings.forEach(
             (recording, idx) =>
               isActive(recording) &&
-              recording.functionReturn(callEvents[idx].id, undefined, elapsed),
+              recording.functionReturn(callEvents[idx].id, undefined, startTime),
           );
 
         originalCallback?.call(this, err, results, fields);

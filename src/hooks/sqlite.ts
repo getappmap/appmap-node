@@ -84,11 +84,10 @@ function createRecordingProxy<T extends RecordingProxyTarget>(
       const newCompletionCallback = (...args: unknown[]) => {
         const isError = args.length > 0 && args[0] != undefined;
         if (!isError) {
-          const elapsed = getTime() - startTime;
           recordings.forEach(
             (recording, idx) =>
               isActive(recording) &&
-              recording.functionReturn(callEvents[idx].id, undefined, elapsed),
+              recording.functionReturn(callEvents[idx].id, undefined, startTime),
           );
         }
         originalCompletionCallback?.apply(this, args);

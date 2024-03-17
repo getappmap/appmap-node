@@ -111,16 +111,15 @@ function patchMethod<K extends MethodLikeKeys<mongodb.Collection>>(
       args.push((err: unknown, res: unknown) => {
         setCustomInspect(res, customInspect);
 
-        const elapsed = getTime() - startTime;
         if (err)
           recordings.forEach(
             (recording, idx) =>
-              isActive(recording) && recording.functionException(callEvents[idx].id, err, elapsed),
+              isActive(recording) && recording.functionException(callEvents[idx].id, err, startTime),
           );
         else
           recordings.forEach(
             (recording, idx) =>
-              isActive(recording) && recording.functionReturn(callEvents[idx].id, res, elapsed),
+              isActive(recording) && recording.functionReturn(callEvents[idx].id, res, startTime),
           );
 
         return callback(err, res) as unknown;
@@ -135,9 +134,8 @@ function patchMethod<K extends MethodLikeKeys<mongodb.Collection>>(
       const result = Reflect.apply(original, this, args) as unknown;
       setCustomInspect(result, customInspect);
 
-      const elapsed = getTime() - startTime;
       const returnEvents = recordings.map((recording, idx) =>
-        recording.functionReturn(callEvents[idx].id, result, elapsed),
+        recording.functionReturn(callEvents[idx].id, result, startTime),
       );
       return fixReturnEventsIfPromiseResult(
         recordings,
@@ -149,7 +147,7 @@ function patchMethod<K extends MethodLikeKeys<mongodb.Collection>>(
     } catch (exn: unknown) {
       const elapsed = getTime() - startTime;
       recordings.map((recording, idx) =>
-        recording.functionException(callEvents[idx].id, exn, elapsed),
+        recording.functionException(callEvents[idx].id, exn, startTime),
       );
       throw exn;
     }

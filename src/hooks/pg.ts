@@ -33,9 +33,8 @@ function createQueryProxy(
       const startTime = getTime();
       const result = target.apply(thisArg, argArray);
 
-      const elapsed = getTime() - startTime;
       const returnEvents = recordings.map((recording, idx) =>
-        recording.functionReturn(callEvents[idx].id, result, elapsed),
+        recording.functionReturn(callEvents[idx].id, result, startTime),
       );
 
       return fixReturnEventsIfPromiseResult(
