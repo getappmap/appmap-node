@@ -31,10 +31,10 @@ export function record<This, Return>(
 
   try {
     const result = fun.apply(this, args);
-    const ret = recording.functionReturn(call.id, result, getTime() - start);
+    const ret = recording.functionReturn(call.id, result, start);
     return fixReturnEventIfPromiseResult(result, ret, call, start) as Return;
   } catch (exn: unknown) {
-    recording.functionException(call.id, exn, getTime() - start);
+    recording.functionException(call.id, exn, start);
     throw exn;
   }
 }

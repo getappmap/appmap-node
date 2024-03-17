@@ -107,7 +107,7 @@ function createProxy<T extends (...args: unknown[]) => unknown>(
         thisArg.$on("query", (queryEvent: QueryEvent) => {
           const call = recording.sqlQuery(dbType, queryEvent.query);
           const elapsedSec = queryEvent.duration / 1000.0;
-          recording.functionReturn(call.id, undefined, elapsedSec);
+          recording.functionReturn(call.id, undefined, getTime() - elapsedSec);
         });
       }
 
@@ -129,10 +129,10 @@ function createProxy<T extends (...args: unknown[]) => unknown>(
         const start = getTime();
         try {
           const result = target.apply(thisArg, argArray);
-          const ret = recording.functionReturn(prismaCall.id, result, getTime() - start);
+          const ret = recording.functionReturn(prismaCall.id, result, start);
           return fixReturnEventIfPromiseResult(result, ret, prismaCall, start);
         } catch (exn: unknown) {
-          recording.functionException(prismaCall.id, exn, getTime() - start);
+          recording.functionException(prismaCall.id, exn, start);
           throw exn;
         }
       }

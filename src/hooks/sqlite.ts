@@ -82,7 +82,7 @@ function createRecordingProxy<T extends RecordingProxyTarget>(
 
       const newCompletionCallback = (...args: unknown[]) => {
         const isError = args.length > 0 && args[0] != undefined;
-        if (!isError) recording.functionReturn(call.id, undefined, getTime() - start);
+        if (!isError) recording.functionReturn(call.id, undefined, start);
         originalCompletionCallback?.apply(this, args);
       };
       newFunctionArgs.push(newCompletionCallback);

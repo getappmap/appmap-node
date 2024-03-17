@@ -31,7 +31,7 @@ function createQueryProxy(
       const call = recording.sqlQuery("postgres", sql);
       const start = getTime();
       const result = target.apply(thisArg, argArray);
-      const ret = recording.functionReturn(call.id, result, getTime() - start);
+      const ret = recording.functionReturn(call.id, result, start);
 
       return fixReturnEventIfPromiseResult(result, ret, call, start);
     },

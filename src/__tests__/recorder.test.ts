@@ -21,7 +21,7 @@ describe(recorder.record, () => {
     expect(result).toBe("return");
     expect(fn).toBeCalled();
     expect(Recording.prototype.functionCall).lastCalledWith(testFn, "this", ["arg1", "arg2"]);
-    expect(Recording.prototype.functionReturn).lastCalledWith(1, "return", expect.closeTo(31.337));
+    expect(Recording.prototype.functionReturn).lastCalledWith(1, "return", 0);
   });
 
   it("treats functions called with global this as static", () => {

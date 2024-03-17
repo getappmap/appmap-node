@@ -52,8 +52,8 @@ function createQueryProxy(query: mysql.QueryFunction) {
           : undefined;
 
       const newCallback: mysql.queryCallback = (err, results, fields) => {
-        if (err) recording.functionException(call.id, err, getTime() - start);
-        else recording.functionReturn(call.id, undefined, getTime() - start);
+        if (err) recording.functionException(call.id, err, start);
+        else recording.functionReturn(call.id, undefined, start);
 
         originalCallback?.call(this, err, results, fields);
       };
