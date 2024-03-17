@@ -3,7 +3,7 @@ import { inspect } from "node:util";
 import type mongodb from "mongodb";
 
 import { identifier } from "../generate";
-import { fixReturnEventsIfPromiseResult, getActiveRecordings, isActive } from "../recorder";
+import { getActiveRecordings, isActive } from "../recorder";
 import { FunctionInfo } from "../registry";
 import { getTime } from "../util/getTime";
 import { setCustomInspect } from "../parameter";
@@ -131,21 +131,14 @@ function patchMethod<K extends MethodLikeKeys<mongodb.Collection>>(
     const startTime = getTime();
 
     try {
-      const result = Reflect.apply(original, this, args) as unknown;
-      setCustomInspect(result, customInspect);
+      const result = Reflect.apply(original, this, args) as ReturnType<typeof original>;
+      void setCustomInspect(result, customInspect);
 
-      const returnEvents = recordings.map((recording, idx) =>
+      recordings.forEach((recording, idx) =>
         recording.functionReturn(callEvents[idx].id, result, startTime),
       );
-      return fixReturnEventsIfPromiseResult(
-        recordings,
-        result,
-        returnEvents,
-        callEvents,
-        startTime,
-      ) as ReturnType<typeof original>;
+      return result;
     } catch (exn: unknown) {
-      const elapsed = getTime() - startTime;
       recordings.map((recording, idx) =>
         recording.functionException(callEvents[idx].id, exn, startTime),
       );

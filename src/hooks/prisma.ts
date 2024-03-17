@@ -5,7 +5,7 @@ import type { ESTree } from "meriyah";
 
 import type * as AppMap from "../AppMap";
 import { getTime } from "../util/getTime";
-import { fixReturnEventsIfPromiseResult, getActiveRecordings } from "../recorder";
+import { getActiveRecordings } from "../recorder";
 import { FunctionInfo } from "../registry";
 import config from "../config";
 import { setCustomInspect } from "../parameter";
@@ -151,10 +151,10 @@ function createPrismaClientMethodProxy<T extends (...args: unknown[]) => unknown
         try {
           const result = target.apply(thisArg, argArray);
 
-          const returnEvents = recordings.map((recording, idx) =>
+          recordings.forEach((recording, idx) =>
             recording.functionReturn(calls[idx].id, result, startTime),
           );
-          return fixReturnEventsIfPromiseResult(recordings, result, returnEvents, calls, startTime);
+          return result;
         } catch (exn: unknown) {
           recordings.forEach((recording, idx) =>
             recording.functionException(calls[idx].id, exn, startTime),
