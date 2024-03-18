@@ -1,6 +1,6 @@
 import assert from "node:assert";
 
-import type AppMap from "./AppMap";
+import type * as AppMap from "./AppMap";
 import config from "./config";
 import type { FunctionInfo, SourceLocation } from "./registry";
 

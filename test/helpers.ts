@@ -7,7 +7,7 @@ import { cwd } from "node:process";
 import caller from "caller";
 import { globSync } from "fast-glob";
 
-import type AppMap from "../src/AppMap";
+import type * as AppMap from "../src/AppMap";
 import fwdSlashPath from "../src/util/fwdSlashPath";
 
 const binPath = resolve(__dirname, "../bin/appmap-node.js");

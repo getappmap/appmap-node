@@ -2,7 +2,7 @@ import process from "node:process";
 
 import type { PackageJson } from "type-fest";
 
-import type AppMap from "./AppMap";
+import type * as AppMap from "./AppMap";
 import config from "./config";
 import { examineException } from "./event";
 import pick from "./util/pick";
