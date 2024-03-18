@@ -1,7 +1,7 @@
 import { ClientRequest, IncomingMessage, ServerResponse } from "node:http";
 import { format, inspect, isDeepStrictEqual } from "node:util";
 
-import type AppMap from "./AppMap";
+import type * as AppMap from "./AppMap";
 import { pauseRecorder, resumeRecorder } from "./recorderPause";
 import compactObject from "./util/compactObject";
 

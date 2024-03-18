@@ -17,6 +17,18 @@
   "main": "./dist/bin.js",
   "loader": "./dist/webpack.js",
   "bin": "bin/appmap-node.js",
+  "exports": {
+    ".": {
+      "require": {
+        "default": "./dist/facade.js",
+        "types": ["./dist/facade.d.ts"] 
+      },
+      "import": {
+        "default": "./dist/facade.js",
+        "types": ["./dist/facade.d.ts"] 
+      }
+    } 
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/getappmap/appmap-node.git"
