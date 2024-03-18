@@ -16,17 +16,17 @@ import tmp from "tmp";
  * it doesn't crash and produces an AppMap. */
 
 // Create a temporary directory to work in.
-const tmpDir = tmp.dirSync({ unsafeCleanup: true }).name;
+// To test NODE_OPTIONS handling, use a space in the directory name and use mjs.
+const tmpDir = tmp.dirSync({ unsafeCleanup: true, template: "appmap node test XXXXXX" }).name;
 
-// Package up the appmap-node package.
-runCommand("yarn", "pack", "-o", join(tmpDir, "appmap-node.tgz"));
+runCommand("yarn", "pack", "-o", JSON.stringify(join(tmpDir, "appmap-node.tgz")));
 
 chdir(tmpDir);
 runCommand("npm", "init", "-y");
-runCommand("npm", "install", join(tmpDir, "appmap-node.tgz"));
+runCommand("npm", "install", "appmap-node.tgz");
 
 writeFileSync(
-  "index.js",
+  "index.mjs",
   `
 function main() {
   console.log("Hello world!");
@@ -35,7 +35,7 @@ main();
 `,
 );
 
-runCommand("npm", "exec", "appmap-node", "index.js");
+runCommand("npm", "exec", "appmap-node", "index.mjs");
 
 // verify that appmap has been created
 const files = glob.globSync("tmp/**/*.appmap.json");
@@ -44,7 +44,7 @@ assert(files.length === 1);
 function runCommand(command, ...args) {
   const { status } = spawnSync(command, args, {
     stdio: "inherit",
-    shell: process.platform == "win32",
+    shell: true,
   });
   assert(status === 0);
 }

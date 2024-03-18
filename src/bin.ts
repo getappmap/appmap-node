@@ -11,6 +11,7 @@ import YAML from "yaml";
 import config from "./config";
 import { info } from "./message";
 import { version } from "./metadata";
+import NodeOptions from "./util/NodeOptions";
 import forwardSignals from "./util/forwardSignals";
 import { readPkgUp } from "./util/readPkgUp";
 
@@ -22,11 +23,12 @@ const loaderPath = pathToFileURL(resolve(__dirname, "../dist/loader.js")).href;
 
 export function main() {
   const [cmd, ...args] = process.argv.slice(2);
+  const nodeOptions = new NodeOptions(process.env.NODE_OPTIONS);
 
   if (!cmd) return usage();
 
   info("Running with appmap-node version %s", version);
-  addNodeOptions("--require", registerPath);
+  nodeOptions.push("--require", registerPath);
   if (config.default) {
     info("Writing default config to %s", config.configPath);
     writeFileSync(config.configPath, YAML.stringify(config));
@@ -35,9 +37,11 @@ export function main() {
 
   // FIXME: Probably there should be a way to remove this altogether
   // by changing our custom loader implementation
-  if (isTsEsmLoaderNeeded(cmd, args)) addNodeOptions("--loader", "ts-node/esm");
+  if (isTsEsmLoaderNeeded(cmd, args)) nodeOptions.push("--loader", "ts-node/esm");
 
-  addNodeOptions("--loader", loaderPath, "--no-warnings");
+  nodeOptions.push("--loader", loaderPath, "--no-warnings");
+
+  process.env.NODE_OPTIONS = nodeOptions.toString();
 
   let child: ChildProcess | undefined;
   if (isScript(cmd)) {
@@ -98,12 +102,6 @@ function isTsEsmLoaderNeeded(cmd: string, args: string[]) {
     );
   };
   return [cmd, ...args].includes("ts-node") || tsConfigTsNodeEsmIsTrue();
-}
-
-function addNodeOptions(...options: string[]) {
-  const envar = (process.env.NODE_OPTIONS ?? "").split(" ");
-  envar.push(...options);
-  process.env.NODE_OPTIONS = envar.join(" ");
 }
 
 /* Heuristic to check if argument is a node script. Currently just checks if it's an existing file
