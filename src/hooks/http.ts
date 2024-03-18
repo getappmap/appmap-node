@@ -5,7 +5,7 @@ import type { ClientRequest, IncomingMessage, ServerResponse } from "node:http";
 import type https from "node:https";
 import { URL } from "node:url";
 
-import type AppMap from "../AppMap";
+import type * as AppMap from "../AppMap";
 import config from "../config";
 import Recording from "../Recording";
 import { info, warn } from "../message";

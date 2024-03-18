@@ -3,7 +3,7 @@ import { renameSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { inspect } from "node:util";
 
-import type AppMap from "./AppMap";
+import type * as AppMap from "./AppMap";
 import AppMapStream from "./AppMapStream";
 import { makeClassMap } from "./classMap";
 import config from "./config";

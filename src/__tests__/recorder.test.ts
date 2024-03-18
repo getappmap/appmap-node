@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import AppMap from "../AppMap";
+import type * as AppMap from "../AppMap";
 import Recording from "../Recording";
 import { resetObjectIds } from "../parameter";
 import * as recorder from "../recorder";

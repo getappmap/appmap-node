@@ -3,7 +3,7 @@ import assert from "node:assert";
 import { ESTree } from "meriyah";
 import type prisma from "@prisma/client";
 
-import type AppMap from "../AppMap";
+import type * as AppMap from "../AppMap";
 import { getTime } from "../util/getTime";
 import { fixReturnEventIfPromiseResult, recording } from "../recorder";
 import { FunctionInfo } from "../registry";

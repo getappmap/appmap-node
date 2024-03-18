@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { isPromise } from "node:util/types";
 
-import AppMap from "./AppMap";
+import type * as AppMap from "./AppMap";
 import Recording, { writtenAppMaps } from "./Recording";
 import { makeExceptionEvent, makeReturnEvent } from "./event";
 import { info } from "./message";
