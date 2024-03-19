@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { renameSync, rmSync } from "node:fs";
+import { readFileSync, renameSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { inspect } from "node:util";
 
@@ -11,6 +11,7 @@ import { makeCallEvent, makeExceptionEvent, makeReturnEvent } from "./event";
 import { defaultMetadata } from "./metadata";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
+import { shouldRecord } from "./recorderControl";
 
 export default class Recording {
   constructor(type: AppMap.RecorderType, recorder: string, ...names: string[]) {
@@ -172,6 +173,13 @@ export default class Recording {
   }
 
   private emit(event: unknown) {
+    // Check here if we should record instead of requiring each
+    // possible hook to check it.
+    // This is also checked in recorder.record() to prevent
+    // unnecessary event object creation. Checking this inside hooks,
+    // (http, sqlite, pg, mysql, ...) will save some CPU cycles but
+    // will complicate their code.
+    if (!shouldRecord()) return;
     assert(this.stream);
     this.stream.emit(event);
   }
@@ -205,6 +213,11 @@ export default class Recording {
 
   get running(): boolean {
     return !!this.stream;
+  }
+
+  readAppMap(): AppMap.AppMap {
+    assert(!this.running);
+    return JSON.parse(readFileSync(this.path, "utf8")) as AppMap.AppMap;
   }
 }
 

@@ -1,0 +1,140 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping code block recording 1`] = `
+{
+  "./tmp/appmap/block/<timestamp 0>.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "index.js:5",
+                "name": "hello",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "index",
+            "type": "class",
+          },
+        ],
+        "name": "codeBlock",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "index",
+        "event": "call",
+        "id": 1,
+        "lineno": 5,
+        "method_id": "hello",
+        "parameters": [
+          {
+            "class": "String",
+            "name": "message",
+            "value": "'world'",
+          },
+        ],
+        "path": "index.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "codeBlock",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "<timestamp 0>",
+      "recorder": {
+        "name": "block",
+        "type": "block",
+      },
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/block/<timestamp 1>.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "index.js:5",
+                "name": "hello",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "index",
+            "type": "class",
+          },
+        ],
+        "name": "codeBlock",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "index",
+        "event": "call",
+        "id": 1,
+        "lineno": 5,
+        "method_id": "hello",
+        "parameters": [
+          {
+            "class": "String",
+            "name": "message",
+            "value": "'world async'",
+          },
+        ],
+        "path": "index.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "codeBlock",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "<timestamp 1>",
+      "recorder": {
+        "name": "block",
+        "type": "block",
+      },
+    },
+    "version": "1.12",
+  },
+}
+`;
