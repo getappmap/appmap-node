@@ -1,3 +1,16 @@
+# [2.19.0](https://github.com/getappmap/appmap-node/compare/v2.18.0...v2.19.0) (2024-03-19)
+
+
+### Bug Fixes
+
+* Correctly quote NODE_OPTIONS when spaces occur in paths ([36b5c9e](https://github.com/getappmap/appmap-node/commit/36b5c9e264ca58541510a6471d62688850b9d99c)), closes [#122](https://github.com/getappmap/appmap-node/issues/122)
+
+
+### Features
+
+* Instrument named const and exported lambdas ([4ec7754](https://github.com/getappmap/appmap-node/commit/4ec77545613568050a8484d26c4885c8f088ce2d))
+* Stringify ClientRequests as `[ClientRequest: <method> <url>]` ([f4b8518](https://github.com/getappmap/appmap-node/commit/f4b8518dbdacdd68e0bb9a0bf14b6797450e7cf8))
+
 # [2.18.0](https://github.com/getappmap/appmap-node/compare/v2.17.0...v2.18.0) (2024-03-03)
 
 
