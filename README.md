@@ -13,6 +13,24 @@ to your tool invocation:
     $ npx appmap-node yarn jest
     $ npx appmap-node npx ts-node foo.ts
 
+## Code Block Recording
+
+You can run appmap-node and use the exposed API to record snippets
+of interest.
+
+    $ npx appmap-node foo.js
+
+foo.js
+```JavaScript
+const { record } = require("appmap-node");
+
+const appmap = record(() => {
+  hello("world");
+});
+// You can consume the details of the appmap object
+console.log("# of events: ", appmap?.events.length);
+```
+
 ## Configuration
 
 You can create `appmap.yml` config file; if not found, a default one will be created:

@@ -6,7 +6,7 @@ import Recording, { writtenAppMaps } from "./Recording";
 import { makeExceptionEvent, makeReturnEvent } from "./event";
 import { info } from "./message";
 import { getClass, objectId } from "./parameter";
-import { recorderPaused } from "./recorderPause";
+import { shouldRecord } from "./recorderControl";
 import { FunctionInfo } from "./registry";
 import commonPathPrefix from "./util/commonPathPrefix";
 import { getTime } from "./util/getTime";
@@ -19,7 +19,7 @@ export function record<This, Return>(
   args: unknown[],
   funInfo: FunctionInfo,
 ): Return {
-  if (!recording.running || recorderPaused()) return fun.apply(this, args);
+  if (!recording.running || !shouldRecord()) return fun.apply(this, args);
 
   const call = recording.functionCall(
     funInfo,

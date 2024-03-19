@@ -3,7 +3,7 @@ import type * as AppMap from "../AppMap";
 import Recording from "../Recording";
 import { resetObjectIds } from "../parameter";
 import * as recorder from "../recorder";
-import { pauseRecorder, resumeRecorder } from "../recorderPause";
+import { pauseRecorder, resumeRecorder } from "../recorderControl";
 import { getTime } from "../util/getTime";
 import { createTestFn } from "./helpers";
 
