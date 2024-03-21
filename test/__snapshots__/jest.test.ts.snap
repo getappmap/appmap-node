@@ -153,6 +153,134 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
     },
     "version": "1.12",
   },
+  "./tmp/appmap/jest/jest_test_with_async_library/instrumented_lambda_does_not_cause_timeout.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "asyncLib.test.js:4",
+                "name": "lambda1",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "asyncLib.test",
+            "type": "class",
+          },
+        ],
+        "name": "jest-appmap-node-test",
+        "type": "package",
+      },
+    ],
+    "eventUpdates": {
+      "2": {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Promise<undefined>",
+          "object_id": 1,
+          "value": "Promise { undefined }",
+        },
+        "thread_id": 0,
+      },
+      "4": {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 4,
+        "parent_id": 3,
+        "return_value": {
+          "class": "Promise<undefined>",
+          "object_id": 2,
+          "value": "Promise { undefined }",
+        },
+        "thread_id": 0,
+      },
+    },
+    "events": [
+      {
+        "defined_class": "asyncLib.test",
+        "event": "call",
+        "id": 1,
+        "lineno": 4,
+        "method_id": "lambda1",
+        "parameters": [
+          {
+            "class": "String",
+            "name": "r",
+            "value": "'task1'",
+          },
+        ],
+        "path": "asyncLib.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Promise",
+          "object_id": 1,
+          "value": "Promise { <pending> }",
+        },
+        "thread_id": 0,
+      },
+      {
+        "defined_class": "asyncLib.test",
+        "event": "call",
+        "id": 3,
+        "lineno": 4,
+        "method_id": "lambda1",
+        "parameters": [
+          {
+            "class": "String",
+            "name": "r",
+            "value": "'task2'",
+          },
+        ],
+        "path": "asyncLib.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 4,
+        "parent_id": 3,
+        "return_value": {
+          "class": "Promise",
+          "object_id": 2,
+          "value": "Promise { <pending> }",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "jest-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "jest test with async library instrumented lambda does not cause timeout",
+      "recorder": {
+        "name": "jest",
+        "type": "tests",
+      },
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
   "./tmp/appmap/jest/sub/subtracts_numbers_correctly.appmap.json": {
     "classMap": [
       {
