@@ -146,7 +146,7 @@ function wrapLambda(
   const args = identifier("args");
   return {
     type: "ArrowFunctionExpression",
-    async: false,
+    async: lambda.async,
     expression: false,
     params: [
       {

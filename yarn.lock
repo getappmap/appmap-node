@@ -2888,6 +2888,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"async@npm:^3.2.5":
+  version: 3.2.5
+  resolution: "async@npm:3.2.5"
+  checksum: 5ec77f1312301dee02d62140a6b1f7ee0edd2a0f983b6fd2b0849b969f245225b990b47b8243e7b9ad16451a53e7f68e753700385b706198ced888beedba3af4
+  languageName: node
+  linkType: hard
+
 "babel-jest@npm:^29.6.2":
   version: 29.6.2
   resolution: "babel-jest@npm:29.6.2"
@@ -5711,6 +5718,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "jest-appmap-node-test@workspace:test/jest"
   dependencies:
+    async: ^3.2.5
     jest: ^29.6.2
   languageName: unknown
   linkType: soft
