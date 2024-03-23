@@ -1,3 +1,10 @@
+## [2.19.1](https://github.com/getappmap/appmap-node/compare/v2.19.0...v2.19.1) (2024-03-23)
+
+
+### Bug Fixes
+
+* Instrumented async lambda wrapper should be async ([720b39b](https://github.com/getappmap/appmap-node/commit/720b39bba616328ddb821842449fe53b026ac6e7))
+
 # [2.19.0](https://github.com/getappmap/appmap-node/compare/v2.18.0...v2.19.0) (2024-03-19)
 
 
