@@ -11,6 +11,7 @@ import PackageMatcher, { Package, parsePackages } from "./PackageMatcher";
 import locateFileUp from "./util/findFileUp";
 import lazyOpt from "./util/lazyOpt";
 import tryOr from "./util/tryOr";
+import { isNativeError } from "node:util/types";
 
 const responseBodyMaxLengthDefault = 10000;
 const kResponseBodyMaxLengthEnvar = "APPMAP_RESPONSE_BODY_MAX_LENGTH";
@@ -98,7 +99,24 @@ interface ConfigFile {
 
 function readConfigFile(path: string | undefined): ConfigFile | undefined {
   if (!path) return;
-  const config = tryOr(() => YAML.parse(readFileSync(path, "utf8")) as unknown);
+
+  let fileContent: string;
+  try {
+    fileContent = readFileSync(path, "utf-8");
+  } catch (exn) {
+    if (exn && typeof exn == "object" && "code" in exn && exn.code == "ENOENT") return;
+    throw exn;
+  }
+
+  let config;
+  try {
+    config = YAML.parse(fileContent) as unknown;
+  } catch (exn) {
+    assert(isNativeError(exn));
+    throw new Error(
+      `Error parsing config file at ${path}: ${exn.message}\nYou can remove the file to use the default configuration.`,
+    );
+  }
   if (!config) return;
 
   const result: ConfigFile = {};
