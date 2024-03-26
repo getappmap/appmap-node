@@ -133,7 +133,7 @@ exports[`mapping Sqlite tests 1`] = `
       "return_value": {
         "class": "Promise<Array>",
         "object_id": 15,
-        "value": "Promise { [ [Object] ] }",
+        "value": "Promise { [ { "'Statement.all'": 'Statement.all' } ] }",
       },
       "thread_id": 0,
     },
@@ -205,7 +205,7 @@ exports[`mapping Sqlite tests 1`] = `
       "return_value": {
         "class": "Promise<Array>",
         "object_id": 4,
-        "value": "Promise { [ [Object] ] }",
+        "value": "Promise { [ { "'Database.all'": 'Database.all' } ] }",
       },
       "thread_id": 0,
     },

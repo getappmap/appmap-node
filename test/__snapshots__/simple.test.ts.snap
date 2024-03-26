@@ -367,6 +367,18 @@ exports[`mapping a simple script 1`] = `
       },
       "thread_id": 0,
     },
+    "12": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 12,
+      "parent_id": 11,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 4,
+        "value": "Promise { 'immediate' }",
+      },
+      "thread_id": 0,
+    },
     "8": {
       "elapsed": 31.337,
       "event": "return",
@@ -533,7 +545,7 @@ exports[`mapping a simple script 1`] = `
       "return_value": {
         "class": "Promise",
         "object_id": 4,
-        "value": "Promise { 'immediate' }",
+        "value": "Promise { <pending> }",
       },
       "thread_id": 0,
     },

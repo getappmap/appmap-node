@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
+import { AsyncLocalStorage } from "node:async_hooks";
 import { setTimeout } from "node:timers/promises";
 
 import AppMapStream from "../AppMapStream";
@@ -31,7 +32,7 @@ describe(Recording.prototype.fixup, () => {
       const fixup = jest.spyOn(recording, "fixup");
       const funInfo = createTestFn("testFun");
       const call = recording.functionCall(funInfo, undefined, []);
-      const result = setTimeout(10, "resolved");
+      const result = Promise.resolve("resolved");
       const ret = recording.functionReturn(call.id, result, undefined);
       await expect(result).resolves.toBe("resolved");
 
@@ -52,7 +53,7 @@ describe(Recording.prototype.fixup, () => {
       const fixup = jest.spyOn(recording, "fixup");
       const funInfo = createTestFn("testFun");
       const call = recording.functionCall(funInfo, undefined, []);
-      const result = setTimeout(10).then(() => Promise.reject(new Error("test")));
+      const result = Promise.reject(new Error("test"));
       const ret = recording.functionReturn(call.id, result, undefined);
       await expect(result).rejects.toThrowError("test");
 
@@ -85,3 +86,10 @@ afterEach(() => {
 });
 
 jest.mock("../AppMapStream");
+
+// DO NOT REMOVE!
+// Using AsyncLocalStorage activates async_hooks and adds extra information to
+// the Promises. This changes the output of util.inspect on the promise which
+// can throw off naive Promise inspection using that function.
+const als = new AsyncLocalStorage();
+als.enterWith("foo");
