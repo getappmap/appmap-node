@@ -10,7 +10,7 @@ import { makeClassMap } from "./classMap";
 import config from "./config";
 import { makeCallEvent, makeExceptionEvent, makeReturnEvent } from "./event";
 import { getDefaultMetadata } from "./metadata";
-import { getClass, objectId } from "./parameter";
+import { parameter } from "./parameter";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
 import { shouldRecord } from "./recorderControl";
@@ -66,12 +66,10 @@ export default class Recording {
   // When there are multiple active recordings this function will be called with different "event"
   // objects for each recording and multiple "then" handlers will be attached to the same "result" promise.
   fixupPromise(event: AppMap.FunctionReturnEvent, result: Promise<unknown>, startTime?: number) {
-    if (event.return_value?.value !== "Promise { <pending> }") return;
     result.then(
-      (value) => {
+      () => {
         const elapsed = startTime ? getTime() - startTime : undefined;
         const newReturn = makeReturnEvent(event.id, event.parent_id, result, elapsed);
-        newReturn.return_value!.class = `Promise<${getClass(value)}>`;
         this.fixup(newReturn);
       },
       (reason) => {
@@ -79,12 +77,7 @@ export default class Recording {
         const exnEvent = makeExceptionEvent(event.id, event.parent_id, reason, elapsed);
         // add return_value too, so it's not unambiguous whether the function
         // threw or returned a promise which then rejected
-        exnEvent.return_value = {
-          class: "Promise",
-          // don't repeat the exception info
-          value: "Promise { <rejected> }",
-          object_id: objectId(result),
-        };
+        exnEvent.return_value = parameter(result);
         this.fixup(exnEvent);
       },
     );

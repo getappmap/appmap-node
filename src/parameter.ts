@@ -1,11 +1,14 @@
 import { ClientRequest, IncomingMessage, ServerResponse } from "node:http";
 import { format, inspect, isDeepStrictEqual } from "node:util";
+import { isPromise } from "node:util/types";
 
 import type * as AppMap from "./AppMap";
 import { pauseRecorder, resumeRecorder } from "./recorderControl";
 import compactObject from "./util/compactObject";
 
 export function parameter(value: unknown): AppMap.Parameter {
+  if (isPromise(value)) return examinePromise(value);
+
   const schema: AppMap.ParameterSchema = parameterSchema(value);
 
   return compactObject({
@@ -14,6 +17,29 @@ export function parameter(value: unknown): AppMap.Parameter {
     size: value instanceof Array ? value.length : undefined,
     object_id: typeof value === "object" ? objectId(value) : undefined,
   });
+}
+
+const promises = new WeakMap<Promise<unknown>, AppMap.Parameter>();
+
+function examinePromise(value: Promise<unknown>): AppMap.Parameter {
+  const result = promises.get(value);
+  if (result) return result;
+
+  const param = {
+    class: "Promise",
+    value: "Promise { <pending> }",
+    object_id: objectId(value),
+  };
+  value.then(
+    (resolved) => {
+      param.class = `Promise<${getClass(resolved)}>`;
+      param.value = `Promise { ${stringify(resolved)} }`;
+    },
+    () => (param.value = "Promise { <rejected> }"),
+  );
+
+  promises.set(value, param);
+  return param;
 }
 
 const kCustomInspect = Symbol("AppMap.customInspect");

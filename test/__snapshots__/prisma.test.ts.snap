@@ -127,7 +127,7 @@ exports[`mapping Prisma tests 1`] = `
       "return_value": {
         "class": "Promise<Array>",
         "object_id": 11,
-        "value": "Promise { [ [Object] ] }",
+        "value": "Promise { [ { id: 2, email: 'bob@prisma.io', name: 'Bob', posts: [Array] } ] }",
       },
       "thread_id": 0,
     },
