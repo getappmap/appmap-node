@@ -98,7 +98,27 @@ interface ConfigFile {
 
 function readConfigFile(path: string | undefined): ConfigFile | undefined {
   if (!path) return;
-  const config = tryOr(() => YAML.parse(readFileSync(path, "utf8")) as unknown);
+
+  let fileContent: string;
+  try {
+    fileContent = readFileSync(path, "utf-8");
+  } catch (exn) {
+    if (exn && typeof exn == "object" && "code" in exn && exn.code == "ENOENT") return;
+    throw exn;
+  }
+
+  let config;
+  try {
+    config = YAML.parse(fileContent) as unknown;
+  } catch (exn) {
+    const exnMessage =
+      exn && typeof exn == "object" && "message" in exn && typeof exn.message == "string"
+        ? ": " + exn.message
+        : ".";
+    throw new Error(
+      `Error parsing config file at ${path}${exnMessage}\nYou can remove the file to use the default configuration.`,
+    );
+  }
   if (!config) return;
 
   const result: ConfigFile = {};

@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename } from "node:path";
 import { chdir, cwd } from "node:process";
 
@@ -99,6 +99,17 @@ describe(Config, () => {
         { path: ".", exclude: ["node_modules", ".yarn"] },
       ]),
     });
+  });
+
+  it("if the appmap.yml is malformed throws with an informative message", () => {
+    const malformedAppMapFileContent = "{ appmap-dir: 'abc/xyz' ";
+    writeFileSync("appmap.yml", malformedAppMapFileContent);
+
+    expect(() => new Config()).toThrowError(
+      /You can remove the file to use the default configuration\.$/,
+    );
+
+    expect(readFileSync("appmap.yml").toString()).toEqual(malformedAppMapFileContent);
   });
 
   let dir: string;
