@@ -31,9 +31,13 @@ function createQueryProxy(
       const call = recording.sqlQuery("postgres", sql);
       const start = getTime();
       const result = target.apply(thisArg, argArray);
-      const ret = recording.functionReturn(call.id, result, getTime() - start);
-
-      return fixReturnEventIfPromiseResult(result, ret, call, start);
+      // call event can be undefined if the recording is paused
+      // temporarily for reasons like code block recording.
+      if (call) {
+        const ret = recording.functionReturn(call.id, result, getTime() - start);
+        if (ret) return fixReturnEventIfPromiseResult(result, ret, call, start);
+      }
+      return result;
     },
   });
 }

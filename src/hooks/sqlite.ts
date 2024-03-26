@@ -38,6 +38,8 @@ function createRecordingProxy<T extends RecordingProxyTarget>(
 ) {
   return new Proxy(proxyTarget, {
     apply(target, thisArg, argArray: Parameters<typeof proxyTarget>) {
+      const shortCircuit = () => Reflect.apply(target, thisArg, argArray) as T;
+
       // Extract sql. If thisArg is a Statement then it has a sql property.
       // Otherwise thisArg is a Database and the sql must be the first element of the argArray.
       let sql: string;
@@ -45,13 +47,17 @@ function createRecordingProxy<T extends RecordingProxyTarget>(
       else {
         // If there is no sql provided, short circuit to the original function
         // to make it throw an error.
-        if (argArray.length === 0 || typeof argArray[0] !== "string")
-          return Reflect.apply(target, thisArg, argArray) as T;
+        if (argArray.length === 0 || typeof argArray[0] !== "string") return shortCircuit();
 
         sql = argArray[0];
       }
 
       const call = recording.sqlQuery("sqlite", sql);
+      // call event can be undefined if the recording is paused
+      // temporarily for reasons like code block recording.
+
+      if (call == undefined) return shortCircuit();
+
       const start = getTime();
 
       // Extract callback argument(s) to functionArgs

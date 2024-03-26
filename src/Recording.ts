@@ -34,31 +34,21 @@ export default class Recording {
   public readonly path;
   public metadata: AppMap.Metadata;
 
-  functionCall(funInfo: FunctionInfo, thisArg: unknown, args: unknown[]): AppMap.FunctionCallEvent {
+  functionCall(funInfo: FunctionInfo, thisArg: unknown, args: unknown[]) {
     this.functionsSeen.add(funInfo);
-    const event = makeCallEvent(this.nextId++, funInfo, thisArg, args);
-    this.emit(event);
-    return event;
+    return this.emit(() => makeCallEvent(this.nextId++, funInfo, thisArg, args));
   }
 
-  functionException(
-    callId: number,
-    exception: unknown,
-    elapsed?: number,
-  ): AppMap.FunctionReturnEvent {
-    const event = makeExceptionEvent(this.nextId++, callId, exception, elapsed);
-    this.emit(event);
-    return event;
+  functionException(callId: number, exception: unknown, elapsed?: number) {
+    return this.emit(() => makeExceptionEvent(this.nextId++, callId, exception, elapsed));
   }
 
-  functionReturn(callId: number, result: unknown, elapsed?: number): AppMap.FunctionReturnEvent {
-    const event = makeReturnEvent(this.nextId++, callId, result, elapsed);
-    this.emit(event);
-    return event;
+  functionReturn(callId: number, result: unknown, elapsed?: number) {
+    return this.emit(() => makeReturnEvent(this.nextId++, callId, result, elapsed));
   }
 
-  sqlQuery(databaseType: string, sql: string): AppMap.SqlQueryEvent {
-    const event: AppMap.SqlQueryEvent = {
+  sqlQuery(databaseType: string, sql: string) {
+    const createEvent = (): AppMap.SqlQueryEvent => ({
       event: "call",
       sql_query: compactObject({
         database_type: databaseType,
@@ -66,17 +56,12 @@ export default class Recording {
       }),
       id: this.nextId++,
       thread_id: 0,
-    };
-    this.emit(event);
-    return event;
+    });
+    return this.emit(createEvent);
   }
 
-  httpClientRequest(
-    method: string,
-    url: string,
-    headers?: Record<string, string>,
-  ): AppMap.HttpClientRequestEvent {
-    const event: AppMap.HttpClientRequestEvent = {
+  httpClientRequest(method: string, url: string, headers?: Record<string, string>) {
+    const createEvent = (): AppMap.HttpClientRequestEvent => ({
       event: "call",
       http_client_request: compactObject({
         request_method: method,
@@ -85,10 +70,8 @@ export default class Recording {
       }),
       id: this.nextId++,
       thread_id: 0,
-    };
-    this.emit(event);
-
-    return event;
+    });
+    return this.emit(createEvent);
   }
 
   httpClientResponse(
@@ -97,8 +80,8 @@ export default class Recording {
     status: number,
     headers?: Record<string, string>,
     returnValue?: AppMap.Parameter,
-  ): AppMap.HttpClientResponseEvent {
-    const event: AppMap.HttpClientResponseEvent = {
+  ) {
+    const createEvent = (): AppMap.HttpClientResponseEvent => ({
       event: "return",
       http_client_response: compactObject({
         status_code: status,
@@ -109,10 +92,8 @@ export default class Recording {
       thread_id: 0,
       parent_id: callId,
       elapsed,
-    };
-    this.emit(event);
-
-    return event;
+    });
+    return this.emit(createEvent);
   }
 
   httpRequest(
@@ -121,31 +102,34 @@ export default class Recording {
     protocol?: string,
     headers?: Record<string, string>,
     params?: URLSearchParams,
-  ): AppMap.HttpServerRequestEvent {
-    const event: AppMap.HttpServerRequestEvent = {
-      event: "call",
-      http_server_request: compactObject({
-        path_info: path,
-        request_method: method,
-        headers,
-        protocol,
-      }),
-      id: this.nextId++,
-      thread_id: 0,
-    };
-    const query = params && Array.from(params);
-    if (query && query.length > 0) {
-      event.message = [];
-      for (const [name, value] of params) {
-        event.message.push({
-          name,
-          value: inspect(value),
-          class: "String",
-        });
+  ) {
+    const createEvent = () => {
+      const event: AppMap.HttpServerRequestEvent = {
+        event: "call",
+        http_server_request: compactObject({
+          path_info: path,
+          request_method: method,
+          headers,
+          protocol,
+        }),
+        id: this.nextId++,
+        thread_id: 0,
+      };
+      const query = params && Array.from(params);
+      if (query && query.length > 0) {
+        event.message = [];
+        for (const [name, value] of params) {
+          event.message.push({
+            name,
+            value: inspect(value),
+            class: "String",
+          });
+        }
       }
-    }
-    this.emit(event);
-    return event;
+      return event;
+    };
+
+    return this.emit(createEvent);
   }
 
   httpResponse(
@@ -154,8 +138,8 @@ export default class Recording {
     status: number,
     headers?: Record<string, string>,
     returnValue?: AppMap.Parameter,
-  ): AppMap.HttpServerResponseEvent {
-    const event: AppMap.HttpServerResponseEvent = {
+  ) {
+    const createEvent = (): AppMap.HttpServerResponseEvent => ({
       event: "return",
       http_server_response: compactObject({
         status_code: status,
@@ -166,20 +150,16 @@ export default class Recording {
       thread_id: 0,
       parent_id: callId,
       elapsed,
-    };
-    this.emit(event);
-
-    return event;
+    });
+    return this.emit(createEvent);
   }
 
-  private emit(event: unknown) {
-    // Check here if we should record instead of requiring each
-    // possible hook to check it.
-    // Checking this inside hooks too, will save CPU cycles only
-    // by preventing unnecessary event creation.
+  private emit<E>(createEvent: () => E) {
     if (!shouldRecord()) return;
     assert(this.stream);
+    const event = createEvent();
     this.stream.emit(event);
+    return event;
   }
 
   private eventUpdates: Record<number, AppMap.Event> = {};

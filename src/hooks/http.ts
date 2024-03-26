@@ -106,6 +106,9 @@ function handleClientRequest(request: http.ClientRequest) {
       `${url.protocol}//${url.host}${url.pathname}`,
       normalizeHeaders(request.getHeaders()),
     );
+    // clientRequestEvent event can be undefined if the recording is paused
+    // temporarily for reasons like code block recording.
+    if (!clientRequestEvent) return;
 
     request.on("response", (response) => {
       const capture = new BodyCapture();
@@ -264,6 +267,7 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
     normalizeHeaders(request.headers),
     url.searchParams,
   );
+  if (!requestEvent) return;
 
   const capture = new BodyCapture();
   captureResponseBody(response, capture);
