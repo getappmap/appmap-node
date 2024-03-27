@@ -1,12 +1,12 @@
 import assert from "node:assert";
 import { isPromise } from "node:util/types";
 
-import AppMap from "./AppMap";
+import type * as AppMap from "./AppMap";
 import Recording, { writtenAppMaps } from "./Recording";
 import { makeExceptionEvent, makeReturnEvent } from "./event";
 import { info } from "./message";
 import { getClass, objectId } from "./parameter";
-import { recorderPaused } from "./recorderPause";
+import { shouldRecord } from "./recorderControl";
 import { FunctionInfo } from "./registry";
 import commonPathPrefix from "./util/commonPathPrefix";
 import { getTime } from "./util/getTime";
@@ -19,7 +19,7 @@ export function record<This, Return>(
   args: unknown[],
   funInfo: FunctionInfo,
 ): Return {
-  if (!recording.running || recorderPaused()) return fun.apply(this, args);
+  if (!recording.running || !shouldRecord()) return fun.apply(this, args);
 
   const call = recording.functionCall(
     funInfo,
@@ -31,10 +31,13 @@ export function record<This, Return>(
 
   try {
     const result = fun.apply(this, args);
-    const ret = recording.functionReturn(call.id, result, getTime() - start);
-    return fixReturnEventIfPromiseResult(result, ret, call, start) as Return;
+    if (call) {
+      const ret = recording.functionReturn(call.id, result, getTime() - start);
+      if (ret) return fixReturnEventIfPromiseResult(result, ret, call, start) as Return;
+    }
+    return result;
   } catch (exn: unknown) {
-    recording.functionException(call.id, exn, getTime() - start);
+    if (call) recording.functionException(call.id, exn, getTime() - start);
     throw exn;
   }
 }

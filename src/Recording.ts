@@ -1,9 +1,9 @@
 import assert from "node:assert";
-import { renameSync, rmSync } from "node:fs";
+import { readFileSync, renameSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { inspect } from "node:util";
 
-import type AppMap from "./AppMap";
+import type * as AppMap from "./AppMap";
 import AppMapStream from "./AppMapStream";
 import { makeClassMap } from "./classMap";
 import config from "./config";
@@ -11,6 +11,7 @@ import { makeCallEvent, makeExceptionEvent, makeReturnEvent } from "./event";
 import { defaultMetadata } from "./metadata";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
+import { shouldRecord } from "./recorderControl";
 
 export default class Recording {
   constructor(type: AppMap.RecorderType, recorder: string, ...names: string[]) {
@@ -33,35 +34,21 @@ export default class Recording {
   public readonly path;
   public metadata: AppMap.Metadata;
 
-  functionCall(funInfo: FunctionInfo, thisArg: unknown, args: unknown[]): AppMap.FunctionCallEvent {
-    assert(this.stream);
+  functionCall(funInfo: FunctionInfo, thisArg: unknown, args: unknown[]) {
     this.functionsSeen.add(funInfo);
-    const event = makeCallEvent(this.nextId++, funInfo, thisArg, args);
-    this.stream.emit(event);
-    return event;
+    return this.emit(() => makeCallEvent(this.nextId++, funInfo, thisArg, args));
   }
 
-  functionException(
-    callId: number,
-    exception: unknown,
-    elapsed?: number,
-  ): AppMap.FunctionReturnEvent {
-    assert(this.stream);
-    const event = makeExceptionEvent(this.nextId++, callId, exception, elapsed);
-    this.stream.emit(event);
-    return event;
+  functionException(callId: number, exception: unknown, elapsed?: number) {
+    return this.emit(() => makeExceptionEvent(this.nextId++, callId, exception, elapsed));
   }
 
-  functionReturn(callId: number, result: unknown, elapsed?: number): AppMap.FunctionReturnEvent {
-    assert(this.stream);
-    const event = makeReturnEvent(this.nextId++, callId, result, elapsed);
-    this.stream.emit(event);
-    return event;
+  functionReturn(callId: number, result: unknown, elapsed?: number) {
+    return this.emit(() => makeReturnEvent(this.nextId++, callId, result, elapsed));
   }
 
-  sqlQuery(databaseType: string, sql: string): AppMap.SqlQueryEvent {
-    assert(this.stream);
-    const event: AppMap.SqlQueryEvent = {
+  sqlQuery(databaseType: string, sql: string) {
+    const createEvent = (): AppMap.SqlQueryEvent => ({
       event: "call",
       sql_query: compactObject({
         database_type: databaseType,
@@ -69,19 +56,12 @@ export default class Recording {
       }),
       id: this.nextId++,
       thread_id: 0,
-    };
-    this.stream.emit(event);
-    return event;
+    });
+    return this.emit(createEvent);
   }
 
-  httpClientRequest(
-    method: string,
-    url: string,
-    headers?: Record<string, string>,
-  ): AppMap.HttpClientRequestEvent {
-    assert(this.stream);
-
-    const event: AppMap.HttpClientRequestEvent = {
+  httpClientRequest(method: string, url: string, headers?: Record<string, string>) {
+    const createEvent = (): AppMap.HttpClientRequestEvent => ({
       event: "call",
       http_client_request: compactObject({
         request_method: method,
@@ -90,10 +70,8 @@ export default class Recording {
       }),
       id: this.nextId++,
       thread_id: 0,
-    };
-    this.stream.emit(event);
-
-    return event;
+    });
+    return this.emit(createEvent);
   }
 
   httpClientResponse(
@@ -102,10 +80,8 @@ export default class Recording {
     status: number,
     headers?: Record<string, string>,
     returnValue?: AppMap.Parameter,
-  ): AppMap.HttpClientResponseEvent {
-    assert(this.stream);
-
-    const event: AppMap.HttpClientResponseEvent = {
+  ) {
+    const createEvent = (): AppMap.HttpClientResponseEvent => ({
       event: "return",
       http_client_response: compactObject({
         status_code: status,
@@ -116,10 +92,8 @@ export default class Recording {
       thread_id: 0,
       parent_id: callId,
       elapsed,
-    };
-    this.stream.emit(event);
-
-    return event;
+    });
+    return this.emit(createEvent);
   }
 
   httpRequest(
@@ -128,32 +102,34 @@ export default class Recording {
     protocol?: string,
     headers?: Record<string, string>,
     params?: URLSearchParams,
-  ): AppMap.HttpServerRequestEvent {
-    assert(this.stream);
-    const event: AppMap.HttpServerRequestEvent = {
-      event: "call",
-      http_server_request: compactObject({
-        path_info: path,
-        request_method: method,
-        headers,
-        protocol,
-      }),
-      id: this.nextId++,
-      thread_id: 0,
-    };
-    const query = params && Array.from(params);
-    if (query && query.length > 0) {
-      event.message = [];
-      for (const [name, value] of params) {
-        event.message.push({
-          name,
-          value: inspect(value),
-          class: "String",
-        });
+  ) {
+    const createEvent = () => {
+      const event: AppMap.HttpServerRequestEvent = {
+        event: "call",
+        http_server_request: compactObject({
+          path_info: path,
+          request_method: method,
+          headers,
+          protocol,
+        }),
+        id: this.nextId++,
+        thread_id: 0,
+      };
+      const query = params && Array.from(params);
+      if (query && query.length > 0) {
+        event.message = [];
+        for (const [name, value] of params) {
+          event.message.push({
+            name,
+            value: inspect(value),
+            class: "String",
+          });
+        }
       }
-    }
-    this.stream.emit(event);
-    return event;
+      return event;
+    };
+
+    return this.emit(createEvent);
   }
 
   httpResponse(
@@ -162,10 +138,8 @@ export default class Recording {
     status: number,
     headers?: Record<string, string>,
     returnValue?: AppMap.Parameter,
-  ): AppMap.HttpServerResponseEvent {
-    assert(this.stream);
-
-    const event: AppMap.HttpServerResponseEvent = {
+  ) {
+    const createEvent = (): AppMap.HttpServerResponseEvent => ({
       event: "return",
       http_server_response: compactObject({
         status_code: status,
@@ -176,9 +150,15 @@ export default class Recording {
       thread_id: 0,
       parent_id: callId,
       elapsed,
-    };
-    this.stream.emit(event);
+    });
+    return this.emit(createEvent);
+  }
 
+  private emit<E>(createEvent: () => E) {
+    if (!shouldRecord()) return;
+    assert(this.stream);
+    const event = createEvent();
+    this.stream.emit(event);
     return event;
   }
 
@@ -211,6 +191,11 @@ export default class Recording {
 
   get running(): boolean {
     return !!this.stream;
+  }
+
+  readAppMap(): AppMap.AppMap {
+    assert(!this.running);
+    return JSON.parse(readFileSync(this.path, "utf8")) as AppMap.AppMap;
   }
 }
 

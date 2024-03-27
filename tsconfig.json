@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node18",
   "compilerOptions": {
+    "declaration": true,
     "outDir": "dist",
     "noImplicitAny": true,
     "sourceMap": true,

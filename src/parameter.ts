@@ -1,8 +1,8 @@
 import { ClientRequest, IncomingMessage, ServerResponse } from "node:http";
 import { format, inspect, isDeepStrictEqual } from "node:util";
 
-import type AppMap from "./AppMap";
-import { pauseRecorder, resumeRecorder } from "./recorderPause";
+import type * as AppMap from "./AppMap";
+import { pauseRecorder, resumeRecorder } from "./recorderControl";
 import compactObject from "./util/compactObject";
 
 export function parameter(value: unknown): AppMap.Parameter {

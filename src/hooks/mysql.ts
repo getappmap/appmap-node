@@ -44,6 +44,9 @@ function createQueryProxy(query: mysql.QueryFunction) {
       const sql: string = hasStringSqlProperty(argArray[0]) ? argArray[0].sql : argArray[0];
 
       const call = recording.sqlQuery("mysql", sql);
+      // If recording is paused or stopped, call will be undefined
+      if (!call) return Reflect.apply(target, thisArg, argArray);
+
       const start = getTime();
 
       const originalCallback =

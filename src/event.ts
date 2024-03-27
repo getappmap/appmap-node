@@ -1,6 +1,6 @@
 import { ESTree } from "meriyah";
 
-import type AppMap from "./AppMap";
+import type * as AppMap from "./AppMap";
 import { getClass, objectId, optParameter, parameter, stringify } from "./parameter";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";

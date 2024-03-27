@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import AppMap from "../AppMap";
+import type * as AppMap from "../AppMap";
 import { makeClassMap } from "../classMap";
 import config from "../config";
 import { FunctionInfo, SourceLocation } from "../registry";
