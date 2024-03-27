@@ -1,3 +1,10 @@
+## [2.19.2](https://github.com/getappmap/appmap-node/compare/v2.19.1...v2.19.2) (2024-03-27)
+
+
+### Bug Fixes
+
+* Replace special characters in paths consistently on all platforms ([c06fa30](https://github.com/getappmap/appmap-node/commit/c06fa300182acdf448f74a5c97c3f2c30b3ea7dd)), closes [#134](https://github.com/getappmap/appmap-node/issues/134)
+
 ## [2.19.1](https://github.com/getappmap/appmap-node/compare/v2.19.0...v2.19.1) (2024-03-23)
 
 
