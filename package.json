@@ -105,6 +105,7 @@
     "test/sqlite",
     "test/next",
     "test/typescript-esm",
-    "test/prisma"
+    "test/prisma",
+    "test/libraryCalls"
   ]
 }
