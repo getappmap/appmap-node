@@ -1,0 +1,202 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping standard library calls 1`] = `
+{
+  "./tmp/appmap/process/<timestamp 0>.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "console:1",
+                "name": "log",
+                "static": false,
+                "type": "function",
+              },
+              {
+                "location": "console:2",
+                "name": "count",
+                "static": false,
+                "type": "function",
+              },
+            ],
+            "name": "console",
+            "type": "class",
+          },
+          {
+            "children": [
+              {
+                "location": "json5:3",
+                "name": "parse",
+                "static": false,
+                "type": "function",
+              },
+            ],
+            "name": "json5",
+            "type": "class",
+          },
+        ],
+        "name": "appmap-node",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "console",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "log",
+        "parameters": [
+          {
+            "class": "String",
+            "value": "'Hello World'",
+          },
+        ],
+        "path": "console",
+        "receiver": {
+          "class": "Object",
+          "object_id": 1,
+          "value": "[console]",
+        },
+        "static": false,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+      {
+        "defined_class": "console",
+        "event": "call",
+        "id": 3,
+        "lineno": 2,
+        "method_id": "count",
+        "parameters": [
+          {
+            "class": "String",
+            "value": "'abc'",
+          },
+        ],
+        "path": "console",
+        "receiver": {
+          "class": "Object",
+          "object_id": 1,
+          "value": "[console]",
+        },
+        "static": false,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 4,
+        "parent_id": 3,
+        "thread_id": 0,
+      },
+      {
+        "defined_class": "json5",
+        "event": "call",
+        "id": 5,
+        "lineno": 3,
+        "method_id": "parse",
+        "parameters": [
+          {
+            "class": "String",
+            "name": "text",
+            "value": "'{ a: 123 }'",
+          },
+        ],
+        "path": "json5",
+        "receiver": {
+          "class": "Object",
+          "object_id": 2,
+          "value": "[json5]",
+        },
+        "static": false,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 6,
+        "parent_id": 5,
+        "return_value": {
+          "class": "Object",
+          "object_id": 3,
+          "properties": [
+            {
+              "class": "Number",
+              "name": "a",
+            },
+          ],
+          "value": "{ a: 123 }",
+        },
+        "thread_id": 0,
+      },
+      {
+        "defined_class": "console",
+        "event": "call",
+        "id": 7,
+        "lineno": 1,
+        "method_id": "log",
+        "parameters": [
+          {
+            "class": "String",
+            "value": "'obj'",
+          },
+          {
+            "class": "Object",
+            "object_id": 3,
+            "properties": [
+              {
+                "class": "Number",
+                "name": "a",
+              },
+            ],
+            "value": "{ a: 123 }",
+          },
+        ],
+        "path": "console",
+        "receiver": {
+          "class": "Object",
+          "object_id": 1,
+          "value": "[console]",
+        },
+        "static": false,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 8,
+        "parent_id": 7,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "appmap-node",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "test process recording",
+      "recorder": {
+        "name": "process",
+        "type": "process",
+      },
+    },
+    "version": "1.12",
+  },
+}
+`;
