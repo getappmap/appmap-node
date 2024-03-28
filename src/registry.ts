@@ -65,7 +65,7 @@ export function createMethodInfo(
   return info;
 }
 
-function stripLocation(value: ESTree.Parameter): ESTree.Parameter {
+export function stripLocation(value: ESTree.Parameter): ESTree.Parameter {
   const result = { ...value };
   delete result.loc;
   return result;

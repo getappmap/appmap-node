@@ -77,6 +77,22 @@ export class Config {
     return result;
   }
 
+  private packageMap = new Map<string, Package | undefined>();
+
+  getPackage(pathOrModuleId: string | undefined, isLibrary: boolean) {
+    if (!pathOrModuleId) return;
+    const key = `${pathOrModuleId}:${isLibrary}`;
+
+    if (!this.packageMap.has(key)) {
+      const pkg = isLibrary
+        ? this.packages.matchLibrary(pathOrModuleId)
+        : this.packages.match(pathOrModuleId);
+
+      this.packageMap.set(key, pkg);
+    }
+    return this.packageMap.get(key);
+  }
+
   export() {
     process.env.APPMAP_ROOT = this.root;
   }

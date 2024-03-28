@@ -1,0 +1,11 @@
+name: appmap-node
+appmap_dir: tmp/appmap
+packages:
+  - path: .
+  - module: json5 # third party module example
+    shallow: true
+  - module: node:console # works with or without node: qualifier
+    shallow: true
+    exclude: 
+      - warn
+      - assert # exclude because this is captured only in windows

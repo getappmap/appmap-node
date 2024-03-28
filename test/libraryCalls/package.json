@@ -1,0 +1,7 @@
+{
+  "name": "library-calls",
+  "packageManager": "yarn@3.6.3",
+  "dependencies": {
+    "json5": "^2.2.3"
+  }
+}
