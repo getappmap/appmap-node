@@ -2,9 +2,11 @@ import assert from "node:assert";
 import { isPromise } from "node:util/types";
 
 import AppMap from "./AppMap";
+import config from "./config";
 import Recording, { writtenAppMaps } from "./Recording";
 import { makeExceptionEvent, makeReturnEvent } from "./event";
 import { info } from "./message";
+import { Package } from "./PackageMatcher";
 import { getClass, objectId } from "./parameter";
 import { recorderPaused } from "./recorderPause";
 import { FunctionInfo } from "./registry";
@@ -13,13 +15,28 @@ import { getTime } from "./util/getTime";
 
 export let recording: Recording;
 
+const recordCallPackageStack: (Package | undefined)[] = [];
+
+function shallowModeSkip(funInfo: FunctionInfo, isLibrary: boolean) {
+  const pkg = config.getPackage(funInfo.location?.path, isLibrary);
+  const isLastPackage = () =>
+    recordCallPackageStack.length > 0 &&
+    recordCallPackageStack[recordCallPackageStack.length - 1] == pkg;
+
+  return pkg?.shallow && isLastPackage();
+}
+
 export function record<This, Return>(
   this: This,
   fun: (this: This, ...args: unknown[]) => Return,
   args: unknown[],
   funInfo: FunctionInfo,
+  isLibrary = false,
 ): Return {
-  if (!recording.running || recorderPaused()) return fun.apply(this, args);
+  if (!recording.running || recorderPaused() || shallowModeSkip(funInfo, isLibrary))
+    return fun.apply(this, args);
+
+  recordCallPackageStack.push(config.getPackage(funInfo.location?.path, isLibrary));
 
   const call = recording.functionCall(
     funInfo,
@@ -36,6 +53,8 @@ export function record<This, Return>(
   } catch (exn: unknown) {
     recording.functionException(call.id, exn, getTime() - start);
     throw exn;
+  } finally {
+    recordCallPackageStack.pop();
   }
 }
 
