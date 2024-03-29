@@ -9,6 +9,23 @@ import transform, { findHook } from "./transform";
 import { readPkgUp } from "./util/readPkgUp";
 import { forceRequire } from "./register";
 
+export const resolve: NodeLoaderHooksAPI2["resolve"] = async function resolve(
+  url,
+  context,
+  nextResolve,
+) {
+  const result = await nextResolve(url, context, nextResolve);
+
+  // For libraries, we preempt import with CommonJS require here, instead
+  // of load function, because for third party libraries we can catch
+  // their import name here (i.e. url: "json5"). Then it gets resolved
+  // to a path (i.e. result.path: ".../node_modules/json5/lib/index.js")
+  // and passed to the load function.
+  if (config.getPackage(url, true) != undefined) forceRequire(url);
+
+  return result;
+};
+
 export const load: NodeLoaderHooksAPI2["load"] = async function load(url, context, defaultLoad) {
   const urlObj = new URL(url);
 
