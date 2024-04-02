@@ -256,7 +256,8 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
   if (shouldIgnoreRequest(request)) return;
 
   const url = new URL(request.url, "http://example");
-  const timestamp = remoteRunning ? undefined : startRequestRecording(url.pathname);
+  const testRunning = recording.metadata.recorder.type == "tests";
+  const timestamp = remoteRunning || testRunning ? undefined : startRequestRecording(url.pathname);
   const requestEvent = recording.httpRequest(
     request.method,
     url.pathname,
@@ -351,7 +352,8 @@ function handleResponse(
     normalizeHeaders(response.getHeaders()),
     capture.createReturnValue(isJson),
   );
-  if (remoteRunning) return;
+  if (remoteRunning || recording.metadata.recorder.type == "tests") return;
+
   const { request_method, path_info } = requestEvent.http_server_request;
   recording.metadata.name = `${request_method} ${path_info} (${response.statusCode}) — ${timestamp}`;
   recording.finish();
