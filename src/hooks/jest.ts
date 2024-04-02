@@ -1,3 +1,4 @@
+import assert from "node:assert";
 import { pathToFileURL } from "node:url";
 
 import type { Circus } from "@jest/types";
@@ -58,10 +59,12 @@ function eventHandler(event: Circus.Event) {
       start(createRecording(event.test));
       break;
     case "test_fn_failure":
+      assert(recording.metadata.recorder.type == "tests");
       recording.metadata.test_status = "failed";
       recording.metadata.exception = exceptionMetadata(event.error);
       return recording.finish();
     case "test_fn_success":
+      assert(recording.metadata.recorder.type == "tests");
       recording.metadata.test_status = "succeeded";
       return recording.finish();
   }
