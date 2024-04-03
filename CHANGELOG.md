@@ -1,3 +1,10 @@
+## [2.19.3](https://github.com/getappmap/appmap-node/compare/v2.19.2...v2.19.3) (2024-04-03)
+
+
+### Bug Fixes
+
+* Don't replace malformed appmap.yml ([48df24c](https://github.com/getappmap/appmap-node/commit/48df24cedd5b89a92429608d5a97ae8de3361c25))
+
 ## [2.19.2](https://github.com/getappmap/appmap-node/compare/v2.19.1...v2.19.2) (2024-03-27)
 
 
