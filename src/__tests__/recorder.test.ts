@@ -50,13 +50,14 @@ describe(recorder.record, () => {
   });
 });
 
-describe(recorder.fixReturnEventIfPromiseResult, () => {
+describe(recorder.fixReturnEventsIfPromiseResult, () => {
   it("records a fix up after the promise resolves", async () => {
     const promise = Promise.resolve("resolved");
-    const result = recorder.fixReturnEventIfPromiseResult(
+    const result = recorder.fixReturnEventsIfPromiseResult(
+      recorder.getActiveRecordings().slice(0, 1),
       promise,
-      returnEvent,
-      callEvent,
+      [returnEvent],
+      [callEvent],
       getTime(),
     );
 
@@ -76,10 +77,11 @@ describe(recorder.fixReturnEventIfPromiseResult, () => {
 
   it("records a fix up after the promise rejects", async () => {
     const promise = Promise.reject(new Error("test"));
-    const result = recorder.fixReturnEventIfPromiseResult(
+    const result = recorder.fixReturnEventsIfPromiseResult(
+      recorder.getActiveRecordings().slice(0, 1),
       promise,
-      returnEvent,
-      callEvent,
+      [returnEvent],
+      [callEvent],
       getTime(),
     );
     await expect(result).rejects.toThrowError("test");

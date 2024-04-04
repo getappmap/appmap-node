@@ -419,7 +419,7 @@ exports[`mapping Express.js requests 1`] = `
           {
             "class": "Object",
             "name": "obj",
-            "object_id": 7,
+            "object_id": 8,
             "properties": [
               {
                 "class": "Number",
@@ -447,14 +447,14 @@ exports[`mapping Express.js requests 1`] = `
               ],
             },
             "name": "arr",
-            "object_id": 8,
+            "object_id": 9,
             "size": 2,
             "value": "[ { foo: 43 }, { foo: 44 } ]",
           },
           {
             "class": "Array",
             "name": "heterogenous",
-            "object_id": 9,
+            "object_id": 10,
             "size": 2,
             "value": "[ 42, 'str' ]",
           },
@@ -609,7 +609,7 @@ exports[`mapping Express.js requests 1`] = `
           },
           "return_value": {
             "class": "Object",
-            "object_id": 10,
+            "object_id": 7,
             "properties": [
               {
                 "class": "String",
@@ -750,7 +750,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         {
           "class": "Object",
           "name": "obj",
-          "object_id": 7,
+          "object_id": 8,
           "properties": [
             {
               "class": "Number",
@@ -778,14 +778,14 @@ exports[`mapping Express.js requests with remote recording 1`] = `
             ],
           },
           "name": "arr",
-          "object_id": 8,
+          "object_id": 9,
           "size": 2,
           "value": "[ { foo: 43 }, { foo: 44 } ]",
         },
         {
           "class": "Array",
           "name": "heterogenous",
-          "object_id": 9,
+          "object_id": 10,
           "size": 2,
           "value": "[ 42, 'str' ]",
         },
@@ -1195,7 +1195,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         },
         "return_value": {
           "class": "Object",
-          "object_id": 10,
+          "object_id": 7,
           "properties": [
             {
               "class": "String",
@@ -1473,6 +1473,351 @@ exports[`mapping node:http requests 1`] = `
         "version": "test node version",
       },
       "name": "POST /api/bar (204) — <timestamp 3>",
+      "recorder": {
+        "name": "requests",
+        "type": "requests",
+      },
+    },
+    "version": "1.12",
+  },
+}
+`;
+
+exports[`mapping node:http requests with process recording active 1`] = `
+{
+  "./tmp/appmap/process/<timestamp 0>.appmap.json": {
+    "classMap": [],
+    "events": [
+      {
+        "event": "call",
+        "http_server_request": {
+          "headers": {
+            "Host": "127.0.0.1:27627",
+          },
+          "path_info": "/",
+          "protocol": "HTTP/1.1",
+          "request_method": "GET",
+        },
+        "id": 1,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "http_server_response": {
+          "headers": {},
+          "status_code": 200,
+        },
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+      {
+        "event": "call",
+        "http_server_request": {
+          "headers": {
+            "Host": "127.0.0.1:27627",
+          },
+          "path_info": "/nonexistent",
+          "protocol": "HTTP/1.1",
+          "request_method": "GET",
+        },
+        "id": 3,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "http_server_response": {
+          "headers": {},
+          "status_code": 200,
+        },
+        "id": 4,
+        "parent_id": 3,
+        "thread_id": 0,
+      },
+      {
+        "event": "call",
+        "http_server_request": {
+          "headers": {
+            "Host": "127.0.0.1:27627",
+          },
+          "path_info": "/api/foo",
+          "protocol": "HTTP/1.1",
+          "request_method": "GET",
+        },
+        "id": 5,
+        "message": [
+          {
+            "class": "String",
+            "name": "param1",
+            "value": "'3'",
+          },
+          {
+            "class": "String",
+            "name": "param2",
+            "value": "'4'",
+          },
+        ],
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "http_server_response": {
+          "headers": {},
+          "status_code": 200,
+        },
+        "id": 6,
+        "parent_id": 5,
+        "thread_id": 0,
+      },
+      {
+        "event": "call",
+        "http_server_request": {
+          "headers": {
+            "Content-Type": "application/json",
+            "Host": "127.0.0.1:27627",
+            "Transfer-Encoding": "chunked",
+          },
+          "path_info": "/api/bar",
+          "protocol": "HTTP/1.1",
+          "request_method": "POST",
+        },
+        "id": 7,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "http_server_response": {
+          "headers": {},
+          "status_code": 204,
+        },
+        "id": 8,
+        "parent_id": 7,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "http-server-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "test process recording",
+      "recorder": {
+        "name": "process",
+        "type": "process",
+      },
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/requests/<timestamp 1>_-.appmap.json": {
+    "classMap": [],
+    "events": [
+      {
+        "event": "call",
+        "http_server_request": {
+          "headers": {
+            "Host": "127.0.0.1:27627",
+          },
+          "path_info": "/",
+          "protocol": "HTTP/1.1",
+          "request_method": "GET",
+        },
+        "id": 1,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "http_server_response": {
+          "headers": {},
+          "status_code": 200,
+        },
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "http-server-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "GET / (200) — <timestamp 1>",
+      "recorder": {
+        "name": "requests",
+        "type": "requests",
+      },
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/requests/<timestamp 2>_-nonexistent.appmap.json": {
+    "classMap": [],
+    "events": [
+      {
+        "event": "call",
+        "http_server_request": {
+          "headers": {
+            "Host": "127.0.0.1:27627",
+          },
+          "path_info": "/nonexistent",
+          "protocol": "HTTP/1.1",
+          "request_method": "GET",
+        },
+        "id": 1,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "http_server_response": {
+          "headers": {},
+          "status_code": 200,
+        },
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "http-server-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "GET /nonexistent (200) — <timestamp 2>",
+      "recorder": {
+        "name": "requests",
+        "type": "requests",
+      },
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/requests/<timestamp 3>_-api-foo.appmap.json": {
+    "classMap": [],
+    "events": [
+      {
+        "event": "call",
+        "http_server_request": {
+          "headers": {
+            "Host": "127.0.0.1:27627",
+          },
+          "path_info": "/api/foo",
+          "protocol": "HTTP/1.1",
+          "request_method": "GET",
+        },
+        "id": 1,
+        "message": [
+          {
+            "class": "String",
+            "name": "param1",
+            "value": "'3'",
+          },
+          {
+            "class": "String",
+            "name": "param2",
+            "value": "'4'",
+          },
+        ],
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "http_server_response": {
+          "headers": {},
+          "status_code": 200,
+        },
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "http-server-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "GET /api/foo (200) — <timestamp 3>",
+      "recorder": {
+        "name": "requests",
+        "type": "requests",
+      },
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/requests/<timestamp 4>_-api-bar.appmap.json": {
+    "classMap": [],
+    "events": [
+      {
+        "event": "call",
+        "http_server_request": {
+          "headers": {
+            "Content-Type": "application/json",
+            "Host": "127.0.0.1:27627",
+            "Transfer-Encoding": "chunked",
+          },
+          "path_info": "/api/bar",
+          "protocol": "HTTP/1.1",
+          "request_method": "POST",
+        },
+        "id": 1,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "http_server_response": {
+          "headers": {},
+          "status_code": 204,
+        },
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "http-server-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "POST /api/bar (204) — <timestamp 4>",
       "recorder": {
         "name": "requests",
         "type": "requests",

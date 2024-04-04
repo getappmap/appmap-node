@@ -7,10 +7,16 @@ import { URL } from "node:url";
 
 import type * as AppMap from "../AppMap";
 import config from "../config";
-import Recording from "../Recording";
 import { info, warn } from "../message";
 import { parameter } from "../parameter";
-import { recording, start } from "../recorder";
+import {
+  getActiveRecordings,
+  getRemoteRecording,
+  getRequestRecording,
+  startProcessRecording,
+  startRemoteRecording,
+  startRequestRecording,
+} from "../recorder";
 import { getTime } from "../util/getTime";
 
 type HTTP = typeof http | typeof https;
@@ -92,8 +98,9 @@ function handleClientRequest(request: http.ClientRequest) {
   const startTime = getTime();
   request.on("finish", () => {
     const url = extractRequestURL(request);
+    const recordings = getActiveRecordings();
     // recording may have finished at this point
-    if (!recording.running) {
+    if (recordings.length == 0) {
       warnRecordingNotRunning(url);
       return;
     }
@@ -101,10 +108,11 @@ function handleClientRequest(request: http.ClientRequest) {
     // Setting port to the default port for the protocol makes it empty string.
     // See: https://nodejs.org/api/url.html#urlport
     url.port = request.socket?.remotePort + "";
-    const clientRequestEvent = recording.httpClientRequest(
-      request.method,
-      `${url.protocol}//${url.host}${url.pathname}`,
-      normalizeHeaders(request.getHeaders()),
+
+    const urlString = `${url.protocol}//${url.host}${url.pathname}`;
+    const headers = normalizeHeaders(request.getHeaders());
+    const clientRequestEvents = recordings.map((r) =>
+      r.httpClientRequest(request.method, urlString, headers),
     );
 
     request.on("response", (response) => {
@@ -114,11 +122,27 @@ function handleClientRequest(request: http.ClientRequest) {
       });
 
       response.once("end", () => {
-        if (!recording.running) {
+        const elapsed = getTime() - startTime;
+        const headers = normalizeHeaders(response.headers);
+        const returnValue = capture.createReturnValue(
+          response.headers["content-type"]?.startsWith("application/json") ?? false,
+        );
+
+        if (getActiveRecordings().length == 0) {
           warnRecordingNotRunning(url);
           return;
         }
-        handleClientResponse(clientRequestEvent, startTime, response, capture);
+
+        recordings.forEach((recording, idx) => {
+          assert(response.statusCode != undefined);
+          recording.httpClientResponse(
+            clientRequestEvents[idx].id,
+            elapsed,
+            response.statusCode,
+            headers,
+            returnValue,
+          );
+        });
       });
     });
   });
@@ -133,24 +157,6 @@ function extractRequestURL(request: ClientRequest): URL {
   }
 
   return new URL(`${protocol}//${host}${request.path}`);
-}
-
-function handleClientResponse(
-  requestEvent: AppMap.HttpClientRequestEvent,
-  startTime: number,
-  response: http.IncomingMessage,
-  capture: BodyCapture,
-): void {
-  assert(response.statusCode != undefined);
-  recording.httpClientResponse(
-    requestEvent.id,
-    getTime() - startTime,
-    response.statusCode,
-    normalizeHeaders(response.headers),
-    capture.createReturnValue(
-      response.headers["content-type"]?.startsWith("application/json") ?? false,
-    ),
-  );
 }
 
 let remoteRunning = false;
@@ -256,14 +262,15 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
   if (shouldIgnoreRequest(request)) return;
 
   const url = new URL(request.url, "http://example");
-  const testRunning = recording.metadata.recorder.type == "tests";
+  const testRunning = getActiveRecordings().some((r) => r.metadata.recorder.type == "tests");
   const timestamp = remoteRunning || testRunning ? undefined : startRequestRecording(url.pathname);
-  const requestEvent = recording.httpRequest(
-    request.method,
-    url.pathname,
-    `HTTP/${request.httpVersion}`,
-    normalizeHeaders(request.headers),
-    url.searchParams,
+
+  const method = request.method;
+  const headers = normalizeHeaders(request.headers);
+  const protocol = `HTTP/${request.httpVersion}`;
+  const recordings = getActiveRecordings();
+  const requestEvents = recordings.map((r) =>
+    r.httpRequest(method, url.pathname, protocol, headers, url.searchParams),
   );
 
   const capture = new BodyCapture();
@@ -271,7 +278,36 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
 
   const startTime = getTime();
   response.once("finish", () => {
-    handleResponse(request, requestEvent, startTime, timestamp, response, capture);
+    const contentType = response.getHeader("Content-Type");
+    const isJson = typeof contentType == "string" && contentType.startsWith("application/json");
+
+    const elapsed = getTime() - startTime;
+    const headers = normalizeHeaders(response.getHeaders());
+    const returnValue = capture.createReturnValue(isJson);
+
+    recordings.forEach((recording, idx) => {
+      if (fixupEvent(request, requestEvents[idx])) recording.fixup(requestEvents[idx]);
+
+      recording.httpResponse(
+        requestEvents[idx].id,
+        elapsed,
+        response.statusCode,
+        headers,
+        returnValue,
+      );
+    });
+
+    // If there is a test or remote recording we don't create a separate request recording
+    // appmap, so we don't have to finish it.
+    const testRunning = recordings.some((r) => r.metadata.recorder.type == "tests");
+    if (remoteRunning || testRunning) return;
+
+    const recording = getRequestRecording();
+    const { request_method, path_info } = requestEvents[0].http_server_request;
+    recording.metadata.name = `${request_method} ${path_info} (${response.statusCode}) — ${timestamp}`;
+    recording.finish();
+    info("Wrote %s", recording.path);
+    startProcessRecording(); // just so there's always a recording running
   });
 }
 
@@ -332,42 +368,6 @@ function normalizeHeaders(
   return result;
 }
 
-function handleResponse(
-  request: http.IncomingMessage,
-  requestEvent: AppMap.HttpServerRequestEvent,
-  startTime: number,
-  timestamp: string | undefined,
-  response: http.ServerResponse<http.IncomingMessage>,
-  capture: BodyCapture,
-): void {
-  if (fixupEvent(request, requestEvent)) recording.fixup(requestEvent);
-
-  const contentType = response.getHeader("Content-Type");
-  const isJson = typeof contentType == "string" && contentType.startsWith("application/json");
-
-  recording.httpResponse(
-    requestEvent.id,
-    getTime() - startTime,
-    response.statusCode,
-    normalizeHeaders(response.getHeaders()),
-    capture.createReturnValue(isJson),
-  );
-  if (remoteRunning || recording.metadata.recorder.type == "tests") return;
-
-  const { request_method, path_info } = requestEvent.http_server_request;
-  recording.metadata.name = `${request_method} ${path_info} (${response.statusCode}) — ${timestamp}`;
-  recording.finish();
-  info("Wrote %s", recording.path);
-  start(); // just so there's always a recording running
-}
-
-function startRequestRecording(pathname: string): string {
-  recording.abandon();
-  const timestamp = new Date().toISOString();
-  start(new Recording("requests", "requests", [timestamp, pathname].join(" ")));
-  return timestamp;
-}
-
 function capitalize(str: string): string {
   return str[0].toUpperCase() + str.slice(1).toLowerCase();
 }
@@ -387,14 +387,13 @@ function handleRemoteRecording(
         res.writeHead(200);
         remoteRunning = true;
         res.end("Recording started");
-        info("Remote recording started");
-        recording.abandon();
-        start(new Recording("remote", "remote", new Date().toISOString()));
+        startRemoteRecording();
       }
       break;
     case "DELETE":
       if (remoteRunning) {
         remoteRunning = false;
+        const recording = getRemoteRecording();
         if (recording.finish()) {
           res.writeHead(200);
           const { path } = recording;
@@ -402,7 +401,7 @@ function handleRemoteRecording(
           rmSync(path);
         } else res.writeHead(200).end("{}");
         info("Remote recording finished");
-        start(); // just so there's always a recording running
+        startProcessRecording(); // just so there's always a recording running
       } else res.writeHead(404).end("No recording is in progress");
       break;
     default:

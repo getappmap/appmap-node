@@ -11,7 +11,21 @@ import { FunctionInfo } from "./registry";
 import commonPathPrefix from "./util/commonPathPrefix";
 import { getTime } from "./util/getTime";
 
-export let recording: Recording;
+const processRecordingShouldAlwaysBeActive = "APPMAP_RECORDER_PROCESS_ALWAYS" in process.env;
+
+// If APPMAP_RECORDER_PROCESS_ALWAYS is set we can have
+// two recordings active simultaneously. Always active
+// one for process recording and one for the others
+// (request, test, remote) when needed.
+let processRecording: Recording;
+let nonProcessRecording: Recording;
+
+export function getActiveRecordings() {
+  const result = [];
+  if (processRecording?.running) result.push(processRecording);
+  if (nonProcessRecording?.running) result.push(nonProcessRecording);
+  return result;
+}
 
 export function record<This, Return>(
   this: This,
@@ -19,61 +33,81 @@ export function record<This, Return>(
   args: unknown[],
   funInfo: FunctionInfo,
 ): Return {
-  if (!recording.running || !shouldRecord()) return fun.apply(this, args);
+  const recordings = getActiveRecordings();
+  if (recordings.length == 0 || !shouldRecord()) return fun.apply(this, args);
 
-  const call = recording.functionCall(
-    funInfo,
-    isGlobal(this) || isNullPrototype(this) ? undefined : this,
-    [...args],
-  );
+  const thisArg = isGlobal(this) || isNullPrototype(this) ? undefined : this;
+  const callEvents = recordings.map((r) => r.functionCall(funInfo, thisArg, [...args]));
 
-  const start = getTime();
-
+  const startTime = getTime();
   try {
     const result = fun.apply(this, args);
-    const ret = recording.functionReturn(call.id, result, getTime() - start);
-    return fixReturnEventIfPromiseResult(result, ret, call, start) as Return;
+
+    const elapsed = getTime() - startTime;
+    const returnEvents = recordings.map((recording, idx) =>
+      recording.functionReturn(callEvents[idx].id, result, elapsed),
+    );
+    return fixReturnEventsIfPromiseResult(
+      recordings,
+      result,
+      returnEvents,
+      callEvents,
+      startTime,
+    ) as Return;
   } catch (exn: unknown) {
-    recording.functionException(call.id, exn, getTime() - start);
+    const elapsed = getTime() - startTime;
+    recordings.map((recording, idx) =>
+      recording.functionException(callEvents[idx].id, exn, elapsed),
+    );
     throw exn;
   }
 }
 
-export function fixReturnEventIfPromiseResult(
+export function fixReturnEventsIfPromiseResult(
+  recordings: Recording[],
   result: unknown,
-  returnEvent: AppMap.FunctionReturnEvent,
-  callEvent: AppMap.CallEvent,
+  returnEvents: AppMap.FunctionReturnEvent[],
+  callEvents: AppMap.CallEvent[],
   startTime: number,
 ) {
-  if (isPromise(result) && returnEvent.return_value?.value.includes("<pending>"))
+  // returnEvents would have the same return_value, in case of multiple recordings.
+  if (isPromise(result) && returnEvents[0].return_value?.value.includes("<pending>"))
     return result.then(
       (value) => {
-        const newReturn = makeReturnEvent(
-          returnEvent.id,
-          callEvent.id,
-          result,
-          getTime() - startTime,
-        );
-        newReturn.return_value!.class = `Promise<${getClass(value)}>`;
-        recording.fixup(newReturn);
+        const elapsed = getTime() - startTime;
+        const promiseClass = `Promise<${getClass(value)}>`;
+        recordings.map((recording, idx) => {
+          const newReturn = makeReturnEvent(
+            returnEvents[idx].id,
+            callEvents[idx].id,
+            result,
+            elapsed,
+          );
+          newReturn.return_value!.class = promiseClass;
+          recording.fixup(newReturn);
+        });
         return result;
       },
       (reason) => {
-        const event = makeExceptionEvent(
-          returnEvent.id,
-          callEvent.id,
-          reason,
-          getTime() - startTime,
-        );
-        // add return_value too, so it's not unambiguous whether the function
-        // threw or returned a promise which then rejected
-        event.return_value = {
-          class: "Promise",
-          // don't repeat the exception info
-          value: "Promise { <rejected> }",
-          object_id: objectId(result),
-        };
-        recording.fixup(event);
+        const elapsed = getTime() - startTime;
+        recordings.map((recording, idx) => {
+          const event = makeExceptionEvent(
+            returnEvents[idx].id,
+            callEvents[idx].id,
+            reason,
+            elapsed,
+          );
+          // add return_value too, so it's not unambiguous whether the function
+          // threw or returned a promise which then rejected
+          event.return_value = {
+            class: "Promise",
+            // don't repeat the exception info
+            value: "Promise { <rejected> }",
+            object_id: objectId(result),
+          };
+          recording.fixup(event);
+        });
+
         return result;
       },
     );
@@ -93,23 +127,65 @@ function isNullPrototype(obj: unknown) {
   return obj != null && Object.getPrototypeOf(obj) === null;
 }
 
-export function start(
-  newRecording: Recording = new Recording("process", "process", new Date().toISOString()),
-) {
-  assert(!recording?.running);
-  recording = newRecording;
+export function abandonProcessRecordingIfNotAlwaysActive() {
+  if (!processRecordingShouldAlwaysBeActive) processRecording?.abandon();
 }
 
-start();
+export function startProcessRecording() {
+  if (!processRecordingShouldAlwaysBeActive) assert(!processRecording?.running);
+  if (!processRecording?.running)
+    processRecording = new Recording("process", "process", new Date().toISOString());
+}
 
-function finishRecording() {
-  recording.finish();
+export function startTestRecording(recorder: string, ...names: string[]) {
+  abandonProcessRecordingIfNotAlwaysActive();
+  nonProcessRecording?.abandon();
+  nonProcessRecording = new Recording("tests", recorder, ...names);
+}
+
+export function startRemoteRecording() {
+  info("Remote recording started");
+
+  abandonProcessRecordingIfNotAlwaysActive();
+
+  nonProcessRecording?.abandon();
+  nonProcessRecording = new Recording("remote", "remote", new Date().toISOString());
+}
+
+export function startRequestRecording(pathname: string): string {
+  abandonProcessRecordingIfNotAlwaysActive();
+
+  const timestamp = new Date().toISOString();
+  nonProcessRecording?.abandon();
+  nonProcessRecording = new Recording("requests", "requests", [timestamp, pathname].join(" "));
+  return timestamp;
+}
+
+export function startCodeBlockRecording() {
+  nonProcessRecording = new Recording("block", "block", new Date().toISOString());
+}
+
+export const getTestRecording = () => getNonProcessRecording("tests");
+export const getRequestRecording = () => getNonProcessRecording("requests");
+export const getRemoteRecording = () => getNonProcessRecording("remote");
+export const getCodeBlockRecording = () => getNonProcessRecording("block");
+
+function getNonProcessRecording(type: AppMap.RecorderType) {
+  assert(nonProcessRecording?.metadata.recorder.type == type);
+  return nonProcessRecording;
+}
+
+startProcessRecording();
+
+function finishRecordings() {
+  getActiveRecordings().forEach((r) => r.finish());
+
   if (writtenAppMaps.length === 1) info("Wrote %s", writtenAppMaps[0]);
   else if (writtenAppMaps.length > 1)
     info("Wrote %d AppMaps to %s", writtenAppMaps.length, commonPathPrefix(writtenAppMaps));
 }
 
-process.on("exit", finishRecording);
+process.on("exit", finishRecordings);
 
 const finishSignals: NodeJS.Signals[] = ["SIGINT", "SIGTERM"];
 finishSignals.forEach(registerFinishSignalHandler);
@@ -119,7 +195,7 @@ function registerFinishSignalHandler(signal: NodeJS.Signals) {
   if (process.listeners(signal).length > 0) return;
 
   const handler = () => {
-    finishRecording();
+    finishRecordings();
     process.kill(process.pid, signal);
   };
 
