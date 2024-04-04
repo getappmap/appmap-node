@@ -6,7 +6,7 @@ import type prisma from "@prisma/client";
 
 import type * as AppMap from "../AppMap";
 import { getTime } from "../util/getTime";
-import { fixReturnEventIfPromiseResult, recording } from "../recorder";
+import { fixReturnEventsIfPromiseResult, getActiveRecordings } from "../recorder";
 import { FunctionInfo } from "../registry";
 import config from "../config";
 import { setCustomInspect } from "../parameter";
@@ -130,26 +130,36 @@ function createPrismaClientMethodProxy<T extends (...args: unknown[]) => unknown
   return new Proxy(prismaClientMethod, {
     apply(target, thisArg: unknown, argArray: Parameters<T>) {
       // Report Prisma query as a function call, if suitable
-      let prismaCall: AppMap.FunctionCallEvent | undefined;
+      let prismaCalls: AppMap.FunctionCallEvent[] | undefined;
+      const recordings = getActiveRecordings();
       if (argArray?.length > 0) {
         const requestParams = argArray[0] as PrismaRequestParams;
         if (requestParams.action && requestParams.model) {
-          const funInfo = getFunctionInfo(requestParams.model, requestParams.action, moduleId);
-
-          prismaCall = recording.functionCall(funInfo, requestParams.model, [
-            setCustomInspect(requestParams.args, argsCustomInspect),
-          ]);
+          const action = requestParams.action;
+          const model = requestParams.model;
+          const argsArg = [setCustomInspect(requestParams.args, argsCustomInspect)];
+          prismaCalls = recordings.map((recording) =>
+            recording.functionCall(getFunctionInfo(model, action, moduleId), model, argsArg),
+          );
         }
       }
 
-      if (prismaCall) {
-        const start = getTime();
+      if (prismaCalls != undefined) {
+        const startTime = getTime();
+        const calls = prismaCalls;
         try {
           const result = target.apply(thisArg, argArray);
-          const ret = recording.functionReturn(prismaCall.id, result, getTime() - start);
-          return fixReturnEventIfPromiseResult(result, ret, prismaCall, start);
+
+          const elapsed = getTime() - startTime;
+          const returnEvents = recordings.map((recording, idx) =>
+            recording.functionReturn(calls[idx].id, result, elapsed),
+          );
+          return fixReturnEventsIfPromiseResult(recordings, result, returnEvents, calls, startTime);
         } catch (exn: unknown) {
-          recording.functionException(prismaCall.id, exn, getTime() - start);
+          const elapsed = getTime() - startTime;
+          recordings.forEach((recording, idx) =>
+            recording.functionException(calls[idx].id, exn, elapsed),
+          );
           throw exn;
         }
       }
@@ -180,8 +190,11 @@ function attachSqlHook(thisArg: unknown) {
   thisArg._engine.config.logQueries = true;
   assert("$on" in thisArg && typeof thisArg.$on === "function");
   thisArg.$on("query", (queryEvent: QueryEvent) => {
-    const call = recording.sqlQuery(dbType, queryEvent.query);
+    const recordings = getActiveRecordings();
+    const callEvents = recordings.map((recording) => recording.sqlQuery(dbType, queryEvent.query));
     const elapsedSec = queryEvent.duration / 1000.0;
-    recording.functionReturn(call.id, undefined, elapsedSec);
+    recordings.forEach((recording, idx) =>
+      recording.functionReturn(callEvents[idx].id, undefined, elapsedSec),
+    );
   });
 }

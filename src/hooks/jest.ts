@@ -1,4 +1,3 @@
-import assert from "node:assert";
 import { pathToFileURL } from "node:url";
 
 import type { Circus } from "@jest/types";
@@ -6,11 +5,14 @@ import { simple as walk } from "acorn-walk";
 import type { ESTree } from "meriyah";
 
 import { expressionFor, wrap } from ".";
-import Recording from "../Recording";
 import { assignment, call_, identifier, memberId } from "../generate";
 import { info } from "../message";
 import { exceptionMetadata } from "../metadata";
-import { recording, start } from "../recorder";
+import {
+  abandonProcessRecordingIfNotAlwaysActive,
+  getTestRecording,
+  startTestRecording,
+} from "../recorder";
 import genericTranform from "../transform";
 import { isId } from "../util/isId";
 
@@ -44,7 +46,7 @@ const passGlobals: ESTree.Statement[] = ["AppMap", "AppMapRecordHook"].map((name
 );
 
 export function patchCircus(program: ESTree.Program): ESTree.Program {
-  recording.abandon();
+  abandonProcessRecordingIfNotAlwaysActive();
   info("Detected Jest. Tests will be automatically recorded.");
   program.body.push({
     type: "ExpressionStatement",
@@ -54,17 +56,18 @@ export function patchCircus(program: ESTree.Program): ESTree.Program {
 }
 
 function eventHandler(event: Circus.Event) {
+  let recording;
   switch (event.name) {
     case "test_fn_start":
-      start(createRecording(event.test));
+      startTestRecording("jest", ...testNames(event.test));
       break;
     case "test_fn_failure":
-      assert(recording.metadata.recorder.type == "tests");
+      recording = getTestRecording();
       recording.metadata.test_status = "failed";
       recording.metadata.exception = exceptionMetadata(event.error);
       return recording.finish();
     case "test_fn_success":
-      assert(recording.metadata.recorder.type == "tests");
+      recording = getTestRecording();
       recording.metadata.test_status = "succeeded";
       return recording.finish();
   }
@@ -83,9 +86,4 @@ function testNames(test: Circus.TestEntry): string[] {
   const names = [test.name];
   for (let block = test.parent; block.parent; block = block.parent) names.push(block.name);
   return names.reverse();
-}
-
-function createRecording(test: Circus.TestEntry): Recording {
-  const recording = new Recording("tests", "jest", ...testNames(test));
-  return recording;
 }

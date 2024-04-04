@@ -10,8 +10,8 @@ export const enableGlobalRecording = () => (_globalRecordingDisabled = false);
 export const globalRecordingDisabled = () => _globalRecordingDisabled;
 
 let _codeBlockRecordingActive = false;
-export const startCodeBlockRecording = () => (_codeBlockRecordingActive = true);
-export const stopCodeBlockRecording = () => (_codeBlockRecordingActive = false);
+export const setCodeBlockRecordingActive = () => (_codeBlockRecordingActive = true);
+export const unsetCodeBlockRecordingActive = () => (_codeBlockRecordingActive = false);
 export const codeBlockRecordingActive = () => _codeBlockRecordingActive;
 
 export const shouldRecord = () =>

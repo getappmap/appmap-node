@@ -1,6 +1,12 @@
 import { type IncomingMessage, request, OutgoingMessage } from "node:http";
 
-import { fixAppmap, integrationTest, readAppmaps, spawnAppmapNode } from "./helpers";
+import {
+  SpawnAppmapNodeOptions,
+  fixAppmap,
+  integrationTest,
+  readAppmaps,
+  spawnAppmapNodeWithOptions,
+} from "./helpers";
 import { ChildProcessWithoutNullStreams } from "child_process";
 
 integrationTest("mapping Express.js requests", async () => {
@@ -22,6 +28,31 @@ integrationTest("mapping node:http requests", async () => {
   await killServer(server);
   expect(readAppmaps()).toMatchSnapshot();
 });
+
+const integrationTestSkipOnWindows = process.platform == "win32" ? test.skip : integrationTest;
+// Ensuring recorder.ts:finishRecordings() to be called requires special handling in
+// this integration test for Windows as we do it in next.test.ts.
+// We skip it here to not complicate the testing code, since we are already testing
+// process recording always active mode in jest and mocha tests in Windows.
+integrationTestSkipOnWindows(
+  "mapping node:http requests with process recording active",
+  async () => {
+    expect.assertions(3);
+    const server = await spawnServer("vanilla.js", {
+      env: { ...process.env, APPMAP_RECORDER_PROCESS_ALWAYS: "true" },
+    });
+    await makeRequests();
+    // Wait for the last request to finish
+    await awaitStdoutOnData(server, "api-bar.appmap.json");
+    await killServer(server);
+
+    const appmaps = readAppmaps();
+    const appmapsArray = Object.values(appmaps);
+    expect(appmapsArray.filter((a) => a.metadata?.recorder.type == "process").length).toEqual(1);
+    expect(appmapsArray.filter((a) => a.metadata?.recorder.type == "requests").length).toEqual(4);
+    expect(appmaps).toMatchSnapshot();
+  },
+);
 
 integrationTest("mapping Express.js requests with remote recording", async () => {
   expect.assertions(1);
@@ -68,8 +99,8 @@ async function makeRequests() {
   });
 }
 
-async function spawnServer(script: string) {
-  const server = spawnAppmapNode(script);
+async function spawnServer(script: string, options: SpawnAppmapNodeOptions = {}) {
+  const server = spawnAppmapNodeWithOptions(options, script);
   await awaitStdoutOnData(server, "listening");
   return server;
 }

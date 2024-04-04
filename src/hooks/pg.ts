@@ -1,6 +1,6 @@
 import type pg from "pg";
 
-import { fixReturnEventIfPromiseResult, recording } from "../recorder";
+import { fixReturnEventsIfPromiseResult, getActiveRecordings } from "../recorder";
 import { getTime } from "../util/getTime";
 
 export default function pgHook(mod: typeof pg) {
@@ -28,12 +28,23 @@ function createQueryProxy(
       // https://github.com/brianc/node-postgres/blob/master/packages/pg/lib/utils.js#L149
       const sql: string = hasStringTextProperty(argArray[0]) ? argArray[0].text : argArray[0];
 
-      const call = recording.sqlQuery("postgres", sql);
-      const start = getTime();
+      const recordings = getActiveRecordings();
+      const callEvents = recordings.map((recording) => recording.sqlQuery("postgres", sql));
+      const startTime = getTime();
       const result = target.apply(thisArg, argArray);
-      const ret = recording.functionReturn(call.id, result, getTime() - start);
 
-      return fixReturnEventIfPromiseResult(result, ret, call, start);
+      const elapsed = getTime() - startTime;
+      const returnEvents = recordings.map((recording, idx) =>
+        recording.functionReturn(callEvents[idx].id, result, elapsed),
+      );
+
+      return fixReturnEventsIfPromiseResult(
+        recordings,
+        result,
+        returnEvents,
+        callEvents,
+        startTime,
+      );
     },
   });
 }

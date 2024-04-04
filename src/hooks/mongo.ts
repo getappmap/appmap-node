@@ -3,7 +3,7 @@ import { inspect } from "node:util";
 import type mongodb from "mongodb";
 
 import { identifier } from "../generate";
-import { fixReturnEventIfPromiseResult, recording } from "../recorder";
+import { fixReturnEventsIfPromiseResult, getActiveRecordings } from "../recorder";
 import { FunctionInfo } from "../registry";
 import { getTime } from "../util/getTime";
 import { setCustomInspect } from "../parameter";
@@ -95,38 +95,60 @@ function patchMethod<K extends MethodLikeKeys<mongodb.Collection>>(
     this: mongodb.Collection,
     ...args: unknown[]
   ): ReturnType<typeof original> {
-    if (!recording) return Reflect.apply(original, this, args) as ReturnType<typeof original>;
+    const recordings = getActiveRecordings();
+    if (!recordings.length)
+      return Reflect.apply(original, this, args) as ReturnType<typeof original>;
 
     const funInfo = functionInfo(methodName, this.collectionName, argNames);
     const callback = extractOptionalCallback(args);
     if (callback) {
-      const callEvent = recording.functionCall(
-        funInfo,
-        this,
-        args.map((x) => setCustomInspect(x, customInspect)),
+      const functionCallArgs = args.map((x) => setCustomInspect(x, customInspect));
+      const callEvents = recordings.map((recording) =>
+        recording.functionCall(funInfo, this, functionCallArgs),
       );
+
       const startTime = getTime();
       args.push((err: unknown, res: unknown) => {
         setCustomInspect(res, customInspect);
-        if (err) recording.functionException(callEvent.id, err, getTime() - startTime);
-        else recording.functionReturn(callEvent.id, res, getTime() - startTime);
+
+        const elapsed = getTime() - startTime;
+        if (err)
+          recordings.forEach((recording, idx) =>
+            recording.functionException(callEvents[idx].id, err, elapsed),
+          );
+        else
+          recordings.forEach((recording, idx) =>
+            recording.functionReturn(callEvents[idx].id, res, elapsed),
+          );
+
         return callback(err, res) as unknown;
       });
       return Reflect.apply(original, this, args) as ReturnType<typeof original>;
     }
 
-    const callEvent = recording.functionCall(funInfo, this, args);
+    const callEvents = recordings.map((recording) => recording.functionCall(funInfo, this, args));
     const startTime = getTime();
 
     try {
       const result = Reflect.apply(original, this, args) as unknown;
       setCustomInspect(result, customInspect);
-      const returnEvent = recording.functionReturn(callEvent.id, result, getTime() - startTime);
-      return fixReturnEventIfPromiseResult(result, returnEvent, callEvent, startTime) as ReturnType<
-        typeof original
-      >;
+
+      const elapsed = getTime() - startTime;
+      const returnEvents = recordings.map((recording, idx) =>
+        recording.functionReturn(callEvents[idx].id, result, elapsed),
+      );
+      return fixReturnEventsIfPromiseResult(
+        recordings,
+        result,
+        returnEvents,
+        callEvents,
+        startTime,
+      ) as ReturnType<typeof original>;
     } catch (exn: unknown) {
-      recording.functionException(callEvent.id, exn, getTime() - startTime);
+      const elapsed = getTime() - startTime;
+      recordings.map((recording, idx) =>
+        recording.functionException(callEvents[idx].id, exn, elapsed),
+      );
       throw exn;
     }
   };

@@ -3,16 +3,16 @@ import { isPromise } from "node:util/types";
 import type * as AppMap from "./AppMap";
 import { exceptionMetadata } from "./metadata";
 
-import { recording, start } from "./recorder";
+import { getActiveRecordings, getCodeBlockRecording, startCodeBlockRecording } from "./recorder";
 import {
   disableGlobalRecording,
-  startCodeBlockRecording,
-  stopCodeBlockRecording,
+  setCodeBlockRecordingActive,
+  unsetCodeBlockRecordingActive,
 } from "./recorderControl";
-import Recording from "./Recording";
 
 // Since _this_ module is loaded, we'll do code block recording only.
-recording.abandon();
+// We ignore APPMAP_RECORDER_PROCESS_ALWAYS environment variable in this mode.
+getActiveRecordings().forEach((r) => r.abandon());
 disableGlobalRecording();
 
 function isInstrumented() {
@@ -30,8 +30,8 @@ export function record(
   if (!isInstrumented())
     throw Error("Code is not instrumented. Please run the project with appmap-node.");
 
-  start(new Recording("block", "block", new Date().toISOString()));
   startCodeBlockRecording();
+  setCodeBlockRecordingActive();
   try {
     const result = block();
     if (isPromise(result)) return result.then(() => finishRecording(), finishRecording);
@@ -42,7 +42,8 @@ export function record(
 }
 
 function finishRecording(exn?: unknown): AppMap.AppMap | undefined {
-  stopCodeBlockRecording();
+  unsetCodeBlockRecordingActive();
+  const recording = getCodeBlockRecording();
   if (!recording.finish()) return;
 
   const appmap = recording.readAppMap();

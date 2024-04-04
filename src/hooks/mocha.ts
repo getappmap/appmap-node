@@ -5,9 +5,12 @@ import { simple as walk } from "acorn-walk";
 import type { ESTree } from "meriyah";
 
 import { expressionFor } from ".";
-import Recording from "../Recording";
 import { call_, this_ } from "../generate";
-import { recording, start } from "../recorder";
+import {
+  abandonProcessRecordingIfNotAlwaysActive,
+  getTestRecording,
+  startTestRecording,
+} from "../recorder";
 import { info } from "../message";
 import { exceptionMetadata } from "../metadata";
 
@@ -32,7 +35,7 @@ export function transform(program: ESTree.Program): ESTree.Program {
             type: "ExpressionStatement",
             expression: call_(expressionFor(registerEventListeners), this_),
           });
-          recording.abandon();
+          abandonProcessRecordingIfNotAlwaysActive();
           info("Detected Mocha. Tests will be automatically recorded.");
         },
       });
@@ -54,18 +57,19 @@ const EVENT_TEST_FAIL = "fail";
 
 function registerEventListeners(runner: EventEmitter) {
   runner.on(EVENT_TEST_BEGIN, function (test: Test) {
-    const rec = new Recording("tests", "mocha", ...test.titlePath());
-    start(rec);
+    startTestRecording("mocha", ...test.titlePath());
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   runner.on(EVENT_TEST_PASS, function (test: Test) {
+    const recording = getTestRecording();
     recording.metadata.test_status = "succeeded";
     recording.finish();
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   runner.on(EVENT_TEST_FAIL, function (test: Test, err: unknown) {
+    const recording = getTestRecording();
     recording.metadata.test_status = "failed";
     recording.metadata.exception = exceptionMetadata(err);
     recording.finish();

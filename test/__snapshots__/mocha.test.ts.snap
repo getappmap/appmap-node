@@ -235,3 +235,391 @@ exports[`mapping Mocha tests 1`] = `
   },
 }
 `;
+
+exports[`mapping Mocha tests with process recording active 1`] = `
+{
+  "./tmp/appmap/mocha/exception_handling/intentionally_throws.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "test.js:18",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "test",
+            "type": "class",
+          },
+        ],
+        "name": "mocha-appmap-node-test",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "test",
+        "event": "call",
+        "id": 1,
+        "lineno": 18,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 2,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "mocha-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "TestError",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling intentionally throws",
+      "recorder": {
+        "name": "mocha",
+        "type": "tests",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/mocha/multiply/calculates_power_correctly.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "calc.js:5",
+                "name": "power",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "mocha-appmap-node-test",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 5,
+        "method_id": "power",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "x",
+            "value": "3",
+          },
+          {
+            "class": "Number",
+            "name": "y",
+            "value": "2",
+          },
+        ],
+        "path": "calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "8",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "mocha-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "AssertionError",
+        "message": "8 == 9",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiply calculates power correctly",
+      "recorder": {
+        "name": "mocha",
+        "type": "tests",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/mocha/multiply/multiplies_numbers_correctly.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "calc.js:1",
+                "name": "multiply",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "mocha-appmap-node-test",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "multiply",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "x",
+            "value": "2",
+          },
+          {
+            "class": "Number",
+            "name": "y",
+            "value": "5",
+          },
+        ],
+        "path": "calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "10",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "mocha-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiply multiplies numbers correctly",
+      "recorder": {
+        "name": "mocha",
+        "type": "tests",
+      },
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/process/<timestamp 0>.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "calc.js:1",
+                "name": "multiply",
+                "static": true,
+                "type": "function",
+              },
+              {
+                "location": "calc.js:5",
+                "name": "power",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+          {
+            "children": [
+              {
+                "location": "test.js:18",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "test",
+            "type": "class",
+          },
+        ],
+        "name": "mocha-appmap-node-test",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "multiply",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "x",
+            "value": "2",
+          },
+          {
+            "class": "Number",
+            "name": "y",
+            "value": "5",
+          },
+        ],
+        "path": "calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "10",
+        },
+        "thread_id": 0,
+      },
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 3,
+        "lineno": 5,
+        "method_id": "power",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "x",
+            "value": "3",
+          },
+          {
+            "class": "Number",
+            "name": "y",
+            "value": "2",
+          },
+        ],
+        "path": "calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 4,
+        "parent_id": 3,
+        "return_value": {
+          "class": "Number",
+          "value": "8",
+        },
+        "thread_id": 0,
+      },
+      {
+        "defined_class": "test",
+        "event": "call",
+        "id": 5,
+        "lineno": 18,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 2,
+          },
+        ],
+        "id": 6,
+        "parent_id": 5,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "mocha-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "test process recording",
+      "recorder": {
+        "name": "process",
+        "type": "process",
+      },
+    },
+    "version": "1.12",
+  },
+}
+`;

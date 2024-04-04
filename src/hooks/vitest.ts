@@ -5,7 +5,6 @@ import worker from "node:worker_threads";
 import { simple as walk } from "acorn-walk";
 import { type ESTree } from "meriyah";
 
-import Recording from "../Recording";
 import {
   args as args_,
   assignment,
@@ -17,7 +16,11 @@ import {
   ret,
 } from "../generate";
 import { info, warn } from "../message";
-import { recording, start } from "../recorder";
+import {
+  abandonProcessRecordingIfNotAlwaysActive,
+  getTestRecording,
+  startTestRecording,
+} from "../recorder";
 import genericTransform from "../transform";
 
 function createInitChannel() {
@@ -77,12 +80,13 @@ export async function wrapRunTest(
 ): Promise<unknown> {
   const [test] = args;
 
-  recording.abandon();
+  abandonProcessRecordingIfNotAlwaysActive();
+  startTestRecording("vitest", ...testNames(test));
 
-  start(createRecording(test));
   const result = fun(...args);
   await result;
 
+  const recording = getTestRecording();
   switch (test.result?.state) {
     case "pass":
       recording.metadata.test_status = "succeeded";
@@ -100,11 +104,6 @@ export async function wrapRunTest(
   recording.finish();
 
   return result;
-}
-
-function createRecording(test: Test): Recording {
-  const recording = new Recording("tests", "vitest", ...testNames(test));
-  return recording;
 }
 
 function patchRunTest(fd: ESTree.FunctionDeclaration) {
