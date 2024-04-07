@@ -20,6 +20,12 @@ const processRecordingShouldAlwaysBeActive = "APPMAP_RECORDER_PROCESS_ALWAYS" in
 let processRecording: Recording;
 let nonProcessRecording: Recording;
 
+export function isActive(recording: Recording) {
+  return (
+    recording?.running && (processRecording === recording || nonProcessRecording === recording)
+  );
+}
+
 export function getActiveRecordings() {
   const result = [];
   if (processRecording?.running) result.push(processRecording);
@@ -77,6 +83,9 @@ export function fixReturnEventsIfPromiseResult(
         const elapsed = getTime() - startTime;
         const promiseClass = `Promise<${getClass(value)}>`;
         recordings.map((recording, idx) => {
+          // If the recording is not active after promise resolution
+          // don't attempt to record an eventUpdate.
+          if (!isActive(recording)) return;
           const newReturn = makeReturnEvent(
             returnEvents[idx].id,
             callEvents[idx].id,
@@ -91,6 +100,9 @@ export function fixReturnEventsIfPromiseResult(
       (reason) => {
         const elapsed = getTime() - startTime;
         recordings.map((recording, idx) => {
+          // If the recording is not active after promise resolution
+          // don't attempt to record an eventUpdate.
+          if (!isActive(recording)) return;
           const event = makeExceptionEvent(
             returnEvents[idx].id,
             callEvents[idx].id,
@@ -132,7 +144,6 @@ export function abandonProcessRecordingIfNotAlwaysActive() {
 }
 
 export function startProcessRecording() {
-  if (!processRecordingShouldAlwaysBeActive) assert(!processRecording?.running);
   if (!processRecording?.running)
     processRecording = new Recording("process", "process", new Date().toISOString());
 }
