@@ -12,6 +12,10 @@ import fwdSlashPath from "../src/util/fwdSlashPath";
 
 const binPath = resolve(__dirname, "../bin/appmap-node.js");
 
+export function getAppMapBinPath() {
+  return binPath;
+}
+
 export function runAppmapNode(...args: string[]) {
   return runAppmapNodeWithOptions({}, ...args);
 }

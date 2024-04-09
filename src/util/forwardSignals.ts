@@ -5,7 +5,12 @@ export default function forwardSignals(
   signals = DEFAULT_FORWARD,
 ) {
   const forward = proc.kill.bind(proc);
-  for (const signal of signals) process.on(signal, forward);
+  // Without setTimeout, child does not handle forwarded SIGINT
+  // caused by the parent receiving a Ctrl-C in certain cases.
+  // See: simple.test.ts "forwards SIGINT (ctrl-c) properly
+  // to the grandchild having active setInterval"
+  for (const signal of signals)
+    process.on(signal, (...args) => setTimeout(() => forward(...args), 100));
 }
 
 const DEFAULT_FORWARD: NodeJS.Signals[] = [
