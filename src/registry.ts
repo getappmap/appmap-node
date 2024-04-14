@@ -18,6 +18,7 @@ export interface FunctionInfo {
   /** Class name, or the package name for a free function */
   klassOrFile: string;
   location?: SourceLocation;
+  labels?: string[];
 }
 
 export function createFunctionInfo(
@@ -25,6 +26,7 @@ export function createFunctionInfo(
     id: ESTree.Identifier;
   },
   location: SourceLocation,
+  labels?: string[],
 ): FunctionInfo {
   const { async, generator, id, params } = fun;
   const info = {
@@ -35,6 +37,7 @@ export function createFunctionInfo(
     location: relativeLocation(location),
     klassOrFile: pkgOfPath(location.path),
     static: true,
+    labels,
   };
   return info;
 }
@@ -43,6 +46,7 @@ export function createMethodInfo(
   method: ESTree.MethodDefinition & { key: { name: string } },
   klass: (ESTree.ClassDeclaration | ESTree.ClassExpression) & { id: { name: string } },
   location?: SourceLocation,
+  labels?: string[],
 ): FunctionInfo {
   const {
     key,
@@ -56,6 +60,7 @@ export function createMethodInfo(
     static: method.static,
     klassOrFile: klass.id.name,
     location: relativeLocation(location),
+    labels,
   };
   return info;
 }

@@ -58,13 +58,19 @@ function makeLocation(l?: SourceLocation): string | undefined {
   return [l.path, l.lineno].join(":");
 }
 
-function makeFunction({ id, static: static_, location }: FunctionInfo): AppMap.FunctionInfo {
+function makeFunction({
+  id,
+  static: static_,
+  location,
+  labels,
+}: FunctionInfo): AppMap.FunctionInfo {
   assert(location);
   return {
     type: "function",
     name: id,
     static: static_,
     location: makeLocation(location),
+    labels,
   };
 }
 
