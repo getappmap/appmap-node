@@ -9,7 +9,6 @@ describe(registry.createFunctionInfo, () => {
         generator: false,
         id: identifier("testFun"),
         params: [],
-        type: "FunctionDeclaration",
       },
       { path: "test.js", lineno: 42 },
     );
@@ -22,6 +21,7 @@ describe(registry.createFunctionInfo, () => {
       location: { path: "test.js", lineno: 42 },
       static: true,
       klassOrFile: "test",
+      labels: undefined,
     });
   });
 });
@@ -59,6 +59,7 @@ describe(registry.createMethodInfo, () => {
       klassOrFile: "TestClass",
       location: undefined,
       static: false,
+      labels: undefined,
     });
   });
 });

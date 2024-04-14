@@ -21,7 +21,11 @@ const sourceDebug = debuglog("appmap-source");
 
 export interface Hook {
   shouldInstrument(url: URL): boolean;
-  transform(program: ESTree.Program, sourcemap?: SourceMapConsumer): ESTree.Program;
+  transform(
+    program: ESTree.Program,
+    sourcemap?: SourceMapConsumer,
+    comments?: ESTree.Comment[],
+  ): ESTree.Program;
   shouldIgnore?(url: URL): boolean;
 }
 
@@ -38,8 +42,16 @@ export default function transform(code: string, url: URL, hooks = defaultHooks):
   if (hooks.some((h) => h.shouldIgnore?.(url))) return code;
 
   try {
-    const tree = parse(code, { source: url.toString(), next: true, loc: true, module: true });
-    const xformed = hook.transform(tree, getSourceMap(url, code));
+    const comments: ESTree.Comment[] = [];
+    const tree = parse(code, {
+      source: url.toString(),
+      next: true,
+      loc: true,
+      module: true,
+      onComment: comments,
+    });
+
+    const xformed = hook.transform(tree, getSourceMap(url, code), comments);
     if (treeDebug.enabled) dumpTree(xformed, url);
     const src = generate(xformed);
     if (sourceDebug.enabled) {

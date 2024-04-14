@@ -22,6 +22,7 @@ import {
 import { FunctionInfo, SourceLocation, createFunctionInfo, createMethodInfo } from "../registry";
 import findLast from "../util/findLast";
 import { isId } from "../util/isId";
+import CommentLabelExtractor from "./util/CommentLabelExtractor";
 
 const debug = debuglog("appmap:instrument");
 
@@ -33,12 +34,19 @@ function addTransformedFunctionInfo(fi: FunctionInfo): number {
   return transformedFunctionInfos.length - 1;
 }
 
-export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer): ESTree.Program {
+export function transform(
+  program: ESTree.Program,
+  sourceMap?: SourceMapConsumer,
+  comments?: ESTree.Comment[],
+): ESTree.Program {
   transformedFunctionInfos.splice(0);
   const source = program.loc?.source;
   const pkg = source ? config.packages.match(source) : undefined;
 
   const locate = makeLocator(sourceMap);
+  const commentLabelExtractor = comments
+    ? new CommentLabelExtractor(comments, sourceMap)
+    : undefined;
 
   walk(program, {
     FunctionDeclaration(fun: ESTree.FunctionDeclaration) {
@@ -48,7 +56,11 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
       const location = locate(fun);
       if (!location) return; // don't instrument generated code
 
-      fun.body = wrapFunction(fun, createFunctionInfo(fun, location), false);
+      fun.body = wrapFunction(
+        fun,
+        createFunctionInfo(fun, location, commentLabelExtractor?.labelsFor(location.lineno)),
+        false,
+      );
     },
 
     MethodDefinition(method: ESTree.MethodDefinition, _: unknown, ancestors: ESTree.Node[]) {
@@ -74,7 +86,12 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
       debug(`Instrumenting ${qname}`);
       method.value.body = wrapFunction(
         { ...method.value },
-        createMethodInfo(method, klass, location),
+        createMethodInfo(
+          method,
+          klass,
+          location,
+          commentLabelExtractor?.labelsFor(location.lineno),
+        ),
         method.kind === "constructor",
       );
     },
@@ -97,7 +114,11 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
           debug(`Instrumenting ${id.name}`);
           declarator.init = wrapLambda(
             fun,
-            createFunctionInfo({ ...fun, id, generator: false }, location),
+            createFunctionInfo(
+              { ...fun, id, generator: false },
+              location,
+              commentLabelExtractor?.labelsFor(location.lineno),
+            ),
           );
           break;
         }
@@ -109,7 +130,11 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
           debug(`Instrumenting ${id.name}`);
           declarator.right = wrapLambda(
             fun,
-            createFunctionInfo({ ...fun, id, generator: false }, location),
+            createFunctionInfo(
+              { ...fun, id, generator: false },
+              location,
+              commentLabelExtractor?.labelsFor(location.lineno),
+            ),
           );
           break;
         }
