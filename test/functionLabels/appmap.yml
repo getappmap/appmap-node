@@ -1,2 +1,17 @@
 name: function-labels-appmap-node-test
 appmap_dir: tmp/appmap
+packages: 
+  - path: .
+  - module: node:console
+    shallow: true
+    exclude:
+      - warn
+      # Prevent node yarn process to create appmap events for TypeScript test in Windows CI
+      - assert
+    functions:
+      - name: log
+        label: logging
+      - name: debug
+        labels: 
+          - logging
+          - debugging

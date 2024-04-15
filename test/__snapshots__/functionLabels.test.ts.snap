@@ -8,6 +8,38 @@ exports[`mapping labeled functions - TypeScript 1`] = `
         {
           "children": [
             {
+              "labels": [],
+              "location": "console:1",
+              "name": "info",
+              "static": false,
+              "type": "function",
+            },
+            {
+              "labels": [
+                "logging",
+              ],
+              "location": "console:2",
+              "name": "log",
+              "static": false,
+              "type": "function",
+            },
+            {
+              "labels": [
+                "logging",
+                "debugging",
+              ],
+              "location": "console:3",
+              "name": "debug",
+              "static": false,
+              "type": "function",
+            },
+          ],
+          "name": "console",
+          "type": "class",
+        },
+        {
+          "children": [
+            {
               "labels": [
                 "auth",
                 "mail",
@@ -90,16 +122,44 @@ exports[`mapping labeled functions - TypeScript 1`] = `
       "thread_id": 0,
     },
     {
+      "defined_class": "console",
+      "event": "call",
+      "id": 2,
+      "lineno": 1,
+      "method_id": "info",
+      "parameters": [
+        {
+          "class": "String",
+          "value": "'signUp'",
+        },
+      ],
+      "path": "console",
+      "receiver": {
+        "class": "Object",
+        "object_id": 1,
+        "value": "[console]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 2,
+      "id": 3,
+      "parent_id": 2,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
       "parent_id": 1,
       "thread_id": 0,
     },
     {
       "defined_class": "index",
       "event": "call",
-      "id": 3,
+      "id": 5,
       "lineno": 5,
       "method_id": "signIn",
       "parameters": [],
@@ -108,16 +168,44 @@ exports[`mapping labeled functions - TypeScript 1`] = `
       "thread_id": 0,
     },
     {
+      "defined_class": "console",
+      "event": "call",
+      "id": 6,
+      "lineno": 1,
+      "method_id": "info",
+      "parameters": [
+        {
+          "class": "String",
+          "value": "'signIn'",
+        },
+      ],
+      "path": "console",
+      "receiver": {
+        "class": "Object",
+        "object_id": 1,
+        "value": "[console]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 4,
-      "parent_id": 3,
+      "id": 7,
+      "parent_id": 6,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 8,
+      "parent_id": 5,
       "thread_id": 0,
     },
     {
       "defined_class": "index",
       "event": "call",
-      "id": 5,
+      "id": 9,
       "lineno": 38,
       "method_id": "f1",
       "parameters": [],
@@ -126,16 +214,44 @@ exports[`mapping labeled functions - TypeScript 1`] = `
       "thread_id": 0,
     },
     {
+      "defined_class": "console",
+      "event": "call",
+      "id": 10,
+      "lineno": 2,
+      "method_id": "log",
+      "parameters": [
+        {
+          "class": "String",
+          "value": "'f1'",
+        },
+      ],
+      "path": "console",
+      "receiver": {
+        "class": "Object",
+        "object_id": 1,
+        "value": "[console]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 6,
-      "parent_id": 5,
+      "id": 11,
+      "parent_id": 10,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 12,
+      "parent_id": 9,
       "thread_id": 0,
     },
     {
       "defined_class": "index",
       "event": "call",
-      "id": 7,
+      "id": 13,
       "lineno": 42,
       "method_id": "f2",
       "parameters": [],
@@ -144,16 +260,44 @@ exports[`mapping labeled functions - TypeScript 1`] = `
       "thread_id": 0,
     },
     {
+      "defined_class": "console",
+      "event": "call",
+      "id": 14,
+      "lineno": 2,
+      "method_id": "log",
+      "parameters": [
+        {
+          "class": "String",
+          "value": "'f2'",
+        },
+      ],
+      "path": "console",
+      "receiver": {
+        "class": "Object",
+        "object_id": 1,
+        "value": "[console]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 8,
-      "parent_id": 7,
+      "id": 15,
+      "parent_id": 14,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 16,
+      "parent_id": 13,
       "thread_id": 0,
     },
     {
       "defined_class": "A",
       "event": "call",
-      "id": 9,
+      "id": 17,
       "lineno": 32,
       "method_id": "setX",
       "parameters": [
@@ -166,7 +310,7 @@ exports[`mapping labeled functions - TypeScript 1`] = `
       "path": "index.ts",
       "receiver": {
         "class": "A",
-        "object_id": 1,
+        "object_id": 2,
         "value": "A { x: 1 }",
       },
       "static": false,
@@ -175,14 +319,14 @@ exports[`mapping labeled functions - TypeScript 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 10,
-      "parent_id": 9,
+      "id": 18,
+      "parent_id": 17,
       "thread_id": 0,
     },
     {
       "defined_class": "A",
       "event": "call",
-      "id": 11,
+      "id": 19,
       "lineno": 27,
       "method_id": "calc",
       "parameters": [
@@ -200,7 +344,7 @@ exports[`mapping labeled functions - TypeScript 1`] = `
       "path": "index.ts",
       "receiver": {
         "class": "A",
-        "object_id": 1,
+        "object_id": 2,
         "value": "A { x: 42 }",
       },
       "static": false,
@@ -209,8 +353,8 @@ exports[`mapping labeled functions - TypeScript 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 12,
-      "parent_id": 11,
+      "id": 20,
+      "parent_id": 19,
       "return_value": {
         "class": "Number",
         "value": "87",
@@ -220,7 +364,7 @@ exports[`mapping labeled functions - TypeScript 1`] = `
     {
       "defined_class": "index",
       "event": "call",
-      "id": 13,
+      "id": 21,
       "lineno": 21,
       "method_id": "lambdaWithLabel",
       "parameters": [],
@@ -231,12 +375,40 @@ exports[`mapping labeled functions - TypeScript 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 14,
-      "parent_id": 13,
+      "id": 22,
+      "parent_id": 21,
       "return_value": {
         "class": "Number",
         "value": "42",
       },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "console",
+      "event": "call",
+      "id": 23,
+      "lineno": 3,
+      "method_id": "debug",
+      "parameters": [
+        {
+          "class": "String",
+          "value": "'Debug!'",
+        },
+      ],
+      "path": "console",
+      "receiver": {
+        "class": "Object",
+        "object_id": 1,
+        "value": "[console]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 24,
+      "parent_id": 23,
       "thread_id": 0,
     },
   ],
@@ -267,6 +439,38 @@ exports[`mapping labeled functions 1`] = `
   "classMap": [
     {
       "children": [
+        {
+          "children": [
+            {
+              "labels": [],
+              "location": "console:1",
+              "name": "info",
+              "static": false,
+              "type": "function",
+            },
+            {
+              "labels": [
+                "logging",
+              ],
+              "location": "console:2",
+              "name": "log",
+              "static": false,
+              "type": "function",
+            },
+            {
+              "labels": [
+                "logging",
+                "debugging",
+              ],
+              "location": "console:3",
+              "name": "debug",
+              "static": false,
+              "type": "function",
+            },
+          ],
+          "name": "console",
+          "type": "class",
+        },
         {
           "children": [
             {
@@ -352,16 +556,44 @@ exports[`mapping labeled functions 1`] = `
       "thread_id": 0,
     },
     {
+      "defined_class": "console",
+      "event": "call",
+      "id": 2,
+      "lineno": 1,
+      "method_id": "info",
+      "parameters": [
+        {
+          "class": "String",
+          "value": "'signUp'",
+        },
+      ],
+      "path": "console",
+      "receiver": {
+        "class": "Object",
+        "object_id": 1,
+        "value": "[console]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 2,
+      "id": 3,
+      "parent_id": 2,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
       "parent_id": 1,
       "thread_id": 0,
     },
     {
       "defined_class": "index",
       "event": "call",
-      "id": 3,
+      "id": 5,
       "lineno": 6,
       "method_id": "signIn",
       "parameters": [],
@@ -370,16 +602,44 @@ exports[`mapping labeled functions 1`] = `
       "thread_id": 0,
     },
     {
+      "defined_class": "console",
+      "event": "call",
+      "id": 6,
+      "lineno": 1,
+      "method_id": "info",
+      "parameters": [
+        {
+          "class": "String",
+          "value": "'signIn'",
+        },
+      ],
+      "path": "console",
+      "receiver": {
+        "class": "Object",
+        "object_id": 1,
+        "value": "[console]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 4,
-      "parent_id": 3,
+      "id": 7,
+      "parent_id": 6,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 8,
+      "parent_id": 5,
       "thread_id": 0,
     },
     {
       "defined_class": "index",
       "event": "call",
-      "id": 5,
+      "id": 9,
       "lineno": 39,
       "method_id": "f1",
       "parameters": [],
@@ -388,16 +648,44 @@ exports[`mapping labeled functions 1`] = `
       "thread_id": 0,
     },
     {
+      "defined_class": "console",
+      "event": "call",
+      "id": 10,
+      "lineno": 2,
+      "method_id": "log",
+      "parameters": [
+        {
+          "class": "String",
+          "value": "'f1'",
+        },
+      ],
+      "path": "console",
+      "receiver": {
+        "class": "Object",
+        "object_id": 1,
+        "value": "[console]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 6,
-      "parent_id": 5,
+      "id": 11,
+      "parent_id": 10,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 12,
+      "parent_id": 9,
       "thread_id": 0,
     },
     {
       "defined_class": "index",
       "event": "call",
-      "id": 7,
+      "id": 13,
       "lineno": 43,
       "method_id": "f2",
       "parameters": [],
@@ -406,16 +694,44 @@ exports[`mapping labeled functions 1`] = `
       "thread_id": 0,
     },
     {
+      "defined_class": "console",
+      "event": "call",
+      "id": 14,
+      "lineno": 2,
+      "method_id": "log",
+      "parameters": [
+        {
+          "class": "String",
+          "value": "'f2'",
+        },
+      ],
+      "path": "console",
+      "receiver": {
+        "class": "Object",
+        "object_id": 1,
+        "value": "[console]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 8,
-      "parent_id": 7,
+      "id": 15,
+      "parent_id": 14,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 16,
+      "parent_id": 13,
       "thread_id": 0,
     },
     {
       "defined_class": "A",
       "event": "call",
-      "id": 9,
+      "id": 17,
       "lineno": 33,
       "method_id": "setX",
       "parameters": [
@@ -428,7 +744,7 @@ exports[`mapping labeled functions 1`] = `
       "path": "index.js",
       "receiver": {
         "class": "A",
-        "object_id": 1,
+        "object_id": 2,
         "value": "A { x: 1 }",
       },
       "static": false,
@@ -437,14 +753,14 @@ exports[`mapping labeled functions 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 10,
-      "parent_id": 9,
+      "id": 18,
+      "parent_id": 17,
       "thread_id": 0,
     },
     {
       "defined_class": "A",
       "event": "call",
-      "id": 11,
+      "id": 19,
       "lineno": 28,
       "method_id": "calc",
       "parameters": [
@@ -462,7 +778,7 @@ exports[`mapping labeled functions 1`] = `
       "path": "index.js",
       "receiver": {
         "class": "A",
-        "object_id": 1,
+        "object_id": 2,
         "value": "A { x: 42 }",
       },
       "static": false,
@@ -471,8 +787,8 @@ exports[`mapping labeled functions 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 12,
-      "parent_id": 11,
+      "id": 20,
+      "parent_id": 19,
       "return_value": {
         "class": "Number",
         "value": "87",
@@ -482,7 +798,7 @@ exports[`mapping labeled functions 1`] = `
     {
       "defined_class": "index",
       "event": "call",
-      "id": 13,
+      "id": 21,
       "lineno": 22,
       "method_id": "lambdaWithLabel",
       "parameters": [],
@@ -493,12 +809,40 @@ exports[`mapping labeled functions 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 14,
-      "parent_id": 13,
+      "id": 22,
+      "parent_id": 21,
       "return_value": {
         "class": "Number",
         "value": "42",
       },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "console",
+      "event": "call",
+      "id": 23,
+      "lineno": 3,
+      "method_id": "debug",
+      "parameters": [
+        {
+          "class": "String",
+          "value": "'Debug!'",
+        },
+      ],
+      "path": "console",
+      "receiver": {
+        "class": "Object",
+        "object_id": 1,
+        "value": "[console]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 24,
+      "parent_id": 23,
       "thread_id": 0,
     },
   ],

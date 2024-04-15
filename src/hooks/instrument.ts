@@ -48,6 +48,14 @@ export function transform(
     ? new CommentLabelExtractor(comments, sourceMap)
     : undefined;
 
+  const getFunctionLabels = (name: string, line: number, klass?: string) => {
+    const commentLabels = commentLabelExtractor?.labelsFor(line);
+    const configLabels = config.getFunctionLabels(pkg, name, klass);
+    if (commentLabels && configLabels)
+      return [...commentLabels, ...configLabels.filter((l) => !commentLabels.includes(l))];
+    return commentLabels ?? configLabels;
+  };
+
   walk(program, {
     FunctionDeclaration(fun: ESTree.FunctionDeclaration) {
       if (!hasIdentifier(fun)) return;
@@ -58,7 +66,7 @@ export function transform(
 
       fun.body = wrapFunction(
         fun,
-        createFunctionInfo(fun, location, commentLabelExtractor?.labelsFor(location.lineno)),
+        createFunctionInfo(fun, location, getFunctionLabels(fun.id.name, location.lineno)),
         false,
       );
     },
@@ -90,7 +98,7 @@ export function transform(
           method,
           klass,
           location,
-          commentLabelExtractor?.labelsFor(location.lineno),
+          getFunctionLabels(name, location.lineno, klass.id.name),
         ),
         method.kind === "constructor",
       );
@@ -117,7 +125,7 @@ export function transform(
             createFunctionInfo(
               { ...fun, id, generator: false },
               location,
-              commentLabelExtractor?.labelsFor(location.lineno),
+              getFunctionLabels(id.name, location.lineno),
             ),
           );
           break;
@@ -133,7 +141,7 @@ export function transform(
             createFunctionInfo(
               { ...fun, id, generator: false },
               location,
-              commentLabelExtractor?.labelsFor(location.lineno),
+              getFunctionLabels(id.name, location.lineno),
             ),
           );
           break;

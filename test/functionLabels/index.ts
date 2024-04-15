@@ -3,7 +3,7 @@ import console from "node:console";
 // @label auth
 // Sign In function description
 function signIn() {
-  console.debug("signIn");
+  console.info("signIn");
 }
 
 // Label below is not applied to signUp because a
@@ -14,7 +14,7 @@ function signIn() {
 // xyz
 // @labels auth mail
 function signUp() {
-  console.debug("signUp");
+  console.info("signUp");
 }
 
 // @label pure
@@ -54,3 +54,4 @@ a.setX(42);
 a.calc(2, 3);
 
 lambdaWithLabel();
+console.debug("Debug!");

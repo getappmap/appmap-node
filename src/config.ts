@@ -93,6 +93,21 @@ export class Config {
     return this.packageMap.get(key);
   }
 
+  getFunctionLabels(
+    pkg: Package | undefined,
+    functionName: string,
+    klass?: string,
+  ): string[] | undefined {
+    if (!pkg?.functions) return;
+    return pkg.functions
+      .filter(
+        (group) =>
+          group.names?.includes(functionName) ??
+          (klass != undefined && group.names.includes(klass + "." + functionName)),
+      )
+      .flatMap((group) => group.labels);
+  }
+
   export() {
     process.env.APPMAP_ROOT = this.root;
   }

@@ -45,12 +45,40 @@ export default class PackageMatcher extends Array<Package> {
   }
 }
 
+export interface FunctionGroup {
+  names: string[];
+  labels: string[];
+}
+
 export interface Package {
   path?: string;
   exclude?: string[];
   module?: string;
   shallow?: boolean;
+  functions?: FunctionGroup[];
   prisma?: string; // custom prisma client module id
+}
+
+function parseFunctions(functions: unknown): FunctionGroup[] | undefined {
+  if (!functions || !Array.isArray(functions)) return;
+
+  const result: FunctionGroup[] = [];
+
+  const toArray = (value: unknown) => (Array.isArray(value) ? value : [String(value)]) as string[];
+
+  for (const fun of functions as unknown[]) {
+    let names, labels;
+    if (typeof fun === "object" && fun !== null) {
+      if ("name" in fun) names = toArray(fun.name);
+      if ("names" in fun) names = toArray(fun.names);
+      if ("label" in fun) labels = toArray(fun.label);
+      if ("labels" in fun) labels = toArray(fun.labels);
+    }
+
+    if (names && labels) result.push({ names, labels });
+  }
+
+  if (result.length > 0) return result;
 }
 
 export function parsePackages(packages: unknown): Package[] | undefined {
@@ -66,6 +94,7 @@ export function parsePackages(packages: unknown): Package[] | undefined {
       if ("exclude" in pkg) entry.exclude = Array.isArray(pkg.exclude) ? pkg.exclude : [];
       if ("module" in pkg && typeof pkg.module === "string") entry.module = pkg.module;
       if ("shallow" in pkg && typeof pkg.shallow === "boolean") entry.shallow = pkg.shallow;
+      if ("functions" in pkg) entry.functions = parseFunctions(pkg.functions);
       if ("prisma" in pkg && pkg.prisma != null && typeof pkg.prisma === "string")
         entry.prisma = pkg.prisma;
 
