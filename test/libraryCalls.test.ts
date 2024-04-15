@@ -19,7 +19,7 @@ integrationTest("mapping standard library calls - ESM", () => {
   expect(appmaps).toMatchSnapshot();
 });
 
-// properties of "console" object can be different accross node versions
+// properties of "console" object can be different across node versions
 function fixAppMaps(appmaps: Record<string, AppMap.AppMap>) {
   for (const key in appmaps) {
     appmaps[key].events?.forEach((e) => {

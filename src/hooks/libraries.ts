@@ -85,6 +85,7 @@ function getFunctionInfo(f: F, moduleId: string, klass?: string) {
       location: { path: `${moduleId}`, lineno: ++functionCount },
       klassOrFile: moduleId + (klass ? "." + klass : ""),
       static: false,
+      labels: config.getFunctionLabels(config.getPackage(moduleId, true), f.name),
     };
     functionInfos.set(key, info);
   }
