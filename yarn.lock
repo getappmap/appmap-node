@@ -2267,6 +2267,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/stack-utils@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@types/stack-utils@npm:2.0.3"
+  checksum: 72576cc1522090fe497337c2b99d9838e320659ac57fa5560fcbdcbafcf5d0216c6b3a0a8a4ee4fdb3b1f5e3420aa4f6223ab57b82fef3578bec3206425c6cf5
+  languageName: node
+  linkType: hard
+
 "@types/tmp@npm:^0.2.3":
   version: 0.2.3
   resolution: "@types/tmp@npm:0.2.3"
@@ -2745,6 +2752,7 @@ __metadata:
     "@types/node": ^20.5.0
     "@types/pg": ^8.10.9
     "@types/sqlite3": ^3.1.11
+    "@types/stack-utils": ^2.0.3
     "@types/tmp": ^0.2.3
     "@typescript-eslint/eslint-plugin": ^6.4.0
     "@typescript-eslint/parser": ^6.4.0
@@ -2767,6 +2775,7 @@ __metadata:
     react-dom: ^18
     semantic-release: ^22.0.5
     source-map-js: ^1.0.2
+    stack-utils: ^2.0.6
     tmp: ^0.2.1
     ts-node: ^10.9.1
     type-fest: ^4.3.2
@@ -9404,7 +9413,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stack-utils@npm:^2.0.3":
+"stack-utils@npm:^2.0.3, stack-utils@npm:^2.0.6":
   version: 2.0.6
   resolution: "stack-utils@npm:2.0.6"
   dependencies:

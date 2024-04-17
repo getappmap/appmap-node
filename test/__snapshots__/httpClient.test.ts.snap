@@ -59,6 +59,7 @@ exports[`mapping a Jest test 1`] = `
       "name": "jest",
       "type": "tests",
     },
+    "source_location": "test.js",
     "test_status": "succeeded",
   },
   "version": "1.12",
