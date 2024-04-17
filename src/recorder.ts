@@ -137,10 +137,10 @@ export function startProcessRecording() {
     processRecording = new Recording("process", "process", new Date().toISOString());
 }
 
-export function startTestRecording(recorder: string, ...names: string[]) {
+export function startTestRecording(recorder: string, ...names: string[]): Recording {
   abandonProcessRecordingIfNotAlwaysActive();
   nonProcessRecording?.abandon();
-  nonProcessRecording = new Recording("tests", recorder, ...names);
+  return (nonProcessRecording = new Recording("tests", recorder, ...names));
 }
 
 export function startRemoteRecording() {

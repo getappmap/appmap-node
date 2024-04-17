@@ -3,8 +3,10 @@ import { pathToFileURL } from "node:url";
 import type { Circus } from "@jest/types";
 import { simple as walk } from "acorn-walk";
 import type { ESTree } from "meriyah";
+import StackUtils from "stack-utils";
 
 import { expressionFor, wrap } from ".";
+import config from "../config";
 import { assignment, call_, identifier, memberId } from "../generate";
 import { info } from "../message";
 import { exceptionMetadata } from "../metadata";
@@ -55,16 +57,39 @@ export function patchCircus(program: ESTree.Program): ESTree.Program {
   return program;
 }
 
+// Jest itself uses StackUtils similarly.
+// https://github.com/jestjs/jest/blob/0e2145b6f97f6c6a45783fdd35f3b1a14623b7ab/packages/jest-circus/src/utils.ts#L357
+const stackUtils = new StackUtils({ cwd: config.root });
+function extractSourceLocation(asyncError: unknown) {
+  if (
+    asyncError &&
+    typeof asyncError == "object" &&
+    "stack" in asyncError &&
+    typeof asyncError.stack == "string"
+  ) {
+    const lines = asyncError.stack.split("\n");
+    if (lines.length > 1) {
+      const result = stackUtils.parseLine(lines[1]);
+      return result?.file;
+    }
+  }
+}
+
 function eventHandler(event: Circus.Event) {
   let recording;
   switch (event.name) {
     case "test_fn_start":
-      startTestRecording("jest", ...testNames(event.test));
+      startTestRecording("jest", ...testNames(event.test)).metadata.source_location =
+        extractSourceLocation(event.test.asyncError);
       break;
     case "test_fn_failure":
       recording = getTestRecording();
       recording.metadata.test_status = "failed";
       recording.metadata.exception = exceptionMetadata(event.error);
+      recording.metadata.test_failure = {
+        message: recording.metadata.exception?.message ?? "failed",
+        location: extractSourceLocation(event.test.asyncError),
+      };
       return recording.finish();
     case "test_fn_success":
       recording = getTestRecording();

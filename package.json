@@ -85,12 +85,14 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@types/stack-utils": "^2.0.3",
     "acorn-walk": "^8.2.0",
     "astring": "^1.8.6",
     "chalk": "<5",
     "json5": "^2.2.3",
     "meriyah": "^4.3.7",
     "source-map-js": "^1.0.2",
+    "stack-utils": "^2.0.6",
     "yaml": "^2.3.4"
   },
   "workspaces": [

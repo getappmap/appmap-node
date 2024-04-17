@@ -71,6 +71,11 @@ exports[`mapping Jest tests 1`] = `
         "name": "jest",
         "type": "tests",
       },
+      "source_location": "test.js",
+      "test_failure": {
+        "location": "test.js",
+        "message": "test error",
+      },
       "test_status": "failed",
     },
     "version": "1.12",
@@ -148,6 +153,12 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
       "recorder": {
         "name": "jest",
         "type": "tests",
+      },
+      "source_location": "test.js",
+      "test_failure": {
+        "location": "test.js",
+        "message": "Exceeded timeout of 10 ms for a test.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.",
       },
       "test_status": "failed",
     },
@@ -277,6 +288,7 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
         "name": "jest",
         "type": "tests",
       },
+      "source_location": "asyncLib.test.js",
       "test_status": "succeeded",
     },
     "version": "1.12",
@@ -361,6 +373,14 @@ Received: [31m3[39m",
         "name": "jest",
         "type": "tests",
       },
+      "source_location": "test.js",
+      "test_failure": {
+        "location": "test.js",
+        "message": "[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+Expected: [32m-1[39m
+Received: [31m3[39m",
+      },
       "test_status": "failed",
     },
     "version": "1.12",
@@ -438,6 +458,7 @@ Received: [31m3[39m",
         "name": "jest",
         "type": "tests",
       },
+      "source_location": "test.js",
       "test_status": "succeeded",
     },
     "version": "1.12",
@@ -516,6 +537,11 @@ exports[`mapping Jest tests with process recording active 1`] = `
         "name": "jest",
         "type": "tests",
       },
+      "source_location": "test.js",
+      "test_failure": {
+        "location": "test.js",
+        "message": "test error",
+      },
       "test_status": "failed",
     },
     "version": "1.12",
@@ -593,6 +619,12 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
       "recorder": {
         "name": "jest",
         "type": "tests",
+      },
+      "source_location": "test.js",
+      "test_failure": {
+        "location": "test.js",
+        "message": "Exceeded timeout of 10 ms for a test.
+Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.",
       },
       "test_status": "failed",
     },
@@ -722,6 +754,7 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
         "name": "jest",
         "type": "tests",
       },
+      "source_location": "asyncLib.test.js",
       "test_status": "succeeded",
     },
     "version": "1.12",
@@ -806,6 +839,14 @@ Received: [31m3[39m",
         "name": "jest",
         "type": "tests",
       },
+      "source_location": "test.js",
+      "test_failure": {
+        "location": "test.js",
+        "message": "[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+Expected: [32m-1[39m
+Received: [31m3[39m",
+      },
       "test_status": "failed",
     },
     "version": "1.12",
@@ -883,6 +924,7 @@ Received: [31m3[39m",
         "name": "jest",
         "type": "tests",
       },
+      "source_location": "test.js",
       "test_status": "succeeded",
     },
     "version": "1.12",
