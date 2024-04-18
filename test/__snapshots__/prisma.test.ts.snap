@@ -12,7 +12,7 @@ exports[`mapping Prisma tests 1`] = `
                 {
                   "children": [
                     {
-                      "location": "@prisma/client/Post:1",
+                      "location": "@prisma/client/Post:2",
                       "name": "deleteMany",
                       "static": true,
                       "type": "function",
@@ -24,20 +24,20 @@ exports[`mapping Prisma tests 1`] = `
                 {
                   "children": [
                     {
-                      "location": "@prisma/client/User:2",
-                      "name": "deleteMany",
+                      "location": "@prisma/client/User:1",
+                      "name": "findMany",
                       "static": true,
                       "type": "function",
                     },
                     {
                       "location": "@prisma/client/User:3",
-                      "name": "create",
+                      "name": "deleteMany",
                       "static": true,
                       "type": "function",
                     },
                     {
                       "location": "@prisma/client/User:4",
-                      "name": "findMany",
+                      "name": "create",
                       "static": true,
                       "type": "function",
                     },
@@ -71,15 +71,15 @@ exports[`mapping Prisma tests 1`] = `
     },
   ],
   "eventUpdates": {
-    "16": {
+    "12": {
       "elapsed": 31.337,
       "event": "return",
-      "id": 16,
-      "parent_id": 15,
+      "id": 12,
+      "parent_id": 11,
       "return_value": {
         "class": "Promise<Object>",
         "object_id": 5,
-        "value": "Promise { { id: 1, email: 'alice@prisma.io', name: 'Alice' } }",
+        "value": "Promise { { count: 0 } }",
       },
       "thread_id": 0,
     },
@@ -103,18 +103,30 @@ exports[`mapping Prisma tests 1`] = `
       "return_value": {
         "class": "Promise<Object>",
         "object_id": 7,
+        "value": "Promise { { id: 1, email: 'alice@prisma.io', name: 'Alice' } }",
+      },
+      "thread_id": 0,
+    },
+    "24": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 24,
+      "parent_id": 23,
+      "return_value": {
+        "class": "Promise<Object>",
+        "object_id": 9,
         "value": "Promise { { id: 2, email: 'bob@prisma.io', name: 'Bob' } }",
       },
       "thread_id": 0,
     },
-    "32": {
+    "36": {
       "elapsed": 31.337,
       "event": "return",
-      "id": 32,
-      "parent_id": 31,
+      "id": 36,
+      "parent_id": 35,
       "return_value": {
         "class": "Promise<Array>",
-        "object_id": 10,
+        "object_id": 11,
         "value": "Promise { [ [Object] ] }",
       },
       "thread_id": 0,
@@ -125,9 +137,9 @@ exports[`mapping Prisma tests 1`] = `
       "id": 4,
       "parent_id": 3,
       "return_value": {
-        "class": "Promise<Object>",
-        "object_id": 2,
-        "value": "Promise { { count: 0 } }",
+        "class": "Promise<Array>",
+        "object_id": 3,
+        "value": "Promise { [] }",
       },
       "thread_id": 0,
     },
@@ -138,7 +150,7 @@ exports[`mapping Prisma tests 1`] = `
       "parent_id": 7,
       "return_value": {
         "class": "Promise<Object>",
-        "object_id": 3,
+        "object_id": 4,
         "value": "Promise { { count: 0 } }",
       },
       "thread_id": 0,
@@ -169,25 +181,83 @@ exports[`mapping Prisma tests 1`] = `
       "thread_id": 0,
     },
     {
-      "defined_class": "Post",
+      "defined_class": "User",
       "event": "call",
       "id": 3,
       "lineno": 1,
+      "method_id": "findMany",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "args",
+          "object_id": 2,
+          "properties": [
+            {
+              "class": "Object",
+              "name": "where",
+              "properties": [
+                {
+                  "class": "Object",
+                  "name": "name",
+                  "properties": [
+                    {
+                      "class": "String",
+                      "name": "contains",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          "value": "{ where: { name: { contains: 'Admin' } } }",
+        },
+      ],
+      "path": "@prisma/client/User",
+      "receiver": {
+        "class": "String",
+        "value": "'User'",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 3,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 3,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 5,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT \`main\`.\`User\`.\`id\`, \`main\`.\`User\`.\`email\`, \`main\`.\`User\`.\`name\` FROM \`main\`.\`User\` WHERE (\`main\`.\`User\`.\`name\` LIKE ? AND \`main\`.\`User\`.\`email\` LIKE ?) LIMIT ? OFFSET ?",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "Post",
+      "event": "call",
+      "id": 7,
+      "lineno": 2,
       "method_id": "deleteMany",
       "parameters": [
         {
           "class": "undefined",
-          "name": "data",
-          "value": "undefined",
-        },
-        {
-          "class": "undefined",
-          "name": "include",
-          "value": "undefined",
-        },
-        {
-          "class": "undefined",
-          "name": "where",
+          "name": "args",
           "value": "undefined",
         },
       ],
@@ -202,70 +272,11 @@ exports[`mapping Prisma tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 4,
-      "parent_id": 3,
-      "return_value": {
-        "class": "Promise",
-        "object_id": 2,
-        "value": "Promise { <pending> }",
-      },
-      "thread_id": 0,
-    },
-    {
-      "event": "call",
-      "id": 5,
-      "sql_query": {
-        "database_type": "sqlite",
-        "sql": "DELETE FROM \`main\`.\`Post\` WHERE 1=1",
-      },
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 6,
-      "parent_id": 5,
-      "thread_id": 0,
-    },
-    {
-      "defined_class": "User",
-      "event": "call",
-      "id": 7,
-      "lineno": 2,
-      "method_id": "deleteMany",
-      "parameters": [
-        {
-          "class": "undefined",
-          "name": "data",
-          "value": "undefined",
-        },
-        {
-          "class": "undefined",
-          "name": "include",
-          "value": "undefined",
-        },
-        {
-          "class": "undefined",
-          "name": "where",
-          "value": "undefined",
-        },
-      ],
-      "path": "@prisma/client/User",
-      "receiver": {
-        "class": "String",
-        "value": "'User'",
-      },
-      "static": false,
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
       "id": 8,
       "parent_id": 7,
       "return_value": {
         "class": "Promise",
-        "object_id": 3,
+        "object_id": 4,
         "value": "Promise { <pending> }",
       },
       "thread_id": 0,
@@ -275,7 +286,7 @@ exports[`mapping Prisma tests 1`] = `
       "id": 9,
       "sql_query": {
         "database_type": "sqlite",
-        "sql": "DELETE FROM \`main\`.\`User\` WHERE 1=1",
+        "sql": "DELETE FROM \`main\`.\`Post\` WHERE 1=1",
       },
       "thread_id": 0,
     },
@@ -287,68 +298,15 @@ exports[`mapping Prisma tests 1`] = `
       "thread_id": 0,
     },
     {
-      "event": "call",
-      "id": 11,
-      "sql_query": {
-        "database_type": "sqlite",
-        "sql": "delete from sqlite_sequence where name='Post'",
-      },
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 12,
-      "parent_id": 11,
-      "thread_id": 0,
-    },
-    {
-      "event": "call",
-      "id": 13,
-      "sql_query": {
-        "database_type": "sqlite",
-        "sql": "delete from sqlite_sequence where name='User'",
-      },
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 14,
-      "parent_id": 13,
-      "thread_id": 0,
-    },
-    {
       "defined_class": "User",
       "event": "call",
-      "id": 15,
+      "id": 11,
       "lineno": 3,
-      "method_id": "create",
+      "method_id": "deleteMany",
       "parameters": [
         {
-          "class": "Object",
-          "name": "data",
-          "object_id": 4,
-          "properties": [
-            {
-              "class": "String",
-              "name": "name",
-            },
-            {
-              "class": "String",
-              "name": "email",
-            },
-          ],
-          "value": "{ name: 'Alice', email: 'alice@prisma.io' }",
-        },
-        {
           "class": "undefined",
-          "name": "include",
-          "value": "undefined",
-        },
-        {
-          "class": "undefined",
-          "name": "where",
+          "name": "args",
           "value": "undefined",
         },
       ],
@@ -363,8 +321,8 @@ exports[`mapping Prisma tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 16,
-      "parent_id": 15,
+      "id": 12,
+      "parent_id": 11,
       "return_value": {
         "class": "Promise",
         "object_id": 5,
@@ -374,10 +332,42 @@ exports[`mapping Prisma tests 1`] = `
     },
     {
       "event": "call",
+      "id": 13,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "DELETE FROM \`main\`.\`User\` WHERE 1=1",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 14,
+      "parent_id": 13,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 15,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "delete from sqlite_sequence where name='Post'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 16,
+      "parent_id": 15,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
       "id": 17,
       "sql_query": {
         "database_type": "sqlite",
-        "sql": "INSERT INTO \`main\`.\`User\` (\`email\`, \`name\`) VALUES (?,?) RETURNING \`id\` AS \`id\`, \`email\` AS \`email\`, \`name\` AS \`name\`",
+        "sql": "delete from sqlite_sequence where name='User'",
       },
       "thread_id": 0,
     },
@@ -392,50 +382,30 @@ exports[`mapping Prisma tests 1`] = `
       "defined_class": "User",
       "event": "call",
       "id": 19,
-      "lineno": 3,
+      "lineno": 4,
       "method_id": "create",
       "parameters": [
         {
           "class": "Object",
-          "name": "data",
+          "name": "args",
           "object_id": 6,
           "properties": [
             {
-              "class": "String",
-              "name": "name",
-            },
-            {
-              "class": "String",
-              "name": "email",
-            },
-            {
               "class": "Object",
-              "name": "posts",
+              "name": "data",
               "properties": [
                 {
-                  "class": "Object",
-                  "name": "create",
-                  "properties": [
-                    {
-                      "class": "String",
-                      "name": "title",
-                    },
-                  ],
+                  "class": "String",
+                  "name": "name",
+                },
+                {
+                  "class": "String",
+                  "name": "email",
                 },
               ],
             },
           ],
-          "value": "{ name: 'Bob', email: 'bob@prisma.io', posts: { create: [Object] } }",
-        },
-        {
-          "class": "undefined",
-          "name": "include",
-          "value": "undefined",
-        },
-        {
-          "class": "undefined",
-          "name": "where",
-          "value": "undefined",
+          "value": "{ data: { name: 'Alice', email: 'alice@prisma.io' } }",
         },
       ],
       "path": "@prisma/client/User",
@@ -463,7 +433,7 @@ exports[`mapping Prisma tests 1`] = `
       "id": 21,
       "sql_query": {
         "database_type": "sqlite",
-        "sql": "BEGIN",
+        "sql": "INSERT INTO \`main\`.\`User\` (\`email\`, \`name\`) VALUES (?,?) RETURNING \`id\` AS \`id\`, \`email\` AS \`email\`, \`name\` AS \`name\`",
       },
       "thread_id": 0,
     },
@@ -475,12 +445,63 @@ exports[`mapping Prisma tests 1`] = `
       "thread_id": 0,
     },
     {
+      "defined_class": "User",
       "event": "call",
       "id": 23,
-      "sql_query": {
-        "database_type": "sqlite",
-        "sql": "INSERT INTO \`main\`.\`User\` (\`email\`, \`name\`) VALUES (?,?) RETURNING \`id\` AS \`id\`",
+      "lineno": 4,
+      "method_id": "create",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "args",
+          "object_id": 8,
+          "properties": [
+            {
+              "class": "Object",
+              "name": "data",
+              "properties": [
+                {
+                  "class": "String",
+                  "name": "name",
+                },
+                {
+                  "class": "String",
+                  "name": "email",
+                },
+                {
+                  "class": "Object",
+                  "name": "posts",
+                  "properties": [
+                    {
+                      "class": "Object",
+                      "name": "create",
+                      "properties": [
+                        {
+                          "class": "String",
+                          "name": "title",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          "value": "{
+  data: {
+    name: 'Bob',
+    email: 'bob@prisma.io',
+    posts: { create: { title: 'Hello World' } }
+  }
+}",
+        },
+      ],
+      "path": "@prisma/client/User",
+      "receiver": {
+        "class": "String",
+        "value": "'User'",
       },
+      "static": false,
       "thread_id": 0,
     },
     {
@@ -488,6 +509,11 @@ exports[`mapping Prisma tests 1`] = `
       "event": "return",
       "id": 24,
       "parent_id": 23,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 9,
+        "value": "Promise { <pending> }",
+      },
       "thread_id": 0,
     },
     {
@@ -495,7 +521,7 @@ exports[`mapping Prisma tests 1`] = `
       "id": 25,
       "sql_query": {
         "database_type": "sqlite",
-        "sql": "INSERT INTO \`main\`.\`Post\` (\`title\`, \`published\`, \`authorId\`) VALUES (?,?,?) RETURNING \`id\` AS \`id\`",
+        "sql": "BEGIN",
       },
       "thread_id": 0,
     },
@@ -511,7 +537,7 @@ exports[`mapping Prisma tests 1`] = `
       "id": 27,
       "sql_query": {
         "database_type": "sqlite",
-        "sql": "SELECT \`main\`.\`User\`.\`id\`, \`main\`.\`User\`.\`email\`, \`main\`.\`User\`.\`name\` FROM \`main\`.\`User\` WHERE \`main\`.\`User\`.\`id\` = ? LIMIT ? OFFSET ?",
+        "sql": "INSERT INTO \`main\`.\`User\` (\`email\`, \`name\`) VALUES (?,?) RETURNING \`id\` AS \`id\`",
       },
       "thread_id": 0,
     },
@@ -527,7 +553,7 @@ exports[`mapping Prisma tests 1`] = `
       "id": 29,
       "sql_query": {
         "database_type": "sqlite",
-        "sql": "COMMIT",
+        "sql": "INSERT INTO \`main\`.\`Post\` (\`title\`, \`published\`, \`authorId\`) VALUES (?,?,?) RETURNING \`id\` AS \`id\`",
       },
       "thread_id": 0,
     },
@@ -539,46 +565,77 @@ exports[`mapping Prisma tests 1`] = `
       "thread_id": 0,
     },
     {
-      "defined_class": "User",
       "event": "call",
       "id": 31,
-      "lineno": 4,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT \`main\`.\`User\`.\`id\`, \`main\`.\`User\`.\`email\`, \`main\`.\`User\`.\`name\` FROM \`main\`.\`User\` WHERE \`main\`.\`User\`.\`id\` = ? LIMIT ? OFFSET ?",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 32,
+      "parent_id": 31,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 33,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "COMMIT",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 34,
+      "parent_id": 33,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "User",
+      "event": "call",
+      "id": 35,
+      "lineno": 1,
       "method_id": "findMany",
       "parameters": [
         {
-          "class": "undefined",
-          "name": "data",
-          "value": "undefined",
-        },
-        {
           "class": "Object",
-          "name": "include",
-          "object_id": 8,
-          "properties": [
-            {
-              "class": "Boolean",
-              "name": "posts",
-            },
-          ],
-          "value": "{ posts: true }",
-        },
-        {
-          "class": "Object",
-          "name": "where",
-          "object_id": 9,
+          "name": "args",
+          "object_id": 10,
           "properties": [
             {
               "class": "Object",
-              "name": "name",
+              "name": "include",
               "properties": [
                 {
-                  "class": "String",
-                  "name": "contains",
+                  "class": "Boolean",
+                  "name": "posts",
+                },
+              ],
+            },
+            {
+              "class": "Object",
+              "name": "where",
+              "properties": [
+                {
+                  "class": "Object",
+                  "name": "name",
+                  "properties": [
+                    {
+                      "class": "String",
+                      "name": "contains",
+                    },
+                  ],
                 },
               ],
             },
           ],
-          "value": "{ name: { contains: 'Bob' } }",
+          "value": "{ include: { posts: true }, where: { name: { contains: 'Bob' } } }",
         },
       ],
       "path": "@prisma/client/User",
@@ -592,18 +649,18 @@ exports[`mapping Prisma tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 32,
-      "parent_id": 31,
+      "id": 36,
+      "parent_id": 35,
       "return_value": {
         "class": "Promise",
-        "object_id": 10,
+        "object_id": 11,
         "value": "Promise { <pending> }",
       },
       "thread_id": 0,
     },
     {
       "event": "call",
-      "id": 33,
+      "id": 37,
       "sql_query": {
         "database_type": "sqlite",
         "sql": "SELECT \`main\`.\`User\`.\`id\`, \`main\`.\`User\`.\`email\`, \`main\`.\`User\`.\`name\` FROM \`main\`.\`User\` WHERE \`main\`.\`User\`.\`name\` LIKE ? LIMIT ? OFFSET ?",
@@ -613,13 +670,13 @@ exports[`mapping Prisma tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 34,
-      "parent_id": 33,
+      "id": 38,
+      "parent_id": 37,
       "thread_id": 0,
     },
     {
       "event": "call",
-      "id": 35,
+      "id": 39,
       "sql_query": {
         "database_type": "sqlite",
         "sql": "SELECT \`main\`.\`Post\`.\`id\`, \`main\`.\`Post\`.\`title\`, \`main\`.\`Post\`.\`content\`, \`main\`.\`Post\`.\`published\`, \`main\`.\`Post\`.\`authorId\` FROM \`main\`.\`Post\` WHERE \`main\`.\`Post\`.\`authorId\` IN (?) LIMIT ? OFFSET ?",
@@ -629,13 +686,13 @@ exports[`mapping Prisma tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 36,
-      "parent_id": 35,
+      "id": 40,
+      "parent_id": 39,
       "thread_id": 0,
     },
     {
       "event": "call",
-      "id": 37,
+      "id": 41,
       "sql_query": {
         "database_type": "sqlite",
         "sql": "SELECT 1",
@@ -645,8 +702,8 @@ exports[`mapping Prisma tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 38,
-      "parent_id": 37,
+      "id": 42,
+      "parent_id": 41,
       "thread_id": 0,
     },
   ],
