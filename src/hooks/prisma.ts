@@ -1,6 +1,7 @@
 import assert from "node:assert";
+import { inspect } from "node:util";
 
-import { ESTree } from "meriyah";
+import type { ESTree } from "meriyah";
 import type prisma from "@prisma/client";
 
 import type * as AppMap from "../AppMap";
@@ -8,16 +9,62 @@ import { getTime } from "../util/getTime";
 import { fixReturnEventIfPromiseResult, recording } from "../recorder";
 import { FunctionInfo } from "../registry";
 import config from "../config";
+import { setCustomInspect } from "../parameter";
+
+const patchedModules = new WeakSet<typeof prisma>();
+const sqlHookAttachedPrismaClientInstances = new WeakSet();
 
 export default function prismaHook(mod: typeof prisma, id?: string) {
+  if (patchedModules.has(mod)) return mod;
+  patchedModules.add(mod);
+
+  assert(mod.PrismaClient != null);
+  // (1) Prisma Queries: We proxy prismaClient._request method in order to record
+  // prisma queries (not sqls) as appmap function call events.
+  // (2) SQL Queries: We have to change config parameters (logLevel, logQueries)
+  // and register a prismaClient.$on("query") handler to record sql queries.
+  // We have to do it by proxying mod.PrismaClient here, since it turned out that
+  // it's too late to do it inside the first invocation of the _request method,
+  // because $on is (becomes?) undefined in extended prisma clients.
+  // https://www.prisma.io/docs/orm/reference/prisma-client-reference#remarks-37
+
+  // Normally, we "Cannot assign to 'PrismaClient' because it is a read-only property."
+  const prismaClientProxy: unknown = new Proxy(mod.PrismaClient, {
+    construct(target, argArray, newTarget): object {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
+      const result = Reflect.construct(target, argArray, newTarget);
+
+      // This check will prevent this edge case. Not sure if this can happen
+      // with extended/customized Prisma clients, however.
+      //   class A { ... };
+      //   const AP = new Proxy(A, construct( ... ));
+      //   class B extends AP { ... };
+      //   const BP = new Proxy(B, construct( ... ));
+      //   const client = new BP();
+      // Without this check attachSqlHook will be called twice for the new
+      // client object in this example.
+      if (!sqlHookAttachedPrismaClientInstances.has(result as object)) {
+        sqlHookAttachedPrismaClientInstances.add(result as object);
+        attachSqlHook(result);
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return result;
+    },
+  });
+  Object.defineProperty(mod, "PrismaClient", {
+    value: prismaClientProxy,
+    enumerable: false,
+    writable: true,
+  });
+
   // Imported PrismaClient type does not have _request method in type definition.
   // But we have it in runtime.
-  assert(mod.PrismaClient != null);
   const PC = mod.PrismaClient as { prototype: unknown };
   const proto = PC.prototype;
   assert(proto != null && typeof proto === "object");
   assert("_request" in proto);
-  proto._request = createProxy(
+  proto._request = createPrismaClientMethodProxy(
     proto._request as (...args: unknown[]) => unknown,
     id ?? "@prisma/client",
   );
@@ -49,8 +96,6 @@ interface PrismaRequestParams {
   args?: PrismaRequestParamsArgs;
 }
 
-let hookAttached = false;
-
 const functionInfos = new Map<string, FunctionInfo>();
 
 let functionCount = 0;
@@ -58,9 +103,7 @@ function getFunctionInfo(model: string, action: string, moduleId: string) {
   const key = model + "." + action;
 
   if (!functionInfos.has(key)) {
-    const params = ["data", "include", "where"].map((k) => {
-      return { type: "Identifier", name: k } as ESTree.Identifier;
-    });
+    const params = [{ type: "Identifier", name: "args" } as ESTree.Identifier];
     const info: FunctionInfo = {
       async: true,
       generator: false,
@@ -76,51 +119,26 @@ function getFunctionInfo(model: string, action: string, moduleId: string) {
   return functionInfos.get(key)!;
 }
 
-function createProxy<T extends (...args: unknown[]) => unknown>(
+// Prisma model query args argument typically has more
+// than 2 levels deep structure.
+const argsCustomInspect = (v: unknown) => inspect(v, { customInspect: true, depth: 10 });
+
+function createPrismaClientMethodProxy<T extends (...args: unknown[]) => unknown>(
   prismaClientMethod: T,
   moduleId: string,
 ) {
   return new Proxy(prismaClientMethod, {
     apply(target, thisArg: unknown, argArray: Parameters<T>) {
-      if (!hookAttached) {
-        hookAttached = true;
-        assert(
-          thisArg != null &&
-            typeof thisArg === "object" &&
-            "_engine" in thisArg &&
-            thisArg._engine != null &&
-            typeof thisArg._engine === "object" &&
-            "config" in thisArg._engine &&
-            thisArg._engine.config != null &&
-            typeof thisArg._engine.config === "object" &&
-            "logLevel" in thisArg._engine.config &&
-            "logQueries" in thisArg._engine.config &&
-            "activeProvider" in thisArg._engine.config &&
-            typeof thisArg._engine.config.activeProvider == "string",
-        );
-
-        const dbType = thisArg._engine.config.activeProvider;
-        thisArg._engine.config.logLevel = "query";
-        thisArg._engine.config.logQueries = true;
-        assert("$on" in thisArg && typeof thisArg.$on === "function");
-        thisArg.$on("query", (queryEvent: QueryEvent) => {
-          const call = recording.sqlQuery(dbType, queryEvent.query);
-          const elapsedSec = queryEvent.duration / 1000.0;
-          recording.functionReturn(call.id, undefined, elapsedSec);
-        });
-      }
-
       // Report Prisma query as a function call, if suitable
       let prismaCall: AppMap.FunctionCallEvent | undefined;
       if (argArray?.length > 0) {
         const requestParams = argArray[0] as PrismaRequestParams;
-
         if (requestParams.action && requestParams.model) {
-          prismaCall = recording.functionCall(
-            getFunctionInfo(requestParams.model, requestParams.action, moduleId),
-            requestParams.model,
-            [requestParams.args?.data, requestParams.args?.include, requestParams.args?.where],
-          );
+          const funInfo = getFunctionInfo(requestParams.model, requestParams.action, moduleId);
+
+          prismaCall = recording.functionCall(funInfo, requestParams.model, [
+            setCustomInspect(requestParams.args, argsCustomInspect),
+          ]);
         }
       }
 
@@ -138,5 +156,32 @@ function createProxy<T extends (...args: unknown[]) => unknown>(
 
       return target.apply(thisArg, argArray);
     },
+  });
+}
+
+function attachSqlHook(thisArg: unknown) {
+  assert(
+    thisArg != null &&
+      typeof thisArg === "object" &&
+      "_engine" in thisArg &&
+      thisArg._engine != null &&
+      typeof thisArg._engine === "object" &&
+      "config" in thisArg._engine &&
+      thisArg._engine.config != null &&
+      typeof thisArg._engine.config === "object" &&
+      "logLevel" in thisArg._engine.config &&
+      "logQueries" in thisArg._engine.config &&
+      "activeProvider" in thisArg._engine.config &&
+      typeof thisArg._engine.config.activeProvider == "string",
+  );
+
+  const dbType = thisArg._engine.config.activeProvider;
+  thisArg._engine.config.logLevel = "query";
+  thisArg._engine.config.logQueries = true;
+  assert("$on" in thisArg && typeof thisArg.$on === "function");
+  thisArg.$on("query", (queryEvent: QueryEvent) => {
+    const call = recording.sqlQuery(dbType, queryEvent.query);
+    const elapsedSec = queryEvent.duration / 1000.0;
+    recording.functionReturn(call.id, undefined, elapsedSec);
   });
 }
