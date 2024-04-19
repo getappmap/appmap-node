@@ -1,10 +1,12 @@
 import assert from "node:assert";
+import { relative } from "node:path";
 import { pathToFileURL } from "node:url";
 import worker from "node:worker_threads";
 
 import { simple as walk } from "acorn-walk";
 import { type ESTree } from "meriyah";
 
+import config from "../config";
 import {
   args as args_,
   assignment,
@@ -87,15 +89,23 @@ export async function wrapRunTest(
   await result;
 
   const recording = getTestRecording();
+  if (test.file?.filepath)
+    recording.metadata.source_location = relative(config.root, test.file.filepath);
+
   switch (test.result?.state) {
     case "pass":
       recording.metadata.test_status = "succeeded";
       break;
     case "fail":
       recording.metadata.test_status = "failed";
+      recording.metadata.test_failure = {
+        message: "failed",
+        location: recording.metadata.source_location,
+      };
       if (test.result.errors?.length) {
         const [{ name, message }] = test.result.errors;
         recording.metadata.exception = { class: name, message };
+        recording.metadata.test_failure.message = message;
       }
       break;
     default:
@@ -180,6 +190,7 @@ interface Task {
   type?: string;
   suite?: Suite;
   result?: TaskResult;
+  file?: { filepath?: string };
 }
 interface Suite {
   name: string;
