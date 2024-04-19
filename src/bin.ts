@@ -129,10 +129,12 @@ function runScript(path: string) {
 }
 
 function usage() {
+  /* eslint-disable no-console */
   console.log("appmap-node version %s", version);
   console.log("Usage:");
   console.log("  $ appmap-node <script.js> [script args...]");
   console.log("  $ appmap-node <command> [command args...]");
+  /* eslint-enable no-console */
 }
 
 if (require.main === module) main();

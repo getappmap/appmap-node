@@ -6,7 +6,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  ignorePatterns: ["/dist"],
+  ignorePatterns: ["**/dist"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -14,10 +14,20 @@ module.exports = {
     "plugin:prettier/recommended",
   ],
 
+  rules: {
+    "no-console": "error",
+  },
+
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
   root: true,
   overrides: [
+    {
+      files: ["./test/**"],
+      rules: {
+        "no-console": "off",
+      },
+    },
     {
       extends: [
         "plugin:@typescript-eslint/recommended-requiring-type-checking",

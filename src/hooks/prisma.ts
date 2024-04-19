@@ -12,7 +12,6 @@ import config from "../config";
 export default function prismaHook(mod: typeof prisma, id?: string) {
   // Imported PrismaClient type does not have _request method in type definition.
   // But we have it in runtime.
-  console.log("MOD", mod);
   assert(mod.PrismaClient != null);
   const PC = mod.PrismaClient as { prototype: unknown };
   const proto = PC.prototype;
