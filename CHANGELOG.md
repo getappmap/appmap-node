@@ -1,3 +1,15 @@
+# [2.20.0](https://github.com/getappmap/appmap-node/compare/v2.19.3...v2.20.0) (2024-04-19)
+
+
+### Bug Fixes
+
+* Disable stray debugging output ([7b7841e](https://github.com/getappmap/appmap-node/commit/7b7841ec75a3464315b495b18af6d8e017ff2c95))
+
+
+### Features
+
+* Code block recording ([9e1048a](https://github.com/getappmap/appmap-node/commit/9e1048aec18abce164540de1c8bec8d0ca31b7aa))
+
 ## [2.19.3](https://github.com/getappmap/appmap-node/compare/v2.19.2...v2.19.3) (2024-04-03)
 
 

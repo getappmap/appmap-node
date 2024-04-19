@@ -1,6 +1,6 @@
 {
   "name": "appmap-node",
-  "version": "2.19.3",
+  "version": "2.20.0",
   "description": "AppMap agent for Node.js",
   "keywords": [
     "AppMap",
@@ -21,13 +21,17 @@
     ".": {
       "require": {
         "default": "./dist/facade.js",
-        "types": ["./dist/facade.d.ts"] 
+        "types": [
+          "./dist/facade.d.ts"
+        ]
       },
       "import": {
         "default": "./dist/facade.js",
-        "types": ["./dist/facade.d.ts"] 
+        "types": [
+          "./dist/facade.d.ts"
+        ]
       }
-    } 
+    }
   },
   "repository": {
     "type": "git",
