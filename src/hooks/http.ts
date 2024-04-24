@@ -1,5 +1,4 @@
 import assert from "node:assert";
-import { readFileSync, rmSync } from "node:fs";
 import type http from "node:http";
 import type { ClientRequest, IncomingMessage, ServerResponse } from "node:http";
 import type https from "node:https";
@@ -18,6 +17,7 @@ import {
   startRequestRecording,
 } from "../recorder";
 import { getTime } from "../util/getTime";
+import { readFile, rm } from "node:fs/promises";
 
 type HTTP = typeof http | typeof https;
 
@@ -394,14 +394,22 @@ function handleRemoteRecording(
       if (remoteRunning) {
         remoteRunning = false;
         const recording = getRemoteRecording();
+        const reset = () => {
+          info("Remote recording finished");
+          startProcessRecording(); // just so there's always a recording running
+        };
         if (recording.finish()) {
           res.writeHead(200);
           const { path } = recording;
-          res.end(readFileSync(path));
-          rmSync(path);
-        } else res.writeHead(200).end("{}");
-        info("Remote recording finished");
-        startProcessRecording(); // just so there's always a recording running
+          void (async () => {
+            res.end(await readFile(path));
+            await rm(path);
+            reset();
+          })();
+        } else {
+          res.writeHead(200).end("{}");
+          reset();
+        }
       } else res.writeHead(404).end("No recording is in progress");
       break;
     default:
