@@ -19,8 +19,9 @@ integrationTest("mapping Jest tests with process recording active", () => {
     ).status,
   ).toBe(1);
   const appmaps = readAppmaps();
+  expect(appmaps).toMatchSnapshot();
+
   const appmapsArray = Object.values(appmaps);
   expect(appmapsArray.filter((a) => a.metadata?.recorder.type == "process").length).toEqual(1);
   expect(appmapsArray.filter((a) => a.metadata?.recorder.type == "tests").length).toEqual(5);
-  expect(appmaps).toMatchSnapshot();
 });
