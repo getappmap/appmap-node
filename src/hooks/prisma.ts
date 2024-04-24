@@ -2,7 +2,6 @@ import assert from "node:assert";
 import { inspect } from "node:util";
 
 import type { ESTree } from "meriyah";
-import type prisma from "@prisma/client";
 
 import type * as AppMap from "../AppMap";
 import { getTime } from "../util/getTime";
@@ -11,14 +10,14 @@ import { FunctionInfo } from "../registry";
 import config from "../config";
 import { setCustomInspect } from "../parameter";
 
-const patchedModules = new WeakSet<typeof prisma>();
-const sqlHookAttachedPrismaClientInstances = new WeakSet();
+const patchedModules = new WeakSet<object>();
+const sqlHookAttachedPrismaClientInstances = new WeakSet<object>();
 
-export default function prismaHook(mod: typeof prisma, id?: string) {
+export default function prismaHook(mod: object, id?: string) {
   if (patchedModules.has(mod)) return mod;
   patchedModules.add(mod);
 
-  assert(mod.PrismaClient != null);
+  assert("PrismaClient" in mod && typeof mod.PrismaClient === "function");
   // (1) Prisma Queries: We proxy prismaClient._request method in order to record
   // prisma queries (not sqls) as appmap function call events.
   // (2) SQL Queries: We have to change config parameters (logLevel, logQueries)
@@ -33,6 +32,7 @@ export default function prismaHook(mod: typeof prisma, id?: string) {
     construct(target, argArray, newTarget): object {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
       const result = Reflect.construct(target, argArray, newTarget);
+      assert(typeof result === "object");
 
       // This check will prevent this edge case. Not sure if this can happen
       // with extended/customized Prisma clients, however.
@@ -60,8 +60,9 @@ export default function prismaHook(mod: typeof prisma, id?: string) {
 
   // Imported PrismaClient type does not have _request method in type definition.
   // But we have it in runtime.
-  const PC = mod.PrismaClient as { prototype: unknown };
-  const proto = PC.prototype;
+  const PC = mod.PrismaClient;
+  assert("prototype" in PC && typeof PC.prototype === "object");
+  const proto = PC.prototype as object;
   assert(proto != null && typeof proto === "object");
   assert("_request" in proto);
   proto._request = createPrismaClientMethodProxy(
