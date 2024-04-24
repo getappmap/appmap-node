@@ -1,3 +1,19 @@
+# [2.21.0](https://github.com/getappmap/appmap-node/compare/v2.20.0...v2.21.0) (2024-04-24)
+
+
+### Bug Fixes
+
+* Extended client sql recording and repeated calls in Prisma ([2cee1a9](https://github.com/getappmap/appmap-node/commit/2cee1a95b761ecce6674a1129ddd503fea6e364e))
+* Report test source location (file only) - Jest ([57774d1](https://github.com/getappmap/appmap-node/commit/57774d10f26c8c56554a235399949f4ae0d59e40))
+* Report test source location (file only) - Mocha ([d97aaa9](https://github.com/getappmap/appmap-node/commit/d97aaa9966807ed34367902619c40487c119cb21))
+* Report test source location (file only) - Vitest ([8da1260](https://github.com/getappmap/appmap-node/commit/8da1260d5cd777512fd4431545e7672393455b30))
+* Request recording abandons test recording ([2955331](https://github.com/getappmap/appmap-node/commit/2955331b4ef8c59ae65df7e35438a767e42d7126))
+
+
+### Features
+
+* Multiple recording support (process always active) ([d47afff](https://github.com/getappmap/appmap-node/commit/d47afff15d9bfbcdb3b89870e6a91c2594c7f1d7))
+
 # [2.20.0](https://github.com/getappmap/appmap-node/compare/v2.19.3...v2.20.0) (2024-04-19)
 
 
