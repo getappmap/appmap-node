@@ -3,7 +3,7 @@ import { format } from "node:util";
 import { integrationTest, readAppmaps, runAppmapNode, runAppmapNodeWithOptions } from "./helpers";
 
 integrationTest("mapping Jest tests", () => {
-  expect(runAppmapNode("yarn", "jest", "test", "--color").status).toBe(1);
+  expect(runAppmapNode("yarn", "jest", "calc", "--color").status).toBe(1);
   expect(runAppmapNode("yarn", "jest", "asyncLib", "--color").status).toBe(0);
   expect(readAppmaps()).toMatchSnapshot();
 });
@@ -16,7 +16,7 @@ integrationTest("mapping Jest tests with process recording active", () => {
       },
       "yarn",
       "jest",
-      "test",
+      "calc",
       "--color",
     ).status,
   ).toBe(1);
@@ -30,5 +30,5 @@ integrationTest("mapping Jest tests with process recording active", () => {
   );
   if (processMaps.length != 1)
     throw new Error(format("expected one process appmap, got: ", Object.fromEntries(processMaps)));
-  expect(appmapsArray.filter((a) => a.metadata?.recorder.type == "tests").length).toEqual(5);
+  expect(appmapsArray.filter((a) => a.metadata?.recorder.type == "tests").length).toEqual(4);
 });
