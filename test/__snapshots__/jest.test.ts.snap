@@ -9,13 +9,13 @@ exports[`mapping Jest tests 1`] = `
           {
             "children": [
               {
-                "location": "test.js:18",
+                "location": "calc.test.js:18",
                 "name": "errorOut",
                 "static": true,
                 "type": "function",
               },
             ],
-            "name": "test",
+            "name": "calc.test",
             "type": "class",
           },
         ],
@@ -25,13 +25,13 @@ exports[`mapping Jest tests 1`] = `
     ],
     "events": [
       {
-        "defined_class": "test",
+        "defined_class": "calc.test",
         "event": "call",
         "id": 1,
         "lineno": 18,
         "method_id": "errorOut",
         "parameters": [],
-        "path": "test.js",
+        "path": "calc.test.js",
         "static": true,
         "thread_id": 0,
       },
@@ -71,9 +71,9 @@ exports[`mapping Jest tests 1`] = `
         "name": "jest",
         "type": "tests",
       },
-      "source_location": "test.js",
+      "source_location": "calc.test.js",
       "test_failure": {
-        "location": "test.js",
+        "location": "calc.test.js",
         "message": "test error",
       },
       "test_status": "failed",
@@ -87,13 +87,13 @@ exports[`mapping Jest tests 1`] = `
           {
             "children": [
               {
-                "location": "test.js:22",
+                "location": "calc.test.js:22",
                 "name": "wait",
                 "static": true,
                 "type": "function",
               },
             ],
-            "name": "test",
+            "name": "calc.test",
             "type": "class",
           },
         ],
@@ -103,7 +103,7 @@ exports[`mapping Jest tests 1`] = `
     ],
     "events": [
       {
-        "defined_class": "test",
+        "defined_class": "calc.test",
         "event": "call",
         "id": 1,
         "lineno": 22,
@@ -115,7 +115,7 @@ exports[`mapping Jest tests 1`] = `
             "value": "20",
           },
         ],
-        "path": "test.js",
+        "path": "calc.test.js",
         "static": true,
         "thread_id": 0,
       },
@@ -154,9 +154,9 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
         "name": "jest",
         "type": "tests",
       },
-      "source_location": "test.js",
+      "source_location": "calc.test.js",
       "test_failure": {
-        "location": "test.js",
+        "location": "calc.test.js",
         "message": "Exceeded timeout of 10 ms for a test.
 Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.",
       },
@@ -373,9 +373,9 @@ Received: [31m3[39m",
         "name": "jest",
         "type": "tests",
       },
-      "source_location": "test.js",
+      "source_location": "calc.test.js",
       "test_failure": {
-        "location": "test.js",
+        "location": "calc.test.js",
         "message": "[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
 
 Expected: [32m-1[39m
@@ -458,7 +458,7 @@ Received: [31m3[39m",
         "name": "jest",
         "type": "tests",
       },
-      "source_location": "test.js",
+      "source_location": "calc.test.js",
       "test_status": "succeeded",
     },
     "version": "1.12",
@@ -475,13 +475,13 @@ exports[`mapping Jest tests with process recording active 1`] = `
           {
             "children": [
               {
-                "location": "test.js:18",
+                "location": "calc.test.js:18",
                 "name": "errorOut",
                 "static": true,
                 "type": "function",
               },
             ],
-            "name": "test",
+            "name": "calc.test",
             "type": "class",
           },
         ],
@@ -491,13 +491,13 @@ exports[`mapping Jest tests with process recording active 1`] = `
     ],
     "events": [
       {
-        "defined_class": "test",
+        "defined_class": "calc.test",
         "event": "call",
         "id": 1,
         "lineno": 18,
         "method_id": "errorOut",
         "parameters": [],
-        "path": "test.js",
+        "path": "calc.test.js",
         "static": true,
         "thread_id": 0,
       },
@@ -537,9 +537,9 @@ exports[`mapping Jest tests with process recording active 1`] = `
         "name": "jest",
         "type": "tests",
       },
-      "source_location": "test.js",
+      "source_location": "calc.test.js",
       "test_failure": {
-        "location": "test.js",
+        "location": "calc.test.js",
         "message": "test error",
       },
       "test_status": "failed",
@@ -553,13 +553,13 @@ exports[`mapping Jest tests with process recording active 1`] = `
           {
             "children": [
               {
-                "location": "test.js:22",
+                "location": "calc.test.js:22",
                 "name": "wait",
                 "static": true,
                 "type": "function",
               },
             ],
-            "name": "test",
+            "name": "calc.test",
             "type": "class",
           },
         ],
@@ -569,7 +569,7 @@ exports[`mapping Jest tests with process recording active 1`] = `
     ],
     "events": [
       {
-        "defined_class": "test",
+        "defined_class": "calc.test",
         "event": "call",
         "id": 1,
         "lineno": 22,
@@ -581,7 +581,7 @@ exports[`mapping Jest tests with process recording active 1`] = `
             "value": "20",
           },
         ],
-        "path": "test.js",
+        "path": "calc.test.js",
         "static": true,
         "thread_id": 0,
       },
@@ -620,142 +620,13 @@ Add a timeout value to this test to increase the timeout, if this is a long-runn
         "name": "jest",
         "type": "tests",
       },
-      "source_location": "test.js",
+      "source_location": "calc.test.js",
       "test_failure": {
-        "location": "test.js",
+        "location": "calc.test.js",
         "message": "Exceeded timeout of 10 ms for a test.
 Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout.",
       },
       "test_status": "failed",
-    },
-    "version": "1.12",
-  },
-  "./tmp/appmap/jest/jest_test_with_async_library/instrumented_lambda_does_not_cause_timeout.appmap.json": {
-    "classMap": [
-      {
-        "children": [
-          {
-            "children": [
-              {
-                "location": "asyncLib.test.js:4",
-                "name": "lambda1",
-                "static": true,
-                "type": "function",
-              },
-            ],
-            "name": "asyncLib.test",
-            "type": "class",
-          },
-        ],
-        "name": "jest-appmap-node-test",
-        "type": "package",
-      },
-    ],
-    "eventUpdates": {
-      "2": {
-        "elapsed": 31.337,
-        "event": "return",
-        "id": 2,
-        "parent_id": 1,
-        "return_value": {
-          "class": "Promise<undefined>",
-          "object_id": 4,
-          "value": "Promise { undefined }",
-        },
-        "thread_id": 0,
-      },
-      "4": {
-        "elapsed": 31.337,
-        "event": "return",
-        "id": 4,
-        "parent_id": 3,
-        "return_value": {
-          "class": "Promise<undefined>",
-          "object_id": 5,
-          "value": "Promise { undefined }",
-        },
-        "thread_id": 0,
-      },
-    },
-    "events": [
-      {
-        "defined_class": "asyncLib.test",
-        "event": "call",
-        "id": 1,
-        "lineno": 4,
-        "method_id": "lambda1",
-        "parameters": [
-          {
-            "class": "String",
-            "name": "r",
-            "value": "'task1'",
-          },
-        ],
-        "path": "asyncLib.test.js",
-        "static": true,
-        "thread_id": 0,
-      },
-      {
-        "elapsed": 31.337,
-        "event": "return",
-        "id": 2,
-        "parent_id": 1,
-        "return_value": {
-          "class": "Promise",
-          "object_id": 4,
-          "value": "Promise { <pending> }",
-        },
-        "thread_id": 0,
-      },
-      {
-        "defined_class": "asyncLib.test",
-        "event": "call",
-        "id": 3,
-        "lineno": 4,
-        "method_id": "lambda1",
-        "parameters": [
-          {
-            "class": "String",
-            "name": "r",
-            "value": "'task2'",
-          },
-        ],
-        "path": "asyncLib.test.js",
-        "static": true,
-        "thread_id": 0,
-      },
-      {
-        "elapsed": 31.337,
-        "event": "return",
-        "id": 4,
-        "parent_id": 3,
-        "return_value": {
-          "class": "Promise",
-          "object_id": 5,
-          "value": "Promise { <pending> }",
-        },
-        "thread_id": 0,
-      },
-    ],
-    "metadata": {
-      "app": "jest-appmap-node-test",
-      "client": {
-        "name": "appmap-node",
-        "url": "https://github.com/getappmap/appmap-node",
-        "version": "test node-appmap version",
-      },
-      "language": {
-        "engine": "Node.js",
-        "name": "javascript",
-        "version": "test node version",
-      },
-      "name": "jest test with async library instrumented lambda does not cause timeout",
-      "recorder": {
-        "name": "jest",
-        "type": "tests",
-      },
-      "source_location": "asyncLib.test.js",
-      "test_status": "succeeded",
     },
     "version": "1.12",
   },
@@ -839,9 +710,9 @@ Received: [31m3[39m",
         "name": "jest",
         "type": "tests",
       },
-      "source_location": "test.js",
+      "source_location": "calc.test.js",
       "test_failure": {
-        "location": "test.js",
+        "location": "calc.test.js",
         "message": "[2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
 
 Expected: [32m-1[39m
@@ -924,7 +795,7 @@ Received: [31m3[39m",
         "name": "jest",
         "type": "tests",
       },
-      "source_location": "test.js",
+      "source_location": "calc.test.js",
       "test_status": "succeeded",
     },
     "version": "1.12",
@@ -933,18 +804,6 @@ Received: [31m3[39m",
     "classMap": [
       {
         "children": [
-          {
-            "children": [
-              {
-                "location": "asyncLib.test.js:4",
-                "name": "lambda1",
-                "static": true,
-                "type": "function",
-              },
-            ],
-            "name": "asyncLib.test",
-            "type": "class",
-          },
           {
             "children": [
               {
@@ -960,19 +819,19 @@ Received: [31m3[39m",
           {
             "children": [
               {
-                "location": "test.js:18",
+                "location": "calc.test.js:18",
                 "name": "errorOut",
                 "static": true,
                 "type": "function",
               },
               {
-                "location": "test.js:22",
+                "location": "calc.test.js:22",
                 "name": "wait",
                 "static": true,
                 "type": "function",
               },
             ],
-            "name": "test",
+            "name": "calc.test",
             "type": "class",
           },
         ],
@@ -981,30 +840,6 @@ Received: [31m3[39m",
       },
     ],
     "eventUpdates": {
-      "10": {
-        "elapsed": 31.337,
-        "event": "return",
-        "id": 10,
-        "parent_id": 9,
-        "return_value": {
-          "class": "Promise<undefined>",
-          "object_id": 4,
-          "value": "Promise { undefined }",
-        },
-        "thread_id": 0,
-      },
-      "12": {
-        "elapsed": 31.337,
-        "event": "return",
-        "id": 12,
-        "parent_id": 11,
-        "return_value": {
-          "class": "Promise<undefined>",
-          "object_id": 5,
-          "value": "Promise { undefined }",
-        },
-        "thread_id": 0,
-      },
       "8": {
         "elapsed": 31.337,
         "event": "return",
@@ -1086,13 +921,13 @@ Received: [31m3[39m",
         "thread_id": 0,
       },
       {
-        "defined_class": "test",
+        "defined_class": "calc.test",
         "event": "call",
         "id": 5,
         "lineno": 18,
         "method_id": "errorOut",
         "parameters": [],
-        "path": "test.js",
+        "path": "calc.test.js",
         "static": true,
         "thread_id": 0,
       },
@@ -1111,7 +946,7 @@ Received: [31m3[39m",
         "thread_id": 0,
       },
       {
-        "defined_class": "test",
+        "defined_class": "calc.test",
         "event": "call",
         "id": 7,
         "lineno": 22,
@@ -1123,7 +958,7 @@ Received: [31m3[39m",
             "value": "20",
           },
         ],
-        "path": "test.js",
+        "path": "calc.test.js",
         "static": true,
         "thread_id": 0,
       },
@@ -1135,64 +970,6 @@ Received: [31m3[39m",
         "return_value": {
           "class": "Promise",
           "object_id": 3,
-          "value": "Promise { <pending> }",
-        },
-        "thread_id": 0,
-      },
-      {
-        "defined_class": "asyncLib.test",
-        "event": "call",
-        "id": 9,
-        "lineno": 4,
-        "method_id": "lambda1",
-        "parameters": [
-          {
-            "class": "String",
-            "name": "r",
-            "value": "'task1'",
-          },
-        ],
-        "path": "asyncLib.test.js",
-        "static": true,
-        "thread_id": 0,
-      },
-      {
-        "elapsed": 31.337,
-        "event": "return",
-        "id": 10,
-        "parent_id": 9,
-        "return_value": {
-          "class": "Promise",
-          "object_id": 4,
-          "value": "Promise { <pending> }",
-        },
-        "thread_id": 0,
-      },
-      {
-        "defined_class": "asyncLib.test",
-        "event": "call",
-        "id": 11,
-        "lineno": 4,
-        "method_id": "lambda1",
-        "parameters": [
-          {
-            "class": "String",
-            "name": "r",
-            "value": "'task2'",
-          },
-        ],
-        "path": "asyncLib.test.js",
-        "static": true,
-        "thread_id": 0,
-      },
-      {
-        "elapsed": 31.337,
-        "event": "return",
-        "id": 12,
-        "parent_id": 11,
-        "return_value": {
-          "class": "Promise",
-          "object_id": 5,
           "value": "Promise { <pending> }",
         },
         "thread_id": 0,
