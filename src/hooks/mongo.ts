@@ -3,7 +3,7 @@ import { inspect } from "node:util";
 import type mongodb from "mongodb";
 
 import { identifier } from "../generate";
-import { fixReturnEventsIfPromiseResult, getActiveRecordings } from "../recorder";
+import { fixReturnEventsIfPromiseResult, getActiveRecordings, isActive } from "../recorder";
 import { FunctionInfo } from "../registry";
 import { getTime } from "../util/getTime";
 import { setCustomInspect } from "../parameter";
@@ -113,12 +113,14 @@ function patchMethod<K extends MethodLikeKeys<mongodb.Collection>>(
 
         const elapsed = getTime() - startTime;
         if (err)
-          recordings.forEach((recording, idx) =>
-            recording.functionException(callEvents[idx].id, err, elapsed),
+          recordings.forEach(
+            (recording, idx) =>
+              isActive(recording) && recording.functionException(callEvents[idx].id, err, elapsed),
           );
         else
-          recordings.forEach((recording, idx) =>
-            recording.functionReturn(callEvents[idx].id, res, elapsed),
+          recordings.forEach(
+            (recording, idx) =>
+              isActive(recording) && recording.functionReturn(callEvents[idx].id, res, elapsed),
           );
 
         return callback(err, res) as unknown;
