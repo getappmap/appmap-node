@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import type sqlite from "sqlite3";
 
-import { getActiveRecordings } from "../recorder";
+import { getActiveRecordings, isActive } from "../recorder";
 import { getTime } from "../util/getTime";
 
 type RecordingProxyTarget =
@@ -85,8 +85,10 @@ function createRecordingProxy<T extends RecordingProxyTarget>(
         const isError = args.length > 0 && args[0] != undefined;
         if (!isError) {
           const elapsed = getTime() - startTime;
-          recordings.forEach((recording, idx) =>
-            recording.functionReturn(callEvents[idx].id, undefined, elapsed),
+          recordings.forEach(
+            (recording, idx) =>
+              isActive(recording) &&
+              recording.functionReturn(callEvents[idx].id, undefined, elapsed),
           );
         }
         originalCompletionCallback?.apply(this, args);

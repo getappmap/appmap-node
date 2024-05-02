@@ -13,6 +13,7 @@ import {
   getActiveRecordings,
   getRemoteRecording,
   getRequestRecording,
+  isActive,
   startProcessRecording,
   startRemoteRecording,
   startRequestRecording,
@@ -135,6 +136,8 @@ function handleClientRequest(request: http.ClientRequest) {
 
         recordings.forEach((recording, idx) => {
           assert(response.statusCode != undefined);
+          if (!isActive(recording)) return;
+
           recording.httpClientResponse(
             clientRequestEvents[idx].id,
             elapsed,
@@ -286,6 +289,7 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
     const returnValue = capture.createReturnValue(isJson);
 
     recordings.forEach((recording, idx) => {
+      if (!isActive(recording)) return;
       if (fixupEvent(request, requestEvents[idx])) recording.fixup(requestEvents[idx]);
 
       recording.httpResponse(

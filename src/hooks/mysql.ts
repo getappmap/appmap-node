@@ -2,7 +2,7 @@ import assert from "node:assert";
 
 import type mysql from "mysql";
 
-import { getActiveRecordings } from "../recorder";
+import { getActiveRecordings, isActive } from "../recorder";
 import { getTime } from "../util/getTime";
 
 export default function mysqlHook(mod: typeof mysql) {
@@ -55,12 +55,15 @@ function createQueryProxy(query: mysql.QueryFunction) {
       const newCallback: mysql.queryCallback = (err, results, fields) => {
         const elapsed = getTime() - startTime;
         if (err)
-          recordings.forEach((recording, idx) =>
-            recording.functionException(callEvents[idx].id, err, elapsed),
+          recordings.forEach(
+            (recording, idx) =>
+              isActive(recording) && recording.functionException(callEvents[idx].id, err, elapsed),
           );
         else
-          recordings.forEach((recording, idx) =>
-            recording.functionReturn(callEvents[idx].id, undefined, elapsed),
+          recordings.forEach(
+            (recording, idx) =>
+              isActive(recording) &&
+              recording.functionReturn(callEvents[idx].id, undefined, elapsed),
           );
 
         originalCallback?.call(this, err, results, fields);
