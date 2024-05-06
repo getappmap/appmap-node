@@ -76,7 +76,7 @@ function pkgOfPath(path: string): string {
 function relativeLocation(location: SourceLocation | undefined): SourceLocation | undefined {
   if (!location) return undefined;
   return {
-    path: relative(config.root, location.path),
+    path: relative(config().root, location.path),
     lineno: location.lineno,
   };
 }

@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { readFileSync, writeFileSync } from "node:fs";
-import { URL, fileURLToPath } from "node:url";
+import { URL, fileURLToPath, pathToFileURL } from "node:url";
 import { debuglog } from "node:util";
 import { isNativeError } from "node:util/types";
 
@@ -20,26 +20,52 @@ const treeDebug = debuglog("appmap-tree");
 const sourceDebug = debuglog("appmap-source");
 
 export interface Hook {
-  shouldInstrument(url: URL): boolean;
-  transform(program: ESTree.Program, sourcemap?: SourceMapConsumer): ESTree.Program;
+  shouldInstrument(url: URL, sourcemap?: CustomSourceMapConsumer): boolean;
+  transform(program: ESTree.Program, sourcemap?: CustomSourceMapConsumer): ESTree.Program;
   shouldIgnore?(url: URL): boolean;
 }
 
 const defaultHooks: Hook[] = [next, vitest, mocha, jest, instrument];
 
-export function findHook(url: URL, hooks = defaultHooks) {
-  return hooks.find((h) => h.shouldInstrument(url));
+export function findHook(url: URL, sourceMap?: CustomSourceMapConsumer, hooks = defaultHooks) {
+  return hooks.find((h) => h.shouldInstrument(url, sourceMap));
+}
+
+export function shouldMatchOriginalSourcePaths(url: URL) {
+  // We're not interested in source maps of libraries. For instance, in a Next.js project,
+  // if we were to consult the source map for instrumentation of a file like
+  // "...node_modules/next/dist/compiled/next-server/pages.runtime.dev.js", we would get
+  // URLs like "file:///...webpack:/next/dist/compiled/cookie/index.js" that do not include
+  // the node_modules part, resulting in unintended instrumentation, since node_modules
+  // folder is typically excluded from instrumentation.
+  return !["/node_modules/", "/.next/"].some((x) => url.pathname.includes(x));
 }
 
 export default function transform(code: string, url: URL, hooks = defaultHooks): string {
-  const hook = findHook(url, hooks);
+  let sourceMap: CustomSourceMapConsumer | undefined;
+  let sourceMapInitialized = false;
+  const getSourceMap_ = () => {
+    if (!sourceMapInitialized) {
+      try {
+        sourceMap = getSourceMap(url, code);
+      } catch (e) {
+        warn("Error getting source map for ", url, e);
+      }
+      sourceMapInitialized = true;
+    }
+    return sourceMap;
+  };
+
+  if (shouldMatchOriginalSourcePaths(url)) getSourceMap_();
+
+  const hook = findHook(url, sourceMap, hooks);
   if (!hook) return code;
 
   if (hooks.some((h) => h.shouldIgnore?.(url))) return code;
 
   try {
     const tree = parse(code, { source: url.toString(), next: true, loc: true, module: true });
-    const xformed = hook.transform(tree, getSourceMap(url, code));
+    const xformed = hook.transform(tree, getSourceMap_());
     if (treeDebug.enabled) dumpTree(xformed, url);
     const src = generate(xformed);
     if (sourceDebug.enabled) {
@@ -63,7 +89,15 @@ function dumpTree(xformed: ESTree.Program, url: URL) {
   treeDebug("wrote transformed tree to %s", path);
 }
 
-function getSourceMap(fileUrl: URL, code: string): SourceMapConsumer | undefined {
+export class CustomSourceMapConsumer extends SourceMapConsumer {
+  public originalSources: URL[];
+  constructor(rawSourceMap: RawSourceMap) {
+    super(rawSourceMap);
+    this.originalSources = rawSourceMap.sources.map((s) => pathToFileURL(s));
+  }
+}
+
+export function getSourceMap(fileUrl: URL, code: string): CustomSourceMapConsumer | undefined {
   const sourceMappingUrl = code.match(/\/\/# sourceMappingURL=(.*)/)?.[1];
   if (!sourceMappingUrl) return;
 
@@ -85,10 +119,24 @@ function getSourceMap(fileUrl: URL, code: string): SourceMapConsumer | undefined
 
   sourceMap.sources = sourceMap.sources.map((source) => {
     const url = new URL((sourceMap.sourceRoot ?? "") + source, fileUrl);
-    return url.protocol === "file:" ? fileURLToPath(url) : url.toString();
+    let result = url.protocol === "file:" ? fileURLToPath(url) : url.toString();
+    // HACK: On Windows, we get incorrect paths if the original path contains backspaces.
+    //   source: 'C:/Users/John Doe/projects/appmap-node/test/typescript/index.ts'
+    //   => result: 'C:/Users/John%20Doe/projects/appmap-node/test/typescript/index.ts'
+    //   (=> url.protocol: "c:")
+    // Unsure if using:
+    //   const url = pathToFileUrl((sourceMap.sourceRoot ?? "") + source);
+    // instead of:
+    //   const url = new URL((sourceMap.sourceRoot ?? "") + source, fileUrl);
+    // would work in all scenarios.
+    // TODO: Replace with a better implementation.
+    if (process.platform == "win32" && url.protocol != "http:" && url.protocol != "https:")
+      result = result.replaceAll("%20", " ");
+
+    return result;
   });
 
-  return new SourceMapConsumer(sourceMap);
+  return new CustomSourceMapConsumer(sourceMap);
 }
 
 function parseDataUrl(fileUrl: URL) {

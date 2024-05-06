@@ -61,7 +61,7 @@ const EVENT_TEST_FAIL = "fail";
 function registerEventListeners(runner: EventEmitter) {
   runner.on(EVENT_TEST_BEGIN, function (test: Test) {
     const recording = startTestRecording("mocha", ...test.titlePath());
-    if (test.file) recording.metadata.source_location = relative(config.root, test.file);
+    if (test.file) recording.metadata.source_location = relative(config().root, test.file);
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -77,7 +77,7 @@ function registerEventListeners(runner: EventEmitter) {
     recording.metadata.exception = exceptionMetadata(err);
     recording.metadata.test_failure = {
       message: recording.metadata.exception?.message ?? "failed",
-      location: test.file ? relative(config.root, test.file) : undefined,
+      location: test.file ? relative(config().root, test.file) : undefined,
     };
     recording.finish();
   });

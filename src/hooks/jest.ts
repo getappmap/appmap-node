@@ -59,7 +59,7 @@ export function patchCircus(program: ESTree.Program): ESTree.Program {
 
 // Jest itself uses StackUtils similarly.
 // https://github.com/jestjs/jest/blob/0e2145b6f97f6c6a45783fdd35f3b1a14623b7ab/packages/jest-circus/src/utils.ts#L357
-const stackUtils = new StackUtils({ cwd: config.root });
+const stackUtils = new StackUtils({ cwd: config().root });
 function extractSourceLocation(asyncError: unknown) {
   if (
     asyncError &&

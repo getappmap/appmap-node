@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { debuglog } from "node:util";
 
 import { ancestor as walk } from "acorn-walk";
@@ -22,6 +22,7 @@ import {
 import { FunctionInfo, SourceLocation, createFunctionInfo, createMethodInfo } from "../registry";
 import findLast from "../util/findLast";
 import { isId } from "../util/isId";
+import { CustomSourceMapConsumer, shouldMatchOriginalSourcePaths } from "../transform";
 
 const debug = debuglog("appmap:instrument");
 
@@ -33,21 +34,50 @@ function addTransformedFunctionInfo(fi: FunctionInfo): number {
   return transformedFunctionInfos.length - 1;
 }
 
-export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer): ESTree.Program {
+export function transform(
+  program: ESTree.Program,
+  sourceMap?: CustomSourceMapConsumer,
+): ESTree.Program {
   transformedFunctionInfos.splice(0);
-  const source = program.loc?.source;
-  const pkg = source ? config.packages.match(source) : undefined;
 
   const locate = makeLocator(sourceMap);
+
+  const originalSourceShouldBeInstrumented = new Map<string, boolean>();
+  const shouldSkipFunction = (
+    location: SourceLocation | undefined,
+    name: string,
+    qname?: string,
+  ) => {
+    if (!location) return true; // don't instrument generated code
+
+    // A function may reside in a bundled file. If we have a source map
+    // we check if the original source of the function should be instrumented.
+    if (sourceMap?.originalSources.length) {
+      if (!originalSourceShouldBeInstrumented.has(location.path)) {
+        const url = pathToFileURL(location.path);
+        const originalSource = sourceMap.originalSources.find((s) => s.href == url.href);
+        originalSourceShouldBeInstrumented.set(
+          location.path,
+          originalSource != undefined && shouldInstrument(originalSource),
+        );
+      }
+      if (!originalSourceShouldBeInstrumented.get(location.path)) return true;
+    }
+
+    // check if the function is explicitly excluded in config
+    const pkg = config().packages.match(location.path);
+    if (pkg?.exclude?.includes(name)) return true;
+    if (qname && pkg?.exclude?.includes(qname)) return true;
+  };
 
   walk(program, {
     FunctionDeclaration(fun: ESTree.FunctionDeclaration) {
       if (!hasIdentifier(fun)) return;
-      if (pkg?.exclude?.includes(fun.id.name)) return;
 
       const location = locate(fun);
-      if (!location) return; // don't instrument generated code
 
+      if (shouldSkipFunction(location, fun.id.name)) return;
+      assert(location);
       fun.body = wrapFunction(fun, createFunctionInfo(fun, location), false);
     },
 
@@ -61,15 +91,9 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
       const { name } = method.key;
       const qname = [klass.id.name, name].join(".");
 
-      // Not sure why eslint complains here, ?? is the wrong operator
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      if (pkg?.exclude?.includes(name) || pkg?.exclude?.includes(qname)) {
-        debug(`Excluding ${qname}`);
-        return;
-      }
-
       const location = locate(method);
-      if (!location) return; // don't instrument generated code
+      if (shouldSkipFunction(location, name, qname)) return;
+      assert(location);
 
       debug(`Instrumenting ${qname}`);
       method.value.body = wrapFunction(
@@ -91,7 +115,10 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
           if (!(declaration.type === "VariableDeclaration" && declaration.kind === "const")) return;
           const { id } = declarator;
           if (!isId(id)) return;
-          if (pkg?.exclude?.includes(id.name)) return;
+
+          if (shouldSkipFunction(location, id.name)) return;
+          assert(location);
+
           assert(declarator.init === fun);
 
           debug(`Instrumenting ${id.name}`);
@@ -104,7 +131,11 @@ export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer
         // instrument CommonJS exports
         case "AssignmentExpression": {
           const id = exportName(declarator.left);
-          if (!id || pkg?.exclude?.includes(id.name)) return;
+
+          if (!id) return;
+
+          if (shouldSkipFunction(location, id.name)) return;
+          assert(location);
 
           debug(`Instrumenting ${id.name}`);
           declarator.right = wrapLambda(
@@ -232,12 +263,24 @@ function wrapFunction(
   return wrapped;
 }
 
-export function shouldInstrument(url: URL): boolean {
+function shouldInstrument_(url: URL) {
   if (url.protocol !== "file:") return false;
   if (url.pathname.endsWith(".json")) return false;
 
   const filePath = fileURLToPath(url);
-  return !!config.packages.match(filePath);
+  return !!config().packages.match(filePath);
+}
+
+// If there is a source map, check whether there is at least one original source
+// that needs to be instrumented. If so, we should send the "bundled" URL to
+// instrument.transform(), but within it, we should check each function to determine
+// if its original source URL needs to be instrumented.
+export function shouldInstrument(url: URL, sourceMap?: CustomSourceMapConsumer): boolean {
+  if (sourceMap?.originalSources.length && shouldMatchOriginalSourcePaths(url))
+    return sourceMap.originalSources.some((s) => shouldInstrument_(s));
+
+  const result = shouldInstrument_(url);
+  return result;
 }
 
 function hasIdentifier(

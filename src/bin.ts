@@ -29,11 +29,11 @@ export function main() {
 
   info("Running with appmap-node version %s", version);
   nodeOptions.push("--require", registerPath);
-  if (config.default) {
-    info("Writing default config to %s", config.configPath);
-    writeFileSync(config.configPath, YAML.stringify(config));
-  } else info("Using config file %s", config.configPath);
-  config.export();
+  if (config().default) {
+    info("Writing default config to %s", config().configPath);
+    writeFileSync(config().configPath, YAML.stringify(config()));
+  } else info("Using config file %s", config().configPath);
+  config().export();
 
   // FIXME: Probably there should be a way to remove this altogether
   // by changing our custom loader implementation
@@ -86,7 +86,7 @@ function readTsConfigUp(dir: string): string | undefined {
 function isTsEsmLoaderNeeded(cmd: string, args: string[]) {
   // HACK: Ugly way to check
   const tsConfigTsNodeEsmIsTrue = () => {
-    const tsConfigSource = readTsConfigUp(config.root);
+    const tsConfigSource = readTsConfigUp(config().root);
     if (tsConfigSource == null) return false;
 
     const tsConfig: unknown = json5.parse(tsConfigSource);

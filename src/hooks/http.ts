@@ -182,7 +182,7 @@ class BodyCapture {
   push(chunk: Chunk, encoding?: BufferEncoding) {
     if (!chunk) return;
     this.totalBodyLength += chunk.length;
-    if (config.responseBodyMaxLength <= this.currentLength) return;
+    if (config().responseBodyMaxLength <= this.currentLength) return;
 
     if (typeof chunk === "string") chunk = Buffer.from(chunk, encoding);
     this.chunks.push(Buffer.from(chunk));
@@ -192,8 +192,8 @@ class BodyCapture {
   createReturnValue(isJson: boolean) {
     let returnValue: AppMap.Parameter | undefined;
     let caputuredBodyString: string = Buffer.concat(this.chunks).toString("utf8");
-    if (caputuredBodyString.length > config.responseBodyMaxLength)
-      caputuredBodyString = caputuredBodyString.substring(0, config.responseBodyMaxLength);
+    if (caputuredBodyString.length > config().responseBodyMaxLength)
+      caputuredBodyString = caputuredBodyString.substring(0, config().responseBodyMaxLength);
 
     if (caputuredBodyString.length > 0) {
       // If it's truncated add the rider

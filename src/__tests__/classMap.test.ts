@@ -43,7 +43,7 @@ describe(makeClassMap, () => {
   });
 
   it("uses the app name as the top level package if required", () => {
-    jest.replaceProperty(config, "appName", "testApp");
+    jest.replaceProperty(config(), "appName", "testApp");
     // if a path is just a file, the class would have been
     // toplevel which is prohibited by the spec
     check([f("fun", "util.js:42", "util"), f("other", "src/other.js:42", "other")], {
