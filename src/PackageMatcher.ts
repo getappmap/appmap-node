@@ -28,6 +28,11 @@ export default class PackageMatcher extends Array<Package> {
     return this.resolved.get(path) ?? fwdSlashPath(resolve(this.root, path));
   }
 
+  private cannonicalPath(path: string) {
+    if (process.platform === "win32") return path.toLowerCase();
+    return path;
+  }
+
   match(path: string): Package | undefined {
     if (path.startsWith("file:")) path = fileURLToPath(path);
 
@@ -35,7 +40,9 @@ export default class PackageMatcher extends Array<Package> {
     const fixedPath = fwdSlashPath(path);
 
     const pkg = this.find(
-      (pkg) => pkg.path != undefined && fixedPath.startsWith(this.resolve(pkg.path)),
+      (pkg) =>
+        pkg.path != undefined &&
+        this.cannonicalPath(fixedPath).startsWith(this.cannonicalPath(this.resolve(pkg.path))),
     );
     return pkg?.exclude?.find((ex) => fixedPath.includes(ex)) ? undefined : pkg;
   }
