@@ -39,7 +39,7 @@ const funToPackage = new WeakMap<FunctionInfo, Package | undefined>();
 
 function getPackage(funInfo: FunctionInfo, isLibrary: boolean) {
   if (!funToPackage.has(funInfo))
-    funToPackage.set(funInfo, config.getPackage(funInfo.location?.path, isLibrary));
+    funToPackage.set(funInfo, config().getPackage(funInfo.location?.path, isLibrary));
   return funToPackage.get(funInfo);
 }
 
