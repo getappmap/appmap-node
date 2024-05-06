@@ -73,7 +73,7 @@ export default function prismaHook(mod: object, id?: string) {
 }
 
 prismaHook.applicable = function (id: string) {
-  return config.prismaClientModuleIds.includes(id);
+  return config().prismaClientModuleIds.includes(id);
 };
 
 // https://github.com/prisma/prisma/blob/095cba1a1b79d0d950246b07c9fb48d22fd7f229/packages/client/src/runtime/getPrismaClient.ts#L181

@@ -8,7 +8,7 @@ import AppMapStream from "./AppMapStream";
 import { makeClassMap } from "./classMap";
 import config from "./config";
 import { makeCallEvent, makeExceptionEvent, makeReturnEvent } from "./event";
-import { defaultMetadata } from "./metadata";
+import { getDefaultMetadata } from "./metadata";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
 import { shouldRecord } from "./recorderControl";
@@ -17,11 +17,11 @@ export default class Recording {
   constructor(type: AppMap.RecorderType, recorder: string, ...names: string[]) {
     const dirs = [recorder, ...names].map(quotePathSegment);
     const name = dirs.pop()!; // it must have at least one element
-    this.path = join(config.appmapDir, ...dirs, makeAppMapFilename(name));
+    this.path = join(config().appmapDir, ...dirs, makeAppMapFilename(name));
     this.partPath = this.path + ".part";
     this.stream = new AppMapStream(this.partPath);
     this.metadata = {
-      ...defaultMetadata,
+      ...getDefaultMetadata(),
       recorder: { type, name: recorder },
       name: names.join(" "),
     };

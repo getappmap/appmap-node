@@ -36,7 +36,7 @@ function addTransformedFunctionInfo(fi: FunctionInfo): number {
 export function transform(program: ESTree.Program, sourceMap?: SourceMapConsumer): ESTree.Program {
   transformedFunctionInfos.splice(0);
   const source = program.loc?.source;
-  const pkg = source ? config.packages.match(source) : undefined;
+  const pkg = source ? config().packages.match(source) : undefined;
 
   const locate = makeLocator(sourceMap);
 
@@ -237,7 +237,7 @@ export function shouldInstrument(url: URL): boolean {
   if (url.pathname.endsWith(".json")) return false;
 
   const filePath = fileURLToPath(url);
-  return !!config.packages.match(filePath);
+  return !!config().packages.match(filePath);
 }
 
 function hasIdentifier(
