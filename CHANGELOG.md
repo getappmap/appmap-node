@@ -1,3 +1,11 @@
+## [2.21.1](https://github.com/getappmap/appmap-node/compare/v2.21.0...v2.21.1) (2024-05-06)
+
+
+### Bug Fixes
+
+* Check if recording are still active in callbacks ([dea07a9](https://github.com/getappmap/appmap-node/commit/dea07a9d07c68cccc170b42724cbea335c74a868))
+* Check if recordings are still active after promise resolution ([b40988a](https://github.com/getappmap/appmap-node/commit/b40988a7c9f1d8b9fd48dad94a9105621eac99b9))
+
 # [2.21.0](https://github.com/getappmap/appmap-node/compare/v2.20.0...v2.21.0) (2024-04-24)
 
 
