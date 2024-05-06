@@ -109,7 +109,7 @@ export class CustomSourceMapConsumer extends SourceMapConsumer {
   }
 }
 
-function getSourceMap(fileUrl: URL, code: string): CustomSourceMapConsumer | undefined {
+export function getSourceMap(fileUrl: URL, code: string): CustomSourceMapConsumer | undefined {
   const sourceMappingUrl = code.match(/\/\/# sourceMappingURL=(.*)/)?.[1];
   if (!sourceMappingUrl) return;
 

@@ -5,7 +5,7 @@ import type { NodeLoaderHooksAPI2 } from "ts-node";
 
 import config from "./config";
 import { warn } from "./message";
-import transform, { findHook } from "./transform";
+import transform, { findHook, getSourceMap, shouldMatchOriginalSourcePaths } from "./transform";
 import { readPkgUp } from "./util/readPkgUp";
 import { forceRequire } from "./register";
 
@@ -21,7 +21,7 @@ export const resolve: NodeLoaderHooksAPI2["resolve"] = async function resolve(
   // their import name here (i.e. url: "json5"). Then it gets resolved
   // to a path (i.e. result.path: ".../node_modules/json5/lib/index.js")
   // and passed to the load function.
-  if (config.getPackage(url, true) != undefined) forceRequire(url);
+  if (config().getPackage(url, true) != undefined) forceRequire(url);
 
   return result;
 };
@@ -43,10 +43,13 @@ export const load: NodeLoaderHooksAPI2["load"] = async function load(url, contex
       context.format = "commonjs";
   }
 
-  const hook = findHook(urlObj);
+  const original = await defaultLoad(url, context, defaultLoad);
+  const sourceMap =
+    original.source && shouldMatchOriginalSourcePaths(urlObj)
+      ? getSourceMap(urlObj, original.source.toString())
+      : undefined;
+  const hook = findHook(urlObj, sourceMap);
   if (hook) {
-    const original = await defaultLoad(url, context, defaultLoad);
-
     if (original.source) {
       const xformed = transform(original.source.toString(), new URL(url));
 
@@ -65,5 +68,5 @@ export const load: NodeLoaderHooksAPI2["load"] = async function load(url, contex
   if (["node:http", "node:https", "http", "https", ...config().prismaClientModuleIds].includes(url))
     forceRequire(url);
 
-  return defaultLoad(url, context, defaultLoad);
+  return original;
 };

@@ -1,4 +1,4 @@
-import { format } from "node:util";
+import { format, inspect } from "node:util";
 
 import { integrationTest, readAppmaps, runAppmapNode, runAppmapNodeWithOptions } from "./helpers";
 
@@ -29,6 +29,11 @@ integrationTest("mapping Jest tests with process recording active", () => {
     ([, a]) => a.metadata?.recorder.type == "process",
   );
   if (processMaps.length != 1)
-    throw new Error(format("expected one process appmap, got: ", Object.fromEntries(processMaps)));
+    throw new Error(
+      format(
+        "expected one process appmap, got: ",
+        inspect(Object.fromEntries(processMaps), undefined, Infinity),
+      ),
+    );
   expect(appmapsArray.filter((a) => a.metadata?.recorder.type == "tests").length).toEqual(4);
 });

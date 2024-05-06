@@ -17,7 +17,7 @@ export default function librariesHook(mod: unknown, id: string) {
   // "node:console" and "console", for example, spreading around.
   const moduleId = id.replace(/^node:/, "");
   function wrapFunction(owner: FunctionOwner, key: string, klass?: string) {
-    if (config.getPackage(moduleId, true)?.exclude?.includes(key)) return;
+    if (config().getPackage(moduleId, true)?.exclude?.includes(key)) return;
 
     const f = owner[key] as F;
     if (!proxiedFunctions.has(f)) {
@@ -57,7 +57,7 @@ function createProxy(f: F, moduleId: string, klass?: string) {
 }
 
 librariesHook.applicable = function (id: string) {
-  return config.getPackage(id, true) != undefined;
+  return config().getPackage(id, true) != undefined;
 };
 
 const functionInfos = new Map<string, FunctionInfo>();
@@ -85,7 +85,7 @@ function getFunctionInfo(f: F, moduleId: string, klass?: string) {
       location: { path: `${moduleId}`, lineno: ++functionCount },
       klassOrFile: moduleId + (klass ? "." + klass : ""),
       static: false,
-      labels: config.getFunctionLabels(config.getPackage(moduleId, true), f.name),
+      labels: config().getFunctionLabels(config().getPackage(moduleId, true), f.name),
     };
     functionInfos.set(key, info);
   }
