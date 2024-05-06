@@ -13,18 +13,24 @@ const pkg = require("../package.json") as PackageJson;
 
 export const version = pkg.version!;
 
-export const defaultMetadata: Partial<AppMap.Metadata> & { client: AppMap.ClientMetadata } = {
-  client: {
-    name: pkg.name!,
-    version,
-    url: pkg.homepage!,
-  },
-  language: {
-    name: "javascript",
-    engine: "Node.js",
-    version: process.version,
-  },
-  app: config.appName,
+let defaultMetadata: Partial<AppMap.Metadata> & { client: AppMap.ClientMetadata };
+export const getDefaultMetadata = () => {
+  if (defaultMetadata == undefined) {
+    defaultMetadata = {
+      client: {
+        name: pkg.name!,
+        version,
+        url: pkg.homepage!,
+      },
+      language: {
+        name: "javascript",
+        engine: "Node.js",
+        version: process.version,
+      },
+      app: config().appName,
+    };
+  }
+  return defaultMetadata;
 };
 
 export function exceptionMetadata(error: unknown): AppMap.ExceptionMetadata | undefined {

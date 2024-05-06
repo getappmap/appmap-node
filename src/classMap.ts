@@ -16,7 +16,7 @@ export function makeClassMap(funs: Iterable<FunctionInfo>): AppMap.ClassMap {
     // fun.location can contain "/" as separator even in Windows
     const pkgs = fun.location.path.split(/[/\\]/).reverse().slice(1);
     // add app name as fallback top level package
-    pkgs.push(config.appName);
+    pkgs.push(config().appName);
 
     let [tree, classes]: FNode = [root, {}];
     while (pkgs.length > 0) {

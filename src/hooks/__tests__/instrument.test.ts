@@ -7,9 +7,9 @@ import * as instrument from "../instrument";
 import PackageMatcher from "../../PackageMatcher";
 
 describe(instrument.shouldInstrument, () => {
-  jest.replaceProperty(config, "root", fixAbsPath("/test"));
+  jest.replaceProperty(config(), "root", fixAbsPath("/test"));
   jest.replaceProperty(
-    config,
+    config(),
     "packages",
     new PackageMatcher(fixAbsPath("/test"), [{ path: ".", exclude: ["node_modules"] }]),
   );
@@ -316,5 +316,3 @@ describe(instrument.transform, () => {
 function expectProgram(actual: ESTree.Program, expected: string) {
   expect(generate(actual)).toEqual(generate(parse(expected, { module: true })));
 }
-
-jest.mock("../../config");

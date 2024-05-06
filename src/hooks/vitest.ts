@@ -90,7 +90,7 @@ export async function wrapRunTest(
 
   const recording = getTestRecording();
   if (test.file?.filepath)
-    recording.metadata.source_location = relative(config.root, test.file.filepath);
+    recording.metadata.source_location = relative(config().root, test.file.filepath);
 
   switch (test.result?.state) {
     case "pass":
