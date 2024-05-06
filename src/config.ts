@@ -192,4 +192,10 @@ function readConfigFile(document: Document): ConfigFile {
   return result;
 }
 
-export default new Config();
+let instance: Config | undefined;
+export default function config() {
+  if (instance == undefined) {
+    instance = new Config();
+  }
+  return instance;
+}
