@@ -2,9 +2,11 @@ import assert from "node:assert";
 import { isPromise } from "node:util/types";
 
 import type * as AppMap from "./AppMap";
+import config from "./config";
 import Recording, { writtenAppMaps } from "./Recording";
 import { makeExceptionEvent, makeReturnEvent } from "./event";
 import { info } from "./message";
+import { Package } from "./PackageMatcher";
 import { getClass, objectId } from "./parameter";
 import { shouldRecord } from "./recorderControl";
 import { FunctionInfo } from "./registry";
@@ -33,14 +35,43 @@ export function getActiveRecordings() {
   return result;
 }
 
+const funToPackage = new WeakMap<FunctionInfo, Package | undefined>();
+
+function getPackage(funInfo: FunctionInfo, isLibrary: boolean) {
+  if (!funToPackage.has(funInfo))
+    funToPackage.set(funInfo, config.getPackage(funInfo.location?.path, isLibrary));
+  return funToPackage.get(funInfo);
+}
+
+const recordCallPackageStack: (Package | undefined)[] = [];
+
+function shallowModeSkip(pkg: Package | undefined) {
+  // If we have the same package as an immediate parent
+  // we should skip recording in shallow mode.
+  return (
+    pkg?.shallow &&
+    recordCallPackageStack.length > 0 &&
+    recordCallPackageStack[recordCallPackageStack.length - 1] == pkg
+  );
+}
+
 export function record<This, Return>(
   this: This,
   fun: (this: This, ...args: unknown[]) => Return,
   args: unknown[],
   funInfo: FunctionInfo,
+  isLibrary = false,
 ): Return {
   const recordings = getActiveRecordings();
-  if (recordings.length == 0 || !shouldRecord()) return fun.apply(this, args);
+  let pkg;
+  if (
+    recordings.length == 0 ||
+    !shouldRecord() ||
+    shallowModeSkip((pkg = getPackage(funInfo, isLibrary)))
+  )
+    return fun.apply(this, args);
+
+  recordCallPackageStack.push(pkg);
 
   const thisArg = isGlobal(this) || isNullPrototype(this) ? undefined : this;
   const callEvents = recordings.map((r) => r.functionCall(funInfo, thisArg, [...args]));
@@ -66,6 +97,8 @@ export function record<This, Return>(
       recording.functionException(callEvents[idx].id, exn, elapsed),
     );
     throw exn;
+  } finally {
+    recordCallPackageStack.pop();
   }
 }
 
