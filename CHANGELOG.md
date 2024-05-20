@@ -1,3 +1,13 @@
+# [2.22.0](https://github.com/getappmap/appmap-node/compare/v2.21.1...v2.22.0) (2024-05-20)
+
+
+### Features
+
+* Extract function labels from code comments ([4984bcc](https://github.com/getappmap/appmap-node/commit/4984bcc7959a9cace037ed6e0624efbc8d4e00bd))
+* Function labels in appmap.yml config file ([4a96f4c](https://github.com/getappmap/appmap-node/commit/4a96f4c8c7951cf2493bcb397003e733392f3532))
+* Instrument calls to libraries ([41762ed](https://github.com/getappmap/appmap-node/commit/41762edb05dbf7dec79894869bb531a4cd35d732))
+* Instrument calls to libraries - ESM support ([42edc26](https://github.com/getappmap/appmap-node/commit/42edc264b5b8ddce42f2e7c77872cee9acd41322))
+
 ## [2.21.1](https://github.com/getappmap/appmap-node/compare/v2.21.0...v2.21.1) (2024-05-06)
 
 
