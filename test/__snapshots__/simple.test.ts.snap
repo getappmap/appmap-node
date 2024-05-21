@@ -2,6 +2,7 @@
 
 exports[`creating a default config file 1`] = `
 "name: test
+language: javascript
 appmap_dir: tmp/appmap
 packages:
   - path: .

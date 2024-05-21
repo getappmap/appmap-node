@@ -38,6 +38,7 @@ You can create `appmap.yml` config file; if not found, a default one will be cre
 ```yaml
 name: application-name  # from package.json by default
 appmap_dir: tmp/appmap
+language: javascript
 packages:
 - path: .  # paths to instrument, relative to appmap.yml location
   exclude:  # code to exclude from instrumentation
