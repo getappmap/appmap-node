@@ -140,6 +140,8 @@ export class Config {
       this.configPath,
       YAML.stringify(this.document ?? this, { keepSourceTokens: true }),
     );
+
+    this.migrationPending = false;
   }
 }
 
