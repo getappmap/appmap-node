@@ -1,6 +1,6 @@
 name: function-labels-appmap-node-test
 appmap_dir: tmp/appmap
-packages: 
+packages:
   - path: .
   - module: node:console
     shallow: true
@@ -12,6 +12,7 @@ packages:
       - name: log
         label: logging
       - name: debug
-        labels: 
+        labels:
           - logging
           - debugging
+language: javascript

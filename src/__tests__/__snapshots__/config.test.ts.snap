@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Config migrate does not update an existing config if the language field is already set 1`] = `
+"name: test-package
+language: ruby
+appmap_dir: appmap
+packages:
+  - path: .
+"
+`;
+
+exports[`Config migrate sets the language field in existing configs 1`] = `
+"name: test-package
+appmap_dir: appmap
+packages:
+  - path: .
+language: javascript
+"
+`;

@@ -33,6 +33,7 @@ export function main() {
     info("Writing default config to %s", config.configPath);
     writeFileSync(config.configPath, YAML.stringify(config));
   } else info("Using config file %s", config.configPath);
+  config.migrate();
   config.export();
 
   // FIXME: Probably there should be a way to remove this altogether

@@ -33,6 +33,7 @@ describe(Config, () => {
       packages: new PackageMatcher("/test/app", [
         { path: ".", exclude: ["node_modules", ".yarn"] },
       ]),
+      language: "javascript",
     });
   });
 
@@ -41,6 +42,7 @@ describe(Config, () => {
       root: fixMacOsTmpPath(dir),
       relativeAppmapDir: "tmp/appmap",
       appName: basename(dir),
+      language: "javascript",
     });
   });
 
@@ -53,6 +55,7 @@ describe(Config, () => {
       root: fixMacOsTmpPath(dir),
       relativeAppmapDir: "tmp/appmap",
       appName: "test-package",
+      language: "javascript",
     });
   });
 
@@ -61,6 +64,7 @@ describe(Config, () => {
       "appmap.yml",
       YAML.stringify({
         name: "test-package",
+        language: "javascript",
         appmap_dir: "appmap",
         packages: [{ path: ".", exclude: ["excluded"] }, "../lib"],
       }),
@@ -71,6 +75,7 @@ describe(Config, () => {
     expect(new Config()).toMatchObject({
       root: fixMacOsTmpPath(dir),
       relativeAppmapDir: "appmap",
+      language: "javascript",
       appName: "test-package",
       packages: new PackageMatcher(fixMacOsTmpPath(dir), [
         { path: ".", exclude: ["excluded"] },
@@ -84,6 +89,7 @@ describe(Config, () => {
       "appmap.yml",
       YAML.stringify({
         name: "test-package",
+        language: "javascript",
         appmap_dir: "appmap",
         packages: [{ regexp: "foo", enabled: false }],
       }),
@@ -95,6 +101,7 @@ describe(Config, () => {
       root: fixMacOsTmpPath(dir),
       relativeAppmapDir: "appmap",
       appName: "test-package",
+      language: "javascript",
       packages: new PackageMatcher(fixMacOsTmpPath(dir), [
         { path: ".", exclude: ["node_modules", ".yarn"] },
       ]),
@@ -110,6 +117,38 @@ describe(Config, () => {
     );
 
     expect(readFileSync("appmap.yml").toString()).toEqual(malformedAppMapFileContent);
+  });
+
+  describe("migrate", () => {
+    it("sets the language field in existing configs", () => {
+      writeFileSync(
+        "appmap.yml",
+        YAML.stringify({
+          name: "test-package",
+          appmap_dir: "appmap",
+          packages: [{ path: "." }],
+        }),
+      );
+      const config = new Config();
+      config.migrate();
+
+      expect(readFileSync("appmap.yml").toString()).toMatchSnapshot();
+    });
+
+    it("does not update an existing config if the language field is already set", () => {
+      const appmapYml = YAML.stringify({
+        name: "test-package",
+        language: "ruby",
+        appmap_dir: "appmap",
+        packages: [{ path: "." }],
+      });
+
+      writeFileSync("appmap.yml", appmapYml);
+      const config = new Config();
+      config.migrate();
+
+      expect(readFileSync("appmap.yml").toString()).toMatchSnapshot();
+    });
   });
 
   let dir: string;

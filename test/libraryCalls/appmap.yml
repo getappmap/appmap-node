@@ -6,6 +6,7 @@ packages:
     shallow: true
   - module: node:console # works with or without node: qualifier
     shallow: true
-    exclude: 
+    exclude:
       - warn
       - assert # exclude because this is captured only in windows
+language: javascript
