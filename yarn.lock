@@ -2226,6 +2226,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/ps-tree@npm:^1.1.6":
+  version: 1.1.6
+  resolution: "@types/ps-tree@npm:1.1.6"
+  checksum: bf5b7bb9bd11b8762a8302b93c335728ecb19c85a74c640a3888d476368a03733f11612b9a87b1ad9ea56f95720db23a824c78113b16024dc59264b7f9008df5
+  languageName: node
+  linkType: hard
+
 "@types/react@npm:^18":
   version: 18.2.45
   resolution: "@types/react@npm:18.2.45"
@@ -2750,6 +2757,7 @@ __metadata:
     "@types/mysql": ^2.15.24
     "@types/node": ^20.5.0
     "@types/pg": ^8.10.9
+    "@types/ps-tree": ^1.1.6
     "@types/sqlite3": ^3.1.11
     "@types/stack-utils": ^2.0.3
     "@types/tmp": ^0.2.3

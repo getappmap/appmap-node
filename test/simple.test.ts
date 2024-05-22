@@ -1,9 +1,11 @@
+import { spawn } from "node:child_process";
 import { cpSync, mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import tmp from "tmp";
 
 import {
+  getAppMapBinPath,
   integrationTest,
   readAppmap,
   readAppmaps,
@@ -42,6 +44,32 @@ integrationTestSkipOnWindows("forwarding signals to the child", async () => {
   expect(daemon.exitCode).toBe(42);
   expect(readAppmap()).toMatchSnapshot();
 });
+
+integrationTestSkipOnWindows(
+  "forwards SIGINT (ctrl-c) properly to the grandchild having active setInterval",
+  async () => {
+    // This test tests a fix (see: forwardSignals.ts) for a bug which occured
+    // when there is a script with active setInterval call and appmap-node
+    // runs this script indirectly with a node process: appmap-node node interval.js.
+    // We run the commands similarly as reported in:
+    // https://github.com/getappmap/appmap-node/issues/118
+    const child = spawn("npx", [getAppMapBinPath(), "node", "interval.js"], {
+      cwd: resolveTarget(),
+      shell: true,
+      detached: true,
+    });
+
+    await new Promise<void>(
+      (r) =>
+        child.stdout?.on("data", (chunk: Buffer) => chunk.toString().includes("heartbeat") && r()),
+    );
+
+    process.kill(-child.pid!, "SIGINT");
+
+    await new Promise<void>((r) => child.once("exit", r));
+    expect(readAppmap()).toMatchSnapshot();
+  },
+);
 
 integrationTest("mapping generator functions", () => {
   expect(runAppmapNode("generator.js").status).toBe(0);
