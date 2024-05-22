@@ -1,3 +1,10 @@
+# [2.23.0](https://github.com/getappmap/appmap-node/compare/v2.22.0...v2.23.0) (2024-05-22)
+
+
+### Features
+
+* Add `language` to appmap.yml ([a9f37b3](https://github.com/getappmap/appmap-node/commit/a9f37b386b56af6c84a8ef08f2328d48d4d7a9c7))
+
 # [2.22.0](https://github.com/getappmap/appmap-node/compare/v2.21.1...v2.22.0) (2024-05-20)
 
 
