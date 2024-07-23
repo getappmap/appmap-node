@@ -1,3 +1,10 @@
+## [2.23.1](https://github.com/getappmap/appmap-node/compare/v2.23.0...v2.23.1) (2024-07-23)
+
+
+### Bug Fixes
+
+* Don't use blocking fs function in remote recording finish ([40bcd0c](https://github.com/getappmap/appmap-node/commit/40bcd0cd4c914f66fe88ca7a311f9f7521059933))
+
 # [2.23.0](https://github.com/getappmap/appmap-node/compare/v2.22.0...v2.23.0) (2024-05-22)
 
 

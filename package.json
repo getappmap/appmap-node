@@ -1,6 +1,6 @@
 {
   "name": "appmap-node",
-  "version": "2.23.0",
+  "version": "2.23.1",
   "description": "AppMap agent for Node.js",
   "keywords": [
     "AppMap",
