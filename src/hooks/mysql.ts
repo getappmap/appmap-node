@@ -56,7 +56,8 @@ function createQueryProxy(query: mysql.QueryFunction) {
         if (err)
           recordings.forEach(
             (recording, idx) =>
-              isActive(recording) && recording.functionException(callEvents[idx].id, err, startTime),
+              isActive(recording) &&
+              recording.functionException(callEvents[idx].id, err, startTime),
           );
         else
           recordings.forEach(

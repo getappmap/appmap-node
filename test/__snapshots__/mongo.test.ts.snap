@@ -70,110 +70,6 @@ exports[`mapping MongoDB tests 1`] = `
       "type": "package",
     },
   ],
-  "eventUpdates": {
-    "10": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 10,
-      "parent_id": 9,
-      "return_value": {
-        "class": "Promise<Object>",
-        "object_id": 10,
-        "value": "Promise {
-  {
-    acknowledged: true,
-    modifiedCount: 1,
-    upsertedId: null,
-    upsertedCount: 0,
-    matchedCount: 1
-  }
-}",
-      },
-      "thread_id": 0,
-    },
-    "14": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 14,
-      "parent_id": 11,
-      "return_value": {
-        "class": "Promise<Object>",
-        "object_id": 14,
-        "value": "Promise { { _id: new ObjectId('test'), a: 3 } }",
-      },
-      "thread_id": 0,
-    },
-    "16": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 16,
-      "parent_id": 15,
-      "return_value": {
-        "class": "Promise<Number>",
-        "object_id": 15,
-        "value": "Promise { 2 }",
-      },
-      "thread_id": 0,
-    },
-    "3": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 3,
-      "parent_id": 2,
-      "return_value": {
-        "class": "Promise<Boolean>",
-        "object_id": 2,
-        "value": "Promise { true }",
-      },
-      "thread_id": 0,
-    },
-    "4": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 4,
-      "parent_id": 1,
-      "return_value": {
-        "class": "Promise<undefined>",
-        "object_id": 3,
-        "value": "Promise { undefined }",
-      },
-      "thread_id": 0,
-    },
-    "6": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 6,
-      "parent_id": 5,
-      "return_value": {
-        "class": "Promise<Object>",
-        "object_id": 5,
-        "value": "Promise {
-  {
-    acknowledged: true,
-    insertedId: new ObjectId('test')
-  }
-}",
-      },
-      "thread_id": 0,
-    },
-    "8": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 8,
-      "parent_id": 7,
-      "return_value": {
-        "class": "Promise<Object>",
-        "object_id": 7,
-        "value": "Promise {
-  {
-    acknowledged: true,
-    insertedId: new ObjectId('test')
-  }
-}",
-      },
-      "thread_id": 0,
-    },
-  },
   "events": [
     {
       "defined_class": "index",
@@ -208,21 +104,9 @@ exports[`mapping MongoDB tests 1`] = `
       "id": 3,
       "parent_id": 2,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<Boolean>",
         "object_id": 2,
-        "value": "Promise { <pending> }",
-      },
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 4,
-      "parent_id": 1,
-      "return_value": {
-        "class": "Promise",
-        "object_id": 3,
-        "value": "Promise { <pending> }",
+        "value": "Promise { true }",
       },
       "thread_id": 0,
     },
@@ -261,9 +145,12 @@ exports[`mapping MongoDB tests 1`] = `
       "id": 6,
       "parent_id": 5,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<Object>",
         "object_id": 5,
-        "value": "Promise { <pending> }",
+        "value": "Promise { {
+  acknowledged: true,
+  insertedId: ObjectId { [Symbol(id)]: [Buffer [Uint8Array]] }
+} }",
       },
       "thread_id": 0,
     },
@@ -302,9 +189,12 @@ exports[`mapping MongoDB tests 1`] = `
       "id": 8,
       "parent_id": 7,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<Object>",
         "object_id": 7,
-        "value": "Promise { <pending> }",
+        "value": "Promise { {
+  acknowledged: true,
+  insertedId: ObjectId { [Symbol(id)]: [Buffer [Uint8Array]] }
+} }",
       },
       "thread_id": 0,
     },
@@ -361,9 +251,15 @@ exports[`mapping MongoDB tests 1`] = `
       "id": 10,
       "parent_id": 9,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<Object>",
         "object_id": 10,
-        "value": "Promise { <pending> }",
+        "value": "Promise { {
+  acknowledged: true,
+  modifiedCount: 1,
+  upsertedId: null,
+  upsertedCount: 0,
+  matchedCount: 1
+} }",
       },
       "thread_id": 0,
     },
@@ -450,9 +346,9 @@ exports[`mapping MongoDB tests 1`] = `
       "id": 14,
       "parent_id": 11,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<Object>",
         "object_id": 14,
-        "value": "Promise { <pending> }",
+        "value": "Promise { { _id: ObjectId { [Symbol(id)]: [Buffer [Uint8Array]] }, a: 3 } }",
       },
       "thread_id": 0,
     },
@@ -478,9 +374,21 @@ exports[`mapping MongoDB tests 1`] = `
       "id": 16,
       "parent_id": 15,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<Number>",
         "object_id": 15,
-        "value": "Promise { <pending> }",
+        "value": "Promise { 2 }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 3,
+        "value": "Promise { undefined }",
       },
       "thread_id": 0,
     },
