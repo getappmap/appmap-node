@@ -17,8 +17,8 @@ describe(AppMapStream, () => {
     const stream = new AppMapStream("./test.appmap.json");
     expect(stream.seenAny).toBe(false);
 
-    stream.emit({ event: "call" });
-    stream.emit({ event: "return" });
+    stream.push({ event: "call" });
+    stream.push({ event: "return" });
     expect(stream.close()).toBe(true);
 
     expect(stream.seenAny).toBe(true);

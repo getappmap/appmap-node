@@ -9,6 +9,8 @@ import { getActiveRecordings } from "../recorder";
 import { FunctionInfo } from "../registry";
 import config from "../config";
 import { setCustomInspect } from "../parameter";
+import { isPromise } from "node:util/types";
+import Recording, { EventBuffer } from "../Recording";
 
 const patchedModules = new WeakSet<object>();
 const sqlHookAttachedPrismaClientInstances = new WeakSet<object>();
@@ -124,6 +126,15 @@ function getFunctionInfo(model: string, action: string, moduleId: string) {
 // than 2 levels deep structure.
 const argsCustomInspect = (v: unknown) => inspect(v, { customInspect: true, depth: 10 });
 
+// We need to create sql events in the same async context with the function call
+// events created to represent Prisma query methods. Context is remembered between
+// the function call and return events (created after promise is settled) of a Prisma
+// query method. On the other hand, events created by listening to direct queries
+// sent with prisma.$queryRaw() for example may not appear inside the context of the
+// async function running prisma.$queryRaw() because we won't have the same context
+// in the callback.
+let queryMethodContext: EventBuffer | undefined;
+
 function createPrismaClientMethodProxy<T extends (...args: unknown[]) => unknown>(
   prismaClientMethod: T,
   moduleId: string,
@@ -139,9 +150,17 @@ function createPrismaClientMethodProxy<T extends (...args: unknown[]) => unknown
           const action = requestParams.action;
           const model = requestParams.model;
           const argsArg = [setCustomInspect(requestParams.args, argsCustomInspect)];
-          prismaCalls = recordings.map((recording) =>
-            recording.functionCall(getFunctionInfo(model, action, moduleId), model, argsArg),
-          );
+
+          queryMethodContext = Recording.getContext();
+
+          prismaCalls = recordings.map((recording) => {
+            const result = recording.functionCall(
+              getFunctionInfo(model, action, moduleId),
+              model,
+              argsArg,
+            );
+            return result;
+          });
         }
       }
 
@@ -151,9 +170,14 @@ function createPrismaClientMethodProxy<T extends (...args: unknown[]) => unknown
         try {
           const result = target.apply(thisArg, argArray);
 
-          recordings.forEach((recording, idx) =>
-            recording.functionReturn(calls[idx].id, result, startTime),
-          );
+          assert(isPromise(result));
+          void result.finally(() => {
+            queryMethodContext = undefined;
+            recordings.forEach((recording, idx) =>
+              recording.functionReturn(calls[idx].id, result, startTime),
+            );
+          });
+
           return result;
         } catch (exn: unknown) {
           recordings.forEach((recording, idx) =>
@@ -190,12 +214,17 @@ function attachSqlHook(thisArg: unknown) {
   assert("$on" in thisArg && typeof thisArg.$on === "function");
   thisArg.$on("query", (queryEvent: QueryEvent) => {
     const recordings = getActiveRecordings();
-    const callEvents = recordings.map((recording) => recording.sqlQuery(dbType, queryEvent.query));
-    const elapsedSec = queryEvent.duration / 1000.0;
-    // Give a startTime so that functionReturn calculates same elapsedSec
-    const startTime = getTime() - elapsedSec;
-    recordings.forEach((recording, idx) =>
-      recording.functionReturn(callEvents[idx].id, undefined, startTime),
-    );
+
+    Recording.run(queryMethodContext, () => {
+      const callEvents = recordings.map((recording) =>
+        recording.sqlQuery(dbType, queryEvent.query),
+      );
+      const elapsedSec = queryEvent.duration / 1000.0;
+      // Give a startTime so that functionReturn calculates same elapsedSec
+      const startTime = getTime() - elapsedSec;
+      recordings.forEach((recording, idx) =>
+        recording.functionReturn(callEvents[idx].id, undefined, startTime),
+      );
+    });
   });
 }

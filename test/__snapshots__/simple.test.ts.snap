@@ -277,6 +277,360 @@ exports[`mapping a custom Error class with a message property 1`] = `
 }
 `;
 
+exports[`mapping a script with tangled async functions 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "async.mjs:13",
+              "name": "processMessage",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "async.mjs:18",
+              "name": "task",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "async.mjs:3",
+              "name": "process",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "async.mjs:8",
+              "name": "getMessage",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "async",
+          "type": "class",
+        },
+      ],
+      "name": "simple",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "defined_class": "async",
+      "event": "call",
+      "id": 1,
+      "lineno": 18,
+      "method_id": "task",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "name",
+          "value": "'first'",
+        },
+      ],
+      "path": "async.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "async",
+      "event": "call",
+      "id": 2,
+      "lineno": 3,
+      "method_id": "process",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "name",
+          "value": "'first'",
+        },
+      ],
+      "path": "async.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "async",
+      "event": "call",
+      "id": 3,
+      "lineno": 8,
+      "method_id": "getMessage",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "message",
+          "value": "'process first'",
+        },
+      ],
+      "path": "async.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 3,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 1,
+        "value": "Promise { 'message is process first' }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "async",
+      "event": "call",
+      "id": 17,
+      "lineno": 13,
+      "method_id": "processMessage",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "message",
+          "value": "'message is process first'",
+        },
+      ],
+      "path": "async.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 18,
+      "parent_id": 17,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 9,
+        "value": "Promise { 'processed message message is process first' }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 5,
+      "parent_id": 2,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 2,
+        "value": "Promise { 'processed message message is process first' }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "async",
+      "event": "call",
+      "id": 13,
+      "lineno": 8,
+      "method_id": "getMessage",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "message",
+          "value": "'first toplevel'",
+        },
+      ],
+      "path": "async.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 14,
+      "parent_id": 13,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 7,
+        "value": "Promise { 'message is first toplevel' }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 3,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "async",
+      "event": "call",
+      "id": 7,
+      "lineno": 18,
+      "method_id": "task",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "name",
+          "value": "'second'",
+        },
+      ],
+      "path": "async.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "async",
+      "event": "call",
+      "id": 8,
+      "lineno": 3,
+      "method_id": "process",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "name",
+          "value": "'second'",
+        },
+      ],
+      "path": "async.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "async",
+      "event": "call",
+      "id": 9,
+      "lineno": 8,
+      "method_id": "getMessage",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "message",
+          "value": "'process second'",
+        },
+      ],
+      "path": "async.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 10,
+      "parent_id": 9,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 4,
+        "value": "Promise { 'message is process second' }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "async",
+      "event": "call",
+      "id": 19,
+      "lineno": 13,
+      "method_id": "processMessage",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "message",
+          "value": "'message is process second'",
+        },
+      ],
+      "path": "async.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 20,
+      "parent_id": 19,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 10,
+        "value": "Promise { 'processed message message is process second' }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 11,
+      "parent_id": 8,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 5,
+        "value": "Promise { 'processed message message is process second' }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "async",
+      "event": "call",
+      "id": 15,
+      "lineno": 8,
+      "method_id": "getMessage",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "message",
+          "value": "'second toplevel'",
+        },
+      ],
+      "path": "async.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 16,
+      "parent_id": 15,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 8,
+        "value": "Promise { 'message is second toplevel' }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 12,
+      "parent_id": 7,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 6,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "simple",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
+
 exports[`mapping a simple script 1`] = `
 {
   "classMap": [
@@ -347,51 +701,6 @@ exports[`mapping a simple script 1`] = `
       "type": "package",
     },
   ],
-  "eventUpdates": {
-    "10": {
-      "elapsed": 31.337,
-      "event": "return",
-      "exceptions": [
-        {
-          "class": "Error",
-          "message": "throws intentionally",
-          "object_id": 5,
-        },
-      ],
-      "id": 10,
-      "parent_id": 9,
-      "return_value": {
-        "class": "Promise",
-        "object_id": 3,
-        "value": "Promise { <rejected> }",
-      },
-      "thread_id": 0,
-    },
-    "12": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 12,
-      "parent_id": 11,
-      "return_value": {
-        "class": "Promise<String>",
-        "object_id": 4,
-        "value": "Promise { 'immediate' }",
-      },
-      "thread_id": 0,
-    },
-    "8": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 8,
-      "parent_id": 7,
-      "return_value": {
-        "class": "Promise<String>",
-        "object_id": 2,
-        "value": "Promise { 'promised return' }",
-      },
-      "thread_id": 0,
-    },
-  },
   "events": [
     {
       "defined_class": "index",
@@ -491,9 +800,9 @@ exports[`mapping a simple script 1`] = `
       "id": 8,
       "parent_id": 7,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<String>",
         "object_id": 2,
-        "value": "Promise { <pending> }",
+        "value": "Promise { 'promised return' }",
       },
       "thread_id": 0,
     },
@@ -515,14 +824,46 @@ exports[`mapping a simple script 1`] = `
       "thread_id": 0,
     },
     {
+      "defined_class": "index",
+      "event": "call",
+      "id": 27,
+      "lineno": 20,
+      "method_id": "throws",
+      "parameters": [],
+      "path": "index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
+      "exceptions": [
+        {
+          "class": "Error",
+          "message": "throws intentionally",
+          "object_id": 5,
+        },
+      ],
+      "id": 28,
+      "parent_id": 27,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "Error",
+          "message": "throws intentionally",
+          "object_id": 5,
+        },
+      ],
       "id": 10,
       "parent_id": 9,
       "return_value": {
         "class": "Promise",
         "object_id": 3,
-        "value": "Promise { <pending> }",
+        "value": "Promise { <rejected> }",
       },
       "thread_id": 0,
     },
@@ -543,9 +884,9 @@ exports[`mapping a simple script 1`] = `
       "id": 12,
       "parent_id": 11,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<String>",
         "object_id": 4,
-        "value": "Promise { <pending> }",
+        "value": "Promise { 'immediate' }",
       },
       "thread_id": 0,
     },
@@ -689,31 +1030,6 @@ exports[`mapping a simple script 1`] = `
       "event": "return",
       "id": 26,
       "parent_id": 23,
-      "thread_id": 0,
-    },
-    {
-      "defined_class": "index",
-      "event": "call",
-      "id": 27,
-      "lineno": 20,
-      "method_id": "throws",
-      "parameters": [],
-      "path": "index.js",
-      "static": true,
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
-      "exceptions": [
-        {
-          "class": "Error",
-          "message": "throws intentionally",
-          "object_id": 5,
-        },
-      ],
-      "id": 28,
-      "parent_id": 27,
       "thread_id": 0,
     },
   ],

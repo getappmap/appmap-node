@@ -75,13 +75,15 @@ export function record<This, Return>(
 
   const startTime = getTime();
   try {
-    const result = fun.apply(this, args);
+    const result = funInfo.async
+      ? Recording.fork(() => fun.apply(this, args))
+      : fun.apply(this, args);
     recordings.forEach((recording, idx) =>
       recording.functionReturn(callEvents[idx].id, result, startTime),
     );
     return result;
   } catch (exn: unknown) {
-    recordings.map((recording, idx) =>
+    recordings.forEach((recording, idx) =>
       recording.functionException(callEvents[idx].id, exn, startTime),
     );
     throw exn;

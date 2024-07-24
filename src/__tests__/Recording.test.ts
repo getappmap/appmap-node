@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { AsyncLocalStorage } from "node:async_hooks";
-import { setTimeout } from "node:timers/promises";
 
 import AppMapStream from "../AppMapStream";
 import { makeReturnEvent } from "../event";

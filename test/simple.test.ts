@@ -115,6 +115,11 @@ integrationTest("running a script after changing the current directory", () => {
   expect(readAppmap()).toBeDefined();
 });
 
+integrationTest("mapping a script with tangled async functions", () => {
+  expect(runAppmapNode("async.mjs").status).toBe(0);
+  expect(readAppmap()).toMatchSnapshot();
+});
+
 integrationTest("creating a default config file", () => {
   const index = resolveTarget("index.js");
   const target = tmp.dirSync({ unsafeCleanup: true });

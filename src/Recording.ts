@@ -1,4 +1,5 @@
 import assert from "node:assert";
+import { AsyncLocalStorage } from "node:async_hooks";
 import { readFileSync, renameSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { inspect } from "node:util";
@@ -13,8 +14,8 @@ import { getDefaultMetadata } from "./metadata";
 import { parameter } from "./parameter";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
-import { shouldRecord } from "./recorderControl";
 import { getTime } from "./util/getTime";
+import { warn } from "./message";
 
 export default class Recording {
   constructor(type: AppMap.RecorderType, recorder: string, ...names: string[]) {
@@ -32,7 +33,7 @@ export default class Recording {
 
   private nextId = 1;
   private functionsSeen = new Set<FunctionInfo>();
-  private stream: AppMapStream | undefined;
+  private stream: AppMapStream;
   private partPath: string;
   public readonly path;
   public metadata: AppMap.Metadata;
@@ -198,30 +199,25 @@ export default class Recording {
     return event;
   }
 
-  private emit(event: unknown) {
-    // Check here if we should record instead of requiring each
-    // possible hook to check it.
-    // This is also checked in recorder.record() to prevent
-    // unnecessary event object creation. Checking this inside hooks,
-    // (http, sqlite, pg, mysql, ...) will save some CPU cycles but
-    // will complicate their code.
-    if (!shouldRecord()) return;
-    assert(this.stream);
-    this.stream.emit(event);
-  }
-
   private eventUpdates: Record<number, AppMap.Event> = {};
 
   fixup(event: AppMap.Event) {
-    this.eventUpdates[event.id] = event;
+    if (this.bufferedEvents.has(event.id)) {
+      const buffered = this.bufferedEvents.get(event.id)!;
+      if (event === buffered) return;
+      else Object.assign(buffered, event);
+    } else this.eventUpdates[event.id] = event;
   }
 
   abandon(): void {
-    if (this.stream?.close()) rmSync(this.partPath);
-    this.stream = undefined;
+    if (this.running && this.stream?.close()) rmSync(this.partPath);
+    this.running = false;
+    this.disposeBufferedEvents(Recording.rootBuffer);
   }
 
   finish(): boolean {
+    if (!this.running) return false;
+    this.passEvents(this.stream, Recording.rootBuffer);
     const written = this.stream?.close(
       compactObject({
         classMap: makeClassMap(this.functionsSeen.keys()),
@@ -229,23 +225,84 @@ export default class Recording {
         eventUpdates: Object.keys(this.eventUpdates).length > 0 ? this.eventUpdates : undefined,
       }),
     );
-    this.stream = undefined;
     if (written) {
       renameSync(this.partPath, this.path);
       writtenAppMaps.push(this.path);
     }
+    this.running = false;
+    this.disposeBufferedEvents(Recording.rootBuffer);
     return !!written;
   }
 
-  get running(): boolean {
-    return !!this.stream;
+  public running = true;
+
+  private bufferedEvents = new Map<number, AppMap.Event>();
+
+  public emit(event: AppMap.Event) {
+    if (!this.running) {
+      warn("event emitted while recording not running");
+      return;
+    }
+    if (Recording.buffering) {
+      this.bufferedEvents.set(event.id, event);
+      Recording.buffer.push({ event, owner: new WeakRef(this) });
+    } else this.stream.push(event);
+  }
+
+  private static rootBuffer: EventBuffer = [];
+  private static asyncStorage = new AsyncLocalStorage<EventBuffer>();
+
+  private static get buffering(): boolean {
+    return Recording.rootBuffer.length > 0;
+  }
+
+  private static get buffer(): EventBuffer {
+    return Recording.asyncStorage.getStore() ?? Recording.rootBuffer;
+  }
+
+  public static fork<T>(fun: () => T): T {
+    const forked: EventBuffer = [];
+    Recording.buffer.push(forked);
+    return Recording.asyncStorage.run(forked, fun);
+  }
+
+  public static run(context: EventBuffer | undefined, fun: () => void) {
+    if (context) Recording.asyncStorage.run(context, fun);
+    else fun();
+  }
+
+  public static getContext() {
+    return Recording.asyncStorage.getStore();
   }
 
   readAppMap(): AppMap.AppMap {
     assert(!this.running);
     return JSON.parse(readFileSync(this.path, "utf8")) as AppMap.AppMap;
   }
+
+  private passEvents(stream: AppMapStream, buffer: EventBuffer) {
+    for (const event of buffer) {
+      if (Array.isArray(event)) this.passEvents(stream, event);
+      else if (event?.owner.deref() == this) stream.push(event.event);
+    }
+  }
+
+  private disposeBufferedEvents(buffer: EventBuffer) {
+    for (let i = 0; i < buffer.length; i++) {
+      const event = buffer[i];
+      if (Array.isArray(event)) this.disposeBufferedEvents(event);
+      else if (event?.owner.deref() == this) buffer[i] = null;
+    }
+  }
 }
+
+interface EventWithOwner {
+  owner: WeakRef<Recording>;
+  event: AppMap.Event;
+}
+
+type EventOrBuffer = EventWithOwner | null | EventOrBuffer[];
+export type EventBuffer = EventOrBuffer[];
 
 export const writtenAppMaps: string[] = [];
 

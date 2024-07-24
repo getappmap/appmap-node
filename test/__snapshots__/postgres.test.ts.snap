@@ -22,70 +22,6 @@ exports[`mapping PostgreSQL tests 1`] = `
       "type": "package",
     },
   ],
-  "eventUpdates": {
-    "2": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 2,
-      "parent_id": 1,
-      "return_value": {
-        "class": "Promise<undefined>",
-        "object_id": 1,
-        "value": "Promise { undefined }",
-      },
-      "thread_id": 0,
-    },
-    "4": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 4,
-      "parent_id": 3,
-      "return_value": {
-        "class": "Promise<Result>",
-        "object_id": 2,
-        "value": "Promise {
-  Result {
-    command: 'SELECT',
-    rowCount: 1,
-    oid: null,
-    rows: [Array],
-    fields: [Array],
-    _parsers: [Array],
-    _types: [TypeOverrides],
-    RowCtor: null,
-    rowAsArray: false,
-    _prebuiltEmptyResultObject: [Object]
-  }
-}",
-      },
-      "thread_id": 0,
-    },
-    "8": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 8,
-      "parent_id": 7,
-      "return_value": {
-        "class": "Promise<Result>",
-        "object_id": 3,
-        "value": "Promise {
-  Result {
-    command: 'SELECT',
-    rowCount: 1,
-    oid: null,
-    rows: [Array],
-    fields: [Array],
-    _parsers: [Array],
-    _types: [TypeOverrides],
-    RowCtor: null,
-    rowAsArray: false,
-    _prebuiltEmptyResultObject: [Object]
-  }
-}",
-      },
-      "thread_id": 0,
-    },
-  },
   "events": [
     {
       "defined_class": "index",
@@ -96,18 +32,6 @@ exports[`mapping PostgreSQL tests 1`] = `
       "parameters": [],
       "path": "index.js",
       "static": true,
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 2,
-      "parent_id": 1,
-      "return_value": {
-        "class": "Promise",
-        "object_id": 1,
-        "value": "Promise { <pending> }",
-      },
       "thread_id": 0,
     },
     {
@@ -125,9 +49,20 @@ exports[`mapping PostgreSQL tests 1`] = `
       "id": 4,
       "parent_id": 3,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<Result>",
         "object_id": 2,
-        "value": "Promise { <pending> }",
+        "value": "Promise { Result {
+  command: 'SELECT',
+  rowCount: 1,
+  oid: null,
+  rows: [ [Object] ],
+  fields: [ [Field], [Field] ],
+  _parsers: [ [Function: noParse], [Function: noParse] ],
+  _types: TypeOverrides { _types: [Object], text: {}, binary: {} },
+  RowCtor: null,
+  rowAsArray: false,
+  _prebuiltEmptyResultObject: { name: null, setting: null }
+} }",
       },
       "thread_id": 0,
     },
@@ -162,9 +97,32 @@ exports[`mapping PostgreSQL tests 1`] = `
       "id": 8,
       "parent_id": 7,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<Result>",
         "object_id": 3,
-        "value": "Promise { <pending> }",
+        "value": "Promise { Result {
+  command: 'SELECT',
+  rowCount: 1,
+  oid: null,
+  rows: [ [Object] ],
+  fields: [ [Field], [Field] ],
+  _parsers: [ [Function: noParse], [Function: noParse] ],
+  _types: TypeOverrides { _types: [Object], text: {}, binary: {} },
+  RowCtor: null,
+  rowAsArray: false,
+  _prebuiltEmptyResultObject: { name: null, setting: null }
+} }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 1,
+        "value": "Promise { undefined }",
       },
       "thread_id": 0,
     },
