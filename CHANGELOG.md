@@ -1,3 +1,10 @@
+## [2.23.2](https://github.com/getappmap/appmap-node/compare/v2.23.1...v2.23.2) (2024-07-29)
+
+
+### Bug Fixes
+
+* Handle parent Ctrl-C in child process with setInterval ([e7f82f4](https://github.com/getappmap/appmap-node/commit/e7f82f4c763fd11ebdae267c536e40a243ef9bce)), closes [#118](https://github.com/getappmap/appmap-node/issues/118)
+
 ## [2.23.1](https://github.com/getappmap/appmap-node/compare/v2.23.0...v2.23.1) (2024-07-23)
 
 
