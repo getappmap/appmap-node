@@ -11,6 +11,7 @@ import {
   readAppmaps,
   resolveTarget,
   runAppmapNode,
+  runAppmapNodeWithOptions,
   spawnAppmapNode,
   testDir,
 } from "./helpers";
@@ -119,6 +120,33 @@ integrationTest("mapping a script with tangled async functions", () => {
   expect(runAppmapNode("async.mjs").status).toBe(0);
   expect(readAppmap()).toMatchSnapshot();
 });
+
+const asyncTimeoutCases = new Map<string, string[]>([
+  // No async tracking
+  ["0", ["1 task", "2 process", "return 2", "return 1", "5 getMessage", "return 5"]],
+  // Async tracking with a quick timeout
+  ["10", ["1 task", "5 getMessage", "return 5", "2 process", "return 2", "return 1"]],
+  // Full async tracking
+  ["3000", ["1 task", "2 process", "5 getMessage", "return 5", "return 2", "return 1"]],
+]);
+
+for (const [timeout, expectedOrder] of asyncTimeoutCases) {
+  integrationTest("mapping a script using async tracking timeout " + timeout, () => {
+    const options = {
+      env: { ...process.env, APPMAP_ASYNC_TRACKING_TIMEOUT: timeout },
+    };
+    expect(runAppmapNodeWithOptions(options, "asyncTimeout.mjs").status).toBe(0);
+    const appmap = readAppmap();
+    expect(
+      appmap.events?.map((e) =>
+        e.event == "call" && "method_id" in e
+          ? `${e.id} ${e.method_id}`
+          : `${e.event} ${"parent_id" in e ? e.parent_id : ""}`,
+      ),
+    ).toEqual(expectedOrder);
+    expect(appmap).toMatchSnapshot();
+  });
+}
 
 integrationTest("creating a default config file", () => {
   const index = resolveTarget("index.js");

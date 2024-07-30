@@ -14,7 +14,7 @@ import { getDefaultMetadata } from "./metadata";
 import { parameter } from "./parameter";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
-import { getTime } from "./util/getTime";
+import { getTime, getTimeInMilliseconds } from "./util/getTime";
 import { warn } from "./message";
 
 export default class Recording {
@@ -243,17 +243,32 @@ export default class Recording {
       warn("event emitted while recording not running");
       return;
     }
-    if (Recording.buffering) {
+    // If the current buffer is alive more than allowed pass its events
+    // to the stream and clear it recursively.
+    if (Recording.buffering && !Recording.buffer.disposed && config().asyncTrackingTimeout != 0) {
+      const elapsed = getTimeInMilliseconds() - Recording.buffer.createdAt;
+      if (elapsed >= config().asyncTrackingTimeout)
+        Recording.passEventsAndClearBuffer(Recording.buffer);
+    }
+
+    if (Recording.buffering && !Recording.buffer.disposed && config().asyncTrackingTimeout != 0) {
       this.bufferedEvents.set(event.id, event);
-      Recording.buffer.push({ event, owner: new WeakRef(this) });
+      Recording.buffer.items.push({ event, owner: new WeakRef(this) });
     } else this.stream.push(event);
   }
 
-  private static rootBuffer: EventBuffer = [];
+  private static _rootBuffer: EventBuffer | undefined;
+  private static get rootBuffer(): EventBuffer {
+    if (Recording._rootBuffer == undefined)
+      Recording._rootBuffer = { items: [], disposed: false, createdAt: getTimeInMilliseconds() };
+
+    return Recording._rootBuffer;
+  }
+
   private static asyncStorage = new AsyncLocalStorage<EventBuffer>();
 
   private static get buffering(): boolean {
-    return Recording.rootBuffer.length > 0;
+    return Recording.rootBuffer.items.length > 0;
   }
 
   private static get buffer(): EventBuffer {
@@ -261,8 +276,9 @@ export default class Recording {
   }
 
   public static fork<T>(fun: () => T): T {
-    const forked: EventBuffer = [];
-    Recording.buffer.push(forked);
+    const forked: EventBuffer = { items: [], disposed: false, createdAt: getTimeInMilliseconds() };
+    Recording.buffer.items.push(forked);
+
     return Recording.asyncStorage.run(forked, fun);
   }
 
@@ -275,25 +291,44 @@ export default class Recording {
     return Recording.asyncStorage.getStore();
   }
 
+  private static passEventsAndClearBuffer(buffer: EventBuffer) {
+    for (const event of buffer.items) {
+      if (isEventBuffer(event)) this.passEventsAndClearBuffer(event);
+      else {
+        const recording = event?.owner.deref();
+        if (event && recording) {
+          recording.stream.push(event.event);
+          recording.bufferedEvents.delete(event.event.id);
+        }
+      }
+    }
+    buffer.disposed = true;
+    buffer.items = [];
+  }
+
   readAppMap(): AppMap.AppMap {
     assert(!this.running);
     return JSON.parse(readFileSync(this.path, "utf8")) as AppMap.AppMap;
   }
 
   private passEvents(stream: AppMapStream, buffer: EventBuffer) {
-    for (const event of buffer) {
-      if (Array.isArray(event)) this.passEvents(stream, event);
+    for (const event of buffer.items) {
+      if (isEventBuffer(event)) this.passEvents(stream, event);
       else if (event?.owner.deref() == this) stream.push(event.event);
     }
   }
 
   private disposeBufferedEvents(buffer: EventBuffer) {
-    for (let i = 0; i < buffer.length; i++) {
-      const event = buffer[i];
-      if (Array.isArray(event)) this.disposeBufferedEvents(event);
-      else if (event?.owner.deref() == this) buffer[i] = null;
+    for (let i = 0; i < buffer.items.length; i++) {
+      const event = buffer.items[i];
+      if (isEventBuffer(event)) this.disposeBufferedEvents(event);
+      else if (event?.owner.deref() == this) buffer.items[i] = null;
     }
   }
+}
+
+function isEventBuffer(obj: EventOrBuffer): obj is EventBuffer {
+  return obj != null && "items" in obj;
 }
 
 interface EventWithOwner {
@@ -301,8 +336,12 @@ interface EventWithOwner {
   event: AppMap.Event;
 }
 
-type EventOrBuffer = EventWithOwner | null | EventOrBuffer[];
-export type EventBuffer = EventOrBuffer[];
+type EventOrBuffer = EventWithOwner | null | EventBuffer;
+export interface EventBuffer {
+  items: EventOrBuffer[];
+  disposed: boolean;
+  createdAt: number;
+}
 
 export const writtenAppMaps: string[] = [];
 
