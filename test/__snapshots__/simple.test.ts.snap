@@ -277,6 +277,493 @@ exports[`mapping a custom Error class with a message property 1`] = `
 }
 `;
 
+exports[`mapping a script using async tracking timeout 0 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "asyncTimeout.mjs:12",
+              "name": "task",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "asyncTimeout.mjs:3",
+              "name": "process",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "asyncTimeout.mjs:8",
+              "name": "getMessage",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "asyncTimeout",
+          "type": "class",
+        },
+      ],
+      "name": "simple",
+      "type": "package",
+    },
+  ],
+  "eventUpdates": {
+    "3": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 2,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 1,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+    "4": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 2,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+    "6": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 3,
+        "value": "Promise { 'message is process a task' }",
+      },
+      "thread_id": 0,
+    },
+  },
+  "events": [
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 1,
+      "lineno": 12,
+      "method_id": "task",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "name",
+          "value": "'a task'",
+        },
+      ],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 2,
+      "lineno": 3,
+      "method_id": "process",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "name",
+          "value": "'a task'",
+        },
+      ],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 2,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 1,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 2,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 5,
+      "lineno": 8,
+      "method_id": "getMessage",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "message",
+          "value": "'process a task'",
+        },
+      ],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 3,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "simple",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
+
+exports[`mapping a script using async tracking timeout 10 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "asyncTimeout.mjs:12",
+              "name": "task",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "asyncTimeout.mjs:3",
+              "name": "process",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "asyncTimeout.mjs:8",
+              "name": "getMessage",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "asyncTimeout",
+          "type": "class",
+        },
+      ],
+      "name": "simple",
+      "type": "package",
+    },
+  ],
+  "eventUpdates": {
+    "6": {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 3,
+        "value": "Promise { 'message is process a task' }",
+      },
+      "thread_id": 0,
+    },
+  },
+  "events": [
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 1,
+      "lineno": 12,
+      "method_id": "task",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "name",
+          "value": "'a task'",
+        },
+      ],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 5,
+      "lineno": 8,
+      "method_id": "getMessage",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "message",
+          "value": "'process a task'",
+        },
+      ],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 3,
+        "value": "Promise { <pending> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 2,
+      "lineno": 3,
+      "method_id": "process",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "name",
+          "value": "'a task'",
+        },
+      ],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 2,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 1,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 2,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "simple",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
+
+exports[`mapping a script using async tracking timeout 3000 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "asyncTimeout.mjs:12",
+              "name": "task",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "asyncTimeout.mjs:3",
+              "name": "process",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "asyncTimeout.mjs:8",
+              "name": "getMessage",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "asyncTimeout",
+          "type": "class",
+        },
+      ],
+      "name": "simple",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 1,
+      "lineno": 12,
+      "method_id": "task",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "name",
+          "value": "'a task'",
+        },
+      ],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 2,
+      "lineno": 3,
+      "method_id": "process",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "name",
+          "value": "'a task'",
+        },
+      ],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 5,
+      "lineno": 8,
+      "method_id": "getMessage",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "message",
+          "value": "'process a task'",
+        },
+      ],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 3,
+        "value": "Promise { 'message is process a task' }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 2,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 1,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise<undefined>",
+        "object_id": 2,
+        "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "simple",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
+
 exports[`mapping a script with tangled async functions 1`] = `
 {
   "classMap": [

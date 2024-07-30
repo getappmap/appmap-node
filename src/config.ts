@@ -15,6 +15,9 @@ import tryOr from "./util/tryOr";
 const responseBodyMaxLengthDefault = 10000;
 const kResponseBodyMaxLengthEnvar = "APPMAP_RESPONSE_BODY_MAX_LENGTH";
 
+const asyncTrackingTimeoutDefault = 3000;
+const kAsyncTrackingTimeoutEnvar = "APPMAP_ASYNC_TRACKING_TIMEOUT";
+
 export class Config {
   public readonly relativeAppmapDir: string;
   public readonly appName: string;
@@ -24,6 +27,8 @@ export class Config {
   public readonly packages: PackageMatcher;
   public readonly responseBodyMaxLength: number;
   public readonly language: string;
+  // If it's 0 then no async tracking.
+  public readonly asyncTrackingTimeout: number;
 
   private readonly document?: Document;
   private migrationPending = false;
@@ -59,16 +64,26 @@ export class Config {
       ],
     );
 
-    let envResponseBodyMaxLength: number | undefined;
-    if (process.env[kResponseBodyMaxLengthEnvar] != undefined) {
-      const value = parseInt(process.env[kResponseBodyMaxLengthEnvar]);
-      envResponseBodyMaxLength = value >= 0 ? value : undefined;
-      if (envResponseBodyMaxLength == undefined)
-        warn(`Environment variable ${kResponseBodyMaxLengthEnvar} must be a non-negative integer.`);
+    function getNonNegativeIntegerEnvVarValue(enVarName: string) {
+      let result: number | undefined;
+      if (process.env[enVarName] != undefined) {
+        const value = parseInt(process.env[enVarName]!);
+        result = value >= 0 ? value : undefined;
+        if (result == undefined)
+          warn(`Environment variable ${enVarName} must be a non-negative integer.`);
+      }
+      return result;
     }
 
     this.responseBodyMaxLength =
-      envResponseBodyMaxLength ?? config?.response_body_max_length ?? responseBodyMaxLengthDefault;
+      getNonNegativeIntegerEnvVarValue(kResponseBodyMaxLengthEnvar) ??
+      config?.response_body_max_length ??
+      responseBodyMaxLengthDefault;
+
+    this.asyncTrackingTimeout =
+      getNonNegativeIntegerEnvVarValue(kAsyncTrackingTimeoutEnvar) ??
+      config?.async_tracking_timeout ??
+      asyncTrackingTimeoutDefault;
   }
 
   private absoluteAppmapDir?: string;
@@ -151,6 +166,7 @@ interface ConfigFile {
   packages?: Package[];
   response_body_max_length?: number;
   language?: string;
+  async_tracking_timeout?: number;
 }
 
 // Maintaining the YAML document is important to preserve existing comments and formatting
@@ -187,6 +203,10 @@ function readConfigFile(document: Document): ConfigFile {
   if ("response_body_max_length" in config) {
     const value = parseInt(String(config.response_body_max_length));
     result.response_body_max_length = value >= 0 ? value : undefined;
+  }
+  if ("async_tracking_timeout" in config) {
+    const value = parseInt(String(config.async_tracking_timeout));
+    result.async_tracking_timeout = value >= 0 ? value : undefined;
   }
 
   return result;
