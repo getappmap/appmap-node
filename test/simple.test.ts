@@ -28,6 +28,11 @@ integrationTest("mapping an mjs script", () => {
   expect(readAppmap()).toMatchSnapshot();
 });
 
+integrationTest("mapping a script with import attributes/assertions", () => {
+  expect(runAppmapNode("importAttributes.mjs").status).toBe(0);
+  expect(readAppmap()).toMatchSnapshot();
+});
+
 integrationTest("mapping js class methods and constructors containing super keyword", () => {
   expect(runAppmapNode("class.js").status).toBe(0);
   expect(readAppmap()).toMatchSnapshot();

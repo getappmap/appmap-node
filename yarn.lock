@@ -2926,7 +2926,7 @@ __metadata:
     "@typescript-eslint/parser": ^6.4.0
     "@typescript-eslint/utils": ^6.4.0
     acorn-walk: ^8.2.0
-    astring: ^1.8.6
+    astring: "https://github.com/getappmap/astring.git#v1.8.6-import-attributes"
     caller: ^1.1.0
     chalk: <5
     eslint: ^8.47.0
@@ -2935,7 +2935,7 @@ __metadata:
     fast-glob: ^3.3.1
     jest: ^29.6.2
     json5: ^2.2.3
-    meriyah: ^4.3.7
+    meriyah: ^5.0.0
     mongodb: ^6.3.0
     next: ^14.0.4
     prettier: ^3.0.2
@@ -3056,12 +3056,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astring@npm:^1.8.6":
+"astring@https://github.com/getappmap/astring.git#v1.8.6-import-attributes":
   version: 1.8.6
-  resolution: "astring@npm:1.8.6"
+  resolution: "astring@https://github.com/getappmap/astring.git#commit=b5fc0ce6f2bb1cdb62e754270dae3f7d511ed791"
   bin:
     astring: bin/astring
-  checksum: 6f034d2acef1dac8bb231e7cc26c573d3c14e1975ea6e04f20312b43d4f462f963209bc64187d25d477a182dc3c33277959a0156ab7a3617aa79b1eac4d88e1f
+  checksum: c1c976da8a0fde41267c8af9ebaaf3ecaf2487341f6f1091811c473527762d7ef514be934f386a839036d2a10d42b885f24e152a8eeb70786e7807b91d73ec85
   languageName: node
   linkType: hard
 
@@ -7095,10 +7095,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"meriyah@npm:^4.3.7":
-  version: 4.3.7
-  resolution: "meriyah@npm:4.3.7"
-  checksum: 537fed1981bb4c2dc5fffa0c2d159fc169bff252e7a31c8b15ce3ddb9e91d8b66cacf5c932d7fc31bd522dd70d9b007e19131ac40172cd3bd27feee79c447041
+"meriyah@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "meriyah@npm:5.0.0"
+  checksum: bdd628ab956fca90d44334cc4538cdcde73bff5cf64c32aee3ddce808fe77591fcd6e6c141ec0fc5a6451776f55f6600cdcc53643b106a9e09974f169c697961
   languageName: node
   linkType: hard
 

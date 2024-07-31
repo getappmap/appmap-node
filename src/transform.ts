@@ -14,6 +14,7 @@ import * as mocha from "./hooks/mocha";
 import * as next from "./hooks/next";
 import * as vitest from "./hooks/vitest";
 import { warn } from "./message";
+import config from "./config";
 
 const debug = debuglog("appmap");
 const treeDebug = debuglog("appmap-tree");
@@ -66,6 +67,14 @@ export default function transform(code: string, url: URL, hooks = defaultHooks):
   if (!hook) return code;
 
   if (hooks.some((h) => h.shouldIgnore?.(url))) return code;
+
+  if (config().fixJsonImportAssertions) {
+    // Meriyah does not support old import-assertions.
+    // Replace import-assertions with the import-attributes syntax
+    // for json imports.
+    const regex = /assert\s*\{/g;
+    code = code.replace(regex, "with {");
+  }
 
   try {
     const comments: ESTree.Comment[] = [];

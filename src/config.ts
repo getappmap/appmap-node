@@ -143,6 +143,9 @@ export class Config {
     };
   }
 
+  // For easily toggling features/fixes for testing.
+  readonly fixJsonImportAssertions = true;
+
   migrate() {
     if (!this.migrationPending) return;
 
