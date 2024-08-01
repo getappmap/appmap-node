@@ -53,7 +53,7 @@ describe(instrument.transform, () => {
         }];
 
         function testFun(arg) {
-          return global.AppMapRecordHook.call(this, arg => {
+          return global.AppMapRecordHook.call(this, () => {
             return arg + 1;
           }, arguments, __appmapFunctionRegistry[0]);
         }
@@ -94,7 +94,7 @@ describe(instrument.transform, () => {
 
         class TestClass {
           foo(value) {
-            return global.AppMapRecordHook.call(this, value => {
+            return global.AppMapRecordHook.call(this, () => {
               return value + 1;
             }, arguments, __appmapFunctionRegistry[0]);
           }
