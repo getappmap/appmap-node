@@ -86,4 +86,21 @@ describe(parameter, () => {
     obj.items = [obj];
     expect(parameter(obj).class).toBe("Object");
   });
+
+  it('does not throw on "get" trap', () => {
+    const sentinelValue = new Proxy(
+      {},
+      {
+        get: () => {
+          throw new Error(`don't call me`);
+        },
+      },
+    );
+    const result = parameter(sentinelValue);
+    expect(result).toStrictEqual({
+      class: "unknown",
+      object_id: expect.any(Number), // eslint-disable-line @typescript-eslint/no-unsafe-assignment
+      value: "{}",
+    });
+  });
 });
