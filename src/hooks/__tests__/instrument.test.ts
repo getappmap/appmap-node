@@ -175,29 +175,29 @@ describe(instrument.transform, () => {
         },
       ];
 
-      const outer = (...args) => global.AppMapRecordHook.call(
+      const outer = (...$appmap$args) => global.AppMapRecordHook.call(
         undefined,
         (arg) => arg + 42,
-        args,
+        $appmap$args,
         __appmapFunctionRegistry[0],
       );
 
-      export const testFun = (...args) =>
+      export const testFun = (...$appmap$args) =>
         global.AppMapRecordHook.call(
           undefined,
           (arg) => {
             var s42 = y => y - 42;
             let s43 = y => y - 43;
-            const inner = (...args) =>
+            const inner = (...$appmap$args) =>
               global.AppMapRecordHook.call(
                 undefined,
                 (x) => s42(x) * 2,
-                args,
+                $appmap$args,
                 __appmapFunctionRegistry[1],
               );
             return inner(arg);
           },
-          args,
+          $appmap$args,
           __appmapFunctionRegistry[2],
         );
     `,
@@ -255,20 +255,20 @@ describe(instrument.transform, () => {
         },
       ];
 
-      exports.testFun = (...args) =>
+      exports.testFun = (...$appmap$args) =>
         global.AppMapRecordHook.call(
           undefined,
           (arg) => {
-            const inner = (...args) =>
+            const inner = (...$appmap$args) =>
               global.AppMapRecordHook.call(
                 undefined,
                 (x) => x * 2,
-                args,
+                $appmap$args,
                 __appmapFunctionRegistry[0],
               );
             return inner(arg);
           },
-          args,
+          $appmap$args,
           __appmapFunctionRegistry[1],
         );
     `,
@@ -304,8 +304,8 @@ describe(instrument.transform, () => {
           "static": true
         }];
 
-        const testFun = (...args) => global.AppMapRecordHook.call(undefined, x => x * 2,
-          args, __appmapFunctionRegistry[0]);
+        const testFun = (...$appmap$args) => global.AppMapRecordHook.call(undefined, x => x * 2,
+          $appmap$args, __appmapFunctionRegistry[0]);
 
         exports.testFun = testFun;
       `,

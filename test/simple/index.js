@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const assert = require("assert");
 const { setTimeout } = require("timers/promises");
 
 function foo(x) {
@@ -25,6 +26,18 @@ function skipped() {
   console.log("skipped");
 }
 
+function argsInClosure() {
+  // make sure "args" local is not shadowed by the instrumentation
+
+  let args = 0;
+
+  const incr = () => args++;
+
+  incr();
+  incr();
+  assert.equal(args, 2);
+}
+
 try {
   throws();
   console.log(foo(43));
@@ -36,3 +49,4 @@ console.log(foo(42));
 promised().then(console.log);
 promised(false).catch(console.log);
 immediatePromise().then(console.log);
+argsInClosure();

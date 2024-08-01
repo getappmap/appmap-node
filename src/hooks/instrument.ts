@@ -176,7 +176,7 @@ function wrapLambda(
   lambda: ESTree.ArrowFunctionExpression,
   functionInfo: FunctionInfo,
 ): ESTree.ArrowFunctionExpression {
-  const args = identifier("args");
+  const args = identifier("$appmap$args");
   return {
     type: "ArrowFunctionExpression",
     async: lambda.async,
