@@ -95,8 +95,12 @@ function parameterSchema(value: unknown, objectsSeen?: Set<object>): AppMap.Para
 }
 
 function isSimpleObject(value: unknown): value is Record<string, unknown> {
-  if (!(value && typeof value === "object")) return false;
-  return Object.getPrototypeOf(value) === null || value.constructor === Object;
+  try {
+    if (!(value && typeof value === "object")) return false;
+    return Object.getPrototypeOf(value) === null || value.constructor === Object;
+  } catch {
+    return false;
+  }
 }
 
 function itemsSchema(
