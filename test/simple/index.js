@@ -38,6 +38,16 @@ function argsInClosure() {
   assert.equal(args, 2);
 }
 
+function getDefaultA() {
+  return 42;
+}
+
+function withDefault(a = getDefaultA()) {
+  console.log("withDefault", a);
+}
+
+const withDefaultLambda = (a = getDefaultA()) => console.log("withDefaultLambda", a);
+
 try {
   throws();
   console.log(foo(43));
@@ -50,3 +60,6 @@ promised().then(console.log);
 promised(false).catch(console.log);
 immediatePromise().then(console.log);
 argsInClosure();
+
+withDefault();
+withDefaultLambda();

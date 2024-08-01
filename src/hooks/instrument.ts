@@ -227,12 +227,33 @@ function wrapCallable(
   thisArg: ESTree.Expression,
   argsArg: ESTree.Expression,
 ): ESTree.CallExpression {
-  const functionArgument: ESTree.Expression =
+  // (1) Pass the function as an arrow function expression even if the original
+  // function is not an arrow function, because of a potential super keyword inside.
+  //    global.AppMapRecordHook.call(this|undefined, () => {...}, arguments, __appmapFunctionRegistry[i])
+  //
+  // (2) If it's a generator function then pass it as a generator function since
+  // yield keyword cannot be used inside an arrow function. We don't care about (1)
+  // since we don't transform generator methods due to the potential super keyword inside.
+  //    yield* global.AppMapRecordHook.call(this|undefined, function* f() {...}, arguments, __appmapFunctionRegistry[i])
+
+  let functionArgument: ESTree.Expression =
     fd.type === "ArrowFunctionExpression"
       ? fd
       : fd.generator
       ? { ...fd, type: "FunctionExpression" }
       : toArrowFunction(fd);
+
+  // For regular (non-arrow) functions, we wrap the function, making the original
+  // function body an inner function passed to the record call. To prevent double
+  // execution of default value expressions, we omit the parameters since their
+  // names will already be accessible within the inner function.
+  //
+  // In contrast, arrow functions are wrapped differently, using the "(...args) =>"
+  // signature. For arrow functions, the parameter default value expressions are
+  // transferred to the inner arrow function parameter declaration. Refer to the
+  // instrument.transform test cases in instrument.test.ts for more details.
+  if (fd.type != "ArrowFunctionExpression") functionArgument = { ...functionArgument, params: [] };
+
   return call_(
     memberId("global", "AppMapRecordHook", "call"),
     thisArg,
@@ -252,10 +273,6 @@ function wrapFunction(
   const wrapped: ESTree.BlockStatement = {
     type: "BlockStatement",
     body: [
-      // Pass the function as an arrow function expression beacuse of a potential super keyword inside:
-      //    return global.AppMapRecordHook(this|undefined, (...) => {...}, arguments, __appmapFunctionRegistry[i])
-      // If it's a generator function then pass it as a generator function and yield* the result:
-      //    yield* global.AppMapRecordHook(this|undefined, function* f() {...}, arguments, __appmapFunctionRegistry[i])
       statement(
         wrapCallable(fd, functionInfo, thisIsUndefined ? identifier("undefined") : this_, args_),
       ),
