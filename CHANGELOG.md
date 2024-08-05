@@ -1,3 +1,13 @@
+## [2.23.4](https://github.com/getappmap/appmap-node/compare/v2.23.3...v2.23.4) (2024-08-05)
+
+
+### Bug Fixes
+
+* Instrument based on source map paths ([e059fa0](https://github.com/getappmap/appmap-node/commit/e059fa07d5420376d558f455dddc43be746fb240))
+* Instrument based on source map paths (ESM) ([86a13fb](https://github.com/getappmap/appmap-node/commit/86a13fbe6b0b8131b90311af0c03b04f3c57bfc8))
+* Lazy initialize config to prevent circular references ([780a572](https://github.com/getappmap/appmap-node/commit/780a57210f10bba782587ac1e81f1fe05544c6d7))
+* Match package paths case-insensitively on Windows ([16d3e3f](https://github.com/getappmap/appmap-node/commit/16d3e3f2284a3bc93f6011efeabe496565bc473a))
+
 ## [2.23.3](https://github.com/getappmap/appmap-node/compare/v2.23.2...v2.23.3) (2024-08-05)
 
 
