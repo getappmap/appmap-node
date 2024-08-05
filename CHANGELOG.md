@@ -1,3 +1,11 @@
+## [2.23.3](https://github.com/getappmap/appmap-node/compare/v2.23.2...v2.23.3) (2024-08-05)
+
+
+### Bug Fixes
+
+* Handle exceptions raised by getters during parameter serialization ([3ca66af](https://github.com/getappmap/appmap-node/commit/3ca66af069f2e9e1fa90275505065a3abd6ad518))
+* Use a collision-resistant name for lambda argument capture ([05af269](https://github.com/getappmap/appmap-node/commit/05af269fcfa66b2987acd8e6b2fe1f831ed0dfad)), closes [#161](https://github.com/getappmap/appmap-node/issues/161)
+
 ## [2.23.2](https://github.com/getappmap/appmap-node/compare/v2.23.1...v2.23.2) (2024-07-29)
 
 
