@@ -1,3 +1,10 @@
+## [2.23.5](https://github.com/getappmap/appmap-node/compare/v2.23.4...v2.23.5) (2024-08-05)
+
+
+### Bug Fixes
+
+* Prevent double execution of default value expressions ([d581707](https://github.com/getappmap/appmap-node/commit/d58170776681bed27d44c13ac261668a2095f86d))
+
 ## [2.23.4](https://github.com/getappmap/appmap-node/compare/v2.23.3...v2.23.4) (2024-08-05)
 
 
