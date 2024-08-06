@@ -84,6 +84,16 @@ afterEach(() => {
   resetObjectIds();
 });
 
+describe("Recording", () => {
+  it("Does not throw when emit is called with stream closed", () => {
+    const recording = new Recording("tests", "test", "test");
+    const funInfo = createTestFn("testFun");
+    const call = recording.functionCall(funInfo, undefined, []);
+    recording.finish();
+    recording.functionReturn(call.id, "result", undefined);
+  });
+});
+
 jest.mock("../AppMapStream");
 
 // DO NOT REMOVE!
