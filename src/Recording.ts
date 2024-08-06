@@ -15,6 +15,7 @@ import { parameter } from "./parameter";
 import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
 import { getTime, getTimeInMilliseconds } from "./util/getTime";
+import { shouldRecord } from "./recorderControl";
 import { warn } from "./message";
 
 export default class Recording {
@@ -239,10 +240,24 @@ export default class Recording {
   private bufferedEvents = new Map<number, AppMap.Event>();
 
   public emit(event: AppMap.Event) {
+    // Check here if we should record instead of requiring each
+    // possible hook to check it.
+    // This is also checked in recorder.record() to prevent
+    // unnecessary event object creation. Checking this inside hooks,
+    // (http, sqlite, pg, mysql, ...) will save some CPU cycles but
+    // will complicate their code.
+    if (!shouldRecord()) return;
+
     if (!this.running) {
       warn("event emitted while recording not running");
       return;
     }
+
+    if (this.stream == undefined) {
+      warn("Event emitted while stream is closed");
+      return;
+    }
+
     // If the current buffer is alive more than allowed pass its events
     // to the stream and clear it recursively.
     if (Recording.buffering && !Recording.buffer.disposed && config().asyncTrackingTimeout != 0) {
