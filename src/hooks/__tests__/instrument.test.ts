@@ -52,8 +52,11 @@ describe(instrument.transform, () => {
           "static": true
         }];
 
+        ${instrument.__appmapRecordInitFunctionDeclarationCode}
+        ${instrument.__appmapRecordVariableDeclarationCode}
+
         function testFun(arg) {
-          return global.AppMapRecordHook.call(this, () => {
+          return __appmapRecord.call(this, () => {
             return arg + 1;
           }, arguments, __appmapFunctionRegistry[0]);
         }
@@ -92,9 +95,12 @@ describe(instrument.transform, () => {
           }
         }];
 
+        ${instrument.__appmapRecordInitFunctionDeclarationCode}
+        ${instrument.__appmapRecordVariableDeclarationCode}
+
         class TestClass {
           foo(value) {
-            return global.AppMapRecordHook.call(this, () => {
+            return __appmapRecord.call(this, () => {
               return value + 1;
             }, arguments, __appmapFunctionRegistry[0]);
           }
@@ -175,7 +181,10 @@ describe(instrument.transform, () => {
         },
       ];
 
-      const outer = (...$appmap$args) => global.AppMapRecordHook.call(
+      ${instrument.__appmapRecordInitFunctionDeclarationCode}
+      ${instrument.__appmapRecordVariableDeclarationCode}
+
+      const outer = (...$appmap$args) => __appmapRecord.call(
         undefined,
         (arg) => arg + 42,
         $appmap$args,
@@ -183,13 +192,13 @@ describe(instrument.transform, () => {
       );
 
       export const testFun = (...$appmap$args) =>
-        global.AppMapRecordHook.call(
+        __appmapRecord.call(
           undefined,
           (arg) => {
             var s42 = y => y - 42;
             let s43 = y => y - 43;
             const inner = (...$appmap$args) =>
-              global.AppMapRecordHook.call(
+              __appmapRecord.call(
                 undefined,
                 (x) => s42(x) * 2,
                 $appmap$args,
@@ -255,12 +264,15 @@ describe(instrument.transform, () => {
         },
       ];
 
+      ${instrument.__appmapRecordInitFunctionDeclarationCode}
+      ${instrument.__appmapRecordVariableDeclarationCode}
+
       exports.testFun = (...$appmap$args) =>
-        global.AppMapRecordHook.call(
+        __appmapRecord.call(
           undefined,
           (arg) => {
             const inner = (...$appmap$args) =>
-              global.AppMapRecordHook.call(
+              __appmapRecord.call(
                 undefined,
                 (x) => x * 2,
                 $appmap$args,
@@ -303,8 +315,11 @@ describe(instrument.transform, () => {
           "klassOrFile": "test",
           "static": true
         }];
-
-        const testFun = (...$appmap$args) => global.AppMapRecordHook.call(undefined, x => x * 2,
+        
+        ${instrument.__appmapRecordInitFunctionDeclarationCode}
+        ${instrument.__appmapRecordVariableDeclarationCode}
+        
+        const testFun = (...$appmap$args) => __appmapRecord.call(undefined, x => x * 2,
           $appmap$args, __appmapFunctionRegistry[0]);
 
         exports.testFun = testFun;
