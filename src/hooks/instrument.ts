@@ -176,6 +176,12 @@ export function transform(
 
   if (transformedFunctionInfos.length === 0) return program;
 
+  // Add these to prevent crash from shadowing of "global" and/or "globalThis".
+  if (config().generateGlobalRecordHookCheck) {
+    program.body.unshift(__appmapRecordVariableDeclaration);
+    program.body.unshift(__appmapRecordInitFunctionDeclaration);
+  }
+
   // Add a global variable to hold the function registry (see recorder.ts)
   const functionRegistryAssignment: ESTree.VariableDeclaration = {
     type: "VariableDeclaration",
@@ -253,12 +259,12 @@ function wrapCallable(
 ): ESTree.CallExpression {
   // (1) Pass the function as an arrow function expression even if the original
   // function is not an arrow function, because of a potential super keyword inside.
-  //    global.AppMapRecordHook.call(this|undefined, () => {...}, arguments, __appmapFunctionRegistry[i])
+  //    __appmapRecord.call(this|undefined, () => {...}, arguments, __appmapFunctionRegistry[i])
   //
   // (2) If it's a generator function then pass it as a generator function since
   // yield keyword cannot be used inside an arrow function. We don't care about (1)
   // since we don't transform generator methods due to the potential super keyword inside.
-  //    yield* global.AppMapRecordHook.call(this|undefined, function* f() {...}, arguments, __appmapFunctionRegistry[i])
+  //    yield* __appmapRecord.call(this|undefined, function* f() {...}, arguments, __appmapFunctionRegistry[i])
 
   let functionArgument: ESTree.Expression =
     fd.type === "ArrowFunctionExpression"
@@ -279,7 +285,9 @@ function wrapCallable(
   if (fd.type != "ArrowFunctionExpression") functionArgument = { ...functionArgument, params: [] };
 
   return call_(
-    memberId("global", "AppMapRecordHook", "call"),
+    config().generateGlobalRecordHookCheck
+      ? memberId("__appmapRecord", "call")
+      : memberId("global", "AppMapRecordHook", "call"),
     thisArg,
     functionArgument,
     argsArg,
@@ -352,3 +360,27 @@ function exportName(expr: ESTree.Expression): ESTree.Identifier | undefined {
   }
   return undefined;
 }
+
+export const __appmapRecordVariableDeclarationCode = `const __appmapRecord = __appmapRecordInit()`;
+const __appmapRecordVariableDeclaration = parse(__appmapRecordVariableDeclarationCode, {
+  module: true,
+}).body[0] as ESTree.VariableDeclaration;
+
+export const __appmapRecordInitFunctionDeclarationCode = `
+  function __appmapRecordInit() {
+    let g = null;
+    try {
+      g = global.AppMapRecordHook;
+    } catch (e) {
+      try {
+        g = globalThis.AppMapRecordHook;
+      } catch (e) {}
+      // If global/globalThis is shadowed in the top level, we'll get:
+      // ReferenceError: Cannot access 'global' before initialization    
+    }
+    // Bypass recording if we can't access recorder to prevent a crash.
+    return g ?? ((fun, argsArg) => fun.apply(this, argsArg));
+  }`;
+const __appmapRecordInitFunctionDeclaration = parse(__appmapRecordInitFunctionDeclarationCode, {
+  module: true,
+}).body[0] as ESTree.FunctionDeclaration;
