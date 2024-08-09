@@ -10,7 +10,16 @@ import { FunctionInfo } from "./registry";
 import commonPathPrefix from "./util/commonPathPrefix";
 import { getTime } from "./util/getTime";
 
-const processRecordingShouldAlwaysBeActive = "APPMAP_RECORDER_PROCESS_ALWAYS" in process.env;
+const kAppmapRecorderProcessAlwaysEnvar = "APPMAP_RECORDER_PROCESS_ALWAYS";
+const processRecordingShouldAlwaysBeActive = isTruthy(
+  process.env[kAppmapRecorderProcessAlwaysEnvar],
+);
+
+function isTruthy(value?: string): boolean {
+  if (value == undefined) return false;
+  const truthyValues = ["true", "1", "on", "yes"];
+  return truthyValues.includes(value.toLowerCase().trim());
+}
 
 // If APPMAP_RECORDER_PROCESS_ALWAYS is set we can have
 // two recordings active simultaneously. Always active
