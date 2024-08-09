@@ -87,6 +87,11 @@ integrationTest("mapping a custom Error class with a message property", () => {
   expect(readAppmap()).toMatchSnapshot();
 });
 
+integrationTest("mapping a script with shadowed global object", () => {
+  expect(runAppmapNode("global.js").status).toBe(0);
+  expect(readAppmap()).toMatchSnapshot();
+});
+
 integrationTestSkipOnWindows("finish signal is handled", async () => {
   const server = spawnAppmapNode("server.mjs");
   await new Promise<void>((r) =>

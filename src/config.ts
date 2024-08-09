@@ -30,6 +30,12 @@ export class Config {
   // If it's 0 then no async tracking.
   public readonly asyncTrackingTimeout: number;
 
+  // This flag controls whether a check is generated for the existence
+  // of the AppMap record function in the global namespace. The check prevents
+  // crashes in environments where the global/globalThis object is shadowed or
+  // manipulated. This flag allows easy toggling of the check during testing.
+  public readonly generateGlobalRecordHookCheck: boolean = true;
+
   private readonly document?: Document;
   private migrationPending = false;
 
