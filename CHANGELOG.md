@@ -1,3 +1,17 @@
+# [2.24.0](https://github.com/getappmap/appmap-node/compare/v2.23.5...v2.24.0) (2024-08-12)
+
+
+### Bug Fixes
+
+* Crash in emit attempt when stream closed ([0f2a2b5](https://github.com/getappmap/appmap-node/commit/0f2a2b58fd59939dfca251559cf054cbc5490339))
+* Import-attributes support ([fef98fa](https://github.com/getappmap/appmap-node/commit/fef98fa35b669322f4f17eca2d3b3966d4ca46ea))
+
+
+### Features
+
+* Async context tracking ([30aa862](https://github.com/getappmap/appmap-node/commit/30aa862cc3ef7371980cea2b39394dfb04bb5d3b))
+* Control async context tracking with timeout ([4ddd343](https://github.com/getappmap/appmap-node/commit/4ddd343fa7627c5c588875cd2cc66b95f839737d))
+
 ## [2.23.5](https://github.com/getappmap/appmap-node/compare/v2.23.4...v2.23.5) (2024-08-05)
 
 
