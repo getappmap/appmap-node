@@ -131,6 +131,18 @@ integrationTest("mapping a script with tangled async functions", () => {
   expect(readAppmap()).toMatchSnapshot();
 });
 
+integrationTest.only("mapping a script using function call limits", () => {
+  const options = {
+    env: {
+      ...process.env,
+      APPMAP_MAX_RECORDED_CALLS: "5",
+      APPMAP_MAX_RECORDED_CALLS_PER_FUNCTION: "2",
+    },
+  };
+  expect(runAppmapNodeWithOptions(options, "callLimits.js").status).toBe(0);
+  expect(readAppmap()).toMatchSnapshot();
+});
+
 const asyncTimeoutCases = new Map<string, string[]>([
   // No async tracking
   ["0", ["1 task", "2 process", "return 2", "return 1", "5 getMessage", "return 5"]],
