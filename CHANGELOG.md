@@ -1,3 +1,10 @@
+## [2.24.1](https://github.com/getappmap/appmap-node/compare/v2.24.0...v2.24.1) (2024-08-13)
+
+
+### Bug Fixes
+
+* Check APPMAP_RECORDER_PROCESS_ALWAYS truthy value ([761b69a](https://github.com/getappmap/appmap-node/commit/761b69a7606fd7ecde2789050ad6fe1c07e2cb97))
+
 # [2.24.0](https://github.com/getappmap/appmap-node/compare/v2.23.5...v2.24.0) (2024-08-12)
 
 
