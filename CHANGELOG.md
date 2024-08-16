@@ -1,3 +1,10 @@
+## [2.24.2](https://github.com/getappmap/appmap-node/compare/v2.24.1...v2.24.2) (2024-08-16)
+
+
+### Bug Fixes
+
+* Crashes due to shadowed global scope object ([e05eb01](https://github.com/getappmap/appmap-node/commit/e05eb013ea6507e9cb25550df4860b231b9e425c))
+
 ## [2.24.1](https://github.com/getappmap/appmap-node/compare/v2.24.0...v2.24.1) (2024-08-13)
 
 
