@@ -2926,7 +2926,7 @@ __metadata:
     "@typescript-eslint/parser": ^6.4.0
     "@typescript-eslint/utils": ^6.4.0
     acorn-walk: ^8.2.0
-    astring: "https://github.com/getappmap/astring.git#v1.8.6-import-attributes"
+    astring: ^1.9.0
     caller: ^1.1.0
     chalk: <5
     eslint: ^8.47.0
@@ -3056,12 +3056,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astring@https://github.com/getappmap/astring.git#v1.8.6-import-attributes":
-  version: 1.8.6
-  resolution: "astring@https://github.com/getappmap/astring.git#commit=b5fc0ce6f2bb1cdb62e754270dae3f7d511ed791"
+"astring@npm:^1.9.0":
+  version: 1.9.0
+  resolution: "astring@npm:1.9.0"
   bin:
     astring: bin/astring
-  checksum: c1c976da8a0fde41267c8af9ebaaf3ecaf2487341f6f1091811c473527762d7ef514be934f386a839036d2a10d42b885f24e152a8eeb70786e7807b91d73ec85
+  checksum: 69ffde3643f5280c6846231a995af878a94d3eab41d1a19a86b8c15f456453f63a7982cf5dd72d270b9f50dd26763a3e1e48377c961b7df16f550132b6dba805
   languageName: node
   linkType: hard
 
