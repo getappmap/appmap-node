@@ -1,3 +1,10 @@
+## [2.24.3](https://github.com/getappmap/appmap-node/compare/v2.24.2...v2.24.3) (2024-09-17)
+
+
+### Bug Fixes
+
+* Hopefully fix some obscure installation issues on Windows ([63e93b3](https://github.com/getappmap/appmap-node/commit/63e93b32078a4f6687183597cefbd5a585359c3d))
+
 ## [2.24.2](https://github.com/getappmap/appmap-node/compare/v2.24.1...v2.24.2) (2024-08-16)
 
 
