@@ -764,6 +764,154 @@ exports[`mapping a script using async tracking timeout 3000 1`] = `
 }
 `;
 
+exports[`mapping a script using function call limits 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "callLimits.js:1",
+              "name": "a",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "callLimits.js:5",
+              "name": "b",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "callLimits.js:9",
+              "name": "c",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "callLimits",
+          "type": "class",
+        },
+      ],
+      "name": "simple",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "defined_class": "callLimits",
+      "event": "call",
+      "id": 1,
+      "lineno": 1,
+      "method_id": "a",
+      "parameters": [],
+      "path": "callLimits.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 2,
+      "parent_id": 1,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "callLimits",
+      "event": "call",
+      "id": 3,
+      "lineno": 1,
+      "method_id": "a",
+      "parameters": [],
+      "path": "callLimits.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 4,
+      "parent_id": 3,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "callLimits",
+      "event": "call",
+      "id": 5,
+      "lineno": 5,
+      "method_id": "b",
+      "parameters": [],
+      "path": "callLimits.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "callLimits",
+      "event": "call",
+      "id": 7,
+      "lineno": 5,
+      "method_id": "b",
+      "parameters": [],
+      "path": "callLimits.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 8,
+      "parent_id": 7,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "callLimits",
+      "event": "call",
+      "id": 9,
+      "lineno": 9,
+      "method_id": "c",
+      "parameters": [],
+      "path": "callLimits.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 10,
+      "parent_id": 9,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "simple",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;
+
 exports[`mapping a script with import attributes/assertions 1`] = `
 {
   "classMap": [

@@ -39,7 +39,22 @@ export default class Recording {
   public readonly path;
   public metadata: AppMap.Metadata;
 
+  private callCountPerFunction = new Map<FunctionInfo, number>();
+  private totalCallCount = 0;
+
+  public willExceedFunctionCallLimits(funInfo: FunctionInfo) {
+    return (
+      (config().maxRecordedCalls > 0 && this.totalCallCount >= config().maxRecordedCalls) ||
+      (config().maxRecordedCallsPerFunction &&
+        (this.callCountPerFunction.get(funInfo) ?? 0) >= config().maxRecordedCallsPerFunction)
+    );
+  }
+
   functionCall(funInfo: FunctionInfo, thisArg: unknown, args: unknown[]): AppMap.FunctionCallEvent {
+    const count = this.callCountPerFunction.get(funInfo) ?? 0;
+    this.callCountPerFunction.set(funInfo, count + 1);
+    this.totalCallCount++;
+
     this.functionsSeen.add(funInfo);
     const event = makeCallEvent(this.nextId++, funInfo, thisArg, args);
     this.emit(event);
