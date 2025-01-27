@@ -69,7 +69,7 @@ export function transform(
     if (sourceMap?.originalSources.length) {
       if (!originalSourceShouldBeInstrumented.has(location.path)) {
         const url = pathToFileURL(location.path);
-        const originalSource = sourceMap.originalSources.find((s) => s.href == url.href);
+        const originalSource = url;
         originalSourceShouldBeInstrumented.set(
           location.path,
           originalSource != undefined && shouldInstrument(originalSource),
@@ -103,13 +103,17 @@ export function transform(
       if (!methodHasName(method)) return;
       // Can't record generator methods because of potential super keyword inside.
       if (method.value.generator) return;
+      //      debug("ancestors: %o", ancestors);
       const klass = findLast(ancestors, isNamedClass);
+      debug(`MethodDefinition: ${method.kind}, ${klass?.id.name}.${method.key.name}`);
       if (!klass) return;
 
       const { name } = method.key;
       const qname = [klass.id.name, name].join(".");
+      debug(`qname: ${qname}`);
 
       const location = locate(method);
+      debug(`location: ${JSON.stringify(location)}`);
       if (shouldSkipFunction(location, name, qname)) return;
       assert(location);
 
@@ -228,7 +232,9 @@ function makeLocator(
     return ({ loc }: ESTree.Node) => {
       if (!loc?.source) return undefined;
       const mapped = sourceMap.originalPositionFor(loc.start);
-      if (mapped?.line) return { path: mapped.source, lineno: mapped.line };
+      const url = new URL(mapped.source, "file:///");
+      if (url.protocol === "file:" && mapped?.line)
+        return { path: url.pathname, lineno: mapped.line };
     };
   else
     return ({ loc }: ESTree.Node) =>
@@ -319,6 +325,7 @@ function shouldInstrument_(url: URL) {
   if (url.pathname.endsWith(".json")) return false;
 
   const filePath = fileURLToPath(url);
+  debug("shouldInstrument: %s", filePath);
   return !!config().packages.match(filePath);
 }
 
@@ -327,10 +334,12 @@ function shouldInstrument_(url: URL) {
 // instrument.transform(), but within it, we should check each function to determine
 // if its original source URL needs to be instrumented.
 export function shouldInstrument(url: URL, sourceMap?: CustomSourceMapConsumer): boolean {
+  debug("shouldInstrument: %s", url);
   if (sourceMap?.originalSources.length && shouldMatchOriginalSourcePaths(url))
-    return sourceMap.originalSources.some((s) => shouldInstrument_(s));
+    return sourceMap.originalSources.some((s) => shouldInstrument_(s)) || shouldInstrument_(url);
 
   const result = shouldInstrument_(url);
+  debug("shouldInstrument: %s -> %s", url, result);
   return result;
 }
 

@@ -3,6 +3,7 @@ import type sqlite from "sqlite3";
 
 import { getActiveRecordings, isActive } from "../recorder";
 import { getTime } from "../util/getTime";
+import { debuglog } from "node:util";
 
 type RecordingProxyTarget =
   | typeof sqlite.Database.prototype.exec
@@ -10,6 +11,8 @@ type RecordingProxyTarget =
   | typeof sqlite.Statement.prototype.all
   | typeof sqlite.Statement.prototype.get
   | typeof sqlite.Statement.prototype.each;
+
+const debug = debuglog("appmap:sqlite");
 
 export default function sqliteHook(mod: typeof sqlite) {
   mod.Statement.prototype.run = createRecordingProxy(mod.Statement.prototype.run);
@@ -38,6 +41,7 @@ function createRecordingProxy<T extends RecordingProxyTarget>(
 ) {
   return new Proxy(proxyTarget, {
     apply(target, thisArg, argArray: Parameters<typeof proxyTarget>) {
+      debug("%s %s", target.name, thisArg.sql);
       // Extract sql. If thisArg is a Statement then it has a sql property.
       // Otherwise thisArg is a Database and the sql must be the first element of the argArray.
       let sql: string;
@@ -51,8 +55,11 @@ function createRecordingProxy<T extends RecordingProxyTarget>(
         sql = argArray[0];
       }
 
+      debug("sql: %s", sql);
+
       const recordings = getActiveRecordings();
       const callEvents = recordings.map((recording) => recording.sqlQuery("sqlite", sql));
+      debug("callEvents: %o", callEvents);
       const startTime = getTime();
 
       // Extract callback argument(s) to functionArgs

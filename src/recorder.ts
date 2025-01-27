@@ -84,9 +84,7 @@ export function record<This, Return>(
 
   const startTime = getTime();
   try {
-    const result = funInfo.async
-      ? Recording.fork(() => fun.apply(this, args))
-      : fun.apply(this, args);
+    const result = Recording.fork(() => fun.apply(this, args));
     recordings.forEach((recording, idx) =>
       recording.functionReturn(callEvents[idx].id, result, startTime),
     );

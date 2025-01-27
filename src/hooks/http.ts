@@ -19,11 +19,14 @@ import {
 } from "../recorder";
 import { getTime } from "../util/getTime";
 import { readFile, rm } from "node:fs/promises";
+import { debuglog } from "node:util";
 
 type HTTP = typeof http | typeof https;
 
 // keep track of createServer proxies to avoid double-wrapping
 const proxies = new WeakSet<object>();
+
+const debug = debuglog("appmap:http");
 
 export default function httpHook(mod: HTTP) {
   if (!proxies.has(mod.createServer)) {
@@ -292,13 +295,14 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
       if (!isActive(recording)) return;
       if (fixupEvent(request, requestEvents[idx])) recording.fixup(requestEvents[idx]);
 
-      recording.httpResponse(
+      const event = recording.httpResponse(
         requestEvents[idx].id,
         elapsed,
         response.statusCode,
         headers,
         returnValue,
       );
+      debug("http response: %o", event);
     });
 
     // If there is a test or remote recording we don't create a separate request recording

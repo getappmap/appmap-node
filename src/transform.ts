@@ -65,6 +65,7 @@ export default function transform(code: string, url: URL, hooks = defaultHooks):
 
   const hook = findHook(url, sourceMap, hooks);
   if (!hook) return code;
+  console.debug("Using hook %s for %s", hook.constructor.name, url);
 
   if (hooks.some((h) => h.shouldIgnore?.(url))) return code;
 
@@ -112,8 +113,9 @@ function dumpTree(xformed: ESTree.Program, url: URL) {
 
 export class CustomSourceMapConsumer extends SourceMapConsumer {
   public originalSources: URL[];
-  constructor(rawSourceMap: RawSourceMap) {
-    super(rawSourceMap);
+  constructor(rawSourceMap: RawSourceMap, url?: string) {
+    super(rawSourceMap, url);
+    debug("source map: %s", url);
     this.originalSources = rawSourceMap.sources.map((s) => pathToFileURL(s));
   }
 }
@@ -138,19 +140,7 @@ export function getSourceMap(fileUrl: URL, code: string): CustomSourceMapConsume
       throw new Error(`Unsupported source map protocol: ${sourceMapUrl.protocol}`);
   }
 
-  sourceMap.sources = sourceMap.sources.map((source) => {
-    const rootedSource = (sourceMap.sourceRoot ?? "") + source;
-    // On Windows, we get incorrect result with URL if the original path contains spaces.
-    //   source: 'C:/Users/John Doe/projects/appmap-node/test/typescript/index.ts'
-    //   => result: 'C:/Users/John%20Doe/projects/appmap-node/test/typescript/index.ts'
-    // This check prevents it.
-    if (rootedSource.match(/^[a-zA-Z]:[/\\]/)) return rootedSource;
-
-    const url = new URL(rootedSource, fileUrl);
-    return url.protocol === "file:" ? fileURLToPath(url) : url.toString();
-  });
-
-  return new CustomSourceMapConsumer(sourceMap);
+  return new CustomSourceMapConsumer(sourceMap, sourceMapUrl.toString());
 }
 
 function parseDataUrl(fileUrl: URL) {
