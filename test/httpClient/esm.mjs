@@ -1,6 +1,6 @@
 import http from "http";
 
-export const SERVER_PORT = 27628;
+const SERVER_PORT = parseInt(process.env.SERVER_PORT) || 27628;
 export const TEST_HEADER_VALUE = "This test header is added after ClientRequest creation";
 
 export default async function makeRequest() {

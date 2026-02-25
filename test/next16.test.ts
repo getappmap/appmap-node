@@ -1,16 +1,16 @@
 import { IncomingMessage, request } from "node:http";
 
-import { integrationTest, readAppmaps, spawnAppmapNode } from "./helpers";
+import { getFreePort, integrationTest, readAppmaps, spawnAppmapNode } from "./helpers";
 
-async function spawnNextJsApp() {
+async function spawnNextJsApp(port: number) {
   // On Windows, we give "node" argument explicitly because next is a js file with
   // shebang (#!/usr/bin/env node) which does not work on Windows.
   // Turbopack (the default bundler in Next.js 16) respects webpack loaders configured
   // via next.config turbopack.rules, which we inject in src/hooks/next.ts.
   const app =
     process.platform == "win32"
-      ? spawnAppmapNode("node", "node_modules\\next\\dist\\bin\\next", "dev")
-      : spawnAppmapNode("node_modules/next/dist/bin/next", "dev");
+      ? spawnAppmapNode("node", "node_modules\\next\\dist\\bin\\next", "dev", "-p", String(port))
+      : spawnAppmapNode("node_modules/next/dist/bin/next", "dev", "-p", String(port));
 
   await new Promise<void>((r) => {
     const onData = (chunk: Buffer) => {
@@ -34,12 +34,13 @@ const nodeSupported = (() => {
 integrationTest.if(nodeSupported)(
   "mapping a Next.js 16 appmap",
   async () => {
-    const app = await spawnNextJsApp();
-    const response = await makeRequest("/hello");
+    const port = await getFreePort();
+    const app = await spawnNextJsApp(port);
+    const response = await makeRequest(port, "/hello");
     console.log("Response", response);
     const pid = parseInt((JSON.parse(response) as unknown as { pid: string }).pid);
 
-    await makeRequest("/about");
+    await makeRequest(port, "/about");
 
     app.kill("SIGINT");
     await new Promise((r) => app.once("exit", r));
@@ -62,8 +63,8 @@ integrationTest.if(nodeSupported)(
   60000,
 );
 
-async function makeRequest(path: string, method = "GET") {
-  const url = new URL(path, "http://localhost:3000");
+async function makeRequest(port: number, path: string, method = "GET") {
+  const url = new URL(path, `http://localhost:${port}`);
   const response = new Promise<IncomingMessage>((resolve, reject) => {
     const req = request(url, { method }, resolve).once("error", reject);
     req.end();

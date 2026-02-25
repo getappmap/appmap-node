@@ -104,11 +104,11 @@ exports[`mapping http client requests (ESM) 1`] = `
       "event": "call",
       "http_client_request": {
         "headers": {
-          "Host": "localhost:27628",
+          "Host": "localhost",
           "Test-Header": "This test header is added after ClientRequest creation",
         },
         "request_method": "GET",
-        "url": "http://localhost:27628/endpoint/one",
+        "url": "http://localhost/endpoint/one",
       },
       "id": 3,
       "thread_id": 0,
@@ -239,11 +239,11 @@ exports[`mapping http client requests 1`] = `
       "event": "call",
       "http_client_request": {
         "headers": {
-          "Host": "localhost:27628",
+          "Host": "localhost",
           "Test-Header": "This test header is added after ClientRequest creation",
         },
         "request_method": "GET",
-        "url": "http://localhost:27628/endpoint/one",
+        "url": "http://localhost/endpoint/one",
       },
       "id": 5,
       "thread_id": 0,
@@ -300,10 +300,10 @@ exports[`mapping http client requests 1`] = `
       "http_client_request": {
         "headers": {
           "Content-Type": "application/json",
-          "Host": "localhost:27628",
+          "Host": "localhost",
         },
         "request_method": "POST",
-        "url": "http://localhost:27628/endpoint/two",
+        "url": "http://localhost/endpoint/two",
       },
       "id": 9,
       "thread_id": 0,
@@ -356,10 +356,10 @@ exports[`mapping http client requests 1`] = `
       "event": "call",
       "http_client_request": {
         "headers": {
-          "Host": "localhost:27628",
+          "Host": "localhost",
         },
         "request_method": "GET",
-        "url": "http://localhost:27628/endpoint/three",
+        "url": "http://localhost/endpoint/three",
       },
       "id": 13,
       "thread_id": 0,
@@ -412,10 +412,10 @@ exports[`mapping http client requests 1`] = `
       "event": "call",
       "http_client_request": {
         "headers": {
-          "Host": "localhost:27628",
+          "Host": "localhost",
         },
         "request_method": "GET",
-        "url": "http://localhost:27628/endpoint/json/one",
+        "url": "http://localhost/endpoint/json/one",
       },
       "id": 17,
       "thread_id": 0,
@@ -483,10 +483,10 @@ exports[`mapping http client requests 1`] = `
       "event": "call",
       "http_client_request": {
         "headers": {
-          "Host": "localhost:27628",
+          "Host": "localhost",
         },
         "request_method": "GET",
-        "url": "http://localhost:27628/endpoint/json/two",
+        "url": "http://localhost/endpoint/json/two",
       },
       "id": 21,
       "thread_id": 0,
@@ -635,10 +635,10 @@ exports[`mapping mocked http client requests 1`] = `
       "event": "call",
       "http_client_request": {
         "headers": {
-          "Host": "localhost:27628",
+          "Host": "localhost",
           "Test-Header": "This test header is added after ClientRequest creation",
         },
-        "url": "http://localhost:27628/endpoint/one",
+        "url": "http://localhost/endpoint/one",
       },
       "id": 7,
       "thread_id": 0,
@@ -693,10 +693,10 @@ exports[`mapping mocked http client requests 1`] = `
       "http_client_request": {
         "headers": {
           "Content-Type": "application/json",
-          "Host": "localhost:27628",
+          "Host": "localhost",
         },
         "request_method": "POST",
-        "url": "http://localhost:27628/endpoint/two",
+        "url": "http://localhost/endpoint/two",
       },
       "id": 11,
       "thread_id": 0,
@@ -750,9 +750,9 @@ exports[`mapping mocked http client requests 1`] = `
       "event": "call",
       "http_client_request": {
         "headers": {
-          "Host": "localhost:27628",
+          "Host": "localhost",
         },
-        "url": "http://localhost:27628/endpoint/three",
+        "url": "http://localhost/endpoint/three",
       },
       "id": 15,
       "thread_id": 0,
@@ -804,9 +804,9 @@ exports[`mapping mocked http client requests 1`] = `
       "event": "call",
       "http_client_request": {
         "headers": {
-          "Host": "localhost:27628",
+          "Host": "localhost",
         },
-        "url": "http://localhost:27628/endpoint/json/one",
+        "url": "http://localhost/endpoint/json/one",
       },
       "id": 19,
       "thread_id": 0,
@@ -858,9 +858,9 @@ exports[`mapping mocked http client requests 1`] = `
       "event": "call",
       "http_client_request": {
         "headers": {
-          "Host": "localhost:27628",
+          "Host": "localhost",
         },
-        "url": "http://localhost:27628/endpoint/json/two",
+        "url": "http://localhost/endpoint/json/two",
       },
       "id": 23,
       "thread_id": 0,

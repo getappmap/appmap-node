@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import { ChildProcessWithoutNullStreams, spawn, spawnSync } from "node:child_process";
 import { accessSync, readFileSync, rmSync } from "node:fs";
+import { createServer } from "node:net";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
 
@@ -59,6 +60,17 @@ beforeEach(() => rmSync(resolveTarget("tmp"), { recursive: true, force: true, ma
 
 export function resolveTarget(...path: string[]): string {
   return resolve(target, ...path);
+}
+
+export function getFreePort(): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const server = createServer();
+    server.listen(0, () => {
+      const { port } = server.address() as { port: number };
+      server.close(() => resolve(port));
+    });
+    server.on("error", reject);
+  });
 }
 
 export function integrationTest(name: string, fn?: jest.ProvidesCallback, timeout?: number): void {
@@ -132,10 +144,17 @@ function fixEvent(event: unknown) {
 function fixHttp(http: unknown) {
   if (!(http && typeof http === "object" && "headers" in http)) return;
   const { headers } = http;
-  if (headers && typeof headers === "object") {
-    for (const header of ["Date", "Connection", "Keep-Alive", "Etag"])
-      if (header in headers) delete (headers as Record<string, unknown>)[header];
-  }
+  if (!(headers && typeof headers === "object")) return;
+  const h = headers as Record<string, unknown>;
+  for (const header of ["Date", "Connection", "Keep-Alive", "Etag"]) delete h[header];
+
+  // drop port numbers from host headers, they can be non-deterministic
+  for (const key of ["Host", "host"])
+    if (typeof h[key] === "string") h[key] = h[key].replace(/:\d+$/, "");
+
+  // also from client request URLs
+  if ("url" in http && typeof http.url === "string")
+    http.url = http.url.replace(/^(https?:\/\/[^/:]+):\d+/, "$1");
 }
 
 function fixValue(value: unknown): void {

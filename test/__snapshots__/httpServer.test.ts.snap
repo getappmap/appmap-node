@@ -28,7 +28,7 @@ exports[`mapping Express.js requests 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "path_info": "/",
           "protocol": "HTTP/1.1",
@@ -119,7 +119,7 @@ exports[`mapping Express.js requests 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "path_info": "/nonexistent",
           "protocol": "HTTP/1.1",
@@ -206,7 +206,7 @@ exports[`mapping Express.js requests 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "normalized_path_info": "/api/:ident",
           "path_info": "/api/foo",
@@ -239,7 +239,7 @@ exports[`mapping Express.js requests 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "path_info": "/api/foo",
           "protocol": "HTTP/1.1",
@@ -396,7 +396,7 @@ exports[`mapping Express.js requests 1`] = `
         "http_server_request": {
           "headers": {
             "Content-Type": "application/json",
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
             "Transfer-Encoding": "chunked",
           },
           "normalized_path_info": "/api/:ident",
@@ -468,7 +468,7 @@ exports[`mapping Express.js requests 1`] = `
         "http_server_request": {
           "headers": {
             "Content-Type": "application/json",
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
             "Transfer-Encoding": "chunked",
           },
           "path_info": "/api/bar",
@@ -727,7 +727,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
       "http_server_request": {
         "headers": {
           "Content-Type": "application/json",
-          "Host": "127.0.0.1:27627",
+          "Host": "127.0.0.1",
           "Transfer-Encoding": "chunked",
         },
         "normalized_path_info": "/api/:ident",
@@ -796,7 +796,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "Host": "127.0.0.1:27627",
+          "Host": "127.0.0.1",
         },
         "normalized_path_info": "/api/:ident",
         "path_info": "/api/foo",
@@ -829,7 +829,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "Host": "127.0.0.1:27627",
+          "Host": "127.0.0.1",
         },
         "path_info": "/",
         "protocol": "HTTP/1.1",
@@ -896,7 +896,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "Host": "127.0.0.1:27627",
+          "Host": "127.0.0.1",
         },
         "path_info": "/nonexistent",
         "protocol": "HTTP/1.1",
@@ -940,7 +940,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "Host": "127.0.0.1:27627",
+          "Host": "127.0.0.1",
         },
         "path_info": "/api/foo",
         "protocol": "HTTP/1.1",
@@ -1054,7 +1054,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
       "http_server_request": {
         "headers": {
           "Content-Type": "application/json",
-          "Host": "127.0.0.1:27627",
+          "Host": "127.0.0.1",
           "Transfer-Encoding": "chunked",
         },
         "path_info": "/api/bar",
@@ -1281,7 +1281,7 @@ exports[`mapping node:http requests 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "path_info": "/",
           "protocol": "HTTP/1.1",
@@ -1329,7 +1329,7 @@ exports[`mapping node:http requests 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "path_info": "/nonexistent",
           "protocol": "HTTP/1.1",
@@ -1377,7 +1377,7 @@ exports[`mapping node:http requests 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "path_info": "/api/foo",
           "protocol": "HTTP/1.1",
@@ -1438,7 +1438,7 @@ exports[`mapping node:http requests 1`] = `
         "http_server_request": {
           "headers": {
             "Content-Type": "application/json",
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
             "Transfer-Encoding": "chunked",
           },
           "path_info": "/api/bar",
@@ -1492,7 +1492,7 @@ exports[`mapping node:http requests with process recording active 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "path_info": "/",
           "protocol": "HTTP/1.1",
@@ -1516,7 +1516,7 @@ exports[`mapping node:http requests with process recording active 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "path_info": "/nonexistent",
           "protocol": "HTTP/1.1",
@@ -1540,7 +1540,7 @@ exports[`mapping node:http requests with process recording active 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "path_info": "/api/foo",
           "protocol": "HTTP/1.1",
@@ -1577,7 +1577,7 @@ exports[`mapping node:http requests with process recording active 1`] = `
         "http_server_request": {
           "headers": {
             "Content-Type": "application/json",
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
             "Transfer-Encoding": "chunked",
           },
           "path_info": "/api/bar",
@@ -1626,7 +1626,7 @@ exports[`mapping node:http requests with process recording active 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "path_info": "/",
           "protocol": "HTTP/1.1",
@@ -1674,7 +1674,7 @@ exports[`mapping node:http requests with process recording active 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "path_info": "/nonexistent",
           "protocol": "HTTP/1.1",
@@ -1722,7 +1722,7 @@ exports[`mapping node:http requests with process recording active 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
           },
           "path_info": "/api/foo",
           "protocol": "HTTP/1.1",
@@ -1783,7 +1783,7 @@ exports[`mapping node:http requests with process recording active 1`] = `
         "http_server_request": {
           "headers": {
             "Content-Type": "application/json",
-            "Host": "127.0.0.1:27627",
+            "Host": "127.0.0.1",
             "Transfer-Encoding": "chunked",
           },
           "path_info": "/api/bar",
@@ -1836,7 +1836,7 @@ exports[`mapping node:http requests with remote recording 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "Host": "127.0.0.1:27627",
+          "Host": "127.0.0.1",
         },
         "path_info": "/",
         "protocol": "HTTP/1.1",
@@ -1860,7 +1860,7 @@ exports[`mapping node:http requests with remote recording 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "Host": "127.0.0.1:27627",
+          "Host": "127.0.0.1",
         },
         "path_info": "/nonexistent",
         "protocol": "HTTP/1.1",
@@ -1884,7 +1884,7 @@ exports[`mapping node:http requests with remote recording 1`] = `
       "event": "call",
       "http_server_request": {
         "headers": {
-          "Host": "127.0.0.1:27627",
+          "Host": "127.0.0.1",
         },
         "path_info": "/api/foo",
         "protocol": "HTTP/1.1",
@@ -1921,7 +1921,7 @@ exports[`mapping node:http requests with remote recording 1`] = `
       "http_server_request": {
         "headers": {
           "Content-Type": "application/json",
-          "Host": "127.0.0.1:27627",
+          "Host": "127.0.0.1",
           "Transfer-Encoding": "chunked",
         },
         "path_info": "/api/bar",

@@ -1,7 +1,7 @@
 const express = require("express");
 
 const app = express();
-const port = 27627;
+const port = parseInt(process.env.PORT) || 0;
 
 app.get("/", helloWorld);
 app.get("/api/:ident", (req, res) => {
@@ -13,7 +13,7 @@ app.post("/api/:ident", express.json(), (req, res) => {
 });
 
 const server = app.listen(port, "127.0.0.1", () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Example app listening on port ${server.address().port}`);
 });
 
 process.on("SIGINT", () => server.close());
