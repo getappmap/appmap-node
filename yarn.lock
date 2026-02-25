@@ -2771,6 +2771,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"acorn-jsx-walk@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "acorn-jsx-walk@npm:2.0.0"
+  checksum: 49417eab5bb595c1cdc96d64205eda7cc58f32d655068826ba96ec7a4dc4f957d55ca9e62a299d0dbdeae71c6dc518be1378c21d3b720e741812f55f2a13c937
+  languageName: node
+  linkType: hard
+
 "acorn-jsx@npm:^5.3.2":
   version: 5.3.2
   resolution: "acorn-jsx@npm:5.3.2"
@@ -2984,6 +2991,7 @@ __metadata:
     "@types/sqlite3": ^3.1.11
     "@types/stack-utils": ^2.0.3
     "@types/tmp": ^0.2.3
+    acorn-jsx-walk: ^2.0.0
     acorn-walk: ^8.2.0
     astring: ^1.9.0
     caller: ^1.1.0
