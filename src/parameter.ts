@@ -60,6 +60,22 @@ function doInspect(value: unknown): string {
   return inspect(value, { depth: 1, customInspect: false });
 }
 
+function isReactElement(
+  value: unknown,
+): value is { $$typeof: symbol; type?: string | { name?: string } } {
+  try {
+    return (
+      value !== null &&
+      typeof value === "object" &&
+      "$$typeof" in value &&
+      typeof value.$$typeof === "symbol" &&
+      String(value.$$typeof).includes("react")
+    );
+  } catch {
+    return false;
+  }
+}
+
 export function stringify(value: unknown): string {
   if (value instanceof IncomingMessage)
     return format("[IncomingMessage: %s %s]", value.method, value.url);
@@ -69,6 +85,11 @@ export function stringify(value: unknown): string {
       "[ServerResponse: %s]",
       [value.statusCode, value.statusMessage].filter(Boolean).join(" "),
     );
+  if (isReactElement(value)) {
+    const type = value.type;
+    const typeName = typeof type === "string" ? type : type?.name ?? "unknown";
+    return `[React element ${typeName}]`;
+  }
   // Pause recorder to prevent potential recursive calls by inspect()
   pauseRecorder();
   const result = doInspect(value);
@@ -123,6 +144,7 @@ function parameterSchema(value: unknown, objectsSeen?: Set<object>): AppMap.Para
 function isSimpleObject(value: unknown): value is Record<string, unknown> {
   try {
     if (!(value && typeof value === "object")) return false;
+    if (isReactElement(value)) return false;
     return Object.getPrototypeOf(value) === null || value.constructor === Object;
   } catch {
     return false;
