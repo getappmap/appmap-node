@@ -1,0 +1,8 @@
+name: next16-appmap-node-test
+appmap_dir: tmp/appmap
+packages:
+  - path: .
+    exclude:
+      - node_modules
+      - .yarn
+language: javascript

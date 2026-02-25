@@ -94,6 +94,7 @@
     "meriyah": "^5.0.0",
     "source-map-js": "^1.0.2",
     "stack-utils": "^2.0.6",
+    "ts-blank-space": "^0.7.0",
     "yaml": "^2.3.4"
   },
   "workspaces": [
