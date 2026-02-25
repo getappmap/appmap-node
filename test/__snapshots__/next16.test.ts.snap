@@ -28,7 +28,7 @@ exports[`mapping a Next.js 16 appmap 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "localhost:3000",
+            "Host": "localhost",
           },
           "path_info": "/hello",
           "protocol": "HTTP/1.1",
@@ -143,7 +143,7 @@ exports[`mapping a Next.js 16 appmap 1`] = `
         "event": "call",
         "http_server_request": {
           "headers": {
-            "Host": "localhost:3000",
+            "Host": "localhost",
           },
           "path_info": "/about",
           "protocol": "HTTP/1.1",
