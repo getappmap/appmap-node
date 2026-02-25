@@ -6,6 +6,8 @@ import { isNativeError } from "node:util/types";
 
 import { generate } from "astring";
 import { parse, type ESTree } from "meriyah";
+
+import { jsxGenerator } from "./jsxGenerate";
 import { RawSourceMap, SourceMapConsumer } from "source-map-js";
 
 import * as instrument from "./hooks/instrument";
@@ -78,17 +80,20 @@ export default function transform(code: string, url: URL, hooks = defaultHooks):
 
   try {
     const comments: ESTree.Comment[] = [];
+    const jsx = /\.[jt]sx$/.test(url.pathname);
     const tree = parse(code, {
       source: url.toString(),
       next: true,
       loc: true,
       module: true,
+      jsx,
       onComment: comments,
     });
 
     const xformed = hook.transform(tree, getSourceMap_(), comments);
     if (treeDebug.enabled) dumpTree(xformed, url);
-    const src = generate(xformed);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
+    const src = generate(xformed as any, { generator: jsxGenerator });
     if (sourceDebug.enabled) {
       const outputPath = fileURLToPath(url) + ".xformed";
       writeFileSync(outputPath, src);

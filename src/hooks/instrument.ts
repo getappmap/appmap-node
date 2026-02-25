@@ -2,7 +2,12 @@ import assert from "node:assert";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { debuglog } from "node:util";
 
-import { ancestor as walk } from "acorn-walk";
+import { ancestor as walk, base as walkBase } from "acorn-walk";
+import { extend as extendWalkWithJsx } from "acorn-jsx-walk";
+
+// Teach acorn-walk to traverse JSX nodes produced by meriyah.
+// Without this, walking a JSX AST throws "baseVisitor[type] is not a function".
+extendWalkWithJsx(walkBase);
 import { ESTree, parse } from "meriyah";
 import { SourceMapConsumer } from "source-map-js";
 
