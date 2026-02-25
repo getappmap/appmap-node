@@ -179,52 +179,7 @@ exports[`mapping a Next.js appmap 1`] = `
         "return_value": {
           "class": "Object",
           "object_id": 6,
-          "properties": [
-            {
-              "class": "Symbol",
-              "name": "$$typeof",
-            },
-            {
-              "class": "String",
-              "name": "type",
-            },
-            {
-              "class": "object",
-              "name": "key",
-            },
-            {
-              "class": "object",
-              "name": "ref",
-            },
-            {
-              "class": "Object",
-              "name": "props",
-              "properties": [
-                {
-                  "class": "String",
-                  "name": "children",
-                },
-              ],
-            },
-            {
-              "class": "object",
-              "name": "_owner",
-            },
-            {
-              "class": "Object",
-              "name": "_store",
-              "properties": [],
-            },
-          ],
-          "value": "{
-  '$$typeof': Symbol(react.element),
-  type: 'div',
-  key: null,
-  ref: null,
-  props: { children: 'About' },
-  _owner: null,
-  _store: {}
-}",
+          "value": "[React element div]",
         },
         "thread_id": 0,
       },
