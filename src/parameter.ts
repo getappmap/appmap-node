@@ -126,7 +126,13 @@ export function getClass(value: unknown): string {
   }
 }
 
-function parameterSchema(value: unknown, objectsSeen?: Set<object>): AppMap.ParameterSchema {
+const defaultDepth = 5;
+
+function parameterSchema(
+  value: unknown,
+  objectsSeen?: Set<object>,
+  depth = defaultDepth,
+): AppMap.ParameterSchema {
   const result: AppMap.ParameterSchema = { class: getClass(value) };
 
   // Handle circular references to prevent stack overflow
@@ -136,8 +142,10 @@ function parameterSchema(value: unknown, objectsSeen?: Set<object>): AppMap.Para
     objectsSeen.add(value);
   }
 
-  if (value instanceof Array) result.items = itemsSchema(value, objectsSeen);
-  else if (isSimpleObject(value)) result.properties = propertiesSchema(value, objectsSeen);
+  if (depth <= 0) return result;
+  if (value instanceof Array) result.items = itemsSchema(value, objectsSeen, depth - 1);
+  else if (isSimpleObject(value))
+    result.properties = propertiesSchema(value, objectsSeen, depth - 1);
   return result;
 }
 
@@ -154,12 +162,13 @@ function isSimpleObject(value: unknown): value is Record<string, unknown> {
 function itemsSchema(
   [head, ...tail]: unknown[],
   objectsSeen?: Set<object>,
+  depth = defaultDepth,
 ): AppMap.ParameterSchema | undefined {
   if (!head) return;
 
-  const schema = parameterSchema(head, objectsSeen);
+  const schema = parameterSchema(head, objectsSeen, depth);
   for (const item of tail)
-    if (!isDeepStrictEqual(schema, parameterSchema(item, objectsSeen))) return;
+    if (!isDeepStrictEqual(schema, parameterSchema(item, objectsSeen, depth))) return;
 
   return schema;
 }
@@ -167,8 +176,12 @@ function itemsSchema(
 function propertiesSchema(
   value: Record<string, unknown>,
   objectsSeen?: Set<object>,
+  depth = defaultDepth,
 ): ({ name: string } & AppMap.ParameterSchema)[] {
-  return Object.entries(value).map(([name, v]) => ({ name, ...parameterSchema(v, objectsSeen) }));
+  return Object.entries(value).map(([name, v]) => ({
+    name,
+    ...parameterSchema(v, objectsSeen, depth),
+  }));
 }
 
 let nextId = 1;

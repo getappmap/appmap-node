@@ -128,7 +128,7 @@ export interface LoaderRunnerLoaderContext<OptionsType> {
   addContextDependency(context: string): void;
   addDependency(file: string): void;
   addMissingDependency(context: string): void;
-  // async(): WebpackLoaderContextCallback;
+  async(): (err: Error | null | undefined, result?: string | Buffer) => void;
   cacheable(flag?: boolean): void;
   // callback: WebpackLoaderContextCallback;
   clearDependencies(): void;

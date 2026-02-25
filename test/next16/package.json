@@ -1,0 +1,13 @@
+{
+  "name": "next16-appmap-node-test",
+  "packageManager": "yarn@3.6.3",
+  "private": true,
+  "dependencies": {
+    "next": "^16.0.0",
+    "react": "^19",
+    "react-dom": "^19"
+  },
+  "devDependencies": {
+    "@types/react": "^19"
+  }
+}

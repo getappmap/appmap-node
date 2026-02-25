@@ -1,0 +1,228 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping a Next.js 16 appmap 1`] = `
+{
+  "./tmp/appmap/requests/<timestamp 0>_-hello.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "app/hello/route.ts:3",
+                "name": "GET",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "route",
+            "type": "class",
+          },
+        ],
+        "name": "hello",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "event": "call",
+        "http_server_request": {
+          "headers": {
+            "Host": "localhost:3000",
+          },
+          "path_info": "/hello",
+          "protocol": "HTTP/1.1",
+          "request_method": "GET",
+        },
+        "id": 1,
+        "thread_id": 0,
+      },
+      {
+        "defined_class": "route",
+        "event": "call",
+        "id": 2,
+        "lineno": 3,
+        "method_id": "GET",
+        "parameters": [
+          {
+            "class": "bound NextRequest",
+            "object_id": 1,
+            "value": "NextRequest",
+          },
+          {
+            "class": "Object",
+            "object_id": 2,
+            "properties": [
+              {
+                "class": "undefined",
+                "name": "params",
+              },
+            ],
+            "value": "{ params: undefined }",
+          },
+        ],
+        "path": "app/hello/route.ts",
+        "receiver": {
+          "class": "object",
+          "object_id": 0,
+          "value": "null",
+        },
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 3,
+        "parent_id": 2,
+        "return_value": {
+          "class": "NextResponse",
+          "object_id": 3,
+          "value": "NextResponse",
+        },
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "http_server_response": {
+          "headers": {
+            "Content-Type": "application/json",
+            "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          },
+          "status_code": 200,
+        },
+        "id": 4,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "next16-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "GET /hello (200) — <timestamp 0>",
+      "recorder": {
+        "name": "requests",
+        "type": "requests",
+      },
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/requests/<timestamp 1>_-about.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "pages/about.tsx:1",
+                "name": "About",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "about",
+            "type": "class",
+          },
+        ],
+        "name": "pages",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "event": "call",
+        "http_server_request": {
+          "headers": {
+            "Host": "localhost:3000",
+          },
+          "path_info": "/about",
+          "protocol": "HTTP/1.1",
+          "request_method": "GET",
+        },
+        "id": 1,
+        "thread_id": 0,
+      },
+      {
+        "defined_class": "about",
+        "event": "call",
+        "id": 2,
+        "lineno": 1,
+        "method_id": "About",
+        "parameters": [
+          {
+            "class": "Object",
+            "object_id": 4,
+            "properties": [],
+            "value": "{}",
+          },
+          {
+            "class": "undefined",
+            "value": "undefined",
+          },
+        ],
+        "path": "pages/about.tsx",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 3,
+        "parent_id": 2,
+        "return_value": {
+          "class": "Object",
+          "object_id": 5,
+          "value": "[React element div]",
+        },
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "http_server_response": {
+          "headers": {
+            "Cache-Control": "no-store, must-revalidate",
+            "Content-Length": "2238",
+            "Content-Type": "text/html; charset=utf-8",
+            "Vary": "Accept-Encoding",
+            "X-Powered-By": "Next.js",
+          },
+          "status_code": 200,
+        },
+        "id": 4,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "next16-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "GET /about (200) — <timestamp 1>",
+      "recorder": {
+        "name": "requests",
+        "type": "requests",
+      },
+    },
+    "version": "1.12",
+  },
+}
+`;
