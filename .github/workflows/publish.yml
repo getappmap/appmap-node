@@ -15,6 +15,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           cache: yarn
-          registry-url: 'https://registry.npmjs.org'
       - run: yarn
       - run: npm publish --provenance
