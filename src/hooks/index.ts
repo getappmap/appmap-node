@@ -51,7 +51,6 @@ export function expressionFor(obj: unknown): ESTree.Expression {
 }
 
 declare global {
-  // eslint-disable-next-line no-var
   var AppMap: unknown[];
 }
 

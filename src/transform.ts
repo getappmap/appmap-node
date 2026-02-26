@@ -119,7 +119,7 @@ export class CustomSourceMapConsumer extends SourceMapConsumer {
 }
 
 export function getSourceMap(fileUrl: URL, code: string): CustomSourceMapConsumer | undefined {
-  const sourceMappingUrl = code.match(/\/\/# sourceMappingURL=(.*)/)?.[1];
+  const sourceMappingUrl = /\/\/# sourceMappingURL=(.*)/.exec(code)?.[1];
   if (!sourceMappingUrl) return;
 
   const sourceMapUrl = new URL(sourceMappingUrl, fileUrl);
@@ -144,7 +144,7 @@ export function getSourceMap(fileUrl: URL, code: string): CustomSourceMapConsume
     //   source: 'C:/Users/John Doe/projects/appmap-node/test/typescript/index.ts'
     //   => result: 'C:/Users/John%20Doe/projects/appmap-node/test/typescript/index.ts'
     // This check prevents it.
-    if (rootedSource.match(/^[a-zA-Z]:[/\\]/)) return rootedSource;
+    if (/^[a-zA-Z]:[/\\]/.exec(rootedSource)) return rootedSource;
 
     const url = new URL(rootedSource, fileUrl);
     return url.protocol === "file:" ? fileURLToPath(url) : url.toString();

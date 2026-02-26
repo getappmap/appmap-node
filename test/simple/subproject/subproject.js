@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const { setTimeout } = require("timers/promises");
 
 function foo(x) {

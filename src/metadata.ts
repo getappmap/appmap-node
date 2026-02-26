@@ -8,29 +8,26 @@ import { examineException } from "./event";
 import pick from "./util/pick";
 
 // cannot use import because it's outside src
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const pkg = require("../package.json") as PackageJson;
 
 export const version = pkg.version!;
 
 let defaultMetadata: Partial<AppMap.Metadata> & { client: AppMap.ClientMetadata };
 export const getDefaultMetadata = () => {
-  if (defaultMetadata == undefined) {
-    defaultMetadata = {
-      client: {
-        name: pkg.name!,
-        version,
-        url: pkg.homepage!,
-      },
-      language: {
-        name: "javascript",
-        engine: "Node.js",
-        version: process.version,
-      },
-      app: config().appName,
-    };
-  }
-  return defaultMetadata;
+  return (defaultMetadata ??= {
+    client: {
+      name: pkg.name!,
+      version,
+      url: pkg.homepage!,
+    },
+    language: {
+      name: "javascript",
+      engine: "Node.js",
+      version: process.version,
+    },
+    app: config().appName,
+  });
 };
 
 export function exceptionMetadata(error: unknown): AppMap.ExceptionMetadata | undefined {

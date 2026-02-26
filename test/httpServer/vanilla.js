@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { createServer } = require("http");
 
 const [PORT, HOST] = [27627, "127.0.0.1"];

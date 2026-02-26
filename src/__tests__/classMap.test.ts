@@ -62,7 +62,8 @@ function check(funs: FunctionInfo[], expected: ClassMapTemplate) {
 }
 
 type ClassMapTemplate = PkgTemplate | string[];
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface PkgTemplate extends Record<string, ClassMapTemplate> {}
 
 function concise(map: (AppMap.Package | AppMap.Class | AppMap.FunctionInfo)[]): PkgTemplate {

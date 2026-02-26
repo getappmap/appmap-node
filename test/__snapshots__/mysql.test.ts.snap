@@ -8,19 +8,19 @@ exports[`mapping MySQL tests 1`] = `
         {
           "children": [
             {
-              "location": "index.js:15",
+              "location": "index.js:14",
               "name": "newConnection",
               "static": true,
               "type": "function",
             },
             {
-              "location": "index.js:17",
+              "location": "index.js:16",
               "name": "main",
               "static": true,
               "type": "function",
             },
             {
-              "location": "index.js:4",
+              "location": "index.js:3",
               "name": "promisify",
               "static": true,
               "type": "function",
@@ -39,7 +39,7 @@ exports[`mapping MySQL tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 1,
-      "lineno": 17,
+      "lineno": 16,
       "method_id": "main",
       "parameters": [],
       "path": "index.js",
@@ -50,7 +50,7 @@ exports[`mapping MySQL tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 2,
-      "lineno": 15,
+      "lineno": 14,
       "method_id": "newConnection",
       "parameters": [],
       "path": "index.js",
@@ -128,7 +128,7 @@ exports[`mapping MySQL tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 4,
-      "lineno": 4,
+      "lineno": 3,
       "method_id": "promisify",
       "parameters": [
         {
@@ -245,7 +245,7 @@ exports[`mapping MySQL tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 9,
-      "lineno": 15,
+      "lineno": 14,
       "method_id": "newConnection",
       "parameters": [],
       "path": "index.js",
@@ -323,7 +323,7 @@ exports[`mapping MySQL tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 11,
-      "lineno": 4,
+      "lineno": 3,
       "method_id": "promisify",
       "parameters": [
         {
@@ -446,7 +446,7 @@ exports[`mapping MySQL tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 15,
-      "lineno": 15,
+      "lineno": 14,
       "method_id": "newConnection",
       "parameters": [],
       "path": "index.js",
@@ -524,7 +524,7 @@ exports[`mapping MySQL tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 17,
-      "lineno": 4,
+      "lineno": 3,
       "method_id": "promisify",
       "parameters": [
         {
@@ -648,7 +648,7 @@ exports[`mapping MySQL tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 21,
-      "lineno": 15,
+      "lineno": 14,
       "method_id": "newConnection",
       "parameters": [],
       "path": "index.js",

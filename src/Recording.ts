@@ -274,8 +274,7 @@ export default class Recording {
 
   private static _rootBuffer: EventBuffer | undefined;
   private static get rootBuffer(): EventBuffer {
-    if (Recording._rootBuffer == undefined)
-      Recording._rootBuffer = { items: [], disposed: false, createdAt: getTimeInMilliseconds() };
+    Recording._rootBuffer ??= { items: [], disposed: false, createdAt: getTimeInMilliseconds() };
 
     return Recording._rootBuffer;
   }

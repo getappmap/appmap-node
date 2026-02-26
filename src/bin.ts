@@ -110,14 +110,14 @@ with a known extension; the assumption being if it's not, then it's probably a c
 function isScript(arg: string) {
   try {
     accessSync(arg);
-    return arg.match(/.*\.[mc]?[tj]s/);
+    return /.*\.[mc]?[tj]s/.exec(arg);
   } catch {
     return false;
   }
 }
 
 function isESM(path: string) {
-  return path.match(/.*\.m[tj]s/) ?? isPackageJsonTypeModule(path);
+  return /.*\.m[tj]s/.exec(path) ?? isPackageJsonTypeModule(path);
 }
 
 function isPackageJsonTypeModule(path: string) {
@@ -125,7 +125,9 @@ function isPackageJsonTypeModule(path: string) {
 }
 
 function runScript(path: string) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   require(registerPath);
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   require(resolve(path));
 }
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const mysql = require("mysql");
 
 const promisify = async (method, thisArg, ...args) => {

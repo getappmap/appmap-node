@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const pg = require("pg");
 
 const connectionString = process.env.POSTGRES_URL;

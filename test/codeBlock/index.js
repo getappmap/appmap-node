@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const assert = require("node:assert");
 const { record } = require("../../dist/facade");
 
