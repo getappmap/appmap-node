@@ -48,6 +48,15 @@ export function forceRequire(specifier: string): void {
 }
 
 const cjsRequire = Module.createRequire(__filename);
+
+// Pre-patch http/https in the main thread so they're already instrumented before any ESM module
+// imports them. Without this there is a race: when an ESM module does `import http from "http"`,
+// the loader thread calls forceRequire() and sends a BroadcastChannel message to patch http in the
+// main thread. But the main thread evaluates the ESM module body synchronously and can call into
+// http (e.g. new http.ClientRequest()) before the BroadcastChannel message is ever processed.
+cjsRequire("node:http");
+cjsRequire("node:https");
+
 const esmRequireChannel = new worker.BroadcastChannel("appmap-node/register/esm-require").unref();
 
 esmRequireChannel.onmessage = (message: unknown) => {
