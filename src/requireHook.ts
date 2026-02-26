@@ -23,6 +23,7 @@ const hooks: Hook[] = [
 ];
 
 export default function requireHook(
+  this: void,
   original: NodeJS.Require,
   thisArg: unknown,
   [id]: [string],

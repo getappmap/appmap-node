@@ -73,7 +73,7 @@ export class Config {
     function getNonNegativeIntegerEnvVarValue(enVarName: string) {
       let result: number | undefined;
       if (process.env[enVarName] != undefined) {
-        const value = parseInt(process.env[enVarName]!);
+        const value = parseInt(process.env[enVarName]);
         result = value >= 0 ? value : undefined;
         if (result == undefined)
           warn(`Environment variable ${enVarName} must be a non-negative integer.`);

@@ -4,6 +4,7 @@
   },
   "files": ["src/index.ts"],
   "compilerOptions": {
+    "skipLibCheck": true,
     "strictNullChecks": true,
     "module": "ESNext" /* Specify what module code is generated. */,
     "rootDir": "src" /* Specify the root folder within your source files. */,
