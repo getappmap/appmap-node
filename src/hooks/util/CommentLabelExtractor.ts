@@ -35,7 +35,7 @@ export default class CommentLabelExtractor {
       const comment = this.lineToComment.get(line);
       if (!comment) break;
 
-      const match = comment.value.match(/^\s*@labels?\s+(.*)/);
+      const match = /^\s*@labels?\s+(.*)/.exec(comment.value);
       const lineLabels = match?.[1].split(/\s+/).filter((item) => item.length > 0);
 
       lineLabels?.forEach((l) => labels.add(l));

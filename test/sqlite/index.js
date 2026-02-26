@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const sqlite = require("sqlite3");
 const { setTimeout } = require("node:timers/promises");
 

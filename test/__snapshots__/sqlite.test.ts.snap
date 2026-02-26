@@ -8,13 +8,13 @@ exports[`mapping Sqlite tests 1`] = `
         {
           "children": [
             {
-              "location": "index.js:13",
+              "location": "index.js:12",
               "name": "main",
               "static": true,
               "type": "function",
             },
             {
-              "location": "index.js:5",
+              "location": "index.js:4",
               "name": "promisify",
               "static": true,
               "type": "function",
@@ -33,7 +33,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 1,
-      "lineno": 13,
+      "lineno": 12,
       "method_id": "main",
       "parameters": [],
       "path": "index.js",
@@ -44,7 +44,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 2,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -99,7 +99,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 7,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -154,7 +154,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 11,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -209,7 +209,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 15,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -257,7 +257,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 19,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -312,7 +312,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 23,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -364,7 +364,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 27,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -427,7 +427,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 31,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -497,7 +497,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 35,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -548,7 +548,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 39,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -599,7 +599,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 43,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -650,7 +650,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 47,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -694,7 +694,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 51,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {
@@ -745,7 +745,7 @@ exports[`mapping Sqlite tests 1`] = `
       "defined_class": "index",
       "event": "call",
       "id": 55,
-      "lineno": 5,
+      "lineno": 4,
       "method_id": "promisify",
       "parameters": [
         {

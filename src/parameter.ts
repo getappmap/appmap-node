@@ -109,7 +109,7 @@ function parameterSchema(value: unknown, objectsSeen?: Set<object>): AppMap.Para
   const result: AppMap.ParameterSchema = { class: getClass(value) };
 
   // Handle circular references to prevent stack overflow
-  if (objectsSeen == null) objectsSeen = new Set();
+  objectsSeen ??= new Set();
   if (value && typeof value === "object") {
     if (objectsSeen.has(value)) return result;
     objectsSeen.add(value);

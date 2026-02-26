@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 import { ESTree } from "meriyah";
 import transform, { Hook } from "../transform";
 import { literal } from "../generate";

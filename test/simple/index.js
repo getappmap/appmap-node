@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const assert = require("assert");
 const { setTimeout } = require("timers/promises");
 

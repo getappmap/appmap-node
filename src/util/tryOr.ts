@@ -1,7 +1,7 @@
 export default function tryOr<T>(fn: () => T): T | undefined {
   try {
     return fn();
-  } catch (e) {
+  } catch {
     return undefined;
   }
 }

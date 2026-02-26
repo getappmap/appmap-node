@@ -209,8 +209,7 @@ class BodyCapture {
           /* Cannot be parsed */
         }
       }
-      if (returnValue == undefined)
-        returnValue = { class: "[ResponseBody]", value: caputuredBodyString };
+      returnValue ??= { class: "[ResponseBody]", value: caputuredBodyString };
     }
     return returnValue;
   }
@@ -323,7 +322,7 @@ function fixupEvent(req: http.IncomingMessage, event: AppMap.HttpServerRequestEv
   const paramsAvailable = params.length > 0;
 
   if (pathAvailable) event.http_server_request.normalized_path_info = normalizedPath;
-  if (paramsAvailable) (event.message ||= []).unshift(...params);
+  if (paramsAvailable) (event.message ??= []).unshift(...params);
 
   return pathAvailable || paramsAvailable;
 }

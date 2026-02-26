@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 import * as message from "../message";
 import console from "node:console";
 

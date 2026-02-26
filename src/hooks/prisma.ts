@@ -32,7 +32,7 @@ export default function prismaHook(mod: object, id?: string) {
   // Normally, we "Cannot assign to 'PrismaClient' because it is a read-only property."
   const prismaClientProxy: unknown = new Proxy(mod.PrismaClient, {
     construct(target, argArray, newTarget): object {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const result = Reflect.construct(target, argArray, newTarget);
       assert(typeof result === "object");
 
@@ -212,6 +212,7 @@ function attachSqlHook(thisArg: unknown) {
   thisArg._engine.config.logLevel = "query";
   thisArg._engine.config.logQueries = true;
   assert("$on" in thisArg && typeof thisArg.$on === "function");
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   thisArg.$on("query", (queryEvent: QueryEvent) => {
     const recordings = getActiveRecordings();
 

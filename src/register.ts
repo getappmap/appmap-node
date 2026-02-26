@@ -27,7 +27,6 @@ Module.prototype.require = new Proxy(Module.prototype.require, {
 });
 
 declare global {
-  // eslint-disable-next-line no-var
   var AppMapRecordHook: typeof record;
 }
 global.AppMapRecordHook = record;

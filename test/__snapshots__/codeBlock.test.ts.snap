@@ -9,7 +9,7 @@ exports[`mapping code block recording 1`] = `
           {
             "children": [
               {
-                "location": "index.js:5",
+                "location": "index.js:4",
                 "name": "hello",
                 "static": true,
                 "type": "function",
@@ -28,7 +28,7 @@ exports[`mapping code block recording 1`] = `
         "defined_class": "index",
         "event": "call",
         "id": 1,
-        "lineno": 5,
+        "lineno": 4,
         "method_id": "hello",
         "parameters": [
           {
@@ -76,7 +76,7 @@ exports[`mapping code block recording 1`] = `
           {
             "children": [
               {
-                "location": "index.js:5",
+                "location": "index.js:4",
                 "name": "hello",
                 "static": true,
                 "type": "function",
@@ -95,7 +95,7 @@ exports[`mapping code block recording 1`] = `
         "defined_class": "index",
         "event": "call",
         "id": 1,
-        "lineno": 5,
+        "lineno": 4,
         "method_id": "hello",
         "parameters": [
           {

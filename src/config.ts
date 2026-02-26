@@ -94,7 +94,7 @@ export class Config {
 
   private absoluteAppmapDir?: string;
   get appmapDir() {
-    return (this.absoluteAppmapDir ||= resolve(this.root, this.relativeAppmapDir));
+    return (this.absoluteAppmapDir ??= resolve(this.root, this.relativeAppmapDir));
   }
 
   get prismaClientModuleIds(): string[] {
@@ -223,8 +223,5 @@ function readConfigFile(document: Document): ConfigFile {
 
 let instance: Config | undefined;
 export default function config() {
-  if (instance == undefined) {
-    instance = new Config();
-  }
-  return instance;
+  return (instance ??= new Config());
 }
