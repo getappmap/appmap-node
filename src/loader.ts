@@ -62,11 +62,10 @@ export const load: NodeLoaderHooksAPI2["load"] = async function load(url, contex
     return original;
   }
 
-  // For these modules, we preempt import with CommonJS require
-  // to allow our hooks to modify the loaded module in cache
-  // (which is shared between ESM and CJS for builtins at least).
-  if (["node:http", "node:https", "http", "https", ...config().prismaClientModuleIds].includes(url))
-    forceRequire(url);
+  // For Prisma client modules, we preempt import with CommonJS require to allow our hooks to
+  // modify the loaded module in cache. http/https are handled in register.ts instead, where
+  // they are pre-patched in the main thread before any ESM imports can race against them.
+  if (config().prismaClientModuleIds.includes(url)) forceRequire(url);
 
   return original;
 };
