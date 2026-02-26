@@ -8,6 +8,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
+        with:
+          cache: yarn
       - run: yarn
       - run: yarn lint
 
@@ -39,6 +41,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{matrix.node-version}}
+          cache: yarn
       - run: yarn
       - run: node test/smoketest.mjs
       - run: yarn test
@@ -51,6 +54,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
+        with:
+          cache: yarn
       - run: yarn
       - run: yarn prepack
       - run: yarn test || yarn jest --no-silent --verbose --onlyFailures
@@ -72,6 +77,8 @@ jobs:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
       - uses: actions/setup-node@v4
+        with:
+          cache: yarn
       - run: yarn
       - run: yarn semantic-release
         env:
