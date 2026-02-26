@@ -1,3 +1,19 @@
+# [2.25.0](https://github.com/getappmap/appmap-node/compare/v2.24.3...v2.25.0) (2026-02-26)
+
+
+### Bug Fixes
+
+* correct publish workflow and restore package.json bumping ([3b35f73](https://github.com/getappmap/appmap-node/commit/3b35f733363f48f5710fd02a56f7cf8db5ca7c37))
+* pre-patch http/https in main thread to eliminate ESM import race ([6bcaea0](https://github.com/getappmap/appmap-node/commit/6bcaea02a0bc03e56419fb04c07d1d74c37363bb))
+* trigger publish on release published instead of tag push ([fdc957d](https://github.com/getappmap/appmap-node/commit/fdc957df014c60da58f7285da1452b0d83b072d1))
+
+
+### Features
+
+* add JSX support to the AST parse/transform/generate pipeline ([235fca2](https://github.com/getappmap/appmap-node/commit/235fca2a6a9028c8a6ae01ca1b9cfcc151536e13))
+* add Next.js 16 / Turbopack support ([028fcb3](https://github.com/getappmap/appmap-node/commit/028fcb3c87ebd99c97072ee581669f9914cfb310))
+* compactly represent React elements in AppMap parameters ([8b60cd7](https://github.com/getappmap/appmap-node/commit/8b60cd7b9bbcc27c36d349f83f33fe2a65c56a8e))
+
 ## [2.24.3](https://github.com/getappmap/appmap-node/compare/v2.24.2...v2.24.3) (2024-09-17)
 
 
