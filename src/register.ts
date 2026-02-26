@@ -22,6 +22,7 @@ Module.prototype._compile = function _compile(code: string, fileName: string): s
   return originalCompile.call(this, xformed, fileName);
 };
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 Module.prototype.require = new Proxy(Module.prototype.require, {
   apply: requireHook,
 });
