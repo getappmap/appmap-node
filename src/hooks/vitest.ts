@@ -7,6 +7,7 @@ import { simple as walk } from "acorn-walk";
 import { type ESTree } from "meriyah";
 
 import config from "../config";
+import fwdSlashPath from "../util/fwdSlashPath";
 import {
   args as args_,
   assignment,
@@ -108,7 +109,9 @@ export async function wrapRunTest(
   } finally {
     const recording = getTestRecording();
     if (test.file?.filepath)
-      recording.metadata.source_location = relative(config().root, test.file.filepath);
+      recording.metadata.source_location = fwdSlashPath(
+        relative(config().root, test.file.filepath),
+      );
 
     const state = test.result?.state ?? (threw ? "fail" : "pass");
     switch (state) {

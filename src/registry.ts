@@ -1,5 +1,7 @@
 import { basename, relative } from "node:path";
 
+import fwdSlashPath from "./util/fwdSlashPath";
+
 import type { ESTree } from "meriyah";
 
 import config from "./config";
@@ -81,7 +83,7 @@ function pkgOfPath(path: string): string {
 function relativeLocation(location: SourceLocation | undefined): SourceLocation | undefined {
   if (!location) return undefined;
   return {
-    path: relative(config().root, location.path),
+    path: fwdSlashPath(relative(config().root, location.path)),
     lineno: location.lineno,
   };
 }
