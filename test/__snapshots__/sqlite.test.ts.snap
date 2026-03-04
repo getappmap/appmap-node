@@ -215,54 +215,6 @@ exports[`mapping Sqlite tests 1`] = `
         {
           "class": "Function",
           "name": "method",
-          "value": "[Function (anonymous)]",
-        },
-        {
-          "class": "Database",
-          "name": "thisArg",
-          "object_id": 1,
-          "value": "Database {}",
-        },
-        {
-          "class": "String",
-          "value": ""SELECT 'Database.each'"",
-        },
-      ],
-      "path": "index.js",
-      "static": true,
-      "thread_id": 0,
-    },
-    {
-      "event": "call",
-      "id": 16,
-      "sql_query": {
-        "database_type": "sqlite",
-        "sql": "SELECT 'Database.each'",
-      },
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 17,
-      "parent_id": 15,
-      "return_value": {
-        "class": "Promise<Object>",
-        "object_id": 6,
-        "value": "Promise { { "'Database.each'": 'Database.each' } }",
-      },
-      "thread_id": 0,
-    },
-    {
-      "defined_class": "index",
-      "event": "call",
-      "id": 19,
-      "lineno": 4,
-      "method_id": "promisify",
-      "parameters": [
-        {
-          "class": "Function",
-          "name": "method",
           "value": "[Function: exec]",
         },
         {
@@ -282,7 +234,7 @@ exports[`mapping Sqlite tests 1`] = `
     },
     {
       "event": "call",
-      "id": 20,
+      "id": 16,
       "sql_query": {
         "database_type": "sqlite",
         "sql": "SELECT 'Database.exec'",
@@ -292,11 +244,11 @@ exports[`mapping Sqlite tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 21,
-      "parent_id": 19,
+      "id": 17,
+      "parent_id": 15,
       "return_value": {
         "class": "Promise<undefined>",
-        "object_id": 7,
+        "object_id": 6,
         "value": "Promise { undefined }",
       },
       "thread_id": 0,
@@ -304,8 +256,60 @@ exports[`mapping Sqlite tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 22,
-      "parent_id": 20,
+      "id": 18,
+      "parent_id": 16,
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "index",
+      "event": "call",
+      "id": 19,
+      "lineno": 4,
+      "method_id": "promisify",
+      "parameters": [
+        {
+          "class": "Function",
+          "name": "method",
+          "value": "[Function (anonymous)]",
+        },
+        {
+          "class": "Database",
+          "name": "thisArg",
+          "object_id": 1,
+          "value": "Database {}",
+        },
+        {
+          "class": "String",
+          "value": ""SELECT 'Database.each'"",
+        },
+        {
+          "class": "undefined",
+          "value": "undefined",
+        },
+      ],
+      "path": "index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 20,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT 'Database.each'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 21,
+      "parent_id": 19,
+      "return_value": {
+        "class": "Promise<Number>",
+        "object_id": 7,
+        "value": "Promise { 1 }",
+      },
       "thread_id": 0,
     },
     {
@@ -664,6 +668,10 @@ exports[`mapping Sqlite tests 1`] = `
           "object_id": 18,
           "value": "Statement {}",
         },
+        {
+          "class": "undefined",
+          "value": "undefined",
+        },
       ],
       "path": "index.js",
       "static": true,
@@ -684,9 +692,9 @@ exports[`mapping Sqlite tests 1`] = `
       "id": 49,
       "parent_id": 47,
       "return_value": {
-        "class": "Promise<Object>",
+        "class": "Promise<Number>",
         "object_id": 19,
-        "value": "Promise { { "'Statement.each'": 'Statement.each' } }",
+        "value": "Promise { 1 }",
       },
       "thread_id": 0,
     },
@@ -839,8 +847,8 @@ exports[`mapping Sqlite tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 18,
-      "parent_id": 16,
+      "id": 22,
+      "parent_id": 20,
       "thread_id": 0,
     },
     {

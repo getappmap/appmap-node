@@ -60,10 +60,15 @@ function createRecordingProxy<T extends RecordingProxyTarget>(
       const lastArgIsaFunction = () =>
         argArray.length > 0 && typeof argArray[argArray.length - 1] === "function";
       if (lastArgIsaFunction()) functionArgs.unshift(argArray.pop());
-      if (needsRowCallback && lastArgIsaFunction()) functionArgs.unshift(argArray.pop());
+      // Also accept undefined/null as an explicit "no row callback" placeholder.
+      const lastArgIsRowCallback = () =>
+        argArray.length > 0 &&
+        (typeof argArray[argArray.length - 1] === "function" ||
+          argArray[argArray.length - 1] == null);
+      if (needsRowCallback && lastArgIsRowCallback()) functionArgs.unshift(argArray.pop());
 
       // if needsRowCallback:
-      //   functionArgs is [] or [rowCallback] or [rowCallback, completionCallback]
+      //   functionArgs is [] or [rowCallback] or [null, completionCallback] or [rowCallback, completionCallback]
       // otherwise:
       //   functionArgs is [] or [completionCallback]
 
