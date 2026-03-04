@@ -16,12 +16,16 @@ async function main() {
     [sqlite.Database.prototype.run, "run"],
     [sqlite.Database.prototype.all, "all"],
     [sqlite.Database.prototype.get, "get"],
-    [sqlite.Database.prototype.each, "each"],
     [sqlite.Database.prototype.exec, "exec"],
   ]) {
     const [method, name] = item;
     await promisify(method, db, `SELECT 'Database.${name}'`);
   }
+
+  // each() takes an optional row callback followed by a completion callback.
+  // Pass undefined for the row callback so promisify's callback lands in the
+  // completion slot, ensuring functionReturn is recorded before the promise resolves.
+  await promisify(sqlite.Database.prototype.each, db, `SELECT 'Database.each'`, undefined);
 
   await promisify(
     sqlite.Database.prototype.each,
@@ -50,13 +54,16 @@ async function main() {
     [sqlite.Statement.prototype.run, "run"],
     [sqlite.Statement.prototype.all, "all"],
     [sqlite.Statement.prototype.get, "get"],
-    [sqlite.Statement.prototype.each, "each"],
   ]) {
     const [method, name] = item;
     const st = db.prepare(`SELECT 'Statement.${name}'`);
     await promisify(method, st);
     st.finalize();
   }
+
+  const stEach = db.prepare(`SELECT 'Statement.each'`);
+  await promisify(sqlite.Statement.prototype.each, stEach, undefined);
+  stEach.finalize();
 
   // Same statement twice should produce two sql events in appmap.
   const st = db.prepare(`SELECT 'Statement.run - prepare once run twice'`);
