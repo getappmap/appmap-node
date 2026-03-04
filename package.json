@@ -97,6 +97,9 @@
     "ts-blank-space": "^0.7.0",
     "yaml": "^2.3.4"
   },
+  "resolutions": {
+    "rollup": "^4.59.0"
+  },
   "workspaces": [
     "test/httpClient",
     "test/httpServer",
