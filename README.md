@@ -11,6 +11,7 @@ to your tool invocation:
 
     $ npx appmap-node foo.js
     $ npx appmap-node yarn jest
+    $ npx appmap-node yarn vitest run
     $ npx appmap-node npx ts-node foo.ts
 
 ## Code Block Recording

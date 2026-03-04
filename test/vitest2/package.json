@@ -1,0 +1,8 @@
+{
+  "name": "vitest2-appmap-node-test",
+  "packageManager": "yarn@3.6.3",
+  "dependencies": {
+    "vitest": "^2.0.0"
+  },
+  "private": true
+}
