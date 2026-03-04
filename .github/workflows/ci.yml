@@ -61,6 +61,22 @@ jobs:
       - run: yarn test || yarn jest --no-silent --verbose --onlyFailures
       - run: node test/smoketest.mjs
 
+  pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: yarn
+      - run: yarn
+      - run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - run: yarn pack -o appmap-node-${{ env.SHORT_SHA }}.tgz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: appmap-node-${{ env.SHORT_SHA }}
+          path: appmap-node-${{ env.SHORT_SHA }}.tgz
+      - run: npx pkg-pr-new publish
+
   release:
     runs-on: ubuntu-latest
     permissions: {}
