@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`mapping vitest run  1`] = `
+exports[`vitest v0 mapping vitest run  1`] = `
 {
   "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
     "classMap": [
@@ -403,7 +403,7 @@ exports[`mapping vitest run  1`] = `
 }
 `;
 
-exports[`mapping vitest run --no-threads 1`] = `
+exports[`vitest v0 mapping vitest run --no-threads 1`] = `
 {
   "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
     "classMap": [
@@ -806,7 +806,7 @@ exports[`mapping vitest run --no-threads 1`] = `
 }
 `;
 
-exports[`mapping vitest run --single-thread 1`] = `
+exports[`vitest v0 mapping vitest run --single-thread 1`] = `
 {
   "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
     "classMap": [
@@ -1202,6 +1202,3230 @@ exports[`mapping vitest run --single-thread 1`] = `
         "type": "tests",
       },
       "source_location": "sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+}
+`;
+
+exports[`vitest v1 mapping vitest run  1`] = `
+{
+  "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:1",
+                "name": "sum",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "sum",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "1",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "3",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest1-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "adds 1 + 2 to equal 3",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/exception_handling.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/sum.test.js:14",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "sum.test",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "sum.test",
+        "event": "call",
+        "id": 1,
+        "lineno": 14,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "../vitest/sum.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 1,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest1-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "Error",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_failure": {
+        "location": "../vitest/sum.test.js",
+        "message": "test error",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_0_by_3_to_equal_0.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "0",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "3",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "0",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest1-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 0 by 3 to equal 0",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_5_by_4_to_equal_20.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "5",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "4",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "25",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest1-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "AssertionError",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 5 by 4 to equal 20",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_failure": {
+        "location": "../vitest/mul.test.js",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/subtracts_9_-_2_to_equal_7.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:5",
+                "name": "sub",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 5,
+        "method_id": "sub",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "9",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "7",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest1-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "subtracts 9 - 2 to equal 7",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+}
+`;
+
+exports[`vitest v1 mapping vitest run --pool=forks 1`] = `
+{
+  "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:1",
+                "name": "sum",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "sum",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "1",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "3",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest1-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "adds 1 + 2 to equal 3",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/exception_handling.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/sum.test.js:14",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "sum.test",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "sum.test",
+        "event": "call",
+        "id": 1,
+        "lineno": 14,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "../vitest/sum.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 1,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest1-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "Error",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_failure": {
+        "location": "../vitest/sum.test.js",
+        "message": "test error",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_0_by_3_to_equal_0.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "0",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "3",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "0",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest1-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 0 by 3 to equal 0",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_5_by_4_to_equal_20.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "5",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "4",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "25",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest1-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "AssertionError",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 5 by 4 to equal 20",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_failure": {
+        "location": "../vitest/mul.test.js",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/subtracts_9_-_2_to_equal_7.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:5",
+                "name": "sub",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 5,
+        "method_id": "sub",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "9",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "7",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest1-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "subtracts 9 - 2 to equal 7",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+}
+`;
+
+exports[`vitest v2 mapping vitest run  1`] = `
+{
+  "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:1",
+                "name": "sum",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "sum",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "1",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "3",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest2-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "adds 1 + 2 to equal 3",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/exception_handling.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/sum.test.js:14",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "sum.test",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "sum.test",
+        "event": "call",
+        "id": 1,
+        "lineno": 14,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "../vitest/sum.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 1,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest2-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "Error",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_failure": {
+        "location": "../vitest/sum.test.js",
+        "message": "test error",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_0_by_3_to_equal_0.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "0",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "3",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "0",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest2-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 0 by 3 to equal 0",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_5_by_4_to_equal_20.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "5",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "4",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "25",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest2-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "AssertionError",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 5 by 4 to equal 20",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_failure": {
+        "location": "../vitest/mul.test.js",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/subtracts_9_-_2_to_equal_7.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:5",
+                "name": "sub",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 5,
+        "method_id": "sub",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "9",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "7",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest2-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "subtracts 9 - 2 to equal 7",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+}
+`;
+
+exports[`vitest v2 mapping vitest run --pool=forks 1`] = `
+{
+  "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:1",
+                "name": "sum",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "sum",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "1",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "3",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest2-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "adds 1 + 2 to equal 3",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/exception_handling.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/sum.test.js:14",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "sum.test",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "sum.test",
+        "event": "call",
+        "id": 1,
+        "lineno": 14,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "../vitest/sum.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 1,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest2-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "Error",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_failure": {
+        "location": "../vitest/sum.test.js",
+        "message": "test error",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_0_by_3_to_equal_0.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "0",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "3",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "0",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest2-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 0 by 3 to equal 0",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_5_by_4_to_equal_20.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "5",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "4",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "25",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest2-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "AssertionError",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 5 by 4 to equal 20",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_failure": {
+        "location": "../vitest/mul.test.js",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/subtracts_9_-_2_to_equal_7.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:5",
+                "name": "sub",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 5,
+        "method_id": "sub",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "9",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "7",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest2-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "subtracts 9 - 2 to equal 7",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+}
+`;
+
+exports[`vitest v3 mapping vitest run  1`] = `
+{
+  "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:1",
+                "name": "sum",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "sum",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "1",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "3",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest3-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "adds 1 + 2 to equal 3",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/exception_handling.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/sum.test.js:14",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "sum.test",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "sum.test",
+        "event": "call",
+        "id": 1,
+        "lineno": 14,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "../vitest/sum.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 1,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest3-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "Error",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_failure": {
+        "location": "../vitest/sum.test.js",
+        "message": "test error",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_0_by_3_to_equal_0.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "0",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "3",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "0",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest3-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 0 by 3 to equal 0",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_5_by_4_to_equal_20.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "5",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "4",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "25",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest3-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "AssertionError",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 5 by 4 to equal 20",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_failure": {
+        "location": "../vitest/mul.test.js",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/subtracts_9_-_2_to_equal_7.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:5",
+                "name": "sub",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 5,
+        "method_id": "sub",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "9",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "7",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest3-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "subtracts 9 - 2 to equal 7",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+}
+`;
+
+exports[`vitest v3 mapping vitest run --pool=forks 1`] = `
+{
+  "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:1",
+                "name": "sum",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "sum",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "1",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "3",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest3-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "adds 1 + 2 to equal 3",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/exception_handling.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/sum.test.js:14",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "sum.test",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "sum.test",
+        "event": "call",
+        "id": 1,
+        "lineno": 14,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "../vitest/sum.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 1,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest3-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "Error",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_failure": {
+        "location": "../vitest/sum.test.js",
+        "message": "test error",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_0_by_3_to_equal_0.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "0",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "3",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "0",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest3-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 0 by 3 to equal 0",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_5_by_4_to_equal_20.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "5",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "4",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "25",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest3-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "AssertionError",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 5 by 4 to equal 20",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_failure": {
+        "location": "../vitest/mul.test.js",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/subtracts_9_-_2_to_equal_7.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:5",
+                "name": "sub",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 5,
+        "method_id": "sub",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "9",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "7",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest3-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "subtracts 9 - 2 to equal 7",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+}
+`;
+
+exports[`vitest v4 mapping vitest run  1`] = `
+{
+  "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:1",
+                "name": "sum",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "sum",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "1",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "3",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest4-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "adds 1 + 2 to equal 3",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/exception_handling.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/sum.test.js:14",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "sum.test",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "sum.test",
+        "event": "call",
+        "id": 1,
+        "lineno": 14,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "../vitest/sum.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 1,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest4-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "Error",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_failure": {
+        "location": "../vitest/sum.test.js",
+        "message": "test error",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_0_by_3_to_equal_0.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "0",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "3",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "0",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest4-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 0 by 3 to equal 0",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_5_by_4_to_equal_20.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "5",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "4",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "25",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest4-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "AssertionError",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 5 by 4 to equal 20",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_failure": {
+        "location": "../vitest/mul.test.js",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/subtracts_9_-_2_to_equal_7.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:5",
+                "name": "sub",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 5,
+        "method_id": "sub",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "9",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "7",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest4-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "subtracts 9 - 2 to equal 7",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+}
+`;
+
+exports[`vitest v4 mapping vitest run --pool=forks 1`] = `
+{
+  "./tmp/appmap/vitest/adds_1_+_2_to_equal_3.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:1",
+                "name": "sum",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 1,
+        "method_id": "sum",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "1",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "3",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest4-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "adds 1 + 2 to equal 3",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/exception_handling.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/sum.test.js:14",
+                "name": "errorOut",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "sum.test",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "sum.test",
+        "event": "call",
+        "id": 1,
+        "lineno": 14,
+        "method_id": "errorOut",
+        "parameters": [],
+        "path": "../vitest/sum.test.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "exceptions": [
+          {
+            "class": "TestError",
+            "message": "test error",
+            "object_id": 1,
+          },
+        ],
+        "id": 2,
+        "parent_id": 1,
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest4-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "Error",
+        "message": "test error",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "exception handling",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
+      "test_failure": {
+        "location": "../vitest/sum.test.js",
+        "message": "test error",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_0_by_3_to_equal_0.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "0",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "3",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "0",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest4-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 0 by 3 to equal 0",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_status": "succeeded",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/multiplies_5_by_4_to_equal_20.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:9",
+                "name": "mul",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 9,
+        "method_id": "mul",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "5",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "4",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "25",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest4-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "exception": {
+        "class": "AssertionError",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "multiplies 5 by 4 to equal 20",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/mul.test.js",
+      "test_failure": {
+        "location": "../vitest/mul.test.js",
+        "message": "expected 25 to be 20 // Object.is equality",
+      },
+      "test_status": "failed",
+    },
+    "version": "1.12",
+  },
+  "./tmp/appmap/vitest/subtracts_9_-_2_to_equal_7.appmap.json": {
+    "classMap": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "location": "../vitest/calc.js:5",
+                "name": "sub",
+                "static": true,
+                "type": "function",
+              },
+            ],
+            "name": "calc",
+            "type": "class",
+          },
+        ],
+        "name": "vitest",
+        "type": "package",
+      },
+    ],
+    "events": [
+      {
+        "defined_class": "calc",
+        "event": "call",
+        "id": 1,
+        "lineno": 5,
+        "method_id": "sub",
+        "parameters": [
+          {
+            "class": "Number",
+            "name": "a",
+            "value": "9",
+          },
+          {
+            "class": "Number",
+            "name": "b",
+            "value": "2",
+          },
+        ],
+        "path": "../vitest/calc.js",
+        "static": true,
+        "thread_id": 0,
+      },
+      {
+        "elapsed": 31.337,
+        "event": "return",
+        "id": 2,
+        "parent_id": 1,
+        "return_value": {
+          "class": "Number",
+          "value": "7",
+        },
+        "thread_id": 0,
+      },
+    ],
+    "metadata": {
+      "app": "vitest4-appmap-node-test",
+      "client": {
+        "name": "appmap-node",
+        "url": "https://github.com/getappmap/appmap-node",
+        "version": "test node-appmap version",
+      },
+      "language": {
+        "engine": "Node.js",
+        "name": "javascript",
+        "version": "test node version",
+      },
+      "name": "subtracts 9 - 2 to equal 7",
+      "recorder": {
+        "name": "vitest",
+        "type": "tests",
+      },
+      "source_location": "../vitest/sum.test.js",
       "test_status": "succeeded",
     },
     "version": "1.12",

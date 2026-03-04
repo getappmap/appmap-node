@@ -13,6 +13,7 @@ import {
   awaitImport,
   call_,
   identifier,
+  literal,
   member,
   memberId,
   ret,
@@ -62,16 +63,26 @@ if (shouldListenForInit()) {
 }
 
 const vitestRunnerIndexJsFilePathEnding = "/@vitest/runner/dist/index.js";
+// vitest v3 splits runTest into chunk-hooks.js; index.js is just re-exports
+const vitestRunnerChunkHooksJsFilePathEnding = "/@vitest/runner/dist/chunk-hooks.js";
 const viteNodeClientMjsFilePathEnding = "/vite-node/dist/client.mjs";
+// vitest v4 uses vite's built-in module runner instead of vite-node
+const viteModuleRunnerJsFilePathEnding = "/vite/dist/node/module-runner.js";
+// vitest v4 uses VitestModuleEvaluator instead of ESModulesEvaluator
+const vitestModuleEvaluatorJsFilePathEnding = "/vitest/dist/module-evaluator.js";
 
 export function shouldInstrument(url: URL): boolean {
-  // 1. …/vite-node/dist/client.mjs ViteNodeRunner.runModule
+  // 1. …/vite-node/dist/client.mjs ViteNodeRunner.runModule (vitest v0-v3)
+  //    or …/vite/dist/node/module-runner.js ESModulesEvaluator.runInlinedModule (vitest v4)
   //    is the place to transform test and user files
-  // 2. @vitest/runner/dist/index.js runTest is the place
-  //    to intercept test before and afters
+  // 2. @vitest/runner/dist/index.js (or chunk-hooks.js for v3) runTest
+  //    is the place to intercept test before and afters
   return (
     url.pathname.endsWith(vitestRunnerIndexJsFilePathEnding) ||
-    url.pathname.endsWith(viteNodeClientMjsFilePathEnding)
+    url.pathname.endsWith(vitestRunnerChunkHooksJsFilePathEnding) ||
+    url.pathname.endsWith(viteNodeClientMjsFilePathEnding) ||
+    url.pathname.endsWith(viteModuleRunnerJsFilePathEnding) ||
+    url.pathname.endsWith(vitestModuleEvaluatorJsFilePathEnding)
   );
 }
 
@@ -85,35 +96,42 @@ export async function wrapRunTest(
   abandonProcessRecordingIfNotAlwaysActive();
   startTestRecording("vitest", ...testNames(test));
 
-  const result = fun(...args);
-  await result;
+  // Use try/finally so recording.finish() is always called even when tests throw.
+  // vitest v1+ propagates test errors through the Promise (unlike v0 which catches
+  // them internally and resolves with test.result.state = "fail").
+  let threw = false;
+  try {
+    return await fun(...args);
+  } catch (e) {
+    threw = true;
+    throw e;
+  } finally {
+    const recording = getTestRecording();
+    if (test.file?.filepath)
+      recording.metadata.source_location = relative(config().root, test.file.filepath);
 
-  const recording = getTestRecording();
-  if (test.file?.filepath)
-    recording.metadata.source_location = relative(config().root, test.file.filepath);
-
-  switch (test.result?.state) {
-    case "pass":
-      recording.metadata.test_status = "succeeded";
-      break;
-    case "fail":
-      recording.metadata.test_status = "failed";
-      recording.metadata.test_failure = {
-        message: "failed",
-        location: recording.metadata.source_location,
-      };
-      if (test.result.errors?.length) {
-        const [{ name, message }] = test.result.errors;
-        recording.metadata.exception = { class: name, message };
-        recording.metadata.test_failure.message = message;
-      }
-      break;
-    default:
-      warn(`Test result not understood for test ${test.name}: ${test.result?.state}`);
+    const state = test.result?.state ?? (threw ? "fail" : "pass");
+    switch (state) {
+      case "pass":
+        recording.metadata.test_status = "succeeded";
+        break;
+      case "fail":
+        recording.metadata.test_status = "failed";
+        recording.metadata.test_failure = {
+          message: "failed",
+          location: recording.metadata.source_location,
+        };
+        if (test.result?.errors?.length) {
+          const [{ name, message }] = test.result.errors;
+          recording.metadata.exception = { class: name, message };
+          recording.metadata.test_failure.message = message;
+        }
+        break;
+      default:
+        warn(`Test result not understood for test ${test.name}: ${test.result?.state}`);
+    }
+    recording.finish();
   }
-  recording.finish();
-
-  return result;
 }
 
 function patchRunTest(fd: ESTree.FunctionDeclaration) {
@@ -135,8 +153,8 @@ function patchRunTest(fd: ESTree.FunctionDeclaration) {
   createInitChannel().postMessage(undefined);
 }
 
-export function transformCode(code: string, path: string): string {
-  const url = pathToFileURL(path);
+export function transformCode(code: string, pathOrUrl: string): string {
+  const url = pathOrUrl.startsWith("file://") ? new URL(pathOrUrl) : pathToFileURL(pathOrUrl);
   return genericTransform(code, url);
 }
 
@@ -156,14 +174,34 @@ function patchRunModule(md: ESTree.MethodDefinition) {
   md.value.body.body.unshift(transformCodeStatement);
 }
 
+// Patches …/vite/dist/node/module-runner.js ESModulesEvaluator.runInlinedModule
+function patchRunInlinedModule(md: ESTree.MethodDefinition) {
+  // Statement: code = await import(".../vitest.js").transformCode(code, context["__vite_ssr_import_meta__"].url)
+  const transformCodeStatement = assignment(
+    identifier("code"),
+    call_(
+      member(awaitImport(pathToFileURL(__filename).href), identifier(transformCode.name)),
+      identifier("code"),
+      member(identifier("context"), literal("__vite_ssr_import_meta__"), identifier("url")),
+    ),
+  );
+
+  assert(md.value.body);
+  md.value.body.body.unshift(transformCodeStatement);
+}
+
 export function transform(program: ESTree.Program): ESTree.Program {
-  if (program.loc?.source?.endsWith(vitestRunnerIndexJsFilePathEnding))
+  const source = program.loc?.source;
+  if (
+    source?.endsWith(vitestRunnerIndexJsFilePathEnding) ||
+    source?.endsWith(vitestRunnerChunkHooksJsFilePathEnding)
+  )
     walk(program, {
       FunctionDeclaration(fd: ESTree.FunctionDeclaration) {
         if (fd.id?.name === "runTest") patchRunTest(fd);
       },
     });
-  else if (program.loc?.source?.endsWith(viteNodeClientMjsFilePathEnding))
+  else if (source?.endsWith(viteNodeClientMjsFilePathEnding))
     walk(program, {
       ClassDeclaration(cd: ESTree.ClassDeclaration) {
         if (cd.id?.name === "ViteNodeRunner") {
@@ -173,6 +211,16 @@ export function transform(program: ESTree.Program): ESTree.Program {
             },
           });
         }
+      },
+    });
+  else if (
+    source?.endsWith(viteModuleRunnerJsFilePathEnding) ||
+    source?.endsWith(vitestModuleEvaluatorJsFilePathEnding)
+  )
+    walk(program, {
+      MethodDefinition(md: ESTree.MethodDefinition) {
+        if (md.key?.type === "Identifier" && md.key.name === "runInlinedModule")
+          patchRunInlinedModule(md);
       },
     });
 
