@@ -1,4 +1,5 @@
 import { type IncomingMessage, request, OutgoingMessage } from "node:http";
+import { setTimeout as sleep } from "node:timers/promises";
 
 import {
   SpawnAppmapNodeOptions,
@@ -93,9 +94,16 @@ async function waitForLine(
 }
 
 async function makeRequests(port: number) {
+  // Small delays ensure each request gets a distinct millisecond timestamp in its
+  // AppMap filename. Without them, consecutive requests can complete within the same
+  // millisecond (especially on Node 24), producing identical filename prefixes whose
+  // glob ordering is non-deterministic.
   await makeRequest(port, "");
+  await sleep(10);
   await makeRequest(port, "/nonexistent");
+  await sleep(10);
   await makeRequest(port, "/api/foo?param1=3&param2=4");
+  await sleep(10);
   await makeRequest(port, "/api/bar", "POST", (req) => {
     req.appendHeader("Content-Type", "application/json");
     req.write(
