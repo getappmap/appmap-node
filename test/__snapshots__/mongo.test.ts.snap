@@ -149,7 +149,7 @@ exports[`mapping MongoDB tests 1`] = `
         "object_id": 5,
         "value": "Promise { {
   acknowledged: true,
-  insertedId: ObjectId { [Symbol(id)]: [Buffer [Uint8Array]] }
+  insertedId: ObjectId('...')
 } }",
       },
       "thread_id": 0,
@@ -193,7 +193,7 @@ exports[`mapping MongoDB tests 1`] = `
         "object_id": 7,
         "value": "Promise { {
   acknowledged: true,
-  insertedId: ObjectId { [Symbol(id)]: [Buffer [Uint8Array]] }
+  insertedId: ObjectId('...')
 } }",
       },
       "thread_id": 0,
@@ -348,7 +348,7 @@ exports[`mapping MongoDB tests 1`] = `
       "return_value": {
         "class": "Promise<Object>",
         "object_id": 14,
-        "value": "Promise { { _id: ObjectId { [Symbol(id)]: [Buffer [Uint8Array]] }, a: 3 } }",
+        "value": "Promise { { _id: ObjectId('...'), a: 3 } }",
       },
       "thread_id": 0,
     },

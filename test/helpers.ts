@@ -162,7 +162,9 @@ function fixValue(value: unknown): void {
     const v = value.value;
     if (v.startsWith("Next")) value.value = v.split(" ")[0];
     else if (v.includes("ObjectId"))
-      value.value = v.replaceAll(/ObjectId\('.*'\)/g, "ObjectId('test')");
+      value.value = v
+        .replaceAll(/ObjectId\('[^']*'\)/g, "ObjectId('...')")
+        .replaceAll(/ObjectId\s*\{[^}]*\}/g, "ObjectId('...')");
     else value.value = v.replaceAll(/\s+\[?Symbol.*/g, "");
   }
 }
