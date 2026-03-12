@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import type sqlite from "sqlite3";
 
+import Recording from "../Recording";
 import { getActiveRecordings, isActive } from "../recorder";
 import { getTime } from "../util/getTime";
 
@@ -54,6 +55,11 @@ function createRecordingProxy<T extends RecordingProxyTarget>(
       const recordings = getActiveRecordings();
       const callEvents = recordings.map((recording) => recording.sqlQuery("sqlite", sql));
       const startTime = getTime();
+      // Capture the current async context so the completion callback can emit
+      // return events in the correct buffer position. Native sqlite callbacks
+      // fire outside any AsyncLocalStorage context (especially in Node 24+),
+      // which would otherwise place return events after all buffered call events.
+      const asyncContext = Recording.getContext();
 
       // Extract callback argument(s) to functionArgs
       const functionArgs = [];
@@ -87,15 +93,19 @@ function createRecordingProxy<T extends RecordingProxyTarget>(
         | ((...args: unknown[]) => unknown);
 
       const newCompletionCallback = (...args: unknown[]) => {
-        const isError = args.length > 0 && args[0] != undefined;
-        if (!isError) {
-          recordings.forEach(
-            (recording, idx) =>
-              isActive(recording) &&
-              recording.functionReturn(callEvents[idx].id, undefined, startTime),
-          );
-        }
-        originalCompletionCallback?.apply(this, args);
+        // Restore the captured context to keep events in causal order, and run
+        // the original callback inside it so any instrumented work it does is
+        // also recorded in the correct position.
+        Recording.run(asyncContext, () => {
+          const isError = args.length > 0 && args[0] != undefined;
+          if (!isError)
+            recordings.forEach(
+              (recording, idx) =>
+                isActive(recording) &&
+                recording.functionReturn(callEvents[idx].id, undefined, startTime),
+            );
+          originalCompletionCallback?.apply(this, args);
+        });
       };
       newFunctionArgs.push(newCompletionCallback);
 

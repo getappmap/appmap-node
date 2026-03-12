@@ -2,6 +2,7 @@ import assert from "node:assert";
 
 import type mysql from "mysql";
 
+import Recording from "../Recording";
 import { getActiveRecordings, isActive } from "../recorder";
 import { getTime } from "../util/getTime";
 
@@ -46,6 +47,9 @@ function createQueryProxy(query: mysql.QueryFunction) {
       const recordings = getActiveRecordings();
       const callEvents = recordings.map((recording) => recording.sqlQuery("mysql", sql));
       const startTime = getTime();
+      // Capture the current async context so the callback can emit return events
+      // in the correct buffer position. See sqlite.ts for the same pattern.
+      const asyncContext = Recording.getContext();
 
       const originalCallback =
         typeof argArray[argArray.length - 1] === "function"
@@ -53,20 +57,22 @@ function createQueryProxy(query: mysql.QueryFunction) {
           : undefined;
 
       const newCallback: mysql.queryCallback = (err, results, fields) => {
-        if (err)
-          recordings.forEach(
-            (recording, idx) =>
-              isActive(recording) &&
-              recording.functionException(callEvents[idx].id, err, startTime),
-          );
-        else
-          recordings.forEach(
-            (recording, idx) =>
-              isActive(recording) &&
-              recording.functionReturn(callEvents[idx].id, undefined, startTime),
-          );
-
-        originalCallback?.call(this, err, results, fields);
+        // Restore the captured context to keep events in causal order.
+        Recording.run(asyncContext, () => {
+          if (err)
+            recordings.forEach(
+              (recording, idx) =>
+                isActive(recording) &&
+                recording.functionException(callEvents[idx].id, err, startTime),
+            );
+          else
+            recordings.forEach(
+              (recording, idx) =>
+                isActive(recording) &&
+                recording.functionReturn(callEvents[idx].id, undefined, startTime),
+            );
+          originalCallback?.call(this, err, results, fields);
+        });
       };
 
       argArray.push(newCallback);
