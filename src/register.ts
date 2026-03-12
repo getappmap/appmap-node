@@ -1,7 +1,8 @@
 import Module from "node:module";
 import { pathToFileURL } from "node:url";
-import worker from "node:worker_threads";
 
+import config from "./config.js";
+import { warn } from "./message.js";
 import { record } from "./recorder.js";
 import requireHook from "./requireHook.js";
 import transform from "./transform.js";
@@ -32,42 +33,36 @@ declare global {
 }
 global.AppMapRecordHook = record;
 
-// A side channel to allow requiring a module when requested from
-// the loader. This is a bit of a hack to allow patching modules like
-// http and https in ESM; import hooks don't have a way to modify
-// the module after it's loaded (like require hooks), but they share
-// module cache for the built-in modules. By catching an import
-// and requiring it before the import happens we pre-populate the
-// cache with our patched version.
-export function forceRequire(specifier: string): void {
-  cjsRequire(specifier);
-  // We also broadcast to other threads so it works when the
-  // loader is in a separate thread (as in newer nodes) with
-  // a separate module cache.
-  esmRequireChannel.postMessage(specifier);
-}
-
 const cjsRequire = Module.createRequire(__filename);
 
-// Pre-patch http/https in the main thread so they're already instrumented before any ESM module
-// imports them. Without this there is a race: when an ESM module does `import http from "http"`,
-// the loader thread calls forceRequire() and sends a BroadcastChannel message to patch http in the
-// main thread. But the main thread evaluates the ESM module body synchronously and can call into
-// http (e.g. new http.ClientRequest()) before the BroadcastChannel message is ever processed.
-cjsRequire("node:http");
-cjsRequire("node:https");
+// Pre-patch library modules in the main thread so they're already instrumented before any ESM
+// module imports them. The ESM load() hook cannot transform built-in modules (node:http etc.)
+// since they have no source, and for CJS-format third-party libraries the CJS cache is the only
+// shared state between the loader thread and the main thread. register.ts runs via --require
+// before any ESM evaluation, so these require() calls are race-free.
+function prePatch(id: string, { warnOnFailure = false } = {}) {
+  try {
+    cjsRequire(id);
+  } catch (err: unknown) {
+    if (!warnOnFailure) return;
+    // Warn rather than crash. The module may not be installed, or it may be
+    // installed but broken (bad transitive dep, syntax error, etc.). Either
+    // way, if the application never actually imports it the problem is
+    // invisible without appmap — crashing the process here would make appmap
+    // appear to be the cause. A warning gives the user enough context to
+    // investigate without interrupting their workflow.
+    const detail = err instanceof Error ? err.message : String(err);
+    warn(`could not pre-patch '${id}' for instrumentation: ${detail}`);
+  }
+}
 
-const esmRequireChannel = new worker.BroadcastChannel("appmap-node/register/esm-require").unref();
+// Built-in patches: always attempted, silently skipped if not present.
+prePatch("node:http");
+prePatch("node:https");
+for (const id of config().prismaClientModuleIds) prePatch(id);
 
-esmRequireChannel.onmessage = (message: unknown) => {
-  if (
-    !(
-      message != null &&
-      typeof message == "object" &&
-      "data" in message &&
-      typeof message.data == "string"
-    )
-  )
-    return;
-  cjsRequire(message.data);
-};
+// User-configured library modules: warn if pre-patching fails, since the
+// user explicitly asked for instrumentation of these.
+for (const pkg of config().packages) {
+  if (pkg.module) prePatch(pkg.module, { warnOnFailure: true });
+}

@@ -3,28 +3,9 @@ import { URL, fileURLToPath } from "node:url";
 
 import type { NodeLoaderHooksAPI2 } from "ts-node";
 
-import config from "./config";
 import { warn } from "./message";
 import transform, { findHook, getSourceMap, shouldMatchOriginalSourcePaths } from "./transform";
 import { readPkgUp } from "./util/readPkgUp";
-import { forceRequire } from "./register";
-
-export const resolve: NodeLoaderHooksAPI2["resolve"] = async function resolve(
-  url,
-  context,
-  nextResolve,
-) {
-  const result = await nextResolve(url, context, nextResolve);
-
-  // For libraries, we preempt import with CommonJS require here, instead
-  // of load function, because for third party libraries we can catch
-  // their import name here (i.e. url: "json5"). Then it gets resolved
-  // to a path (i.e. result.path: ".../node_modules/json5/lib/index.js")
-  // and passed to the load function.
-  if (config().getPackage(url, true) != undefined) forceRequire(url);
-
-  return result;
-};
 
 export const load: NodeLoaderHooksAPI2["load"] = async function load(url, context, defaultLoad) {
   const urlObj = new URL(url);
@@ -61,11 +42,6 @@ export const load: NodeLoaderHooksAPI2["load"] = async function load(url, contex
     } else warn("Empty source: " + url);
     return original;
   }
-
-  // For Prisma client modules, we preempt import with CommonJS require to allow our hooks to
-  // modify the loaded module in cache. http/https are handled in register.ts instead, where
-  // they are pre-patched in the main thread before any ESM imports can race against them.
-  if (config().prismaClientModuleIds.includes(url)) forceRequire(url);
 
   return original;
 };
