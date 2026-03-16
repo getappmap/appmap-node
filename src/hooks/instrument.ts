@@ -2,7 +2,8 @@ import assert from "node:assert";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { debuglog } from "node:util";
 
-import { ancestor as walk, base as walkBase } from "acorn-walk";
+import { base as walkBase } from "acorn-walk";
+import { walkAncestor as walk } from "../util/walk";
 import { extend as extendWalkWithJsx } from "acorn-jsx-walk";
 
 // Teach acorn-walk to traverse JSX nodes produced by meriyah.

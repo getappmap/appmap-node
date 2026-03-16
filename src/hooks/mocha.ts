@@ -2,7 +2,7 @@ import assert from "node:assert";
 import { relative } from "node:path";
 import { EventEmitter } from "node:stream";
 
-import { simple as walk } from "acorn-walk";
+import { walkSimple as walk } from "../util/walk";
 import type { ESTree } from "meriyah";
 
 import { expressionFor } from ".";

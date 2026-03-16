@@ -3,7 +3,7 @@ import { relative } from "node:path";
 import { pathToFileURL } from "node:url";
 import worker from "node:worker_threads";
 
-import { simple as walk } from "acorn-walk";
+import { walkSimple as walk } from "../util/walk";
 import { type ESTree } from "meriyah";
 
 import config from "../config";

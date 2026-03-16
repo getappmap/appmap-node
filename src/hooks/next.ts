@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { resolve } from "node:path";
 
-import { ancestor as walk } from "acorn-walk";
+import { walkAncestor as walk } from "../util/walk";
 import { ESTree } from "meriyah";
 
 import type { NextConfig } from "next";

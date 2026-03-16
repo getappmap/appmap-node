@@ -1,7 +1,7 @@
 import { pathToFileURL } from "node:url";
 
 import type { Circus } from "@jest/types";
-import { simple as walk } from "acorn-walk";
+import { walkSimple as walk } from "../util/walk";
 import type { ESTree } from "meriyah";
 import StackUtils from "stack-utils";
 
