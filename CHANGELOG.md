@@ -1,3 +1,18 @@
+# [2.26.0](https://github.com/getappmap/appmap-node/compare/v2.25.0...v2.26.0) (2026-03-16)
+
+
+### Bug Fixes
+
+* normalize path separators to forward slashes on Windows ([5a357e1](https://github.com/getappmap/appmap-node/commit/5a357e11d11a9667cd1c5fdb8cb0e087f43b223a))
+* replace racy BroadcastChannel patching with eager pre-patching at startup ([617cf07](https://github.com/getappmap/appmap-node/commit/617cf0745acee7d52855042a7b0f3822ab04da4b))
+* resolve flaky sqlite `each` snapshot tests ([60caf7f](https://github.com/getappmap/appmap-node/commit/60caf7f6aa486b0094005034594efa4aeb49bc5f))
+* restore async context in sqlite/mysql callbacks for correct event ordering ([f3f57d4](https://github.com/getappmap/appmap-node/commit/f3f57d45b2ac52f334ce6f2d82ab8345eaf31bf0))
+
+
+### Features
+
+* support vitest v1–v4 ([55d941e](https://github.com/getappmap/appmap-node/commit/55d941ec05a25ef1d85e1cb2e26047dea3e819e8))
+
 # [2.25.0](https://github.com/getappmap/appmap-node/compare/v2.24.3...v2.25.0) (2026-02-26)
 
 
