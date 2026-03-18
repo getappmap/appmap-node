@@ -4,8 +4,21 @@ import { resolve } from "node:path";
 import { walkAncestor as walk } from "../util/walk";
 import { ESTree } from "meriyah";
 
-import type { NextConfig } from "next";
-import type webpack from "webpack";
+// Minimal local types replacing `next` and `webpack` dev dependencies (only needed for types).
+interface WebpackConfiguration {
+  module?: {
+    rules?: unknown[];
+  };
+}
+
+interface WebpackContext {
+  isServer: boolean;
+  nextRuntime?: string;
+}
+
+interface NextConfig {
+  webpack?: (config: WebpackConfiguration, context: WebpackContext) => WebpackConfiguration;
+}
 
 import { call_, identifier, literal, member, ret } from "../generate";
 import { warn } from "../message";
@@ -48,8 +61,8 @@ export async function injectConfig(loadConfig: () => Promise<NextConfig>): Promi
 
   // Webpack loader injection (Next.js with --webpack or older Next.js)
   const orig = result.webpack;
-  result.webpack = (config: webpack.Configuration, context) => {
-    if (orig) config = orig(config, context) as webpack.Configuration;
+  result.webpack = (config: WebpackConfiguration, context: WebpackContext) => {
+    if (orig) config = orig(config, context);
     if (context.isServer && context.nextRuntime !== "edge") {
       assert(config.module?.rules);
       // Guard against the loader being added multiple times (e.g. when Next.js 16
