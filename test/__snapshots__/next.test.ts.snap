@@ -83,7 +83,7 @@ exports[`mapping a Next.js appmap 1`] = `
         "http_server_response": {
           "headers": {
             "Content-Type": "application/json",
-            "Vary": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Url",
+            "Vary": "RSC, Next-Router-State-Tree, Next-Router-Prefetch",
           },
           "status_code": 200,
         },
@@ -189,7 +189,7 @@ exports[`mapping a Next.js appmap 1`] = `
         "http_server_response": {
           "headers": {
             "Cache-Control": "no-store, must-revalidate",
-            "Content-Length": "1333",
+            "Content-Length": "1197",
             "Content-Type": "text/html; charset=utf-8",
             "Vary": "Accept-Encoding",
             "X-Powered-By": "Next.js",
