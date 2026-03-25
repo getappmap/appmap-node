@@ -26,6 +26,7 @@ import {
   startTestRecording,
 } from "../recorder";
 import genericTransform from "../transform";
+import { matchesPackageFile } from "../util/matchesPackageFile";
 
 function createInitChannel() {
   return new worker.BroadcastChannel("appmap-node/vitest/initialized");
@@ -63,15 +64,6 @@ if (shouldListenForInit()) {
   };
 }
 
-const vitestRunnerIndexJsFilePathEnding = "/@vitest/runner/dist/index.js";
-// vitest v3 splits runTest into chunk-hooks.js; index.js is just re-exports
-const vitestRunnerChunkHooksJsFilePathEnding = "/@vitest/runner/dist/chunk-hooks.js";
-const viteNodeClientMjsFilePathEnding = "/vite-node/dist/client.mjs";
-// vitest v4 uses vite's built-in module runner instead of vite-node
-const viteModuleRunnerJsFilePathEnding = "/vite/dist/node/module-runner.js";
-// vitest v4 uses VitestModuleEvaluator instead of ESModulesEvaluator
-const vitestModuleEvaluatorJsFilePathEnding = "/vitest/dist/module-evaluator.js";
-
 export function shouldInstrument(url: URL): boolean {
   // 1. …/vite-node/dist/client.mjs ViteNodeRunner.runModule (vitest v0-v3)
   //    or …/vite/dist/node/module-runner.js ESModulesEvaluator.runInlinedModule (vitest v4)
@@ -79,11 +71,11 @@ export function shouldInstrument(url: URL): boolean {
   // 2. @vitest/runner/dist/index.js (or chunk-hooks.js for v3) runTest
   //    is the place to intercept test before and afters
   return (
-    url.pathname.endsWith(vitestRunnerIndexJsFilePathEnding) ||
-    url.pathname.endsWith(vitestRunnerChunkHooksJsFilePathEnding) ||
-    url.pathname.endsWith(viteNodeClientMjsFilePathEnding) ||
-    url.pathname.endsWith(viteModuleRunnerJsFilePathEnding) ||
-    url.pathname.endsWith(vitestModuleEvaluatorJsFilePathEnding)
+    matchesPackageFile(url.pathname, "@vitest/runner", "dist/index.js") ||
+    matchesPackageFile(url.pathname, "@vitest/runner", "dist/chunk-hooks.js") ||
+    matchesPackageFile(url.pathname, "vite-node", "dist/client.mjs") ||
+    matchesPackageFile(url.pathname, "vite", "dist/node/module-runner.js") ||
+    matchesPackageFile(url.pathname, "vitest", "dist/module-evaluator.js")
   );
 }
 
@@ -196,15 +188,16 @@ function patchRunInlinedModule(md: ESTree.MethodDefinition) {
 export function transform(program: ESTree.Program): ESTree.Program {
   const source = program.loc?.source;
   if (
-    source?.endsWith(vitestRunnerIndexJsFilePathEnding) ||
-    source?.endsWith(vitestRunnerChunkHooksJsFilePathEnding)
+    source &&
+    (matchesPackageFile(source, "@vitest/runner", "dist/index.js") ||
+      matchesPackageFile(source, "@vitest/runner", "dist/chunk-hooks.js"))
   )
     walk(program, {
       FunctionDeclaration(fd: ESTree.FunctionDeclaration) {
         if (fd.id?.name === "runTest") patchRunTest(fd);
       },
     });
-  else if (source?.endsWith(viteNodeClientMjsFilePathEnding))
+  else if (source && matchesPackageFile(source, "vite-node", "dist/client.mjs"))
     walk(program, {
       ClassDeclaration(cd: ESTree.ClassDeclaration) {
         if (cd.id?.name === "ViteNodeRunner") {
@@ -217,8 +210,9 @@ export function transform(program: ESTree.Program): ESTree.Program {
       },
     });
   else if (
-    source?.endsWith(viteModuleRunnerJsFilePathEnding) ||
-    source?.endsWith(vitestModuleEvaluatorJsFilePathEnding)
+    source &&
+    (matchesPackageFile(source, "vite", "dist/node/module-runner.js") ||
+      matchesPackageFile(source, "vitest", "dist/module-evaluator.js"))
   )
     walk(program, {
       MethodDefinition(md: ESTree.MethodDefinition) {
