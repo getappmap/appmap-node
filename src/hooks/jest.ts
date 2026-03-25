@@ -17,11 +17,12 @@ import {
 } from "../recorder";
 import genericTranform from "../transform";
 import { isId } from "../util/isId";
+import { matchesPackageFile } from "../util/matchesPackageFile";
 
 export function shouldInstrument(url: URL): boolean {
   return (
-    url.pathname.endsWith("jest-runtime/build/index.js") ||
-    url.pathname.endsWith("jest-circus/build/state.js")
+    matchesPackageFile(url.pathname, "jest-runtime", "build/index.js") ||
+    matchesPackageFile(url.pathname, "jest-circus", "build/state.js")
   );
 }
 

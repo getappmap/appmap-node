@@ -16,9 +16,10 @@ import {
   getTestRecording,
   startTestRecording,
 } from "../recorder";
+import { matchesPackageFile } from "../util/matchesPackageFile";
 
 export function shouldInstrument(url: URL): boolean {
-  return url.pathname.endsWith("/mocha/lib/runner.js");
+  return matchesPackageFile(url.pathname, "mocha", "lib/runner.js");
 }
 
 export function transform(program: ESTree.Program): ESTree.Program {
