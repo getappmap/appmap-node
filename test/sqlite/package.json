@@ -1,6 +1,6 @@
 {
   "name": "sqlite-appmap-node-test",
-  "packageManager": "yarn@3.6.3",
+  "packageManager": "yarn@4.13.0",
   "dependencies": {
     "sqlite3": "^5.1.6"
   },

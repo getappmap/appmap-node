@@ -1,6 +1,6 @@
 {
   "name": "next16-appmap-node-test",
-  "packageManager": "yarn@3.6.3",
+  "packageManager": "yarn@4.13.0",
   "private": true,
   "dependencies": {
     "next": "^16.1.7",

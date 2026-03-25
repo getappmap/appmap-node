@@ -37,7 +37,7 @@
     "type": "git",
     "url": "git+https://github.com/getappmap/appmap-node.git"
   },
-  "packageManager": "yarn@3.6.3",
+  "packageManager": "yarn@4.13.0",
   "type": "commonjs",
   "engines": {
     "node": ">=18"
