@@ -1,14 +1,19 @@
 import { IncomingMessage, request } from "node:http";
+import { resolve } from "node:path";
 
 import { getFreePort, integrationTest, readAppmaps, spawnAppmapNode } from "./helpers";
+
+const nextBin = require.resolve("next/dist/bin/next", {
+  paths: [resolve(__dirname, "next")],
+});
 
 async function spawnNextJsApp(port: number) {
   // On Windows, we give "node" argument explicitly because next is a js file with
   // shebang (#!/usr/bin/env node) which does not work on Windows.
   const app =
     process.platform == "win32"
-      ? spawnAppmapNode("node", "node_modules\\next\\dist\\bin\\next", "dev", "-p", String(port))
-      : spawnAppmapNode("node_modules/next/dist/bin/next", "dev", "-p", String(port));
+      ? spawnAppmapNode("node", nextBin, "dev", "-p", String(port))
+      : spawnAppmapNode(nextBin, "dev", "-p", String(port));
 
   await new Promise<void>((r) => {
     const onData = (chunk: Buffer) => {

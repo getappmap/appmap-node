@@ -43,6 +43,12 @@ jobs:
           node-version: ${{matrix.node-version}}
           cache: yarn
       - run: yarn
+      - uses: actions/cache@v4
+        with:
+          path: |
+            test/pnpm-compat/.yarn/cache
+            test/pnpm-compat/.yarn/global
+          key: pnpm-compat-yarn-${{ runner.os }}-${{ hashFiles('test/pnpm-compat/yarn.lock') }}
       - run: node test/smoketest.mjs
       - run: yarn test
         env:
@@ -57,6 +63,12 @@ jobs:
         with:
           cache: yarn
       - run: yarn
+      - uses: actions/cache@v4
+        with:
+          path: |
+            test/pnpm-compat/.yarn/cache
+            test/pnpm-compat/.yarn/global
+          key: pnpm-compat-yarn-${{ runner.os }}-${{ hashFiles('test/pnpm-compat/yarn.lock') }}
       - run: yarn prepack
       - run: yarn test || yarn jest --no-silent --verbose --onlyFailures
       - run: node test/smoketest.mjs
