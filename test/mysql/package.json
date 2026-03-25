@@ -1,6 +1,6 @@
 {
   "name": "mysql-appmap-node-test",
-  "packageManager": "yarn@3.6.3",
+  "packageManager": "yarn@4.13.0",
   "private": true,
   "dependencies": {
     "mysql": "^2.18.1"
