@@ -1,7 +1,5 @@
-import { setTimeout } from "timers/promises";
-
 async function process(name) {
-  await setTimeout(100);
+  await new Promise((resolve) => globalThis.setTimeout(resolve, 100));
   await getMessage(`process ${name}`);
 }
 

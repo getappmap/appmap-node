@@ -285,19 +285,19 @@ exports[`mapping a script using async tracking timeout 0 1`] = `
         {
           "children": [
             {
-              "location": "asyncTimeout.mjs:12",
-              "name": "task",
-              "static": true,
-              "type": "function",
-            },
-            {
-              "location": "asyncTimeout.mjs:3",
+              "location": "asyncTimeout.mjs:1",
               "name": "process",
               "static": true,
               "type": "function",
             },
             {
-              "location": "asyncTimeout.mjs:8",
+              "location": "asyncTimeout.mjs:10",
+              "name": "task",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "asyncTimeout.mjs:6",
               "name": "getMessage",
               "static": true,
               "type": "function",
@@ -354,7 +354,7 @@ exports[`mapping a script using async tracking timeout 0 1`] = `
       "defined_class": "asyncTimeout",
       "event": "call",
       "id": 1,
-      "lineno": 12,
+      "lineno": 10,
       "method_id": "task",
       "parameters": [
         {
@@ -371,7 +371,7 @@ exports[`mapping a script using async tracking timeout 0 1`] = `
       "defined_class": "asyncTimeout",
       "event": "call",
       "id": 2,
-      "lineno": 3,
+      "lineno": 1,
       "method_id": "process",
       "parameters": [
         {
@@ -412,7 +412,7 @@ exports[`mapping a script using async tracking timeout 0 1`] = `
       "defined_class": "asyncTimeout",
       "event": "call",
       "id": 5,
-      "lineno": 8,
+      "lineno": 6,
       "method_id": "getMessage",
       "parameters": [
         {
@@ -468,19 +468,19 @@ exports[`mapping a script using async tracking timeout 10 1`] = `
         {
           "children": [
             {
-              "location": "asyncTimeout.mjs:12",
-              "name": "task",
-              "static": true,
-              "type": "function",
-            },
-            {
-              "location": "asyncTimeout.mjs:3",
+              "location": "asyncTimeout.mjs:1",
               "name": "process",
               "static": true,
               "type": "function",
             },
             {
-              "location": "asyncTimeout.mjs:8",
+              "location": "asyncTimeout.mjs:10",
+              "name": "task",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "asyncTimeout.mjs:6",
               "name": "getMessage",
               "static": true,
               "type": "function",
@@ -513,7 +513,7 @@ exports[`mapping a script using async tracking timeout 10 1`] = `
       "defined_class": "asyncTimeout",
       "event": "call",
       "id": 1,
-      "lineno": 12,
+      "lineno": 10,
       "method_id": "task",
       "parameters": [
         {
@@ -530,7 +530,7 @@ exports[`mapping a script using async tracking timeout 10 1`] = `
       "defined_class": "asyncTimeout",
       "event": "call",
       "id": 5,
-      "lineno": 8,
+      "lineno": 6,
       "method_id": "getMessage",
       "parameters": [
         {
@@ -559,7 +559,7 @@ exports[`mapping a script using async tracking timeout 10 1`] = `
       "defined_class": "asyncTimeout",
       "event": "call",
       "id": 2,
-      "lineno": 3,
+      "lineno": 1,
       "method_id": "process",
       "parameters": [
         {
@@ -627,19 +627,19 @@ exports[`mapping a script using async tracking timeout 3000 1`] = `
         {
           "children": [
             {
-              "location": "asyncTimeout.mjs:12",
-              "name": "task",
-              "static": true,
-              "type": "function",
-            },
-            {
-              "location": "asyncTimeout.mjs:3",
+              "location": "asyncTimeout.mjs:1",
               "name": "process",
               "static": true,
               "type": "function",
             },
             {
-              "location": "asyncTimeout.mjs:8",
+              "location": "asyncTimeout.mjs:10",
+              "name": "task",
+              "static": true,
+              "type": "function",
+            },
+            {
+              "location": "asyncTimeout.mjs:6",
               "name": "getMessage",
               "static": true,
               "type": "function",
@@ -658,7 +658,7 @@ exports[`mapping a script using async tracking timeout 3000 1`] = `
       "defined_class": "asyncTimeout",
       "event": "call",
       "id": 1,
-      "lineno": 12,
+      "lineno": 10,
       "method_id": "task",
       "parameters": [
         {
@@ -675,7 +675,7 @@ exports[`mapping a script using async tracking timeout 3000 1`] = `
       "defined_class": "asyncTimeout",
       "event": "call",
       "id": 2,
-      "lineno": 3,
+      "lineno": 1,
       "method_id": "process",
       "parameters": [
         {
@@ -692,7 +692,7 @@ exports[`mapping a script using async tracking timeout 3000 1`] = `
       "defined_class": "asyncTimeout",
       "event": "call",
       "id": 5,
-      "lineno": 8,
+      "lineno": 6,
       "method_id": "getMessage",
       "parameters": [
         {
