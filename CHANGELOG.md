@@ -1,3 +1,10 @@
+## [2.26.1](https://github.com/getappmap/appmap-node/compare/v2.26.0...v2.26.1) (2026-03-31)
+
+
+### Bug Fixes
+
+* handle yarn 4 pnpm linker path format in hook detection ([d7a7790](https://github.com/getappmap/appmap-node/commit/d7a7790ed2c3cb171a5439a123aa7435acf33d65))
+
 # [2.26.0](https://github.com/getappmap/appmap-node/compare/v2.25.0...v2.26.0) (2026-03-16)
 
 
