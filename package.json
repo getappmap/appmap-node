@@ -20,16 +20,16 @@
   "exports": {
     ".": {
       "require": {
-        "default": "./dist/facade.js",
         "types": [
           "./dist/facade.d.ts"
-        ]
+        ],
+        "default": "./dist/facade.js"
       },
       "import": {
-        "default": "./dist/facade.js",
         "types": [
           "./dist/facade.d.ts"
-        ]
+        ],
+        "default": "./dist/facade.js"
       }
     }
   },
