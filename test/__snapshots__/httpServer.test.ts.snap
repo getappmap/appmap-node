@@ -268,7 +268,7 @@ exports[`mapping Express.js requests 1`] = `
         "method_id": "api",
         "parameters": [
           {
-            "class": "Object",
+            "class": "object",
             "name": "query",
             "object_id": 3,
             "properties": [
@@ -281,7 +281,7 @@ exports[`mapping Express.js requests 1`] = `
                 "name": "param2",
               },
             ],
-            "value": "{ param1: '3', param2: '4' }",
+            "value": "[Object: null prototype] { param1: '3', param2: '4' }",
           },
         ],
         "path": "express.js",
@@ -969,7 +969,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
       "method_id": "api",
       "parameters": [
         {
-          "class": "Object",
+          "class": "object",
           "name": "query",
           "object_id": 3,
           "properties": [
@@ -982,7 +982,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
               "name": "param2",
             },
           ],
-          "value": "{ param1: '3', param2: '4' }",
+          "value": "[Object: null prototype] { param1: '3', param2: '4' }",
         },
       ],
       "path": "express.js",

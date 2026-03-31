@@ -1,7 +1,7 @@
 {
   "name": "http-server-appmap-node-test",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^5.2.1"
   },
   "private": true
 }
