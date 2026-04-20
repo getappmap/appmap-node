@@ -8,12 +8,12 @@ describe(transform, () => {
     const testHooks: Hook[] = [new TestHook(/foo/), new TestHook(/bar/)];
     const transforms = testHooks.map((t) => jest.spyOn(t, "transform"));
 
-    expect(transform("'hello'", new URL("file:///foo"), testHooks)).toBe('"hello";\n"/foo/";\n');
+    expect(transform("'hello'", new URL("file:///foo"), testHooks)).toBe("'hello';\n\"/foo/\";\n");
     expect(transforms[0]).toBeCalled();
     expect(transforms[1]).not.toBeCalled();
     transforms[0].mockReset();
 
-    expect(transform("'hello'", new URL("file:///bar"), testHooks)).toBe('"hello";\n"/bar/";\n');
+    expect(transform("'hello'", new URL("file:///bar"), testHooks)).toBe("'hello';\n\"/bar/\";\n");
     expect(transforms[0]).not.toBeCalled();
     expect(transforms[1]).toBeCalled();
     transforms[1].mockReset();
@@ -39,7 +39,22 @@ describe(transform, () => {
 
     expect(jest.mocked(warn).mock.calls).toMatchSnapshot();
   });
+
+  it("transforms unicode correctly", () => {
+    const input = `const a = "\\u{1D306}";\n`;
+    // Ensure that "\u{1D306}" is not converted to "t̆".
+    expect(transform(input, new URL("file:///foo"), [new IdentityHook()])).toBe(input);
+  });
 });
+
+class IdentityHook implements Hook {
+  shouldInstrument(): boolean {
+    return true;
+  }
+  transform(program: ESTree.Program): ESTree.Program {
+    return program;
+  }
+}
 
 class TestHook implements Hook {
   constructor(public pattern: RegExp) {}
