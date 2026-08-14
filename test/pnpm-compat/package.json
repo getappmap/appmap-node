@@ -3,6 +3,6 @@
   "packageManager": "yarn@4.13.0",
   "private": true,
   "dependencies": {
-    "vitest": "^0.34.6"
+    "vitest": "^3.2.6"
   }
 }
