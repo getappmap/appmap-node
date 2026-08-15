@@ -59,6 +59,14 @@ jobs:
 
   windows-test:
     runs-on: windows-latest
+    # Force Yarn's cache and global folder to live on the same volume (drive D:) as the workspace.
+    # On Windows runners, the default global directories live on C:, which causes
+    # hard-linking errors (EXDEV: cross-device link not permitted) during the
+    # pnpm-compat test installation because the workspace is located on D:.
+    env:
+      YARN_ENABLE_GLOBAL_CACHE: "false"
+      YARN_CACHE_FOLDER: "${{ github.workspace }}/.yarn/cache"
+      YARN_GLOBAL_FOLDER: "${{ github.workspace }}/.yarn/global"
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
