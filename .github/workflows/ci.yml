@@ -3,7 +3,7 @@ name: Lint and test
 on: push
 
 jobs:
-  lint:
+  build-and-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -11,10 +11,17 @@ jobs:
         with:
           cache: yarn
       - run: yarn
+      - run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+      - run: yarn pack -o appmap-node-${{ env.SHORT_SHA }}.tgz
+      - uses: actions/upload-artifact@v6
+        with:
+          name: appmap-node-${{ env.SHORT_SHA }}
+          path: appmap-node-${{ env.SHORT_SHA }}.tgz
+      - run: yarn pkg-pr-new publish --commentWithDev --yarn
       - run: yarn lint
 
   test:
-    needs: lint
+    needs: build-and-lint
     strategy:
       matrix:
         node-version: [18, 20, 22, 24]
@@ -62,27 +69,11 @@ jobs:
       - run: yarn test || yarn jest --no-silent --verbose --onlyFailures
       - run: node test/smoketest.mjs
 
-  pack:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          cache: yarn
-      - run: yarn
-      - run: echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-      - run: yarn pack -o appmap-node-${{ env.SHORT_SHA }}.tgz
-      - uses: actions/upload-artifact@v6
-        with:
-          name: appmap-node-${{ env.SHORT_SHA }}
-          path: appmap-node-${{ env.SHORT_SHA }}.tgz
-      - run: yarn pkg-pr-new publish --commentWithDev --yarn
-
   release:
     runs-on: ubuntu-latest
     permissions: {}
     if: github.ref_name == 'main'
-    needs: [lint, test, windows-test]
+    needs: [build-and-lint, test, windows-test]
     steps:
       - uses: actions/create-github-app-token@v1
         id: app-token
