@@ -76,7 +76,7 @@ jobs:
         with:
           name: appmap-node-${{ env.SHORT_SHA }}
           path: appmap-node-${{ env.SHORT_SHA }}.tgz
-      - run: npx pkg-pr-new publish
+      - run: yarn pkg-pr-new publish --commentWithDev --yarn
 
   release:
     runs-on: ubuntu-latest
