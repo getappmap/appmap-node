@@ -3,7 +3,7 @@
   "packageManager": "yarn@4.13.0",
   "private": true,
   "dependencies": {
-    "next": "^16.1.7",
+    "next": "^16.2.6",
     "react": "^19",
     "react-dom": "^19"
   },
