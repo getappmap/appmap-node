@@ -68,18 +68,21 @@ export function shouldInstrument(url: URL): boolean {
   // 1. …/vite-node/dist/client.mjs ViteNodeRunner.runModule (vitest v0-v3)
   //    or …/vite/dist/node/module-runner.js ESModulesEvaluator.runInlinedModule (vitest v4)
   //    is the place to transform test and user files
-  // 2. @vitest/runner/dist/index.js (or chunk-hooks.js for v3) runTest
-  //    is the place to intercept test before and afters
+  // 2. @vitest/runner runTest is the place to intercept test before and afters.
+  //    It moves between bundles as vitest rebundles the runner, so all three
+  //    known locations are instrumented: dist/index.js (v0-v2),
+  //    dist/chunk-hooks.js (v3) and dist/chunk-artifact.js (v4.1+).
   return (
     matchesPackageFile(url.pathname, "@vitest/runner", "dist/index.js") ||
     matchesPackageFile(url.pathname, "@vitest/runner", "dist/chunk-hooks.js") ||
+    matchesPackageFile(url.pathname, "@vitest/runner", "dist/chunk-artifact.js") ||
     matchesPackageFile(url.pathname, "vite-node", "dist/client.mjs") ||
     matchesPackageFile(url.pathname, "vite", "dist/node/module-runner.js") ||
     matchesPackageFile(url.pathname, "vitest", "dist/module-evaluator.js")
   );
 }
 
-// Wraps @vitest/runner/dist/index.js runTest
+// Wraps @vitest/runner runTest, wherever it is bundled -- see shouldInstrument
 export async function wrapRunTest(
   fun: (test: Test, runner: VitestRunner) => unknown,
   args: [Test, VitestRunner],
@@ -190,7 +193,8 @@ export function transform(program: ESTree.Program): ESTree.Program {
   if (
     source &&
     (matchesPackageFile(source, "@vitest/runner", "dist/index.js") ||
-      matchesPackageFile(source, "@vitest/runner", "dist/chunk-hooks.js"))
+      matchesPackageFile(source, "@vitest/runner", "dist/chunk-hooks.js") ||
+      matchesPackageFile(source, "@vitest/runner", "dist/chunk-artifact.js"))
   )
     walk(program, {
       FunctionDeclaration(fd: ESTree.FunctionDeclaration) {
