@@ -99,6 +99,7 @@
   },
   "resolutions": {
     "node-gyp": "^11.5.0",
+    "postcss": "^8.5.26",
     "rollup": "^4.59.0",
     "tar": "7.5.22"
   },
