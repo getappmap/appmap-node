@@ -191,8 +191,8 @@ exports[`mapping a Next.js 16 appmap 1`] = `
         "event": "return",
         "http_server_response": {
           "headers": {
-            "Cache-Control": "no-store, must-revalidate",
-            "Content-Length": "2210",
+            "Cache-Control": "no-cache, must-revalidate",
+            "Content-Length": "2272",
             "Content-Type": "text/html; charset=utf-8",
             "Vary": "Accept-Encoding",
             "X-Powered-By": "Next.js",
