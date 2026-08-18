@@ -1,3 +1,10 @@
+## [2.26.2](https://github.com/getappmap/appmap-node/compare/v2.26.1...v2.26.2) (2026-08-18)
+
+
+### Bug Fixes
+
+* **vitest:** support vitest 4.1, which moved runTest to chunk-artifact.js ([93d9397](https://github.com/getappmap/appmap-node/commit/93d939782fa569202ea98b38cf209f0ddbe1c376))
+
 ## [2.26.1](https://github.com/getappmap/appmap-node/compare/v2.26.0...v2.26.1) (2026-03-31)
 
 
