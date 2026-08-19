@@ -88,6 +88,7 @@ export default function transform(code: string, url: URL, hooks = defaultHooks):
       module: true,
       jsx,
       onComment: comments,
+      raw: true,
     });
 
     const xformed = hook.transform(tree, getSourceMap_(), comments);
