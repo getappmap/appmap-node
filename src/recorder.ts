@@ -68,7 +68,8 @@ export function record<This, Return>(
   funInfo: FunctionInfo,
   isLibrary = false,
 ): Return {
-  const recordings = getActiveRecordings();
+  const recordings = getActiveRecordings().filter((r) => !r.willExceedFunctionCallLimits(funInfo));
+
   let pkg;
   if (
     recordings.length == 0 ||

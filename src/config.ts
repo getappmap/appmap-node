@@ -18,6 +18,12 @@ const kResponseBodyMaxLengthEnvar = "APPMAP_RESPONSE_BODY_MAX_LENGTH";
 const asyncTrackingTimeoutDefault = 3000;
 const kAsyncTrackingTimeoutEnvar = "APPMAP_ASYNC_TRACKING_TIMEOUT";
 
+const maxRecordedCallsDefault = 10_000_000;
+const kMaxRecordedCallsEnvar = "APPMAP_MAX_RECORDED_CALLS";
+
+const maxRecordedCallsPerFunctionDefault = 100_000;
+const kMaxRecordedCallsPerFunctionEnvar = "APPMAP_MAX_RECORDED_CALLS_PER_FUNCTION";
+
 export class Config {
   public readonly relativeAppmapDir: string;
   public readonly appName: string;
@@ -35,6 +41,9 @@ export class Config {
   // crashes in environments where the global/globalThis object is shadowed or
   // manipulated. This flag allows easy toggling of the check during testing.
   public readonly generateGlobalRecordHookCheck: boolean = true;
+
+  public readonly maxRecordedCalls: number;
+  public readonly maxRecordedCallsPerFunction: number;
 
   private readonly document?: Document;
   private migrationPending = false;
@@ -90,6 +99,16 @@ export class Config {
       getNonNegativeIntegerEnvVarValue(kAsyncTrackingTimeoutEnvar) ??
       config?.async_tracking_timeout ??
       asyncTrackingTimeoutDefault;
+
+    this.maxRecordedCalls =
+      getNonNegativeIntegerEnvVarValue(kMaxRecordedCallsEnvar) ??
+      config?.max_recorded_calls ??
+      maxRecordedCallsDefault;
+
+    this.maxRecordedCallsPerFunction =
+      getNonNegativeIntegerEnvVarValue(kMaxRecordedCallsPerFunctionEnvar) ??
+      config?.max_recorded_calls_per_function ??
+      maxRecordedCallsPerFunctionDefault;
   }
 
   private absoluteAppmapDir?: string;
@@ -176,6 +195,8 @@ interface ConfigFile {
   response_body_max_length?: number;
   language?: string;
   async_tracking_timeout?: number;
+  max_recorded_calls?: number;
+  max_recorded_calls_per_function?: number;
 }
 
 // Maintaining the YAML document is important to preserve existing comments and formatting
@@ -216,6 +237,14 @@ function readConfigFile(document: Document): ConfigFile {
   if ("async_tracking_timeout" in config) {
     const value = parseInt(String(config.async_tracking_timeout));
     result.async_tracking_timeout = value >= 0 ? value : undefined;
+  }
+  if ("max_recorded_calls" in config) {
+    const value = parseInt(String(config.max_recorded_calls));
+    result.max_recorded_calls = value >= 0 ? value : undefined;
+  }
+  if ("max_recorded_calls_per_function" in config) {
+    const value = parseInt(String(config.max_recorded_calls_per_function));
+    result.max_recorded_calls_per_function = value >= 0 ? value : undefined;
   }
 
   return result;
