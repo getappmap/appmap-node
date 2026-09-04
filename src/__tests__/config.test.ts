@@ -154,7 +154,9 @@ describe(Config, () => {
   let dir: string;
   beforeEach(() => {
     chdir((dir = tmp.dirSync().name));
-    jest.replaceProperty(process, "env", {});
+    // The cast is needed because next's types (pulled in through the test apps)
+    // augment ProcessEnv to make NODE_ENV required.
+    jest.replaceProperty(process, "env", {} as NodeJS.ProcessEnv);
   });
 
   const origCwd = cwd();

@@ -8,7 +8,6 @@ export function createTestFn(name: string, ...args: string[]): FunctionInfo {
       generator: false,
       id: identifier(name),
       params: args.map(identifier),
-      type: "FunctionDeclaration",
     },
     { path: "test.js", lineno: 42 },
   );

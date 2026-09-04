@@ -19,7 +19,8 @@ function isInstrumented(program: ReturnType<typeof transformJsx>): boolean {
   return program.body.some(
     (n) =>
       n.type === "VariableDeclaration" &&
-      n.declarations?.[0]?.id?.name === "__appmapFunctionRegistry",
+      n.declarations[0]?.id.type === "Identifier" &&
+      n.declarations[0].id.name === "__appmapFunctionRegistry",
   );
 }
 

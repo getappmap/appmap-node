@@ -1,4 +1,4 @@
-import AppMap from "../AppMap";
+import type * as AppMap from "../AppMap";
 import { objectId, optParameter, parameter } from "../parameter";
 
 class Klass {
