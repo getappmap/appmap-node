@@ -5,6 +5,7 @@ import { join } from "node:path";
 import tmp from "tmp";
 
 import {
+  detachOutput,
   getAppMapBinPath,
   integrationTest,
   readAppmap,
@@ -46,6 +47,7 @@ integrationTestSkipOnWindows("forwarding signals to the child", async () => {
 
   daemon.kill("SIGINT");
   await new Promise((r) => daemon.once("exit", r));
+  detachOutput(daemon);
 
   expect(daemon.exitCode).toBe(42);
   expect(readAppmap()).toMatchSnapshot();
@@ -103,6 +105,7 @@ integrationTestSkipOnWindows("finish signal is handled", async () => {
 
   server.kill("SIGINT");
   await new Promise((r) => server.once("exit", r));
+  detachOutput(server);
 
   expect(readAppmap()).toMatchSnapshot();
 });

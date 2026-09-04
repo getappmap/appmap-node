@@ -3,6 +3,7 @@ import { setTimeout as sleep } from "node:timers/promises";
 
 import {
   SpawnAppmapNodeOptions,
+  detachOutput,
   fixAppmap,
   integrationTest,
   readAppmaps,
@@ -141,7 +142,8 @@ async function makeRequest(
   return Buffer.concat(chunks).toString();
 }
 
-function killServer(server: ChildProcessWithoutNullStreams) {
+async function killServer(server: ChildProcessWithoutNullStreams) {
   server.kill("SIGINT");
-  return new Promise<void>((r) => server.on("close", () => r()));
+  await new Promise<void>((r) => server.on("close", () => r()));
+  detachOutput(server);
 }

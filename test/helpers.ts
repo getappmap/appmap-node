@@ -50,6 +50,23 @@ export function spawnAppmapNodeWithOptions(
   return result;
 }
 
+/**
+ * Stop handling a spawned process' output, removing every stdout and stderr
+ * data listener: the logging ones installed by spawnAppmapNode as well as any
+ * the caller has added itself. The process is expected to be gone by now, so
+ * there should be nothing left to listen for.
+ *
+ * Call this once a spawned process is no longer needed: on Windows appmap-node
+ * spawns the target with shell: true, so the actual process is a grandchild
+ * which keeps the stdio pipes open even after the shell has exited. Anything it
+ * writes on the way out (eg. terminal escapes) would otherwise be logged after
+ * the test has finished, which makes Jest fail the whole run.
+ */
+export function detachOutput(child: ChildProcessWithoutNullStreams) {
+  child.stdout.removeAllListeners("data");
+  child.stderr.removeAllListeners("data");
+}
+
 let target = fwdSlashPath(cwd());
 
 export function testDir(path: string) {
