@@ -10,7 +10,7 @@ import { detachOutput, getFreePort, readAppmaps, resolveTarget, spawnAppmapNode 
  */
 export default async function testNextApp() {
   const port = await getFreePort();
-  const { app, waitForOutput } = await spawnNextJsApp(port);
+  const { app, waitForOutput, errorOutput } = await spawnNextJsApp(port);
   const response = await makeRequest(port, "/hello");
   console.log("Response", response);
   const { pid } = JSON.parse(response) as { pid: number };
@@ -29,6 +29,10 @@ export default async function testNextApp() {
   app.kill("SIGINT");
   await new Promise((r) => app.once("exit", r));
   detachOutput(app);
+
+  // next reports an exception thrown out of the config hooks with this frame in
+  // the stack and then carries on regardless, so nothing else would notice.
+  expect(errorOutput()).not.toContain("injectConfig");
 
   const appMaps = readAppmaps();
   // Delete response body captures because they will be different in every run
@@ -53,30 +57,32 @@ async function spawnNextJsApp(port: number) {
       ? spawnAppmapNode("node", nextBin, "dev", "-p", String(port))
       : spawnAppmapNode(nextBin, "dev", "-p", String(port));
 
-  const waitForOutput = watchOutput(app);
+  const { waitForOutput, errorOutput } = watchOutput(app);
   await waitForOutput("Ready");
-  return { app, waitForOutput };
+  return { app, waitForOutput, errorOutput };
 }
 
 /**
- * Watch the process' stdout, returning a function which waits for a fragment of
- * it to appear.
+ * Watch the process' output, returning a function which waits for a fragment of
+ * its stdout to appear, and one giving everything it has said on stderr.
  *
- * Matching is against everything seen so far rather than individual chunks:
+ * Waiting matches against everything seen so far rather than individual chunks:
  * next dev interleaves spinner frames and escape sequences with its output, so
  * a message can both be split across chunk boundaries and have arrived before
  * we start waiting for it.
  */
 function watchOutput(app: ChildProcessWithoutNullStreams, timeout = 30000) {
   let output = "";
+  let errors = "";
   const waiters = new Set<() => void>();
 
   app.stdout.on("data", (chunk: Buffer) => {
     output += chunk.toString();
     for (const check of waiters) check();
   });
+  app.stderr.on("data", (chunk: Buffer) => (errors += chunk.toString()));
 
-  return (needle: string) =>
+  const waitForOutput = (needle: string) =>
     new Promise<void>((resolve, reject) => {
       // Fail before the test times out, so that we get to say what we waited for.
       const timer = setTimeout(() => {
@@ -92,6 +98,8 @@ function watchOutput(app: ChildProcessWithoutNullStreams, timeout = 30000) {
       waiters.add(check);
       check();
     });
+
+  return { waitForOutput, errorOutput: () => errors };
 }
 
 async function makeRequest(port: number, path: string, method = "GET") {

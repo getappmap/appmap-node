@@ -20,6 +20,11 @@ interface NextConfig {
   webpack?: (config: WebpackConfiguration, context: WebpackContext) => WebpackConfiguration;
 }
 
+// The third argument of next's loadConfig(phase, dir, opts).
+interface LoadConfigOptions {
+  rawConfig?: boolean;
+}
+
 import { call_, identifier, literal, member, ret } from "../generate";
 import { warn } from "../message";
 
@@ -47,7 +52,9 @@ export function transform(program: ESTree.Program): ESTree.Program {
       };
       const thisFile = call_(identifier("require"), literal(__filename));
       const injectConfig = member(thisFile, "injectConfig");
-      fun.body.body = [ret(call_(injectConfig, orig))];
+      // Forward the arguments rather than the declared parameters, so that we
+      // don't depend on how a given version of next happens to name them.
+      fun.body.body = [ret(call_(injectConfig, orig, identifier("arguments")))];
     },
   });
   return program;
@@ -55,8 +62,26 @@ export function transform(program: ESTree.Program): ESTree.Program {
 
 const jsExtensions = ["tsx", "ts", "js", "cjs", "mjs", "jsx"];
 
-export async function injectConfig(loadConfig: () => Promise<NextConfig>): Promise<NextConfig> {
+export async function injectConfig(
+  loadConfig: () => Promise<NextConfig>,
+  args?: IArguments,
+): Promise<NextConfig> {
   const result = await loadConfig();
+
+  // With rawConfig next asks for the config module's exports rather than the
+  // resolved configuration, to validate what the user configured. That object
+  // is a module namespace and hence not extensible, and injecting a webpack
+  // config into it would in any case make next believe the user has one.
+  const opts = args?.[2] as LoadConfigOptions | undefined;
+  if (opts?.rawConfig) return result;
+
+  // Any other config we can't extend is unexpected. Don't throw, the caller
+  // handles it poorly, but do say so: nothing would be instrumented otherwise.
+  if (!Object.isExtensible(result)) {
+    warn("The Next.js configuration cannot be modified, AppMap will not be injected into it.");
+    return result;
+  }
+
   const loaderPath = resolve(__dirname, "../webpack.js");
 
   // Webpack loader injection (Next.js with --webpack or older Next.js)
