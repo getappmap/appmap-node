@@ -2,6 +2,9 @@
   "extends": "@tsconfig/node18",
   "compilerOptions": {
     "declaration": true,
+    // Only needed to type check the .tsx pages in the Next.js test apps; the
+    // apps themselves are built by next with their own tsconfig.
+    "jsx": "preserve",
     "outDir": "dist",
     "noImplicitAny": true,
     "sourceMap": true,
