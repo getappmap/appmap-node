@@ -23,6 +23,7 @@ jobs:
           path: appmap-node-${{ env.SHORT_SHA }}.tgz
       - run: yarn pkg-pr-new publish --commentWithDev --yarn
       - run: yarn lint
+      - run: yarn typecheck
 
   test:
     needs: build-and-lint
