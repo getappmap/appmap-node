@@ -1,3 +1,10 @@
+## [2.26.3](https://github.com/getappmap/appmap-node/compare/v2.26.2...v2.26.3) (2026-09-07)
+
+
+### Bug Fixes
+
+* **next:** Don't inject into the raw Next.js config ([96cf4b5](https://github.com/getappmap/appmap-node/commit/96cf4b52847decd08fa354aaa9b4d80e3381aa51))
+
 ## [2.26.2](https://github.com/getappmap/appmap-node/compare/v2.26.1...v2.26.2) (2026-08-18)
 
 
