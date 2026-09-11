@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { resolve } from "node:path";
+import util from "node:util";
 
 import { integrationTest, readAppmaps, runAppmapNode } from "./helpers";
 
@@ -7,7 +8,10 @@ import { integrationTest, readAppmaps, runAppmapNode } from "./helpers";
 // verifying that matchesPackageFile() correctly identifies hook targets in the
 // .store/pkg-npm-version-hash/package/ path format used by yarn 4 pnpm linker.
 
-integrationTest("pnpm linker: vitest hooks instrument code in .store paths", () => {
+// vitest 4 needs styleText (node > 18)
+const test = integrationTest.if("styleText" in util);
+
+test("pnpm linker: vitest hooks instrument code in .store paths", () => {
   const dir = resolve(__dirname, "pnpm-compat");
   const install = spawnSync("yarn", ["install", "--immutable"], {
     cwd: dir,
