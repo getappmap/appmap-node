@@ -46,6 +46,19 @@ async function main() {
 
   console.log(bob);
 
+  // A query the application catches must not escape as an unhandled rejection.
+  // The email is unique, so this create fails with P2002.
+  try {
+    await prisma.user.create({
+      data: {
+        name: "Alice again",
+        email: "alice@prisma.io",
+      },
+    });
+  } catch (error) {
+    console.log("caught:", error.code);
+  }
+
   const bobsWithPosts = await prisma.user.findMany({
     include: {
       posts: true,
