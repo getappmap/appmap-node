@@ -1,3 +1,4 @@
+import betterSqlite3Hook from "./hooks/betterSqlite3";
 import httpHook from "./hooks/http";
 import mongoHook from "./hooks/mongo";
 import mysqlHook from "./hooks/mysql";
@@ -18,6 +19,7 @@ const hooks: Hook[] = [
   mysqlHook,
   pgHook,
   sqliteHook,
+  betterSqlite3Hook,
   prismaHook,
   librariesHook,
 ];
