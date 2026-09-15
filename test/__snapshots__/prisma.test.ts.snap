@@ -470,13 +470,90 @@ exports[`mapping Prisma tests 1`] = `
       "defined_class": "User",
       "event": "call",
       "id": 35,
+      "lineno": 4,
+      "method_id": "create",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "args",
+          "object_id": 10,
+          "properties": [
+            {
+              "class": "Object",
+              "name": "data",
+              "properties": [
+                {
+                  "class": "String",
+                  "name": "name",
+                },
+                {
+                  "class": "String",
+                  "name": "email",
+                },
+              ],
+            },
+          ],
+          "value": "{ data: { name: 'Alice again', email: 'alice@prisma.io' } }",
+        },
+      ],
+      "path": "@prisma/client/User",
+      "receiver": {
+        "class": "String",
+        "value": "'User'",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 36,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "INSERT INTO \`main\`.\`User\` (\`email\`, \`name\`) VALUES (?,?) RETURNING \`id\` AS \`id\`, \`email\` AS \`email\`, \`name\` AS \`name\`",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 37,
+      "parent_id": 36,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "PrismaClientKnownRequestError",
+          "message": "
+Invalid \`prisma.user.create()\` invocation:
+
+
+Unique constraint failed on the fields: (\`email\`)",
+          "object_id": 12,
+        },
+      ],
+      "id": 38,
+      "parent_id": 35,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 11,
+        "value": "Promise { <rejected> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "User",
+      "event": "call",
+      "id": 39,
       "lineno": 1,
       "method_id": "findMany",
       "parameters": [
         {
           "class": "Object",
           "name": "args",
-          "object_id": 10,
+          "object_id": 13,
           "properties": [
             {
               "class": "Object",
@@ -518,7 +595,7 @@ exports[`mapping Prisma tests 1`] = `
     },
     {
       "event": "call",
-      "id": 36,
+      "id": 40,
       "sql_query": {
         "database_type": "sqlite",
         "sql": "SELECT \`main\`.\`User\`.\`id\`, \`main\`.\`User\`.\`email\`, \`main\`.\`User\`.\`name\` FROM \`main\`.\`User\` WHERE \`main\`.\`User\`.\`name\` LIKE ? LIMIT ? OFFSET ?",
@@ -528,13 +605,13 @@ exports[`mapping Prisma tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 37,
-      "parent_id": 36,
+      "id": 41,
+      "parent_id": 40,
       "thread_id": 0,
     },
     {
       "event": "call",
-      "id": 38,
+      "id": 42,
       "sql_query": {
         "database_type": "sqlite",
         "sql": "SELECT \`main\`.\`Post\`.\`id\`, \`main\`.\`Post\`.\`title\`, \`main\`.\`Post\`.\`content\`, \`main\`.\`Post\`.\`published\`, \`main\`.\`Post\`.\`authorId\` FROM \`main\`.\`Post\` WHERE \`main\`.\`Post\`.\`authorId\` IN (?) LIMIT ? OFFSET ?",
@@ -544,18 +621,18 @@ exports[`mapping Prisma tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 39,
-      "parent_id": 38,
+      "id": 43,
+      "parent_id": 42,
       "thread_id": 0,
     },
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 40,
-      "parent_id": 35,
+      "id": 44,
+      "parent_id": 39,
       "return_value": {
         "class": "Promise<Array>",
-        "object_id": 11,
+        "object_id": 14,
         "value": "Promise { [ { id: 2, email: 'bob@prisma.io', name: 'Bob', posts: [Array] } ] }",
       },
       "thread_id": 0,
@@ -606,7 +683,7 @@ exports[`mapping Prisma tests 1`] = `
     },
     {
       "event": "call",
-      "id": 41,
+      "id": 45,
       "sql_query": {
         "database_type": "sqlite",
         "sql": "SELECT 1",
@@ -616,8 +693,8 @@ exports[`mapping Prisma tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 42,
-      "parent_id": 41,
+      "id": 46,
+      "parent_id": 45,
       "thread_id": 0,
     },
   ],
