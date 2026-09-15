@@ -171,12 +171,20 @@ function createPrismaClientMethodProxy<T extends (...args: unknown[]) => unknown
           const result = target.apply(thisArg, argArray);
 
           assert(isPromise(result));
-          void result.finally(() => {
+          // Settle the recorded call whether the query resolves or rejects.
+          // result.finally(cb) returns a new promise that rejects along with a
+          // failed query, and nothing awaited it, so a rejected query the
+          // application caught (a P2002 unique violation, for example) still
+          // surfaced as an unhandled rejection. functionReturn attaches its own
+          // handlers to the promise and turns the return event into an exception
+          // event when the query rejects.
+          const settle = () => {
             queryMethodContext = undefined;
             recordings.forEach((recording, idx) =>
               recording.functionReturn(calls[idx].id, result, startTime),
             );
-          });
+          };
+          result.then(settle, settle);
 
           return result;
         } catch (exn: unknown) {
