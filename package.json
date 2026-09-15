@@ -117,6 +117,7 @@
     "test/mysql",
     "test/postgres",
     "test/sqlite",
+    "test/betterSqlite3",
     "test/next",
     "test/next16",
     "test/typescript-esm",
