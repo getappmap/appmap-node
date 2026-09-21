@@ -150,13 +150,16 @@ function createIterateProxy(iterate: AnyFunction, sqlOf: SqlOf) {
       }
 
       let finished = false;
-      const finish = (exn?: unknown) => {
+      // The failure is passed boxed so that a thrown undefined still finishes
+      // the query as an exception rather than as a successful return.
+      const finish = (failure?: { exception: unknown }) => {
         if (finished) return;
         finished = true;
         recordings.forEach((recording, idx) => {
           if (!isActive(recording)) return;
-          if (exn === undefined) recording.functionReturn(callEvents[idx].id, undefined, startTime);
-          else recording.functionException(callEvents[idx].id, exn, startTime);
+          if (failure)
+            recording.functionException(callEvents[idx].id, failure.exception, startTime);
+          else recording.functionReturn(callEvents[idx].id, undefined, startTime);
         });
       };
 
@@ -168,15 +171,23 @@ function createIterateProxy(iterate: AnyFunction, sqlOf: SqlOf) {
             if (result.done) finish();
             return result;
           } catch (exn: unknown) {
-            finish(exn ?? new Error("iteration failed"));
+            finish({ exception: exn });
             throw exn;
           }
         },
         return(...args: unknown[]) {
           try {
-            return native.return ? native.return(...args) : { done: true, value: undefined };
-          } finally {
+            const result = native.return
+              ? native.return(...args)
+              : { done: true, value: undefined };
             finish();
+            return result;
+          } catch (exn: unknown) {
+            // Cleaning up can fail too (better-sqlite3 refuses to release an
+            // iterator while the connection is busy). The query is over either
+            // way, but it did not end well.
+            finish({ exception: exn });
+            throw exn;
           }
         },
         [Symbol.iterator]() {
