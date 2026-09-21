@@ -56,6 +56,15 @@ integrationTest("recording a pragma run after a prepared statement", () => {
   ]);
 });
 
+integrationTest("leaving the shape of an iterator alone", () => {
+  expect(runAppmapNode("iteratorShape.js").status).toBe(0);
+  expect(recordedQueries()).toEqual([
+    "CREATE TABLE people (id INTEGER PRIMARY KEY, name TEXT NOT NULL)",
+    "INSERT INTO people (name) VALUES ('alice'), ('bob')",
+    "SELECT name FROM people ORDER BY id",
+  ]);
+});
+
 function recordedQueries(): string[] {
   return (readAppmap().events ?? [])
     .filter((event): event is AppMap.SqlQueryEvent => "sql_query" in event)

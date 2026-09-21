@@ -208,36 +208,51 @@ function createIterateProxy(iterate: AnyFunction, sqlOf: SqlOf) {
       };
 
       const native = iterator;
-      const proxy: IteratorLike & Iterable<unknown> = {
-        next(...args: unknown[]) {
-          try {
-            const result = native.next(...args);
-            if (result.done) finish();
-            return result;
-          } catch (exn: unknown) {
-            finish({ exception: exn });
-            throw exn;
-          }
-        },
-        return(...args: unknown[]) {
-          try {
-            const result = native.return
-              ? native.return(...args)
-              : { done: true, value: undefined };
-            finish();
-            return result;
-          } catch (exn: unknown) {
-            // Cleaning up can fail too (better-sqlite3 refuses to release an
-            // iterator while the connection is busy). The query is over either
-            // way, but it did not end well.
-            finish({ exception: exn });
-            throw exn;
-          }
-        },
-        [Symbol.iterator]() {
-          return this as Iterator<unknown>;
-        },
+
+      const next = (...args: unknown[]): IteratorResult<unknown> => {
+        try {
+          const result = native.next(...args);
+          if (result.done) finish();
+          return result;
+        } catch (exn: unknown) {
+          finish({ exception: exn });
+          throw exn;
+        }
       };
+
+      const settle = (...args: unknown[]): IteratorResult<unknown> => {
+        try {
+          const result = native.return ? native.return(...args) : { done: true, value: undefined };
+          finish();
+          return result;
+        } catch (exn: unknown) {
+          // Cleaning up can fail too (better-sqlite3 refuses to release an
+          // iterator while the connection is busy). The query is over either
+          // way, but it did not end well.
+          finish({ exception: exn });
+          throw exn;
+        }
+      };
+
+      // Everything not recorded here is forwarded to the native iterator, so
+      // that recording iterate() does not change the shape of what it returns:
+      // `statement`, which better-sqlite3 freezes onto the iterator, and the
+      // iterator's identity. Methods are bound to the native object, which
+      // cannot be unwrapped from a receiver that is not itself.
+      const proxy: IteratorLike = new Proxy(native, {
+        get(target, property) {
+          if (property === "next") return next;
+          if (property === "return") return settle;
+          // Handing for..of the native iterator would bypass recording.
+          if (property === Symbol.iterator) return () => proxy;
+
+          const value: unknown = Reflect.get(target, property, target);
+          // `constructor` is a class rather than a method: binding it would
+          // rename it, and it does not need a receiver anyway.
+          if (property === "constructor" || typeof value !== "function") return value;
+          return value.bind(target) as unknown;
+        },
+      });
       return proxy;
     },
   });
