@@ -1,3 +1,10 @@
+## [2.26.4](https://github.com/getappmap/appmap-node/compare/v2.26.3...v2.26.4) (2026-09-21)
+
+
+### Bug Fixes
+
+* **prisma:** settle a recorded query without leaking its rejection ([59442d5](https://github.com/getappmap/appmap-node/commit/59442d50f140437b5f7138a1b9359115e10620fb))
+
 ## [2.26.3](https://github.com/getappmap/appmap-node/compare/v2.26.2...v2.26.3) (2026-09-07)
 
 
