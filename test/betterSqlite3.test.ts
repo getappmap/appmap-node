@@ -45,6 +45,28 @@ integrationTest("recording a transaction started before any prepared statement",
   ]);
 });
 
+integrationTest("recording how a transaction ends", () => {
+  expect(runAppmapNode("transactionOutcomes.js").status).toBe(0);
+  const insert = "INSERT INTO people (name) VALUES (?)";
+  expect(recordedQueries()).toEqual([
+    "CREATE TABLE people (id INTEGER PRIMARY KEY, name TEXT NOT NULL)",
+    // A callback that throws rolls back.
+    "BEGIN",
+    insert,
+    "ROLLBACK",
+    // A transaction nested in another runs on a savepoint. The savepoint's
+    // name is better-sqlite3's own business, so only the statement is pinned.
+    "BEGIN",
+    insert,
+    expect.stringMatching(/^SAVEPOINT /) as string,
+    insert,
+    expect.stringMatching(/^RELEASE /) as string,
+    "COMMIT",
+    "SELECT name FROM people ORDER BY id",
+  ]);
+  expect(outcomeOf("ROLLBACK")?.exceptions).toBeUndefined();
+});
+
 integrationTest("recording a pragma run after a prepared statement", () => {
   expect(runAppmapNode("pragmaAfterPrepare.js").status).toBe(0);
   expect(recordedQueries()).toEqual([
