@@ -5,7 +5,8 @@ import { getTime } from "../util/getTime";
 //
 // better-sqlite3 exports its Database class. Statement is not exported, so its
 // prototype is picked up from the first statement that `prepare` returns and
-// patched once. Every method is synchronous, which keeps the recording simple:
+// patched once; methods that compile statements of their own prime that patch
+// before they run. Every method is synchronous, which keeps recording simple:
 // a sql_query call event before the call and a return (or exception) event
 // right after it, on the same async context.
 
@@ -29,15 +30,20 @@ export default function betterSqlite3Hook(mod: unknown) {
   if (typeof proto.exec === "function")
     proto.exec = createRecordingProxy(proto.exec as AnyFunction, (_, args) => stringArg(args[0]));
 
-  // pragma() does not go through prepare(), so it needs its own hook.
-  if (typeof proto.pragma === "function")
-    proto.pragma = createRecordingProxy(proto.pragma as AnyFunction, (_, args) => {
-      const pragma = stringArg(args[0]);
-      return pragma === undefined ? undefined : `PRAGMA ${pragma}`;
-    });
+  if (typeof proto.prepare === "function") {
+    const prepare = proto.prepare as AnyFunction;
+    proto.prepare = createPrepareProxy(prepare);
 
-  if (typeof proto.prepare === "function")
-    proto.prepare = createPrepareProxy(proto.prepare as AnyFunction);
+    // pragma() and transaction() run statements that never pass through
+    // prepare(): pragma() compiles its own, and the transaction controller
+    // compiles BEGIN, COMMIT and ROLLBACK on the native database handle. Both
+    // are recorded by the Statement patch, but neither can install it, and
+    // BEGIN has already run by the time a transaction callback prepares
+    // anything. Prime the patch before either of them runs instead.
+    for (const method of ["pragma", "transaction"])
+      if (typeof proto[method] === "function")
+        proto[method] = createPrimingProxy(proto[method] as AnyFunction, prepare);
+  }
 
   return mod;
 }
@@ -56,6 +62,36 @@ function createPrepareProxy(prepare: AnyFunction) {
       return statement;
     },
   });
+}
+
+const primedPrepares = new WeakSet<object>();
+
+// Runs `fn` with the Statement prototype already patched, so that statements
+// `fn` compiles behind our back are recorded too. The prototype is shared by
+// every statement of a module, so a single throwaway statement is enough to
+// get hold of it, once.
+function createPrimingProxy(fn: AnyFunction, prepare: AnyFunction) {
+  return new Proxy(fn, {
+    apply(target, thisArg, argArray: unknown[]) {
+      primeStatementPrototype(prepare, thisArg);
+      return Reflect.apply(target, thisArg, argArray);
+    },
+  });
+}
+
+function primeStatementPrototype(prepare: AnyFunction, database: unknown) {
+  if (primedPrepares.has(prepare)) return;
+  try {
+    const statement: unknown = Reflect.apply(prepare, database, ["SELECT 1"]);
+    if (statement === null || typeof statement !== "object") return;
+    patchStatementPrototype(statement);
+    primedPrepares.add(prepare);
+  } catch {
+    // A connection that cannot compile even this is in no state to run
+    // anything else either, and it may not be the only connection around.
+    // Leave the prototype to the application's own prepare() call and try
+    // again on the next one.
+  }
 }
 
 function patchStatementPrototype(statement: object) {

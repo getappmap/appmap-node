@@ -36,6 +36,26 @@ integrationTest("recording queries when the module is required more than once", 
   ]);
 });
 
+integrationTest("recording a transaction started before any prepared statement", () => {
+  expect(runAppmapNode("transactionFirst.js").status).toBe(0);
+  expect(recordedQueries()).toEqual([
+    "CREATE TABLE people (id INTEGER PRIMARY KEY, name TEXT NOT NULL)",
+    "BEGIN",
+    "INSERT INTO people (name) VALUES (?)",
+    "COMMIT",
+  ]);
+});
+
+integrationTest("recording a pragma run after a prepared statement", () => {
+  expect(runAppmapNode("pragmaAfterPrepare.js").status).toBe(0);
+  expect(recordedQueries()).toEqual([
+    "CREATE TABLE people (id INTEGER PRIMARY KEY, name TEXT NOT NULL)",
+    "SELECT count(*) AS n FROM people",
+    "PRAGMA journal_mode",
+    "PRAGMA user_version",
+  ]);
+});
+
 function recordedQueries(): string[] {
   return (readAppmap().events ?? [])
     .filter((event): event is AppMap.SqlQueryEvent => "sql_query" in event)
