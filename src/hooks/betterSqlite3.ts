@@ -153,17 +153,37 @@ function createRecordingProxy<T extends AnyFunction>(proxyTarget: T, sqlOf: SqlO
 interface IteratorLike {
   next(...args: unknown[]): IteratorResult<unknown>;
   return?(...args: unknown[]): IteratorResult<unknown>;
+  // better-sqlite3 freezes the statement being iterated onto the iterator.
+  statement?: unknown;
 }
 
 function isIteratorLike(obj: unknown): obj is IteratorLike {
   return obj !== null && typeof obj === "object" && "next" in obj && typeof obj.next === "function";
 }
 
+// better-sqlite3 locks a statement for as long as an iterator is holding it,
+// and only releases it when the iterator is cleaned up, so `busy` says whether
+// there are still rows to come. An iterator we cannot ask is treated as over,
+// which is what every other method reports anyway.
+function stillIterating({ statement }: IteratorLike): boolean {
+  if (statement === null || typeof statement !== "object" || !("busy" in statement)) return false;
+  return statement.busy === true;
+}
+
 // iterate() hands rows out lazily, so the query is only finished when the
 // iterator is exhausted, returned early (a `break` in a for..of), or throws.
-// The return event is emitted at that point. The native iterator's methods
-// must be called on the native object, not on the proxy, so they are bound
-// explicitly rather than reached through the proxy's receiver.
+// The return event is emitted at that point.
+//
+// An iterator that is simply abandoned therefore leaves its call event
+// unterminated, and that is left alone on purpose: for..of always settles the
+// iterator, and an application that drops a live one has already broken
+// itself. better-sqlite3 gives the iterator no finalizer, so the statement it
+// holds is never released -- that statement stays unusable and db.close()
+// throws from then on, with or without us watching.
+//
+// The native iterator's methods must be called on the native object, not on
+// the proxy, so they are bound explicitly rather than reached through the
+// proxy's receiver.
 function createIterateProxy(iterate: AnyFunction, sqlOf: SqlOf) {
   return new Proxy(iterate, {
     apply(target, thisArg, argArray: unknown[]) {
@@ -209,14 +229,23 @@ function createIterateProxy(iterate: AnyFunction, sqlOf: SqlOf) {
 
       const native = iterator;
 
+      // A throw does not always end the iteration. better-sqlite3 refuses to
+      // touch an iterator while the connection is busy, and that check comes
+      // before it looks at the iterator at all, so the rows are still to come
+      // and the query is not over. It only really ends when the statement is
+      // released, which is what `busy` reports.
+      const overOn = (exn: unknown) => {
+        if (!stillIterating(native)) finish({ exception: exn });
+        throw exn;
+      };
+
       const next = (...args: unknown[]): IteratorResult<unknown> => {
         try {
           const result = native.next(...args);
           if (result.done) finish();
           return result;
         } catch (exn: unknown) {
-          finish({ exception: exn });
-          throw exn;
+          return overOn(exn);
         }
       };
 
@@ -226,11 +255,7 @@ function createIterateProxy(iterate: AnyFunction, sqlOf: SqlOf) {
           finish();
           return result;
         } catch (exn: unknown) {
-          // Cleaning up can fail too (better-sqlite3 refuses to release an
-          // iterator while the connection is busy). The query is over either
-          // way, but it did not end well.
-          finish({ exception: exn });
-          throw exn;
+          return overOn(exn);
         }
       };
 

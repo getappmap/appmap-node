@@ -8,21 +8,20 @@ integrationTest("mapping better-sqlite3 calls", () => {
   expect(readAppmap()).toMatchSnapshot();
 });
 
-integrationTest("recording an iterator whose cleanup fails", () => {
-  expect(runAppmapNode("iterateCleanupFailure.js").status).toBe(0);
+integrationTest("recording an iterator that outlives a failed call", () => {
+  expect(runAppmapNode("iterateBusyFailure.js").status).toBe(0);
 
-  const events = readAppmap().events ?? [];
-  const iterated = events.find(
-    (event): event is AppMap.SqlQueryEvent =>
-      "sql_query" in event && event.sql_query.sql.startsWith("SELECT name"),
-  );
-  assert(iterated);
+  // The iterated query is still recorded once, and it succeeded: the failure
+  // was the settle() call, which left the iteration running.
+  expect(recordedQueries()).toEqual([
+    "CREATE TABLE people (id INTEGER PRIMARY KEY, name TEXT NOT NULL)",
+    "INSERT INTO people (name) VALUES ('alice'), ('bob'), ('carol')",
+    "SELECT name FROM people ORDER BY id",
+    "SELECT settle() AS done",
+  ]);
 
-  const settled = events.find(
-    (event): event is AppMap.FunctionReturnEvent =>
-      "parent_id" in event && event.parent_id === iterated.id,
-  );
-  expect(settled?.exceptions).toMatchObject([
+  expect(outcomeOf("SELECT name FROM people ORDER BY id")?.exceptions).toBeUndefined();
+  expect(outcomeOf("SELECT settle() AS done")?.exceptions).toMatchObject([
     { class: "TypeError", message: expect.stringContaining("busy") as string },
   ]);
 });
@@ -66,7 +65,21 @@ integrationTest("leaving the shape of an iterator alone", () => {
 });
 
 function recordedQueries(): string[] {
-  return (readAppmap().events ?? [])
-    .filter((event): event is AppMap.SqlQueryEvent => "sql_query" in event)
-    .map((event) => event.sql_query.sql);
+  return queryEvents().map((event) => event.sql_query.sql);
+}
+
+// The event that ends the given query, whether it returned or threw.
+function outcomeOf(sql: string): AppMap.FunctionReturnEvent | undefined {
+  const query = queryEvents().find((event) => event.sql_query.sql === sql);
+  assert(query, `no query event for ${sql}`);
+  return (readAppmap().events ?? []).find(
+    (event): event is AppMap.FunctionReturnEvent =>
+      "parent_id" in event && event.parent_id === query.id,
+  );
+}
+
+function queryEvents(): AppMap.SqlQueryEvent[] {
+  return (readAppmap().events ?? []).filter(
+    (event): event is AppMap.SqlQueryEvent => "sql_query" in event,
+  );
 }
