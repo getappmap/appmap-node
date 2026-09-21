@@ -12,9 +12,17 @@ import { getTime } from "../util/getTime";
 type AnyFunction = (this: unknown, ...args: unknown[]) => unknown;
 type SqlOf = (thisArg: unknown, args: unknown[]) => string | undefined;
 
+const patchedModules = new WeakSet<object>();
+
 export default function betterSqlite3Hook(mod: unknown) {
   if (typeof mod !== "function" || typeof mod.prototype !== "object" || mod.prototype === null)
     return mod;
+
+  // The require hook runs for every require of the module, cache hits
+  // included, so patching has to be idempotent: wrapping a wrapper would
+  // record one event per layer.
+  if (patchedModules.has(mod)) return mod;
+  patchedModules.add(mod);
 
   const proto = mod.prototype as Record<string, unknown>;
 

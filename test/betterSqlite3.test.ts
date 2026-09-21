@@ -26,3 +26,18 @@ integrationTest("recording an iterator whose cleanup fails", () => {
     { class: "TypeError", message: expect.stringContaining("busy") as string },
   ]);
 });
+
+integrationTest("recording queries when the module is required more than once", () => {
+  expect(runAppmapNode("doubleRequire.js").status).toBe(0);
+  expect(recordedQueries()).toEqual([
+    "CREATE TABLE people (id INTEGER PRIMARY KEY, name TEXT NOT NULL)",
+    "PRAGMA journal_mode",
+    "INSERT INTO people (name) VALUES (?)",
+  ]);
+});
+
+function recordedQueries(): string[] {
+  return (readAppmap().events ?? [])
+    .filter((event): event is AppMap.SqlQueryEvent => "sql_query" in event)
+    .map((event) => event.sql_query.sql);
+}
