@@ -1,0 +1,326 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapping better-sqlite3 calls 1`] = `
+{
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "location": "index.js:5",
+              "name": "main",
+              "static": true,
+              "type": "function",
+            },
+          ],
+          "name": "index",
+          "type": "class",
+        },
+      ],
+      "name": "better-sqlite3-appmap-node-test",
+      "type": "package",
+    },
+  ],
+  "events": [
+    {
+      "defined_class": "index",
+      "event": "call",
+      "id": 1,
+      "lineno": 5,
+      "method_id": "main",
+      "parameters": [],
+      "path": "index.js",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 2,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "CREATE TABLE people (id INTEGER PRIMARY KEY, name TEXT NOT NULL)",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 3,
+      "parent_id": 2,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 4,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "PRAGMA journal_mode",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 5,
+      "parent_id": 4,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 6,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "INSERT INTO people (name) VALUES (?)",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 7,
+      "parent_id": 6,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 8,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "INSERT INTO people (name) VALUES (?)",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 9,
+      "parent_id": 8,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 10,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT name FROM people WHERE id = ?",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 11,
+      "parent_id": 10,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 12,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT id, name FROM people ORDER BY id",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 13,
+      "parent_id": 12,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 14,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT name FROM people ORDER BY id",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 15,
+      "parent_id": 14,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 16,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT name FROM people ORDER BY id",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 17,
+      "parent_id": 16,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 18,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "SELECT boom(name) AS name FROM people ORDER BY id",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "Error",
+          "message": "boom",
+          "object_id": 1,
+        },
+      ],
+      "id": 19,
+      "parent_id": 18,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 20,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "INSERT INTO people (name) VALUES ('never inserted')",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "TypeError",
+          "message": "This statement does not return data. Use run() instead",
+          "object_id": 2,
+        },
+      ],
+      "id": 21,
+      "parent_id": 20,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 22,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "BEGIN",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 23,
+      "parent_id": 22,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 24,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "INSERT INTO people (name) VALUES (?)",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 25,
+      "parent_id": 24,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 26,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "INSERT INTO people (name) VALUES (?)",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 27,
+      "parent_id": 26,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 28,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "COMMIT",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 29,
+      "parent_id": 28,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 30,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "INSERT INTO people (id, name) VALUES (1, 'duplicate')",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "SqliteError",
+          "message": "UNIQUE constraint failed: people.id",
+          "object_id": 3,
+        },
+      ],
+      "id": 31,
+      "parent_id": 30,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 32,
+      "parent_id": 1,
+      "thread_id": 0,
+    },
+  ],
+  "metadata": {
+    "app": "better-sqlite3-appmap-node-test",
+    "client": {
+      "name": "appmap-node",
+      "url": "https://github.com/getappmap/appmap-node",
+      "version": "test node-appmap version",
+    },
+    "language": {
+      "engine": "Node.js",
+      "name": "javascript",
+      "version": "test node version",
+    },
+    "name": "test process recording",
+    "recorder": {
+      "name": "process",
+      "type": "process",
+    },
+  },
+  "version": "1.12",
+}
+`;

@@ -1,0 +1,8 @@
+{
+  "name": "better-sqlite3-appmap-node-test",
+  "packageManager": "yarn@4.13.0",
+  "dependencies": {
+    "better-sqlite3": "^11.10.0"
+  },
+  "private": true
+}
