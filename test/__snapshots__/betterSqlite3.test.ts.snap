@@ -167,13 +167,20 @@ exports[`mapping better-sqlite3 calls 1`] = `
       "id": 18,
       "sql_query": {
         "database_type": "sqlite",
-        "sql": "BEGIN",
+        "sql": "SELECT boom(name) AS name FROM people ORDER BY id",
       },
       "thread_id": 0,
     },
     {
       "elapsed": 31.337,
       "event": "return",
+      "exceptions": [
+        {
+          "class": "Error",
+          "message": "boom",
+          "object_id": 1,
+        },
+      ],
       "id": 19,
       "parent_id": 18,
       "thread_id": 0,
@@ -183,13 +190,20 @@ exports[`mapping better-sqlite3 calls 1`] = `
       "id": 20,
       "sql_query": {
         "database_type": "sqlite",
-        "sql": "INSERT INTO people (name) VALUES (?)",
+        "sql": "INSERT INTO people (name) VALUES ('never inserted')",
       },
       "thread_id": 0,
     },
     {
       "elapsed": 31.337,
       "event": "return",
+      "exceptions": [
+        {
+          "class": "TypeError",
+          "message": "This statement does not return data. Use run() instead",
+          "object_id": 2,
+        },
+      ],
       "id": 21,
       "parent_id": 20,
       "thread_id": 0,
@@ -199,7 +213,7 @@ exports[`mapping better-sqlite3 calls 1`] = `
       "id": 22,
       "sql_query": {
         "database_type": "sqlite",
-        "sql": "INSERT INTO people (name) VALUES (?)",
+        "sql": "BEGIN",
       },
       "thread_id": 0,
     },
@@ -215,7 +229,7 @@ exports[`mapping better-sqlite3 calls 1`] = `
       "id": 24,
       "sql_query": {
         "database_type": "sqlite",
-        "sql": "COMMIT",
+        "sql": "INSERT INTO people (name) VALUES (?)",
       },
       "thread_id": 0,
     },
@@ -231,6 +245,38 @@ exports[`mapping better-sqlite3 calls 1`] = `
       "id": 26,
       "sql_query": {
         "database_type": "sqlite",
+        "sql": "INSERT INTO people (name) VALUES (?)",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 27,
+      "parent_id": 26,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 28,
+      "sql_query": {
+        "database_type": "sqlite",
+        "sql": "COMMIT",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 29,
+      "parent_id": 28,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 30,
+      "sql_query": {
+        "database_type": "sqlite",
         "sql": "INSERT INTO people (id, name) VALUES (1, 'duplicate')",
       },
       "thread_id": 0,
@@ -242,17 +288,17 @@ exports[`mapping better-sqlite3 calls 1`] = `
         {
           "class": "SqliteError",
           "message": "UNIQUE constraint failed: people.id",
-          "object_id": 1,
+          "object_id": 3,
         },
       ],
-      "id": 27,
-      "parent_id": 26,
+      "id": 31,
+      "parent_id": 30,
       "thread_id": 0,
     },
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 28,
+      "id": 32,
       "parent_id": 1,
       "thread_id": 0,
     },

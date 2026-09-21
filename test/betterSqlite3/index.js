@@ -26,6 +26,27 @@ function main() {
     break;
   }
 
+  // A row that fails to materialize makes next() throw; the query is recorded
+  // as an exception at that point, after the rows that did come through.
+  db.function("boom", (name) => {
+    if (name === "bob") throw new Error("boom");
+    return name;
+  });
+  try {
+    for (const row of db.prepare("SELECT boom(name) AS name FROM people ORDER BY id").iterate()) {
+      console.log("row before the failure:", row.name);
+    }
+  } catch (error) {
+    console.log("caught while iterating:", error.message);
+  }
+
+  // iterate() itself throws when the statement returns no data.
+  try {
+    db.prepare("INSERT INTO people (name) VALUES ('never inserted')").iterate();
+  } catch (error) {
+    console.log("caught from iterate():", error.message);
+  }
+
   // Statements run inside a transaction are recorded like any other.
   const insertMany = db.transaction((names) => {
     for (const name of names) insert.run(name);
