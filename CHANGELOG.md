@@ -1,3 +1,10 @@
+# [2.27.0](https://github.com/getappmap/appmap-node/compare/v2.26.4...v2.27.0) (2026-09-21)
+
+
+### Features
+
+* **better-sqlite3:** record queries made through better-sqlite3 ([#237](https://github.com/getappmap/appmap-node/issues/237)) ([e574ef0](https://github.com/getappmap/appmap-node/commit/e574ef0bd9b63795bc40df6f587db2584bf38796))
+
 ## [2.26.4](https://github.com/getappmap/appmap-node/compare/v2.26.3...v2.26.4) (2026-09-21)
 
 
