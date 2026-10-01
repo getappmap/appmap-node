@@ -119,26 +119,39 @@ export default class Recording {
     return event;
   }
 
-  httpClientResponse(
-    callId: number,
+  // Emits the return event for an http client request immediately after the call,
+  // so that overlapping requests don't break event nesting. The response data
+  // is filled in later with httpClientResponseFixup once it arrives.
+  httpClientResponse(callId: number): AppMap.HttpClientResponseEvent {
+    const event: AppMap.HttpClientResponseEvent = {
+      event: "return",
+      http_client_response: {},
+      id: this.nextId++,
+      thread_id: 0,
+      parent_id: callId,
+    };
+    this.emit(event);
+
+    return event;
+  }
+
+  httpClientResponseFixup(
+    returnEvent: AppMap.HttpClientResponseEvent,
     elapsed: number,
     status: number,
     headers?: Record<string, string>,
     returnValue?: AppMap.Parameter,
   ): AppMap.HttpClientResponseEvent {
     const event: AppMap.HttpClientResponseEvent = {
-      event: "return",
+      ...returnEvent,
       http_client_response: compactObject({
         status_code: status,
         headers,
         return_value: returnValue,
       }),
-      id: this.nextId++,
-      thread_id: 0,
-      parent_id: callId,
       elapsed,
     };
-    this.emit(event);
+    this.fixup(event);
 
     return event;
   }
