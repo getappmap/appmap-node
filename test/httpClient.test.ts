@@ -47,7 +47,7 @@ integrationTest("mapping http client requests", () => httpClientRequestsTest("in
 integrationTest("mapping overlapping http client requests", async () => {
   const server = http.createServer((req, res) => {
     const delay = req.url === "/slow" ? 200 : 10;
-    setTimeout(() => res.end(req.url), delay);
+    setTimeout(() => res.end("ok"), delay);
   });
   await new Promise<void>((r) => server.listen(0, r));
   const port = (server.address() as { port: number }).port;

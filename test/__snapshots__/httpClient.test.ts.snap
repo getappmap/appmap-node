@@ -972,11 +972,11 @@ exports[`mapping overlapping http client requests 1`] = `
       "event": "return",
       "http_client_response": {
         "headers": {
-          "Content-Length": "5",
+          "Content-Length": "2",
         },
         "return_value": {
           "class": "[ResponseBody]",
-          "value": "/fast",
+          "value": "ok",
         },
         "status_code": 200,
       },
@@ -989,11 +989,11 @@ exports[`mapping overlapping http client requests 1`] = `
       "event": "return",
       "http_client_response": {
         "headers": {
-          "Content-Length": "5",
+          "Content-Length": "2",
         },
         "return_value": {
           "class": "[ResponseBody]",
-          "value": "/slow",
+          "value": "ok",
         },
         "status_code": 200,
       },
