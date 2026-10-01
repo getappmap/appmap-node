@@ -44,6 +44,32 @@ integrationTest("mapping http client requests (ESM)", () => httpClientRequestsTe
 
 integrationTest("mapping http client requests", () => httpClientRequestsTest("index.js"));
 
+integrationTest("mapping overlapping http client requests", async () => {
+  const server = http.createServer((req, res) => {
+    const delay = req.url === "/slow" ? 200 : 10;
+    setTimeout(() => res.end(req.url), delay);
+  });
+  await new Promise<void>((r) => server.listen(0, r));
+  const port = (server.address() as { port: number }).port;
+  const client = spawnAppmapNodeWithOptions(
+    { env: { ...process.env, SERVER_PORT: String(port) } },
+    "overlapping.mjs",
+  );
+  await new Promise<void>((r) => client.on("close", () => r()));
+  server.close();
+  const appMap = readAppmap();
+
+  // Every return event must close the most recently opened call.
+  const stack: number[] = [];
+  for (const event of appMap.events ?? []) {
+    if (event.event === "call") stack.push(event.id);
+    else expect(event.parent_id).toBe(stack.pop());
+  }
+  expect(stack).toEqual([]);
+
+  expect(appMap).toMatchSnapshot();
+});
+
 integrationTest("mapping mocked http client requests", () => {
   expect(runAppmapNode("index.js", "--mock").status).toBe(0);
   const appMap = readAppmap();
