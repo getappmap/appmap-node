@@ -112,12 +112,9 @@ function handleClientRequest(request: http.ClientRequest) {
 
     const urlString = `${url.protocol}//${url.host}${url.pathname}`;
     const headers = normalizeHeaders(request.getHeaders());
-    // Emit both the call and the return right away so that the events nest properly
-    // even if multiple requests overlap; the return is fixed up once the response arrives.
-    const clientResponseEvents = recordings.map((r) => {
-      const call = r.httpClientRequest(request.method, urlString, headers);
-      return r.httpClientResponse(call.id);
-    });
+    const clientResponseEvents = recordings.map((r) =>
+      r.httpClientRequest(request.method, urlString, headers),
+    );
 
     request.on("response", (response) => {
       const capture = new BodyCapture();
@@ -141,7 +138,7 @@ function handleClientRequest(request: http.ClientRequest) {
           assert(response.statusCode != undefined);
           if (!isActive(recording)) return;
 
-          recording.httpClientResponseFixup(
+          recording.httpClientResponse(
             clientResponseEvents[idx],
             elapsed,
             response.statusCode,
