@@ -1,3 +1,11 @@
+## [2.27.1](https://github.com/getappmap/appmap-node/compare/v2.27.0...v2.27.1) (2026-10-06)
+
+
+### Bug Fixes
+
+* record http client requests as self-contained call/return pairs ([b0a600e](https://github.com/getappmap/appmap-node/commit/b0a600ef90cbdafefdd13bf319e97a8eb0dc7c23))
+* record http client requests as self-contained call/return pairs ([14f43df](https://github.com/getappmap/appmap-node/commit/14f43dfc5fb2ac990dfb15261bf0a079ca0ad6fe))
+
 # [2.27.0](https://github.com/getappmap/appmap-node/compare/v2.26.4...v2.27.0) (2026-09-21)
 
 
