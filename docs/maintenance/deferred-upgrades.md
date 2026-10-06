@@ -151,6 +151,18 @@ Distinct from the deprecation notices below: these are real advisories whose
 on — only an upstream release. Re-check both whenever this document is
 reviewed; a single `yarn up -R` clears them the day a fix lands.
 
+Before concluding "no fix published", check `yarn config get npmMinimalAgeGate`.
+A non-zero gate (it can come from your personal `~/.yarnrc.yml`, not just this
+repo) makes `yarn up` silently skip releases younger than the window, which
+looks identical to no release existing. Confirm against the registry itself:
+
+```
+curl -s https://registry.npmjs.org/braces | jq '.["dist-tags"].latest'
+```
+
+As of 2026-10-06 both really are stale — `braces` 3.0.3 is from 2024-05-21 and
+`sprintf-js` 1.1.3 from 2023-09-11, decisively older than any plausible gate.
+
 - **`braces` 3.0.3** via `micromatch` 4.0.8 (jest, semantic-release) and
   `chokidar` 3.6.0 — GHSA-vfj7-8cjw-p6xm, high, stack exhaustion on deeply
   nested patterns. The advisory range is `<=3.0.3` and **3.0.3 is the latest
