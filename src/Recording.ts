@@ -99,12 +99,15 @@ export default class Recording {
     return event;
   }
 
+  // Both the call and the return event are emitted right away, so that the events
+  // nest properly even if requests overlap. The returned event carries no response
+  // data yet; pass it to httpClientResponse() once the response arrives.
   httpClientRequest(
     method: string,
     url: string,
     headers?: Record<string, string>,
-  ): AppMap.HttpClientRequestEvent {
-    const event: AppMap.HttpClientRequestEvent = {
+  ): AppMap.HttpClientResponseEvent {
+    const call: AppMap.HttpClientRequestEvent = {
       event: "call",
       http_client_request: compactObject({
         request_method: method,
@@ -114,28 +117,20 @@ export default class Recording {
       id: this.nextId++,
       thread_id: 0,
     };
-    this.emit(event);
+    this.emit(call);
 
-    return event;
-  }
-
-  // Emits the return event for an http client request immediately after the call,
-  // so that overlapping requests don't break event nesting. The response data
-  // is filled in later with httpClientResponseFixup once it arrives.
-  httpClientResponse(callId: number): AppMap.HttpClientResponseEvent {
-    const event: AppMap.HttpClientResponseEvent = {
+    const response: AppMap.HttpClientResponseEvent = {
       event: "return",
-      http_client_response: {},
       id: this.nextId++,
       thread_id: 0,
-      parent_id: callId,
+      parent_id: call.id,
     };
-    this.emit(event);
+    this.emit(response);
 
-    return event;
+    return response;
   }
 
-  httpClientResponseFixup(
+  httpClientResponse(
     returnEvent: AppMap.HttpClientResponseEvent,
     elapsed: number,
     status: number,

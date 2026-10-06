@@ -1075,7 +1075,6 @@ exports[`mapping overlapping http client requests 1`] = `
     },
     {
       "event": "return",
-      "http_client_response": {},
       "id": 6,
       "parent_id": 5,
       "thread_id": 0,
@@ -1094,7 +1093,6 @@ exports[`mapping overlapping http client requests 1`] = `
     },
     {
       "event": "return",
-      "http_client_response": {},
       "id": 8,
       "parent_id": 7,
       "thread_id": 0,

@@ -168,8 +168,8 @@ export interface HttpServerResponseEvent extends ReturnEventBase {
 }
 
 export interface HttpClientResponseEvent extends ReturnEventBase {
-  // status_code is missing if the response hasn't arrived (yet)
-  http_client_response: Omit<HttpResponse, "status_code"> & { status_code?: number };
+  // absent until the response arrives — and permanently, if it never does
+  http_client_response?: HttpResponse;
 }
 
 export interface SqlQueryEvent extends CallEventBase {
