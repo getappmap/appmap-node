@@ -27,6 +27,34 @@ Every accepted finding lives in `devDependencies` or in a private, test-only
 workspace under `test/`. None reach the published `dist/`, and none affect
 consumers of `appmap-node`.
 
+## The root audit does not cover everything
+
+`yarn npm audit -AR` only sees the root `yarn.lock`, i.e. the root manifest
+plus the globs in `workspaces`. Three directories under `test/` carry a
+`package.json` that no workspace glob matches:
+
+| Directory | Audited by the root run? |
+| --- | --- |
+| `test/pnpm-compat` | **No** — own `yarn.lock` and `.yarnrc.yml` (`nodeLinker: pnpm`) |
+| `test/mongo` | Moot — no lockfile; resolves `mongodb` from the root tree, which *is* audited |
+| `test/simple` | Moot — manifest is `{}` |
+
+So `test/pnpm-compat` needs its own run, and it has no suppression list of its
+own — it is expected to be clean outright:
+
+```
+cd test/pnpm-compat && yarn npm audit -AR
+```
+
+This gap is not theoretical. It silently held `ip-address` 10.5.0 for the
+entire time the root lockfile was on 10.7.2.
+
+`test/libraryCalls` additionally keeps a `package-lock.json` (it *is* a yarn
+workspace; the npm lockfile is a separate fixture). `npm audit` run there walks
+up to the repo root and fails with `ENOLOCK`; audit it by copying the two
+manifest files to a scratch directory and running `npm audit
+--package-lock-only`. Its tree is a single package, `json5`.
+
 ## Suppress by advisory ID, not by package
 
 `.yarnrc.yml` deliberately uses `npmAuditIgnoreAdvisories` (advisory IDs)
