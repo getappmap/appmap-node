@@ -1,7 +1,7 @@
 # Deferred dependency upgrades
 
 Maintainer reference for the accepted `yarn npm audit -AR` findings and the
-version floors that unblock them. Written 2026-08-17.
+version floors that unblock them. Written 2026-08-17, last reviewed 2026-10-06.
 
 `yarn npm audit -AR` should exit clean. It does so because every finding below
 is listed by advisory ID in `npmAuditIgnoreAdvisories` in `.yarnrc.yml`, with a
@@ -43,20 +43,22 @@ finding reappears.
 
 ## Retiring the suppressions
 
-The list is long (31 entries), so it is grouped into blocks that are deleted
+The list is long (39 entries), so it is grouped into blocks that are deleted
 **wholesale**, never audited entry by entry. Each block in `.yarnrc.yml`
 carries a `REMOVE WHEN:` line naming its trigger. The mapping:
 
 | Do this | Delete these blocks | Entries freed |
 | --- | --- | --- |
-| Drop support for vitest < 3 | vitest, vite, esbuild | 5 |
-| Move `test/next` off the Next 14 line | next | 21 |
+| Move `test/next` off the Next 14 line | next | 23 |
+| Drop support for vitest < 3 | vitest (UI), vite, esbuild | 5 |
+| Drop support for vitest < 4 | `@vitest/mocker`, vitest, tinypool | 4 |
 | Raise `engines.node` to 20 | serialize-javascript | 2 |
 | Raise `engines.node` to 20.17 | `glob (deprecation)`, and drop or retarget the `node-gyp` pin in `resolutions` | 1 |
 | Bump mocha past 10.x | `inflight (deprecation)` | 1 |
+| — (waiting on upstream to publish any fix) | braces, sprintf-js | 2 |
 | — (unfixable) | `prebuild-install (deprecation)` | 0 |
 
-**26 of the 31 entries go away with just the first two rows.** After any of
+**32 of the 39 entries go away with just the first three rows.** After any of
 these, re-run `yarn npm audit -AR`: if it still exits clean with the block
 deleted, the entries were dead and the deletion is correct. If something
 reappears, the suppression was still load-bearing and the reason will be in the
@@ -89,7 +91,7 @@ block comment.
 
 ## Blocked on dropping Next < 15
 
-- **`next` 14.2.35 in `test/next`** — 21 advisories (high/moderate/low). Every
+- **`next` 14.2.35 in `test/next`** — 23 advisories (high/moderate/low). Every
   fix landed in 15.5.x or later; the highest floor required is **15.5.16**.
 
   **14.2.35 is the last stable 14.x** — only canaries beyond it — so there is
@@ -117,6 +119,49 @@ block comment.
   `^3.1.0 || ^4.0.0 || ^5.0.0-0`, while the vite fixes land in 6.4.3+.
   **5.4.21 is the last 5.x** and it pins `esbuild: ^0.21.3`. Resolves itself
   when vitest < 3 goes.
+
+## Blocked on dropping vitest < 4
+
+- **`tinypool` 0.7.0 / 0.8.4 / 1.1.1** — GHSA-5gmw-xhrv-c9v3 and
+  GHSA-85c8-ppgw-ccpr, both **critical**: prototype-pollution gadgets in worker
+  options and in `run()` options, each reaching RCE.
+
+  Fixed in **2.1.2**, which no vitest before 4 can take. `vitest` 0.34.6 pins
+  `^0.7.0`, 1.6.1 `^0.8.3`, 2.1.9 `^1.0.1` and **3.2.7 — the latest 3.x —
+  `^1.1.1`**, and 1.1.1 is the last 1.x. So unlike the vite/esbuild chain this
+  is not retired by dropping vitest < 3; `test/vitest3` is affected too.
+  vitest 4 dropped the `tinypool` dependency entirely, so `test/vitest4` is
+  already clear.
+
+  A `resolutions` override is blocked twice over: tinypool 2.x is a major API
+  bump, and it declares `engines.node: ^20.0.0 || >=22.0.0` while we declare
+  `>=18` and CI covers Node 18 — the same wall as `serialize-javascript`.
+
+  Exposure is nil: both gadgets need attacker-controlled worker options, and
+  these workspaces run fixed vitest configs.
+
+- **`@vitest/mocker`** and a second `vitest` advisory are in the same bucket,
+  already suppressed under their own `REMOVE WHEN: support for vitest < 4`
+  blocks.
+
+## No fix published upstream
+
+Distinct from the deprecation notices below: these are real advisories whose
+*entire* released history is vulnerable, so there is no version floor to wait
+on — only an upstream release. Re-check both whenever this document is
+reviewed; a single `yarn up -R` clears them the day a fix lands.
+
+- **`braces` 3.0.3** via `micromatch` 4.0.8 (jest, semantic-release) and
+  `chokidar` 3.6.0 — GHSA-vfj7-8cjw-p6xm, high, stack exhaustion on deeply
+  nested patterns. The advisory range is `<=3.0.3` and **3.0.3 is the latest
+  release**; `micromatch@latest` is still 4.0.8 and still pins `^3.0.3`, so
+  bumping micromatch would not help either.
+
+- **`sprintf-js` 1.0.3** — GHSA-hp3w-g68c-fv3c, moderate, DoS via unbounded
+  precision specifiers. Same shape: the range is `<=1.1.3` and 1.1.3 is the
+  latest release. Reached only through `argparse` 1.0.10 → `js-yaml` 3.15.2 →
+  `@istanbuljs/load-nyc-config` → `babel-plugin-istanbul`, i.e. jest's coverage
+  instrumentation.
 
 ## Unfixable at any version floor
 
