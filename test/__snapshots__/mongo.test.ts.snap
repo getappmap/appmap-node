@@ -16,6 +16,12 @@ exports[`mapping MongoDB tests 1`] = `
                   "type": "function",
                 },
                 {
+                  "location": "mongodb/test:10",
+                  "name": "deleteMany",
+                  "static": false,
+                  "type": "function",
+                },
+                {
                   "location": "mongodb/test:2",
                   "name": "insertOne",
                   "static": false,
@@ -42,6 +48,24 @@ exports[`mapping MongoDB tests 1`] = `
                 {
                   "location": "mongodb/test:6",
                   "name": "countDocuments",
+                  "static": false,
+                  "type": "function",
+                },
+                {
+                  "location": "mongodb/test:7",
+                  "name": "insertMany",
+                  "static": false,
+                  "type": "function",
+                },
+                {
+                  "location": "mongodb/test:8",
+                  "name": "aggregate",
+                  "static": false,
+                  "type": "function",
+                },
+                {
+                  "location": "mongodb/test:9",
+                  "name": "createIndex",
                   "static": false,
                   "type": "function",
                 },
@@ -99,9 +123,25 @@ exports[`mapping MongoDB tests 1`] = `
       "thread_id": 0,
     },
     {
+      "event": "call",
+      "id": 3,
+      "sql_query": {
+        "database_type": "mongodb",
+        "sql": "db.test.drop()",
+      },
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 3,
+      "id": 4,
+      "parent_id": 3,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 5,
       "parent_id": 2,
       "return_value": {
         "class": "Promise<Boolean>",
@@ -113,7 +153,7 @@ exports[`mapping MongoDB tests 1`] = `
     {
       "defined_class": "test",
       "event": "call",
-      "id": 5,
+      "id": 7,
       "lineno": 2,
       "method_id": "insertOne",
       "parameters": [
@@ -140,10 +180,26 @@ exports[`mapping MongoDB tests 1`] = `
       "thread_id": 0,
     },
     {
+      "event": "call",
+      "id": 8,
+      "sql_query": {
+        "database_type": "mongodb",
+        "sql": "db.test.insertOne({"a": ?})",
+      },
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 6,
-      "parent_id": 5,
+      "id": 9,
+      "parent_id": 8,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 10,
+      "parent_id": 7,
       "return_value": {
         "class": "Promise<Object>",
         "object_id": 5,
@@ -157,7 +213,7 @@ exports[`mapping MongoDB tests 1`] = `
     {
       "defined_class": "test",
       "event": "call",
-      "id": 7,
+      "id": 11,
       "lineno": 2,
       "method_id": "insertOne",
       "parameters": [
@@ -184,10 +240,26 @@ exports[`mapping MongoDB tests 1`] = `
       "thread_id": 0,
     },
     {
+      "event": "call",
+      "id": 12,
+      "sql_query": {
+        "database_type": "mongodb",
+        "sql": "db.test.insertOne({"a": ?})",
+      },
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 8,
-      "parent_id": 7,
+      "id": 13,
+      "parent_id": 12,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 14,
+      "parent_id": 11,
       "return_value": {
         "class": "Promise<Object>",
         "object_id": 7,
@@ -201,7 +273,7 @@ exports[`mapping MongoDB tests 1`] = `
     {
       "defined_class": "test",
       "event": "call",
-      "id": 9,
+      "id": 15,
       "lineno": 3,
       "method_id": "updateOne",
       "parameters": [
@@ -246,10 +318,26 @@ exports[`mapping MongoDB tests 1`] = `
       "thread_id": 0,
     },
     {
+      "event": "call",
+      "id": 16,
+      "sql_query": {
+        "database_type": "mongodb",
+        "sql": "db.test.updateOne({"a": ?}, {"$set": {"a": ?}})",
+      },
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 10,
-      "parent_id": 9,
+      "id": 17,
+      "parent_id": 16,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 18,
+      "parent_id": 15,
       "return_value": {
         "class": "Promise<Object>",
         "object_id": 10,
@@ -266,7 +354,7 @@ exports[`mapping MongoDB tests 1`] = `
     {
       "defined_class": "test",
       "event": "call",
-      "id": 11,
+      "id": 19,
       "lineno": 4,
       "method_id": "findOne",
       "parameters": [
@@ -293,9 +381,18 @@ exports[`mapping MongoDB tests 1`] = `
       "thread_id": 0,
     },
     {
+      "event": "call",
+      "id": 20,
+      "sql_query": {
+        "database_type": "mongodb",
+        "sql": "db.test.findOne({"a": ?})",
+      },
+      "thread_id": 0,
+    },
+    {
       "defined_class": "test",
       "event": "call",
-      "id": 12,
+      "id": 21,
       "lineno": 5,
       "method_id": "find",
       "parameters": [
@@ -331,8 +428,8 @@ exports[`mapping MongoDB tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 13,
-      "parent_id": 12,
+      "id": 22,
+      "parent_id": 21,
       "return_value": {
         "class": "FindCursor",
         "object_id": 13,
@@ -343,8 +440,15 @@ exports[`mapping MongoDB tests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 14,
-      "parent_id": 11,
+      "id": 23,
+      "parent_id": 20,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 24,
+      "parent_id": 19,
       "return_value": {
         "class": "Promise<Object>",
         "object_id": 14,
@@ -355,7 +459,7 @@ exports[`mapping MongoDB tests 1`] = `
     {
       "defined_class": "test",
       "event": "call",
-      "id": 15,
+      "id": 25,
       "lineno": 6,
       "method_id": "countDocuments",
       "parameters": [],
@@ -369,10 +473,26 @@ exports[`mapping MongoDB tests 1`] = `
       "thread_id": 0,
     },
     {
+      "event": "call",
+      "id": 26,
+      "sql_query": {
+        "database_type": "mongodb",
+        "sql": "db.test.countDocuments()",
+      },
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 16,
-      "parent_id": 15,
+      "id": 27,
+      "parent_id": 26,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 28,
+      "parent_id": 25,
       "return_value": {
         "class": "Promise<Number>",
         "object_id": 15,
@@ -381,9 +501,430 @@ exports[`mapping MongoDB tests 1`] = `
       "thread_id": 0,
     },
     {
+      "defined_class": "test",
+      "event": "call",
+      "id": 29,
+      "lineno": 7,
+      "method_id": "insertMany",
+      "parameters": [
+        {
+          "class": "Array",
+          "items": {
+            "class": "Object",
+            "properties": [
+              {
+                "class": "Number",
+                "name": "a",
+              },
+              {
+                "class": "Array",
+                "items": {
+                  "class": "String",
+                },
+                "name": "tags",
+              },
+            ],
+          },
+          "name": "docs",
+          "object_id": 16,
+          "size": 2,
+          "value": "[ { a: 4, tags: [Array] }, { a: 5, tags: [Array] } ]",
+        },
+      ],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 30,
+      "sql_query": {
+        "database_type": "mongodb",
+        "sql": "db.test.insertMany([{"a": ?, "tags": [?]}])",
+      },
+      "thread_id": 0,
+    },
+    {
       "elapsed": 31.337,
       "event": "return",
-      "id": 4,
+      "id": 31,
+      "parent_id": 30,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 32,
+      "parent_id": 29,
+      "return_value": {
+        "class": "Promise<Object>",
+        "object_id": 17,
+        "value": "Promise { {
+  acknowledged: true,
+  insertedCount: 2,
+  insertedIds: { '0': [ObjectId], '1': [ObjectId] }
+} }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "test",
+      "event": "call",
+      "id": 33,
+      "lineno": 5,
+      "method_id": "find",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "filter",
+          "object_id": 18,
+          "properties": [
+            {
+              "class": "Object",
+              "name": "a",
+              "properties": [
+                {
+                  "class": "Array",
+                  "items": {
+                    "class": "Number",
+                  },
+                  "name": "$in",
+                },
+              ],
+            },
+          ],
+          "value": "{ a: { '$in': [Array] } }",
+        },
+        {
+          "class": "Object",
+          "name": "options",
+          "object_id": 19,
+          "properties": [
+            {
+              "class": "Object",
+              "name": "sort",
+              "properties": [
+                {
+                  "class": "Number",
+                  "name": "a",
+                },
+              ],
+            },
+            {
+              "class": "Object",
+              "name": "projection",
+              "properties": [
+                {
+                  "class": "Number",
+                  "name": "_id",
+                },
+              ],
+            },
+          ],
+          "value": "{ sort: { a: -1 }, projection: { _id: 0 } }",
+        },
+      ],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 34,
+      "sql_query": {
+        "database_type": "mongodb",
+        "sql": "db.test.find({"a": {"$in": [?]}}, {"sort": {"a": ?}, "projection": {"_id": ?}})",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 35,
+      "parent_id": 34,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 36,
+      "parent_id": 33,
+      "return_value": {
+        "class": "FindCursor",
+        "object_id": 20,
+        "value": "[FindCursor appmap-node.test]",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "test",
+      "event": "call",
+      "id": 37,
+      "lineno": 8,
+      "method_id": "aggregate",
+      "parameters": [
+        {
+          "class": "Array",
+          "name": "pipeline",
+          "object_id": 21,
+          "size": 2,
+          "value": "[ { '$match': [Object] }, { '$group': [Object] } ]",
+        },
+      ],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 38,
+      "sql_query": {
+        "database_type": "mongodb",
+        "sql": "db.test.aggregate([{"$match": {"a": {"$gte": ?}}}, {"$group": {"_id": ?, "total": {"$sum": ?}}}])",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 39,
+      "parent_id": 38,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 40,
+      "parent_id": 37,
+      "return_value": {
+        "class": "AggregationCursor",
+        "object_id": 22,
+        "value": "[AggregationCursor appmap-node.test]",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "test",
+      "event": "call",
+      "id": 41,
+      "lineno": 9,
+      "method_id": "createIndex",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "indexSpec",
+          "object_id": 23,
+          "properties": [
+            {
+              "class": "Number",
+              "name": "a",
+            },
+          ],
+          "value": "{ a: 1 }",
+        },
+        {
+          "class": "Object",
+          "name": "options",
+          "object_id": 24,
+          "properties": [
+            {
+              "class": "Boolean",
+              "name": "unique",
+            },
+          ],
+          "value": "{ unique: true }",
+        },
+      ],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 42,
+      "sql_query": {
+        "database_type": "mongodb",
+        "sql": "db.test.createIndex({"a": ?}, {"unique": ?})",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 43,
+      "parent_id": 42,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 44,
+      "parent_id": 41,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 25,
+        "value": "Promise { 'a_1' }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "test",
+      "event": "call",
+      "id": 45,
+      "lineno": 2,
+      "method_id": "insertOne",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "doc",
+          "object_id": 26,
+          "properties": [
+            {
+              "class": "Number",
+              "name": "a",
+            },
+          ],
+          "value": "{ a: 3 }",
+        },
+      ],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 46,
+      "sql_query": {
+        "database_type": "mongodb",
+        "sql": "db.test.insertOne({"a": ?})",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "MongoServerError",
+          "message": "E11000 duplicate key error collection: appmap-node.test index: a_1 dup key: { a: 3 }",
+          "object_id": 28,
+        },
+      ],
+      "id": 47,
+      "parent_id": 46,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "exceptions": [
+        {
+          "class": "MongoServerError",
+          "message": "E11000 duplicate key error collection: appmap-node.test index: a_1 dup key: { a: 3 }",
+          "object_id": 28,
+        },
+      ],
+      "id": 48,
+      "parent_id": 45,
+      "return_value": {
+        "class": "Promise",
+        "object_id": 27,
+        "value": "Promise { <rejected> }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "test",
+      "event": "call",
+      "id": 49,
+      "lineno": 10,
+      "method_id": "deleteMany",
+      "parameters": [
+        {
+          "class": "Object",
+          "name": "filter",
+          "object_id": 29,
+          "properties": [
+            {
+              "class": "Object",
+              "name": "a",
+              "properties": [
+                {
+                  "class": "Number",
+                  "name": "$gte",
+                },
+              ],
+            },
+          ],
+          "value": "{ a: { '$gte': 4 } }",
+        },
+      ],
+      "path": "mongodb/test",
+      "receiver": {
+        "class": "Collection",
+        "object_id": 1,
+        "value": "[Collection test]",
+      },
+      "static": false,
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "id": 50,
+      "sql_query": {
+        "database_type": "mongodb",
+        "sql": "db.test.deleteMany({"a": {"$gte": ?}})",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 51,
+      "parent_id": 50,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 52,
+      "parent_id": 49,
+      "return_value": {
+        "class": "Promise<Object>",
+        "object_id": 30,
+        "value": "Promise { { acknowledged: true, deletedCount: 2 } }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
       "parent_id": 1,
       "return_value": {
         "class": "Promise<undefined>",
