@@ -3860,7 +3860,7 @@ __metadata:
     json5: "npm:^2.2.3"
     meriyah: "npm:^5.0.0"
     mongodb: "npm:^6.3.0"
-    pkg-pr-new: "npm:^0.0.87"
+    pkg-pr-new: "npm:^0.0.91"
     prettier: "npm:^3.0.2"
     react: "npm:^18"
     react-dom: "npm:^18"
@@ -9570,12 +9570,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkg-pr-new@npm:^0.0.87":
-  version: 0.0.87
-  resolution: "pkg-pr-new@npm:0.0.87"
+"pkg-pr-new@npm:^0.0.91":
+  version: 0.0.91
+  resolution: "pkg-pr-new@npm:0.0.91"
   bin:
     pkg-pr-new: bin/cli.js
-  checksum: 10/a4e2a5d3ac6bfca9db2f00b18a04d384c7951253e1e712f045f08c2be65e9bc6597477fc4ef741ee922ad8c964296595f80cf957e96c9bb52dc3e5270bdc094a
+  checksum: 10/03db4e176146978008e517c761173779ae936e3cf28248d2ebdc0e05486864fc4276c619f889e1dba4d054fe5e36e621d51b1fc5c6205abd1dc2b1cd6c75b6ea
   languageName: node
   linkType: hard
 

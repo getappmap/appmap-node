@@ -21,9 +21,15 @@ jobs:
         with:
           name: appmap-node-${{ env.SHORT_SHA }}
           path: appmap-node-${{ env.SHORT_SHA }}.tgz
-      - run: yarn pkg-pr-new publish --commentWithDev --yarn
       - run: yarn lint
       - run: yarn typecheck
+      # Publishing a preview release is best-effort: pkg.pr.new's /check 404s
+      # ("There is no workflow defined for ...") whenever its GitHub App hasn't
+      # recorded this workflow run yet, and the CLI doesn't retry 404s. Keep it
+      # last so the webhook has the whole job to arrive, and don't fail the
+      # build (and skip the entire test matrix) over a preview release.
+      - run: yarn pkg-pr-new publish --commentWithDev --yarn
+        continue-on-error: true
 
   test:
     needs: build-and-lint
