@@ -1,7 +1,7 @@
 # Deferred dependency upgrades
 
 Maintainer reference for the accepted `yarn npm audit -AR` findings and the
-version floors that unblock them. Written 2026-08-17, last reviewed 2026-10-06.
+version floors that unblock them. Written 2026-08-17, last reviewed 2026-10-22.
 
 `yarn npm audit -AR` should exit clean. It does so because every finding below
 is listed by advisory ID in `npmAuditIgnoreAdvisories` in `.yarnrc.yml`, with a
@@ -71,22 +71,22 @@ finding reappears.
 
 ## Retiring the suppressions
 
-The list is long (39 entries), so it is grouped into blocks that are deleted
+The list is long (45 entries), so it is grouped into blocks that are deleted
 **wholesale**, never audited entry by entry. Each block in `.yarnrc.yml`
 carries a `REMOVE WHEN:` line naming its trigger. The mapping:
 
 | Do this | Delete these blocks | Entries freed |
 | --- | --- | --- |
 | Move `test/next` off the Next 14 line | next | 23 |
-| Drop support for vitest < 3 | vitest (UI), vite, esbuild | 5 |
-| Drop support for vitest < 4 | `@vitest/mocker`, vitest, tinypool | 4 |
+| Drop support for vitest < 3 | vitest (UI), vite, esbuild | 10 |
+| Drop support for vitest < 4 | `@vitest/mocker`, vitest, tinypool | 5 |
 | Raise `engines.node` to 20 | serialize-javascript | 2 |
 | Raise `engines.node` to 20.17 | `glob (deprecation)`, and drop or retarget the `node-gyp` pin in `resolutions` | 1 |
 | Bump mocha past 10.x | `inflight (deprecation)` | 1 |
 | — (waiting on upstream to publish any fix) | braces, sprintf-js | 2 |
 | — (unfixable) | `prebuild-install (deprecation)` | 0 |
 
-**32 of the 39 entries go away with just the first three rows.** After any of
+**38 of the 45 entries go away with just the first three rows.** After any of
 these, re-run `yarn npm audit -AR`: if it still exits clean with the block
 deleted, the entries were dead and the deletion is correct. If something
 reappears, the suppression was still load-bearing and the reason will be in the
@@ -142,11 +142,21 @@ block comment.
   nil — the advisory requires the Vitest **UI** server to be listening, which
   these tests never start.
 
-- **`vite` 5.4.21 and `esbuild` 0.21.5** — 4 advisories, strictly downstream of
+- **`vite` 5.4.21 and `esbuild` 0.21.5** — 9 advisories, strictly downstream of
   the above. `vitest` 1.6.1 pins `vite: ^5.0.0` and 0.34.6 pins
-  `^3.1.0 || ^4.0.0 || ^5.0.0-0`, while the vite fixes land in 6.4.3+.
-  **5.4.21 is the last 5.x** and it pins `esbuild: ^0.21.3`. Resolves itself
-  when vitest < 3 goes.
+  `^3.1.0 || ^4.0.0 || ^5.0.0-0`, while the vite fixes land in 6.4.3+ (the
+  latest wave needs 6.4.4). **5.4.21 is the last 5.x** and it pins
+  `esbuild: ^0.21.3`. Resolves itself when vitest < 3 goes.
+
+  Three of the newer entries are `launch-editor` issues, which vite bundles for
+  the error overlay's open-in-editor action; two of those are Windows-only. The
+  other two are dev-server file-serving issues. None of it is reachable from a
+  `vitest run` in CI.
+
+  Note this block is **not** a blanket vite suppression — the vitest 3 and 4
+  chains took the same fixes (vite 7.3.7 and 8.3.5), and only the versions
+  pinned below 6 are listed here. That is the whole point of suppressing by
+  advisory ID rather than by package name.
 
 ## Blocked on dropping vitest < 4
 
@@ -168,9 +178,14 @@ block comment.
   Exposure is nil: both gadgets need attacker-controlled worker options, and
   these workspaces run fixed vitest configs.
 
-- **`@vitest/mocker`** and a second `vitest` advisory are in the same bucket,
-  already suppressed under their own `REMOVE WHEN: support for vitest < 4`
-  blocks.
+- **`@vitest/mocker` 2.1.9 / 3.2.7** — code injection via unauthenticated
+  manual mock registration. The fix exists only in **4.1.12**, so neither the
+  vitest 2 nor the vitest 3 line can reach it (3.2.7 is the last 3.x).
+  `test/vitest4` and `test/pnpm-compat` took 4.1.12 and are clear; their
+  declared floors were raised to `^4.1.12` to pin that in.
+
+  A second `vitest` advisory sits in the same bucket under its own
+  `REMOVE WHEN: support for vitest < 4` block.
 
 ## No fix published upstream
 
