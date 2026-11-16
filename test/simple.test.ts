@@ -136,11 +136,48 @@ integrationTest("mapping a script with tangled async functions", () => {
 
 const asyncTimeoutCases = new Map<string, string[]>([
   // No async tracking
-  ["0", ["1 task", "2 process", "return 2", "return 1", "5 getMessage", "return 5"]],
-  // Async tracking with a quick timeout
-  ["10", ["1 task", "5 getMessage", "return 5", "2 process", "return 2", "return 1"]],
+  [
+    "0",
+    [
+      "1 task",
+      "2 process",
+      "return 2",
+      "return 1",
+      "5 report",
+      "return 5",
+      "7 getMessage",
+      "return 7",
+    ],
+  ],
+  // Async tracking with a quick timeout: process() holds report() back for too long
+  // and is given up on, so its remaining events end up at the root level
+  [
+    "10",
+    [
+      "1 task",
+      "2 process",
+      "return 2",
+      "return 1",
+      "5 report",
+      "return 5",
+      "7 getMessage",
+      "return 7",
+    ],
+  ],
   // Full async tracking
-  ["3000", ["1 task", "2 process", "5 getMessage", "return 5", "return 2", "return 1"]],
+  [
+    "3000",
+    [
+      "1 task",
+      "2 process",
+      "7 getMessage",
+      "return 7",
+      "return 2",
+      "return 1",
+      "5 report",
+      "return 5",
+    ],
+  ],
 ]);
 
 for (const [timeout, expectedOrder] of asyncTimeoutCases) {
@@ -160,6 +197,44 @@ for (const [timeout, expectedOrder] of asyncTimeoutCases) {
     expect(appmap).toMatchSnapshot();
   });
 }
+
+integrationTest("mapping an async function called after the async tracking timeout", () => {
+  const options = { env: { ...process.env, APPMAP_ASYNC_TRACKING_TIMEOUT: "100" } };
+  expect(runAppmapNodeWithOptions(options, "lateAsync.mjs").status).toBe(0);
+  const calls: string[] = [];
+  let depth = 0;
+  for (const event of readAppmap().events ?? []) {
+    if (event.event == "return") depth--;
+    else if ("method_id" in event) calls.push("  ".repeat(depth++) + event.method_id);
+  }
+  // both calls to load() are recorded the same way
+  const load = ["load", "  prepare", "  sleep", "  finish"];
+  expect(calls).toEqual([...load, "sleep", ...load]);
+});
+
+integrationTest("giving up on a long-running async function", () => {
+  const options = { env: { ...process.env, APPMAP_ASYNC_TRACKING_TIMEOUT: "100" } };
+  const result = runAppmapNodeWithOptions(options, "polling.mjs");
+  expect(result.status).toBe(0);
+  const written = /written work calls: (\d+)/.exec(result.stdout.toString());
+  expect(Number(written?.[1])).toBeGreaterThan(0);
+});
+
+describe.each(["", "1"])("mapping calls made after an async function is done", (block) => {
+  integrationTest(block ? "behind a pending one" : "on its own", () => {
+    const options = { env: { ...process.env, BLOCK: block } };
+    expect(runAppmapNodeWithOptions(options, "late.mjs").status).toBe(0);
+    const events = readAppmap().events ?? [];
+    const done = events.findIndex((e) => "method_id" in e && e.method_id == "done");
+    // late() comes right after done() has returned, not inside it
+    expect(events.slice(done, done + 4)).toMatchObject([
+      { event: "call", method_id: "done" },
+      { event: "return", parent_id: events[done].id },
+      { event: "call", method_id: "late" },
+      { event: "return", parent_id: events[done + 2].id },
+    ]);
+  });
+});
 
 integrationTest("creating a default config file", () => {
   const index = resolveTarget("index.js");

@@ -1,7 +1,13 @@
 import { ChildProcessWithoutNullStreams } from "node:child_process";
 import { IncomingMessage, request } from "node:http";
 
-import { detachOutput, getFreePort, readAppmaps, resolveTarget, spawnAppmapNode } from "./helpers";
+import {
+  detachOutput,
+  getFreePort,
+  readAppmaps,
+  resolveTarget,
+  spawnAppmapNodeWithOptions,
+} from "./helpers";
 
 /**
  * The body shared by the Next.js integration tests: run `next dev` on the app
@@ -52,10 +58,14 @@ async function spawnNextJsApp(port: number) {
 
   // On Windows, we give "node" argument explicitly because next is a js file with
   // shebang (#!/usr/bin/env node) which does not work on Windows.
+  // Compiling a page on demand can take a while on a busy machine. If it takes longer
+  // than the async tracking timeout, the request is given up on, and whatever comes
+  // after (eg. rendering the page) ends up outside it, so make sure it doesn't.
+  const options = { env: { ...process.env, APPMAP_ASYNC_TRACKING_TIMEOUT: "60000" } };
   const app =
     process.platform == "win32"
-      ? spawnAppmapNode("node", nextBin, "dev", "-p", String(port))
-      : spawnAppmapNode(nextBin, "dev", "-p", String(port));
+      ? spawnAppmapNodeWithOptions(options, "node", nextBin, "dev", "-p", String(port))
+      : spawnAppmapNodeWithOptions(options, nextBin, "dev", "-p", String(port));
 
   const { waitForOutput, errorOutput } = watchOutput(app);
   await waitForOutput("Ready");

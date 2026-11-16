@@ -17,6 +17,7 @@ import {
   startRemoteRecording,
   startRequestRecording,
 } from "../recorder";
+import Recording from "../Recording";
 import { getTime } from "../util/getTime";
 import { readFile, rm } from "node:fs/promises";
 
@@ -112,6 +113,10 @@ function handleClientRequest(request: http.ClientRequest) {
 
     const urlString = `${url.protocol}//${url.host}${url.pathname}`;
     const headers = normalizeHeaders(request.getHeaders());
+    // Hold the events back until the response is in, so that it's filled in
+    // before they're written out.
+    const responded = Recording.hold();
+    request.once("close", responded);
     const clientResponseEvents = recordings.map((r) =>
       r.httpClientRequest(request.method, urlString, headers),
     );
@@ -146,6 +151,7 @@ function handleClientRequest(request: http.ClientRequest) {
             returnValue,
           );
         });
+        responded();
       });
     });
   });
