@@ -45,7 +45,7 @@ export default async function testNextApp() {
   Object.values(appMaps).forEach(
     (a) =>
       a.events?.forEach((e) => {
-        if ("http_server_response" in e) delete e.http_server_response.return_value;
+        if ("http_server_response" in e) delete e.http_server_response?.return_value;
         if ("http_client_response" in e) delete e.http_client_response?.return_value;
       }),
   );

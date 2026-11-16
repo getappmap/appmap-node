@@ -208,26 +208,39 @@ export default class Recording {
     return event;
   }
 
-  httpResponse(
-    callId: number,
+  // Emitted as soon as the request handlers have been dispatched, so that it closes
+  // the request call even if the response is ended from a different async context.
+  // The returned event carries no response data yet; pass it to httpResponseFinish()
+  // once the response is sent.
+  httpResponse(callId: number): AppMap.HttpServerResponseEvent {
+    const event: AppMap.HttpServerResponseEvent = {
+      event: "return",
+      id: this.nextId++,
+      thread_id: 0,
+      parent_id: callId,
+    };
+    this.emit(event);
+
+    return event;
+  }
+
+  httpResponseFinish(
+    returnEvent: AppMap.HttpServerResponseEvent,
     elapsed: number,
     status: number,
     headers?: Record<string, string>,
     returnValue?: AppMap.Parameter,
   ): AppMap.HttpServerResponseEvent {
     const event: AppMap.HttpServerResponseEvent = {
-      event: "return",
+      ...returnEvent,
       http_server_response: compactObject({
         status_code: status,
         headers,
         return_value: returnValue,
       }),
-      id: this.nextId++,
-      thread_id: 0,
-      parent_id: callId,
       elapsed,
     };
-    this.emit(event);
+    this.fixup(event);
 
     return event;
   }
