@@ -45,9 +45,14 @@ integrationTest("mapping http client requests (ESM)", () => httpClientRequestsTe
 integrationTest("mapping http client requests", () => httpClientRequestsTest("index.js"));
 
 integrationTest("mapping overlapping http client requests", async () => {
+  // Hold /fast until /slow arrives so the requests always overlap.
+  let slowReceived: () => void;
+  const slowArrived = new Promise<void>((r) => (slowReceived = r));
   const server = http.createServer((req, res) => {
-    const delay = req.url === "/slow" ? 200 : 10;
-    setTimeout(() => res.end("ok"), delay);
+    if (req.url === "/slow") {
+      slowReceived();
+      setTimeout(() => res.end("ok"), 200);
+    } else void slowArrived.then(() => res.end("ok"));
   });
   await new Promise<void>((r) => server.listen(0, r));
   const port = (server.address() as { port: number }).port;
