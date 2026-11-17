@@ -1,7 +1,7 @@
 # Deferred dependency upgrades
 
 Maintainer reference for the accepted `yarn npm audit -AR` findings and the
-version floors that unblock them. Written 2026-08-17, last reviewed 2026-10-22.
+version floors that unblock them. Written 2026-08-17, last reviewed 2026-11-17.
 
 `yarn npm audit -AR` should exit clean. It does so because every finding below
 is listed by advisory ID in `npmAuditIgnoreAdvisories` in `.yarnrc.yml`, with a
@@ -71,22 +71,23 @@ finding reappears.
 
 ## Retiring the suppressions
 
-The list is long (45 entries), so it is grouped into blocks that are deleted
+The list is long (51 entries), so it is grouped into blocks that are deleted
 **wholesale**, never audited entry by entry. Each block in `.yarnrc.yml`
 carries a `REMOVE WHEN:` line naming its trigger. The mapping:
 
 | Do this | Delete these blocks | Entries freed |
 | --- | --- | --- |
-| Move `test/next` off the Next 14 line | next | 23 |
-| Drop support for vitest < 3 | vitest (UI), vite, esbuild | 10 |
+| Move `test/next` off the Next 14 line | next | 25 |
+| Drop support for vitest < 3 | vitest (UI), vite, esbuild | 11 |
 | Drop support for vitest < 4 | `@vitest/mocker`, vitest, tinypool | 5 |
-| Raise `engines.node` to 20 | serialize-javascript | 2 |
+| Raise `engines.node` to 20 | serialize-javascript | 3 |
 | Raise `engines.node` to 20.17 | `glob (deprecation)`, and drop or retarget the `node-gyp` pin in `resolutions` | 1 |
+| Raise `engines.node` to 20.17 **and** wait for npm/`@npmcli`/typescript-eslint to adopt glob 14 / minimatch 11 | glob / minimatch | 2 |
 | Bump mocha past 10.x | `inflight (deprecation)` | 1 |
 | — (waiting on upstream to publish any fix) | braces, sprintf-js | 2 |
 | — (unfixable) | `prebuild-install (deprecation)` | 0 |
 
-**38 of the 45 entries go away with just the first three rows.** After any of
+**41 of the 51 entries go away with just the first three rows.** After any of
 these, re-run `yarn npm audit -AR`: if it still exits clean with the block
 deleted, the entries were dead and the deletion is correct. If something
 reappears, the suppression was still load-bearing and the reason will be in the
@@ -98,29 +99,57 @@ block comment.
   via `RegExp.flags` / `Date.prototype.toISOString`) and GHSA-qj8w-gfj5-8c6v
   (moderate, CPU-exhaustion DoS). Fixed in 7.0.5.
 
-  No released mocha allows the fix: 10.8.2 **and** the latest 11.8.0 both pin
-  `serialize-javascript: ^6.0.2`; only `mocha@12.0.0-rc.6` moves to `^7.0.2`.
+  No mocha usable on Node 18 allows the fix: 10.8.2 **and** the latest 11.8.0
+  both pin `serialize-javascript: ^6.0.2`. mocha 12 (stable since 12.0.3)
+  moves to `^7.1.1` but declares `engines.node: ^20.19.0 || >=22.12.0`.
   A `resolutions` override is blocked too, because **serialize-javascript 7.x
   declares `engines.node: >=20.0.0`** while we declare `>=18` and CI covers
   Node 18.
+
+  A third advisory, GHSA-m5mm-p8h7-m29v (low, XSS via an unescaped
+  `</script` at the end of a serialized function body), is fixed in 7.1.3 and
+  sits behind the same wall.
 
   Exposure is nil: mocha only requires it from `lib/nodejs/worker.js` and
   `lib/nodejs/buffered-worker-pool.js` — parallel mode only — and `test/mocha`
   has no `.mocharc` and never runs `--parallel`.
 
 - **`glob` 10.5.0 (deprecation).** We pin `node-gyp` to `^11.5.0` in
-  `resolutions`, which already cleared six findings. node-gyp **12.x** drops
+  `resolutions`, which already cleared six findings. node-gyp **12.3+** drops
   `make-fetch-happen`/`cacache` entirely and would clear this last one too, but
   declares `engines.node: ^20.17.0 || >=22.9.0`. node-gyp 11.5.0 declares
   `^18.17.0 || >=20.5.0`, which matches our floor.
+
+- **`glob` < 14.0.2 and `minimatch` < 11.0.1** — GHSA-3g3m-2fjr-6pw4
+  (AbortSignal cancellation bypass) and GHSA-g3hv-75wg-m249 (globparts
+  amplification DoS), both moderate. The fixes exist only in new majors
+  published 2026-10-27, and the ecosystem has not caught up:
+
+  - glob 10.5.0 / minimatch 9.0.9 via the `node-gyp ^11.5.0` pin → cacache 19.
+    Clears with the node-gyp move above.
+  - glob 13.0.6 via npm 11.19.0 (pulled by `@semantic-release/npm`) and
+    `@npmcli/*`. npm 11.21.2, the latest 11.x, still pins `^13.0.6`; npm 12
+    declares `^22.22.2 || ^24.15.0 || >=26.0.0`.
+  - minimatch 10.2.6 via npm, `@npmcli/*`, `@tufjs/models`, `ignore-walk`,
+    typescript-eslint and eslint. eslint 10.15.0 moves to `^11.0.5`, but
+    bumping it alone would not retire the ID.
+
+  Both are single advisory IDs spanning every affected line, so they are
+  retired only when the last of these chains moves. Exposure is nil: all of
+  it globs repo-controlled patterns at dev or release time.
+
+  `test/pnpm-compat` hit the same pair through `fsevents` → `node-gyp: latest`;
+  it was cleared there by re-resolving to node-gyp 13.1.0, which has no
+  cacache subtree. That tree never runs node-gyp, so its engines do not matter.
 
 - **`sqlite3`.** 6.x moves to node-gyp 12.x but declares
   `engines.node: >=20.17.0`.
 
 ## Blocked on dropping Next < 15
 
-- **`next` 14.2.35 in `test/next`** — 23 advisories (high/moderate/low). Every
-  fix landed in 15.5.x or later; the highest floor required is **15.5.16**.
+- **`next` 14.2.35 in `test/next`** — 25 advisories (critical/high/moderate/low).
+  Every fix landed in 15.5.x or later; the highest floor required is
+  **15.5.28**.
 
   **14.2.35 is the last stable 14.x** — only canaries beyond it — so there is
   no headroom whatsoever within the major. It is the major bump or nothing.
