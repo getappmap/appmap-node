@@ -8512,7 +8512,7 @@ __metadata:
   resolution: "next16-appmap-node-test@workspace:test/next16"
   dependencies:
     "@types/react": "npm:^19"
-    next: "npm:^16.3.6"
+    next: "npm:^16.4.5"
     react: "npm:^19"
     react-dom: "npm:^19"
   languageName: unknown
@@ -8576,7 +8576,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:^16.3.6":
+"next@npm:^16.4.5":
   version: 16.4.6
   resolution: "next@npm:16.4.6"
   dependencies:
