@@ -109,7 +109,11 @@ export default class Recording {
     this.fixup(makeExceptionEvent(event.id, event.parent_id, exception, getTime() - startTime));
   }
 
+  // Called whenever an SQL query is recorded, in the async context which made it.
+  public static onSqlQuery: (() => void) | undefined;
+
   sqlQuery(databaseType: string, sql: string): AppMap.SqlQueryEvent {
+    Recording.onSqlQuery?.();
     const event: AppMap.SqlQueryEvent = {
       event: "call",
       sql_query: compactObject({
@@ -374,15 +378,6 @@ export default class Recording {
       buffer.complete = true;
       Recording.drain();
     };
-  }
-
-  // Reserves the current position for events emitted later in the returned
-  // context, eg. the return event of a call whose result comes in a callback.
-  // Events emitted afterwards in the current context are held back until the
-  // reservation is completed.
-  public static reserve(): { context: EventBuffer | undefined; complete: () => void } {
-    const { result: context, complete } = Recording.fork(() => Recording.getContext());
-    return { context, complete };
   }
 
   public static run<T>(context: EventBuffer | undefined, fun: () => T): T {
