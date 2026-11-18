@@ -40,7 +40,7 @@ exports[`mapping a Next.js 16 appmap 1`] = `
       {
         "defined_class": "route",
         "event": "call",
-        "id": 2,
+        "id": 3,
         "lineno": 3,
         "method_id": "GET",
         "parameters": [
@@ -73,8 +73,8 @@ exports[`mapping a Next.js 16 appmap 1`] = `
       {
         "elapsed": 31.337,
         "event": "return",
-        "id": 3,
-        "parent_id": 2,
+        "id": 4,
+        "parent_id": 3,
         "return_value": {
           "class": "NextResponse",
           "object_id": 3,
@@ -92,7 +92,7 @@ exports[`mapping a Next.js 16 appmap 1`] = `
           },
           "status_code": 200,
         },
-        "id": 4,
+        "id": 2,
         "parent_id": 1,
         "thread_id": 0,
       },
@@ -155,7 +155,7 @@ exports[`mapping a Next.js 16 appmap 1`] = `
       {
         "defined_class": "about",
         "event": "call",
-        "id": 2,
+        "id": 3,
         "lineno": 1,
         "method_id": "About",
         "parameters": [
@@ -177,8 +177,8 @@ exports[`mapping a Next.js 16 appmap 1`] = `
       {
         "elapsed": 31.337,
         "event": "return",
-        "id": 3,
-        "parent_id": 2,
+        "id": 4,
+        "parent_id": 3,
         "return_value": {
           "class": "Object",
           "object_id": 5,
@@ -199,7 +199,7 @@ exports[`mapping a Next.js 16 appmap 1`] = `
           },
           "status_code": 200,
         },
-        "id": 4,
+        "id": 2,
         "parent_id": 1,
         "thread_id": 0,
       },

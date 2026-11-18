@@ -3,10 +3,11 @@ import { inspect } from "node:util";
 import type mongodb from "mongodb";
 
 import { identifier } from "../generate";
-import { getActiveRecordings, isActive } from "../recorder";
+import { getActiveRecordings } from "../recorder";
 import { FunctionInfo } from "../registry";
 import { getTime } from "../util/getTime";
 import { setCustomInspect } from "../parameter";
+import recordPendingCall from "./util/recordPendingCall";
 
 export default function mongoHook(mod: typeof mongodb) {
   const collectionMethods: Partial<Record<MethodLikeKeys<mongodb.Collection>, readonly string[]>> =
@@ -103,26 +104,13 @@ function patchMethod<K extends MethodLikeKeys<mongodb.Collection>>(
     const callback = extractOptionalCallback(args);
     if (callback) {
       const functionCallArgs = args.map((x) => setCustomInspect(x, customInspect));
-      const callEvents = recordings.map((recording) =>
-        recording.functionCall(funInfo, this, functionCallArgs),
+      const call = recordPendingCall(recordings, (r) =>
+        r.functionCall(funInfo, this, functionCallArgs),
       );
-
-      const startTime = getTime();
       args.push((err: unknown, res: unknown) => {
         setCustomInspect(res, customInspect);
-
-        if (err)
-          recordings.forEach(
-            (recording, idx) =>
-              isActive(recording) &&
-              recording.functionException(callEvents[idx].id, err, startTime),
-          );
-        else
-          recordings.forEach(
-            (recording, idx) =>
-              isActive(recording) && recording.functionReturn(callEvents[idx].id, res, startTime),
-          );
-
+        if (err) call.threw(err);
+        else call.returned(res);
         return callback(err, res) as unknown;
       });
       return Reflect.apply(original, this, args) as ReturnType<typeof original>;

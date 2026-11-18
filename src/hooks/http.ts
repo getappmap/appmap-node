@@ -1,4 +1,5 @@
 import assert from "node:assert";
+import type { EventEmitter } from "node:events";
 import type http from "node:http";
 import type { ClientRequest, IncomingMessage, ServerResponse } from "node:http";
 import type https from "node:https";
@@ -11,12 +12,12 @@ import { parameter } from "../parameter";
 import {
   getActiveRecordings,
   getRemoteRecording,
-  getRequestRecording,
   isActive,
   startProcessRecording,
   startRemoteRecording,
   startRequestRecording,
 } from "../recorder";
+import Recording, { type EventBuffer } from "../Recording";
 import { getTime } from "../util/getTime";
 import { readFile, rm } from "node:fs/promises";
 
@@ -39,7 +40,11 @@ export default function httpHook(mod: HTTP) {
                 handleRemoteRecording(request, response);
                 return true;
               }
-              handleRequest(request, response);
+              return handleRequest(
+                request,
+                response,
+                () => Reflect.apply(target, thisArg, [event, ...args]) as boolean,
+              );
             }
             return Reflect.apply(target, thisArg, [event, ...args]) as boolean;
           },
@@ -112,6 +117,10 @@ function handleClientRequest(request: http.ClientRequest) {
 
     const urlString = `${url.protocol}//${url.host}${url.pathname}`;
     const headers = normalizeHeaders(request.getHeaders());
+    // Hold the events back until the response is in, so that it's filled in
+    // before they're written out.
+    const responded = Recording.hold();
+    request.once("close", responded);
     const clientResponseEvents = recordings.map((r) =>
       r.httpClientRequest(request.method, urlString, headers),
     );
@@ -146,6 +155,7 @@ function handleClientRequest(request: http.ClientRequest) {
             returnValue,
           );
         });
+        responded();
       });
     });
   });
@@ -258,22 +268,49 @@ function captureResponseBody(response: http.ServerResponse, capture: BodyCapture
   };
 }
 
-function handleRequest(request: http.IncomingMessage, response: http.ServerResponse) {
-  if (!(request.method && request.url)) return;
+function handleRequest(
+  request: http.IncomingMessage,
+  response: http.ServerResponse,
+  dispatch: () => boolean,
+): boolean {
+  const { method, url } = request;
+  if (!(method && url)) return dispatch();
 
-  if (shouldIgnoreRequest(request)) return;
+  if (shouldIgnoreRequest(request)) return dispatch();
 
-  const url = new URL(request.url, "http://example");
+  // Hold back the request, from the call to the return event, until the response
+  // is done, so that the call event can still be fixed up in place (eg. with the
+  // route) before it's written out.
+  const done = Recording.hold();
+  try {
+    return recordRequest(request, response, method, new URL(url, "http://example"), dispatch);
+  } finally {
+    // after recordRequest() has set up its own listeners, which do the fixing up
+    response.once("close", done);
+  }
+}
+
+function recordRequest(
+  request: http.IncomingMessage,
+  response: http.ServerResponse,
+  method: string,
+  url: URL,
+  dispatch: () => boolean,
+): boolean {
   const testRunning = getActiveRecordings().some((r) => r.metadata.recorder.type == "tests");
   const timestamp = remoteRunning || testRunning ? undefined : startRequestRecording(url.pathname);
 
-  const method = request.method;
   const headers = normalizeHeaders(request.headers);
   const protocol = `HTTP/${request.httpVersion}`;
   const recordings = getActiveRecordings();
+  const requestRecording = recordings.find((r) => r.metadata.recorder.type == "requests");
   const requestEvents = recordings.map((r) =>
     r.httpRequest(method, url.pathname, protocol, headers, url.searchParams),
   );
+
+  // Filled in once the request handlers have been dispatched, see below.
+  let responseEvents: AppMap.HttpServerResponseEvent[] = [];
+  let completeHandlers: (() => void) | undefined;
 
   const capture = new BodyCapture();
   captureResponseBody(response, capture);
@@ -288,30 +325,62 @@ function handleRequest(request: http.IncomingMessage, response: http.ServerRespo
     const returnValue = capture.createReturnValue(isJson);
 
     recordings.forEach((recording, idx) => {
-      if (!isActive(recording)) return;
-      if (fixupEvent(request, requestEvents[idx])) recording.fixup(requestEvents[idx]);
-
-      recording.httpResponse(
-        requestEvents[idx].id,
-        elapsed,
-        response.statusCode,
-        headers,
-        returnValue,
-      );
+      if (isActive(recording))
+        recording.httpResponseFinish(
+          responseEvents[idx],
+          elapsed,
+          response.statusCode,
+          headers,
+          returnValue,
+        );
     });
+  });
+
+  // "close" follows "finish", but it's also the only event emitted when the
+  // connection is lost before the response is complete (eg. an aborted stream).
+  // In that case the return event is left without response data.
+  response.once("close", () => {
+    recordings.forEach((recording, idx) => {
+      if (isActive(recording) && fixupEvent(request, requestEvents[idx]))
+        recording.fixup(requestEvents[idx]);
+    });
+    completeHandlers?.();
 
     // If there is a test or remote recording we don't create a separate request recording
     // appmap, so we don't have to finish it.
-    const testRunning = recordings.some((r) => r.metadata.recorder.type == "tests");
-    if (remoteRunning || testRunning) return;
+    if (!(requestRecording && isActive(requestRecording))) return;
 
-    const recording = getRequestRecording();
     const { request_method, path_info } = requestEvents[0].http_server_request;
-    recording.metadata.name = `${request_method} ${path_info} (${response.statusCode}) — ${timestamp}`;
-    recording.finish();
-    info("Wrote %s", recording.path);
+    const status = response.writableFinished ? response.statusCode : "aborted";
+    requestRecording.metadata.name = `${request_method} ${path_info} (${status}) — ${timestamp}`;
+    requestRecording.finish();
+    info("Wrote %s", requestRecording.path);
     startProcessRecording(); // just so there's always a recording running
   });
+
+  // Run the request handlers in their own async context, the same way record()
+  // runs async functions, and emit the return event right after them. Everything
+  // the handlers do until the response is done lands between the call and the
+  // return event, regardless of which async context eventually ends the response.
+  try {
+    const fork = Recording.fork(() => {
+      // The listeners of later request and response events, eg. those reading the
+      // request body, belong to the handlers too.
+      const context = Recording.getContext();
+      runListenersIn(context, request);
+      runListenersIn(context, response);
+      return dispatch();
+    });
+    completeHandlers = fork.complete;
+    return fork.result;
+  } finally {
+    responseEvents = recordings.map((r, idx) => r.httpResponse(requestEvents[idx].id));
+  }
+}
+
+function runListenersIn(context: EventBuffer | undefined, emitter: EventEmitter) {
+  const emit = emitter.emit.bind(emitter);
+  emitter.emit = (...args) => Recording.run(context, () => emit(...args));
 }
 
 function fixupEvent(req: http.IncomingMessage, event: AppMap.HttpServerRequestEvent): boolean {

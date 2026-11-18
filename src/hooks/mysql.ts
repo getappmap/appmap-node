@@ -3,8 +3,8 @@ import assert from "node:assert";
 import type mysql from "mysql";
 
 import Recording from "../Recording";
-import { getActiveRecordings, isActive } from "../recorder";
-import { getTime } from "../util/getTime";
+import { getActiveRecordings } from "../recorder";
+import recordPendingCall from "./util/recordPendingCall";
 
 export default function mysqlHook(mod: typeof mysql) {
   // mysql.Connection type is an interface, create a dummy connection
@@ -44,12 +44,9 @@ function createQueryProxy(query: mysql.QueryFunction) {
 
       const sql: string = hasStringSqlProperty(argArray[0]) ? argArray[0].sql : argArray[0];
 
-      const recordings = getActiveRecordings();
-      const callEvents = recordings.map((recording) => recording.sqlQuery("mysql", sql));
-      const startTime = getTime();
-      // Capture the current async context so the callback can emit return events
-      // in the correct buffer position. See sqlite.ts for the same pattern.
+      // Capture the current async context for the callback. See sqlite.ts.
       const asyncContext = Recording.getContext();
+      const call = recordPendingCall(getActiveRecordings(), (r) => r.sqlQuery("mysql", sql));
 
       const originalCallback =
         typeof argArray[argArray.length - 1] === "function"
@@ -57,27 +54,20 @@ function createQueryProxy(query: mysql.QueryFunction) {
           : undefined;
 
       const newCallback: mysql.queryCallback = (err, results, fields) => {
+        if (err) call.threw(err);
+        else call.returned();
         // Restore the captured context to keep events in causal order.
-        Recording.run(asyncContext, () => {
-          if (err)
-            recordings.forEach(
-              (recording, idx) =>
-                isActive(recording) &&
-                recording.functionException(callEvents[idx].id, err, startTime),
-            );
-          else
-            recordings.forEach(
-              (recording, idx) =>
-                isActive(recording) &&
-                recording.functionReturn(callEvents[idx].id, undefined, startTime),
-            );
-          originalCallback?.call(this, err, results, fields);
-        });
+        Recording.run(asyncContext, () => originalCallback?.call(this, err, results, fields));
       };
 
       argArray.push(newCallback);
 
-      return Reflect.apply(target, thisArg, argArray);
+      try {
+        return Reflect.apply(target, thisArg, argArray);
+      } catch (exn) {
+        call.threw(exn);
+        throw exn;
+      }
     },
   });
 }

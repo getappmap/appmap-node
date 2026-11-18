@@ -143,6 +143,7 @@ function createPrismaClientMethodProxy<T extends (...args: unknown[]) => unknown
     apply(target, thisArg: unknown, argArray: Parameters<T>) {
       // Report Prisma query as a function call, if suitable
       let prismaCalls: AppMap.FunctionCallEvent[] | undefined;
+      let reserved: ReturnType<typeof Recording.reserve> | undefined;
       const recordings = getActiveRecordings();
       if (argArray?.length > 0) {
         const requestParams = argArray[0] as PrismaRequestParams;
@@ -150,8 +151,6 @@ function createPrismaClientMethodProxy<T extends (...args: unknown[]) => unknown
           const action = requestParams.action;
           const model = requestParams.model;
           const argsArg = [setCustomInspect(requestParams.args, argsCustomInspect)];
-
-          queryMethodContext = Recording.getContext();
 
           prismaCalls = recordings.map((recording) => {
             const result = recording.functionCall(
@@ -161,12 +160,17 @@ function createPrismaClientMethodProxy<T extends (...args: unknown[]) => unknown
             );
             return result;
           });
+
+          // The queries and the return event come later, in other async contexts.
+          reserved = Recording.reserve();
+          queryMethodContext = reserved.context;
         }
       }
 
-      if (prismaCalls != undefined) {
+      if (prismaCalls != undefined && reserved != undefined) {
         const startTime = getTime();
         const calls = prismaCalls;
+        const { context, complete } = reserved;
         try {
           const result = target.apply(thisArg, argArray);
 
@@ -180,17 +184,23 @@ function createPrismaClientMethodProxy<T extends (...args: unknown[]) => unknown
           // event when the query rejects.
           const settle = () => {
             queryMethodContext = undefined;
-            recordings.forEach((recording, idx) =>
-              recording.functionReturn(calls[idx].id, result, startTime),
+            Recording.run(context, () =>
+              recordings.forEach((recording, idx) =>
+                recording.functionReturn(calls[idx].id, result, startTime),
+              ),
             );
+            complete();
           };
           result.then(settle, settle);
 
           return result;
         } catch (exn: unknown) {
-          recordings.forEach((recording, idx) =>
-            recording.functionException(calls[idx].id, exn, startTime),
+          Recording.run(context, () =>
+            recordings.forEach((recording, idx) =>
+              recording.functionException(calls[idx].id, exn, startTime),
+            ),
           );
+          complete();
           throw exn;
         }
       }

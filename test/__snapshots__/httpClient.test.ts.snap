@@ -928,7 +928,7 @@ exports[`mapping overlapping http client requests 1`] = `
         {
           "children": [
             {
-              "location": "overlapping.mjs:7",
+              "location": "overlapping.mjs:10",
               "name": "get",
               "static": true,
               "type": "function",
@@ -942,72 +942,12 @@ exports[`mapping overlapping http client requests 1`] = `
       "type": "package",
     },
   ],
-  "eventUpdates": {
-    "2": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 2,
-      "parent_id": 1,
-      "return_value": {
-        "class": "Promise<Number>",
-        "object_id": 1,
-        "value": "Promise { 200 }",
-      },
-      "thread_id": 0,
-    },
-    "4": {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 4,
-      "parent_id": 3,
-      "return_value": {
-        "class": "Promise<Number>",
-        "object_id": 2,
-        "value": "Promise { 200 }",
-      },
-      "thread_id": 0,
-    },
-    "6": {
-      "elapsed": 31.337,
-      "event": "return",
-      "http_client_response": {
-        "headers": {
-          "Content-Length": "2",
-        },
-        "return_value": {
-          "class": "[ResponseBody]",
-          "value": "ok",
-        },
-        "status_code": 200,
-      },
-      "id": 6,
-      "parent_id": 5,
-      "thread_id": 0,
-    },
-    "8": {
-      "elapsed": 31.337,
-      "event": "return",
-      "http_client_response": {
-        "headers": {
-          "Content-Length": "2",
-        },
-        "return_value": {
-          "class": "[ResponseBody]",
-          "value": "ok",
-        },
-        "status_code": 200,
-      },
-      "id": 8,
-      "parent_id": 7,
-      "thread_id": 0,
-    },
-  },
   "events": [
     {
       "defined_class": "overlapping",
       "event": "call",
       "id": 1,
-      "lineno": 7,
+      "lineno": 10,
       "method_id": "get",
       "parameters": [
         {
@@ -1026,17 +966,46 @@ exports[`mapping overlapping http client requests 1`] = `
       "id": 2,
       "parent_id": 1,
       "return_value": {
-        "class": "Promise",
+        "class": "Promise<Number>",
         "object_id": 1,
-        "value": "Promise { <pending> }",
+        "value": "Promise { 200 }",
       },
+      "thread_id": 0,
+    },
+    {
+      "event": "call",
+      "http_client_request": {
+        "headers": {
+          "Host": "localhost",
+        },
+        "request_method": "GET",
+        "url": "http://localhost/fast",
+      },
+      "id": 3,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "http_client_response": {
+        "headers": {
+          "Content-Length": "2",
+        },
+        "return_value": {
+          "class": "[ResponseBody]",
+          "value": "ok",
+        },
+        "status_code": 200,
+      },
+      "id": 4,
+      "parent_id": 3,
       "thread_id": 0,
     },
     {
       "defined_class": "overlapping",
       "event": "call",
-      "id": 3,
-      "lineno": 7,
+      "id": 5,
+      "lineno": 10,
       "method_id": "get",
       "parameters": [
         {
@@ -1052,31 +1021,13 @@ exports[`mapping overlapping http client requests 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 4,
-      "parent_id": 3,
-      "return_value": {
-        "class": "Promise",
-        "object_id": 2,
-        "value": "Promise { <pending> }",
-      },
-      "thread_id": 0,
-    },
-    {
-      "event": "call",
-      "http_client_request": {
-        "headers": {
-          "Host": "localhost",
-        },
-        "request_method": "GET",
-        "url": "http://localhost/fast",
-      },
-      "id": 5,
-      "thread_id": 0,
-    },
-    {
-      "event": "return",
       "id": 6,
       "parent_id": 5,
+      "return_value": {
+        "class": "Promise<Number>",
+        "object_id": 2,
+        "value": "Promise { 200 }",
+      },
       "thread_id": 0,
     },
     {
@@ -1092,7 +1043,18 @@ exports[`mapping overlapping http client requests 1`] = `
       "thread_id": 0,
     },
     {
+      "elapsed": 31.337,
       "event": "return",
+      "http_client_response": {
+        "headers": {
+          "Content-Length": "2",
+        },
+        "return_value": {
+          "class": "[ResponseBody]",
+          "value": "ok",
+        },
+        "status_code": 200,
+      },
       "id": 8,
       "parent_id": 7,
       "thread_id": 0,

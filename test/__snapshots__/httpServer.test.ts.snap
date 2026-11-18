@@ -201,8 +201,8 @@ exports[`mapping Express.js requests 1`] = `
         "type": "package",
       },
     ],
-    "eventUpdates": {
-      "1": {
+    "events": [
+      {
         "event": "call",
         "http_server_request": {
           "headers": {
@@ -220,33 +220,6 @@ exports[`mapping Express.js requests 1`] = `
             "name": "ident",
             "value": "'foo'",
           },
-          {
-            "class": "String",
-            "name": "param1",
-            "value": "'3'",
-          },
-          {
-            "class": "String",
-            "name": "param2",
-            "value": "'4'",
-          },
-        ],
-        "thread_id": 0,
-      },
-    },
-    "events": [
-      {
-        "event": "call",
-        "http_server_request": {
-          "headers": {
-            "Host": "127.0.0.1",
-          },
-          "path_info": "/api/foo",
-          "protocol": "HTTP/1.1",
-          "request_method": "GET",
-        },
-        "id": 1,
-        "message": [
           {
             "class": "String",
             "name": "param1",
@@ -390,8 +363,8 @@ exports[`mapping Express.js requests 1`] = `
         "type": "package",
       },
     ],
-    "eventUpdates": {
-      "1": {
+    "events": [
+      {
         "event": "call",
         "http_server_request": {
           "headers": {
@@ -461,27 +434,10 @@ exports[`mapping Express.js requests 1`] = `
         ],
         "thread_id": 0,
       },
-    },
-    "events": [
-      {
-        "event": "call",
-        "http_server_request": {
-          "headers": {
-            "Content-Type": "application/json",
-            "Host": "127.0.0.1",
-            "Transfer-Encoding": "chunked",
-          },
-          "path_info": "/api/bar",
-          "protocol": "HTTP/1.1",
-          "request_method": "POST",
-        },
-        "id": 1,
-        "thread_id": 0,
-      },
       {
         "defined_class": "express",
         "event": "call",
-        "id": 2,
+        "id": 3,
         "lineno": 29,
         "method_id": "postApi",
         "parameters": [
@@ -544,8 +500,8 @@ exports[`mapping Express.js requests 1`] = `
       {
         "elapsed": 31.337,
         "event": "return",
-        "id": 3,
-        "parent_id": 2,
+        "id": 4,
+        "parent_id": 3,
         "return_value": {
           "class": "Object",
           "object_id": 6,
@@ -659,7 +615,7 @@ exports[`mapping Express.js requests 1`] = `
           },
           "status_code": 200,
         },
-        "id": 4,
+        "id": 2,
         "parent_id": 1,
         "thread_id": 0,
       },
@@ -721,109 +677,6 @@ exports[`mapping Express.js requests with remote recording 1`] = `
       "type": "package",
     },
   ],
-  "eventUpdates": {
-    "11": {
-      "event": "call",
-      "http_server_request": {
-        "headers": {
-          "Content-Type": "application/json",
-          "Host": "127.0.0.1",
-          "Transfer-Encoding": "chunked",
-        },
-        "normalized_path_info": "/api/:ident",
-        "path_info": "/api/bar",
-        "protocol": "HTTP/1.1",
-        "request_method": "POST",
-      },
-      "id": 11,
-      "message": [
-        {
-          "class": "String",
-          "name": "ident",
-          "value": "'bar'",
-        },
-        {
-          "class": "String",
-          "name": "key",
-          "value": "'value'",
-        },
-        {
-          "class": "Object",
-          "name": "obj",
-          "object_id": 8,
-          "properties": [
-            {
-              "class": "Number",
-              "name": "foo",
-            },
-            {
-              "class": "Array",
-              "items": {
-                "class": "Number",
-              },
-              "name": "arr",
-            },
-          ],
-          "value": "{ foo: 42, arr: [ 44 ] }",
-        },
-        {
-          "class": "Array",
-          "items": {
-            "class": "Object",
-            "properties": [
-              {
-                "class": "Number",
-                "name": "foo",
-              },
-            ],
-          },
-          "name": "arr",
-          "object_id": 9,
-          "size": 2,
-          "value": "[ { foo: 43 }, { foo: 44 } ]",
-        },
-        {
-          "class": "Array",
-          "name": "heterogenous",
-          "object_id": 10,
-          "size": 2,
-          "value": "[ 42, 'str' ]",
-        },
-      ],
-      "thread_id": 0,
-    },
-    "7": {
-      "event": "call",
-      "http_server_request": {
-        "headers": {
-          "Host": "127.0.0.1",
-        },
-        "normalized_path_info": "/api/:ident",
-        "path_info": "/api/foo",
-        "protocol": "HTTP/1.1",
-        "request_method": "GET",
-      },
-      "id": 7,
-      "message": [
-        {
-          "class": "String",
-          "name": "ident",
-          "value": "'foo'",
-        },
-        {
-          "class": "String",
-          "name": "param1",
-          "value": "'3'",
-        },
-        {
-          "class": "String",
-          "name": "param2",
-          "value": "'4'",
-        },
-      ],
-      "thread_id": 0,
-    },
-  },
   "events": [
     {
       "event": "call",
@@ -942,12 +795,18 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         "headers": {
           "Host": "127.0.0.1",
         },
+        "normalized_path_info": "/api/:ident",
         "path_info": "/api/foo",
         "protocol": "HTTP/1.1",
         "request_method": "GET",
       },
       "id": 7,
       "message": [
+        {
+          "class": "String",
+          "name": "ident",
+          "value": "'foo'",
+        },
         {
           "class": "String",
           "name": "param1",
@@ -1057,17 +916,72 @@ exports[`mapping Express.js requests with remote recording 1`] = `
           "Host": "127.0.0.1",
           "Transfer-Encoding": "chunked",
         },
+        "normalized_path_info": "/api/:ident",
         "path_info": "/api/bar",
         "protocol": "HTTP/1.1",
         "request_method": "POST",
       },
       "id": 11,
+      "message": [
+        {
+          "class": "String",
+          "name": "ident",
+          "value": "'bar'",
+        },
+        {
+          "class": "String",
+          "name": "key",
+          "value": "'value'",
+        },
+        {
+          "class": "Object",
+          "name": "obj",
+          "object_id": 8,
+          "properties": [
+            {
+              "class": "Number",
+              "name": "foo",
+            },
+            {
+              "class": "Array",
+              "items": {
+                "class": "Number",
+              },
+              "name": "arr",
+            },
+          ],
+          "value": "{ foo: 42, arr: [ 44 ] }",
+        },
+        {
+          "class": "Array",
+          "items": {
+            "class": "Object",
+            "properties": [
+              {
+                "class": "Number",
+                "name": "foo",
+              },
+            ],
+          },
+          "name": "arr",
+          "object_id": 9,
+          "size": 2,
+          "value": "[ { foo: 43 }, { foo: 44 } ]",
+        },
+        {
+          "class": "Array",
+          "name": "heterogenous",
+          "object_id": 10,
+          "size": 2,
+          "value": "[ 42, 'str' ]",
+        },
+      ],
       "thread_id": 0,
     },
     {
       "defined_class": "express",
       "event": "call",
-      "id": 12,
+      "id": 13,
       "lineno": 29,
       "method_id": "postApi",
       "parameters": [
@@ -1130,8 +1044,8 @@ exports[`mapping Express.js requests with remote recording 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 13,
-      "parent_id": 12,
+      "id": 14,
+      "parent_id": 13,
       "return_value": {
         "class": "Object",
         "object_id": 6,
@@ -1245,7 +1159,7 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         },
         "status_code": 200,
       },
-      "id": 14,
+      "id": 12,
       "parent_id": 11,
       "thread_id": 0,
     },

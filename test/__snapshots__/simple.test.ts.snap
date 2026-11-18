@@ -297,6 +297,12 @@ exports[`mapping a script using async tracking timeout 0 1`] = `
               "type": "function",
             },
             {
+              "location": "asyncTimeout.mjs:16",
+              "name": "report",
+              "static": true,
+              "type": "function",
+            },
+            {
               "location": "asyncTimeout.mjs:6",
               "name": "getMessage",
               "static": true,
@@ -336,11 +342,11 @@ exports[`mapping a script using async tracking timeout 0 1`] = `
       },
       "thread_id": 0,
     },
-    "6": {
+    "8": {
       "elapsed": 31.337,
       "event": "return",
-      "id": 6,
-      "parent_id": 5,
+      "id": 8,
+      "parent_id": 7,
       "return_value": {
         "class": "Promise<String>",
         "object_id": 3,
@@ -412,6 +418,28 @@ exports[`mapping a script using async tracking timeout 0 1`] = `
       "defined_class": "asyncTimeout",
       "event": "call",
       "id": 5,
+      "lineno": 16,
+      "method_id": "report",
+      "parameters": [],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "return_value": {
+        "class": "String",
+        "value": "'reporting'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 7,
       "lineno": 6,
       "method_id": "getMessage",
       "parameters": [
@@ -428,8 +456,8 @@ exports[`mapping a script using async tracking timeout 0 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 6,
-      "parent_id": 5,
+      "id": 8,
+      "parent_id": 7,
       "return_value": {
         "class": "Promise",
         "object_id": 3,
@@ -480,6 +508,12 @@ exports[`mapping a script using async tracking timeout 10 1`] = `
               "type": "function",
             },
             {
+              "location": "asyncTimeout.mjs:16",
+              "name": "report",
+              "static": true,
+              "type": "function",
+            },
+            {
               "location": "asyncTimeout.mjs:6",
               "name": "getMessage",
               "static": true,
@@ -495,15 +529,15 @@ exports[`mapping a script using async tracking timeout 10 1`] = `
     },
   ],
   "eventUpdates": {
-    "6": {
+    "3": {
       "elapsed": 31.337,
       "event": "return",
-      "id": 6,
-      "parent_id": 5,
+      "id": 3,
+      "parent_id": 2,
       "return_value": {
-        "class": "Promise<String>",
-        "object_id": 3,
-        "value": "Promise { 'message is process a task' }",
+        "class": "Promise<undefined>",
+        "object_id": 1,
+        "value": "Promise { undefined }",
       },
       "thread_id": 0,
     },
@@ -529,35 +563,6 @@ exports[`mapping a script using async tracking timeout 10 1`] = `
     {
       "defined_class": "asyncTimeout",
       "event": "call",
-      "id": 5,
-      "lineno": 6,
-      "method_id": "getMessage",
-      "parameters": [
-        {
-          "class": "String",
-          "name": "message",
-          "value": "'process a task'",
-        },
-      ],
-      "path": "asyncTimeout.mjs",
-      "static": true,
-      "thread_id": 0,
-    },
-    {
-      "elapsed": 31.337,
-      "event": "return",
-      "id": 6,
-      "parent_id": 5,
-      "return_value": {
-        "class": "Promise",
-        "object_id": 3,
-        "value": "Promise { <pending> }",
-      },
-      "thread_id": 0,
-    },
-    {
-      "defined_class": "asyncTimeout",
-      "event": "call",
       "id": 2,
       "lineno": 1,
       "method_id": "process",
@@ -578,9 +583,9 @@ exports[`mapping a script using async tracking timeout 10 1`] = `
       "id": 3,
       "parent_id": 2,
       "return_value": {
-        "class": "Promise<undefined>",
+        "class": "Promise",
         "object_id": 1,
-        "value": "Promise { undefined }",
+        "value": "Promise { <pending> }",
       },
       "thread_id": 0,
     },
@@ -593,6 +598,57 @@ exports[`mapping a script using async tracking timeout 10 1`] = `
         "class": "Promise<undefined>",
         "object_id": 2,
         "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 5,
+      "lineno": 16,
+      "method_id": "report",
+      "parameters": [],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "return_value": {
+        "class": "String",
+        "value": "'reporting'",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 7,
+      "lineno": 6,
+      "method_id": "getMessage",
+      "parameters": [
+        {
+          "class": "String",
+          "name": "message",
+          "value": "'process a task'",
+        },
+      ],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 8,
+      "parent_id": 7,
+      "return_value": {
+        "class": "Promise<String>",
+        "object_id": 3,
+        "value": "Promise { 'message is process a task' }",
       },
       "thread_id": 0,
     },
@@ -639,6 +695,12 @@ exports[`mapping a script using async tracking timeout 3000 1`] = `
               "type": "function",
             },
             {
+              "location": "asyncTimeout.mjs:16",
+              "name": "report",
+              "static": true,
+              "type": "function",
+            },
+            {
               "location": "asyncTimeout.mjs:6",
               "name": "getMessage",
               "static": true,
@@ -691,7 +753,7 @@ exports[`mapping a script using async tracking timeout 3000 1`] = `
     {
       "defined_class": "asyncTimeout",
       "event": "call",
-      "id": 5,
+      "id": 7,
       "lineno": 6,
       "method_id": "getMessage",
       "parameters": [
@@ -708,8 +770,8 @@ exports[`mapping a script using async tracking timeout 3000 1`] = `
     {
       "elapsed": 31.337,
       "event": "return",
-      "id": 6,
-      "parent_id": 5,
+      "id": 8,
+      "parent_id": 7,
       "return_value": {
         "class": "Promise<String>",
         "object_id": 3,
@@ -738,6 +800,28 @@ exports[`mapping a script using async tracking timeout 3000 1`] = `
         "class": "Promise<undefined>",
         "object_id": 2,
         "value": "Promise { undefined }",
+      },
+      "thread_id": 0,
+    },
+    {
+      "defined_class": "asyncTimeout",
+      "event": "call",
+      "id": 5,
+      "lineno": 16,
+      "method_id": "report",
+      "parameters": [],
+      "path": "asyncTimeout.mjs",
+      "static": true,
+      "thread_id": 0,
+    },
+    {
+      "elapsed": 31.337,
+      "event": "return",
+      "id": 6,
+      "parent_id": 5,
+      "return_value": {
+        "class": "String",
+        "value": "'reporting'",
       },
       "thread_id": 0,
     },

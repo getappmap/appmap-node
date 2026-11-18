@@ -12,3 +12,10 @@ async function task(name) {
 }
 
 task("a task");
+
+function report() {
+  return "reporting";
+}
+
+// held back while process() is pending, unless the async tracking timeout runs out
+globalThis.setTimeout(() => report(), 50);

@@ -164,7 +164,8 @@ interface HttpResponse {
 }
 
 export interface HttpServerResponseEvent extends ReturnEventBase {
-  http_server_response: HttpResponse;
+  // absent until the response is sent — and permanently, if it never is
+  http_server_response?: HttpResponse;
 }
 
 export interface HttpClientResponseEvent extends ReturnEventBase {

@@ -1,4 +1,5 @@
 import assert from "node:assert";
+import { isPromise } from "node:util/types";
 
 import type * as AppMap from "./AppMap";
 import config from "./config";
@@ -84,12 +85,16 @@ export function record<This, Return>(
 
   const startTime = getTime();
   try {
-    const result = funInfo.async
-      ? Recording.fork(() => fun.apply(this, args))
-      : fun.apply(this, args);
+    const fork = funInfo.async ? Recording.fork(() => fun.apply(this, args)) : undefined;
+    const result = fork ? fork.result : fun.apply(this, args);
     recordings.forEach((recording, idx) =>
       recording.functionReturn(callEvents[idx].id, result, startTime),
     );
+    // an async function is done once its promise settles
+    if (fork) {
+      if (isPromise(result)) result.then(fork.complete, fork.complete);
+      else fork.complete();
+    }
     return result;
   } catch (exn: unknown) {
     recordings.forEach((recording, idx) =>

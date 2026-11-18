@@ -2,8 +2,8 @@
 import type sqlite from "sqlite3";
 
 import Recording from "../Recording";
-import { getActiveRecordings, isActive } from "../recorder";
-import { getTime } from "../util/getTime";
+import { getActiveRecordings } from "../recorder";
+import recordPendingCall from "./util/recordPendingCall";
 
 type RecordingProxyTarget =
   | typeof sqlite.Database.prototype.exec
@@ -52,14 +52,10 @@ function createRecordingProxy<T extends RecordingProxyTarget>(
         sql = argArray[0];
       }
 
-      const recordings = getActiveRecordings();
-      const callEvents = recordings.map((recording) => recording.sqlQuery("sqlite", sql));
-      const startTime = getTime();
-      // Capture the current async context so the completion callback can emit
-      // return events in the correct buffer position. Native sqlite callbacks
-      // fire outside any AsyncLocalStorage context (especially in Node 24+),
-      // which would otherwise place return events after all buffered call events.
+      // Native sqlite callbacks fire outside any AsyncLocalStorage context (especially
+      // in Node 24+), so capture the current one for the completion callback.
       const asyncContext = Recording.getContext();
+      const call = recordPendingCall(getActiveRecordings(), (r) => r.sqlQuery("sqlite", sql));
 
       // Extract callback argument(s) to functionArgs
       const functionArgs = [];
@@ -93,23 +89,22 @@ function createRecordingProxy<T extends RecordingProxyTarget>(
         | ((...args: unknown[]) => unknown);
 
       const newCompletionCallback = (...args: unknown[]) => {
+        const [error] = args;
+        if (error != undefined) call.threw(error);
+        else call.returned();
         // Restore the captured context to keep events in causal order, and run
         // the original callback inside it so any instrumented work it does is
         // also recorded in the correct position.
-        Recording.run(asyncContext, () => {
-          const isError = args.length > 0 && args[0] != undefined;
-          if (!isError)
-            recordings.forEach(
-              (recording, idx) =>
-                isActive(recording) &&
-                recording.functionReturn(callEvents[idx].id, undefined, startTime),
-            );
-          originalCompletionCallback?.apply(this, args);
-        });
+        Recording.run(asyncContext, () => originalCompletionCallback?.apply(this, args));
       };
       newFunctionArgs.push(newCompletionCallback);
 
-      return Reflect.apply(target, thisArg, [...argArray, ...newFunctionArgs]) as T;
+      try {
+        return Reflect.apply(target, thisArg, [...argArray, ...newFunctionArgs]) as T;
+      } catch (exn) {
+        call.threw(exn);
+        throw exn;
+      }
     },
   });
 }
