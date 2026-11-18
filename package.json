@@ -98,7 +98,13 @@
     "ts-blank-space": "^0.7.0",
     "yaml": "^2.3.4"
   },
+  "dependenciesMeta": {
+    "prisma@7.10.1": {
+      "built": false
+    }
+  },
   "resolutions": {
+    "@prisma/adapter-better-sqlite3/better-sqlite3": "^11.10.0",
     "node-gyp": "^11.5.0",
     "postcss": "^8.5.26",
     "rollup": "^4.59.0",
@@ -122,6 +128,7 @@
     "test/next16",
     "test/typescript-esm",
     "test/prisma",
+    "test/prisma7",
     "test/libraryCalls",
     "test/sourceMapPath"
   ]
