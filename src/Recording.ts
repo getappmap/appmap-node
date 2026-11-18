@@ -17,7 +17,7 @@ import type { FunctionInfo } from "./registry";
 import compactObject from "./util/compactObject";
 import { getTime, getTimeInMilliseconds } from "./util/getTime";
 import { shouldRecord } from "./recorderControl";
-import { warn } from "./message";
+import { info, warn } from "./message";
 
 export default class Recording {
   constructor(type: AppMap.RecorderType, recorder: string, ...names: string[]) {
@@ -466,10 +466,24 @@ export default class Recording {
     Recording.giveUpTimer = undefined;
     let blocker;
     while ((blocker = Recording.blocker) && isOverdue(blocker)) {
+      Recording.reportGivingUp();
       Recording.flushBuffer(blocker);
       Recording.drainBuffer(Recording.rootBuffer);
     }
     Recording.drain();
+  }
+
+  private static reportedGivingUp = false;
+
+  private static reportGivingUp() {
+    if (Recording.reportedGivingUp) return;
+    Recording.reportedGivingUp = true;
+    info(
+      "An async call took longer than %d ms, so whatever it does from now on will be " +
+        "recorded outside of it. To wait longer, set async_tracking_timeout in appmap.yml " +
+        "or APPMAP_ASYNC_TRACKING_TIMEOUT (in milliseconds).",
+      config().asyncTrackingTimeout,
+    );
   }
 
   readAppMap(): AppMap.AppMap {

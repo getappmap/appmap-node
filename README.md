@@ -49,3 +49,29 @@ packages:
   # - functionName
   # - Klass.method
 ```
+
+### Async tracking timeout
+
+Node runs many asynchronous calls interleaved on a single thread, while an
+AppMap records calls nested in the order they happen. To keep everything an
+async call does (eg. a request handler awaiting a database query) nested inside
+it, appmap-node holds back the events that come after the call until it's
+done. It won't wait forever though: if an async call takes longer than
+`async_tracking_timeout` milliseconds (3000 by default), the events held back
+are written out, and whatever the call does from then on is recorded outside
+of it. The recording stays consistent, but those events show up in the wrong
+place, and appmap-node prints a message the first time this happens.
+
+If your code legitimately takes longer than that (eg. the first request in
+`next dev`, which compiles the page), you can raise the timeout in
+`appmap.yml`:
+
+```yaml
+async_tracking_timeout: 30000
+```
+
+or with the `APPMAP_ASYNC_TRACKING_TIMEOUT` environment variable. A longer
+timeout costs memory, since everything that happens meanwhile is held back,
+and long-lived requests such as server-sent event streams will then hold up
+writing for longer. Setting it to `0` disables async tracking altogether:
+events are written in the order they happen, without regard to nesting.
