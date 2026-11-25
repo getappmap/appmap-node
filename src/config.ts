@@ -15,6 +15,9 @@ import tryOr from "./util/tryOr";
 const responseBodyMaxLengthDefault = 10000;
 const kResponseBodyMaxLengthEnvar = "APPMAP_RESPONSE_BODY_MAX_LENGTH";
 
+const valueMaxLengthDefault = 1024;
+const kValueMaxLengthEnvar = "APPMAP_VALUE_MAX_LENGTH";
+
 const asyncTrackingTimeoutDefault = 3000;
 const kAsyncTrackingTimeoutEnvar = "APPMAP_ASYNC_TRACKING_TIMEOUT";
 
@@ -26,6 +29,8 @@ export class Config {
   public readonly default: boolean;
   public readonly packages: PackageMatcher;
   public readonly responseBodyMaxLength: number;
+  // 0 means no limit
+  public readonly valueMaxLength: number;
   public readonly language: string;
   // If it's 0 then no async tracking.
   public readonly asyncTrackingTimeout: number;
@@ -85,6 +90,11 @@ export class Config {
       getNonNegativeIntegerEnvVarValue(kResponseBodyMaxLengthEnvar) ??
       config?.response_body_max_length ??
       responseBodyMaxLengthDefault;
+
+    this.valueMaxLength =
+      getNonNegativeIntegerEnvVarValue(kValueMaxLengthEnvar) ??
+      config?.value_max_length ??
+      valueMaxLengthDefault;
 
     this.asyncTrackingTimeout =
       getNonNegativeIntegerEnvVarValue(kAsyncTrackingTimeoutEnvar) ??
@@ -174,6 +184,7 @@ interface ConfigFile {
   name?: string;
   packages?: Package[];
   response_body_max_length?: number;
+  value_max_length?: number;
   language?: string;
   async_tracking_timeout?: number;
 }
@@ -212,6 +223,10 @@ function readConfigFile(document: Document): ConfigFile {
   if ("response_body_max_length" in config) {
     const value = parseInt(String(config.response_body_max_length));
     result.response_body_max_length = value >= 0 ? value : undefined;
+  }
+  if ("value_max_length" in config) {
+    const value = parseInt(String(config.value_max_length));
+    result.value_max_length = value >= 0 ? value : undefined;
   }
   if ("async_tracking_timeout" in config) {
     const value = parseInt(String(config.async_tracking_timeout));

@@ -3,6 +3,7 @@ import { format, inspect, isDeepStrictEqual } from "node:util";
 import { isPromise } from "node:util/types";
 
 import type * as AppMap from "./AppMap";
+import config from "./config";
 import { pauseRecorder, resumeRecorder } from "./recorderControl";
 import compactObject from "./util/compactObject";
 
@@ -77,6 +78,21 @@ function isReactElement(
 }
 
 export function stringify(value: unknown): string {
+  const maxLength = config().valueMaxLength;
+  const result = formatValue(value);
+  if (!maxLength || result.length <= maxLength) return result;
+  // don't split a surrogate pair
+  const cut = isHighSurrogate(result.charCodeAt(maxLength - 1)) ? maxLength - 1 : maxLength;
+  const truncated = `${result.substring(0, cut)}... (${result.length - cut} more characters)`;
+  // not worth it if the marker is longer than what it replaces
+  return truncated.length < result.length ? truncated : result;
+}
+
+function isHighSurrogate(code: number): boolean {
+  return code >= 0xd800 && code <= 0xdbff;
+}
+
+function formatValue(value: unknown): string {
   if (value instanceof IncomingMessage)
     return format("[IncomingMessage: %s %s]", value.method, value.url);
   if (value instanceof ClientRequest) return formatClientRequest(value);

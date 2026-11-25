@@ -84,6 +84,20 @@ describe(Config, () => {
     });
   });
 
+  it("reads the value length limit from appmap.yml or the environment", () => {
+    expect(new Config()).toHaveProperty("valueMaxLength", 1024);
+
+    writeFileSync("appmap.yml", YAML.stringify({ value_max_length: 100 }));
+    expect(new Config()).toHaveProperty("valueMaxLength", 100);
+
+    process.env.APPMAP_VALUE_MAX_LENGTH = "0";
+    try {
+      expect(new Config()).toHaveProperty("valueMaxLength", 0);
+    } finally {
+      delete process.env.APPMAP_VALUE_MAX_LENGTH;
+    }
+  });
+
   it("uses default packages if the field in appmap.yml has unrecognized format", () => {
     writeFileSync(
       "appmap.yml",

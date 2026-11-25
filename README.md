@@ -48,4 +48,7 @@ packages:
   # You can also exclude methods and functions by name:
   # - functionName
   # - Klass.method
+# Longer parameter and return values are truncated; 0 means no limit.
+# Can also be set with the APPMAP_VALUE_MAX_LENGTH environment variable.
+# value_max_length: 1024
 ```
