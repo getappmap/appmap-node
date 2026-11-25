@@ -176,7 +176,12 @@ function fixHttp(http: unknown) {
 
 function fixValue(value: unknown): void {
   if (value && typeof value === "object" && "value" in value && typeof value.value === "string") {
-    const v = value.value;
+    // How much was cut off by the value length limit depends on the Node
+    // version, e.g. through the Symbol properties removed below.
+    const v = value.value.replace(
+      /^(.{1024})\.\.\. \(\d+ more characters\)$/s,
+      "$1... (N more characters)",
+    );
     if (v.startsWith("Next")) value.value = v.split(" ")[0];
     else if (v.includes("ObjectId"))
       value.value = v

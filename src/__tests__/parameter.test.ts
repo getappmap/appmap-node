@@ -1,4 +1,5 @@
 import type * as AppMap from "../AppMap";
+import config from "../config";
 import { objectId, optParameter, parameter } from "../parameter";
 
 class Klass {
@@ -102,5 +103,35 @@ describe(parameter, () => {
       object_id: expect.any(Number), // eslint-disable-line @typescript-eslint/no-unsafe-assignment
       value: "{}",
     });
+  });
+});
+
+describe(parameter, () => {
+  it("truncates long values", () => {
+    jest.replaceProperty(config(), "valueMaxLength", 20);
+    // 1002 characters with the quotes
+    expect(parameter("x".repeat(1000)).value).toBe(`'${"x".repeat(19)}... (982 more characters)`);
+  });
+
+  it("leaves values within the limit alone", () => {
+    jest.replaceProperty(config(), "valueMaxLength", 20);
+    expect(parameter("x".repeat(18)).value).toBe(`'${"x".repeat(18)}'`);
+  });
+
+  it("does not truncate if the marker would be longer than what it replaces", () => {
+    jest.replaceProperty(config(), "valueMaxLength", 20);
+    // 19 characters plus quotes is just over the limit
+    expect(parameter("x".repeat(19)).value).toBe(`'${"x".repeat(19)}'`);
+  });
+
+  it("does not split surrogate pairs", () => {
+    jest.replaceProperty(config(), "valueMaxLength", 4);
+    // ' + 😀 + 😀 would be cut in the middle of the second emoji
+    expect(parameter("😀".repeat(20)).value).toMatch(/^'😀\.\.\./);
+  });
+
+  it("does not truncate if the limit is 0", () => {
+    jest.replaceProperty(config(), "valueMaxLength", 0);
+    expect(parameter("x".repeat(5000)).value).toHaveLength(5002);
   });
 });
