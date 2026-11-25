@@ -89,6 +89,17 @@ describe(parameter, () => {
     expect(parameter(obj).class).toBe("Object");
   });
 
+  it("describes an object referenced from several places in each of them", () => {
+    const shared = { foo: 42 };
+    const schema = [{ name: "foo", class: "Number" }];
+    expect(parameter({ x: shared, y: shared })).toMatchObject({
+      properties: [
+        { name: "x", properties: schema },
+        { name: "y", properties: schema },
+      ],
+    });
+  });
+
   it('does not throw on "get" trap', () => {
     const sentinelValue = new Proxy(
       {},

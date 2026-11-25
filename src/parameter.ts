@@ -135,19 +135,23 @@ function parameterSchema(
 ): AppMap.ParameterSchema {
   const result: AppMap.ParameterSchema = { class: getClass(value) };
 
-  // Handle circular references to prevent stack overflow
+  if (depth <= 0) return result;
+
+  // Handle circular references to prevent stack overflow. objectsSeen holds
+  // the objects on the path from the root, so an object referenced from
+  // several places (without a cycle) is still described in each of them.
   objectsSeen ??= new Set();
   if (value && typeof value === "object") {
     if (objectsSeen.has(value)) return result;
     objectsSeen.add(value);
   }
 
-  if (depth <= 0) return result;
   if (value instanceof Array) {
     const items = itemsSchema(value, objectsSeen, depth - 1);
     if (items) result.items = [items];
   } else if (isSimpleObject(value))
     result.properties = propertiesSchema(value, objectsSeen, depth - 1);
+  if (value && typeof value === "object") objectsSeen.delete(value);
   return result;
 }
 
