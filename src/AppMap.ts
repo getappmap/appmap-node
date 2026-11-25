@@ -111,7 +111,7 @@ export interface FunctionCallEvent extends CallEventBase {
 export interface ParameterSchema {
   class: string;
   properties?: ({ name: string } & ParameterSchema)[];
-  items?: ParameterSchema;
+  items?: ParameterSchema[];
 }
 
 export interface Parameter extends ParameterSchema {

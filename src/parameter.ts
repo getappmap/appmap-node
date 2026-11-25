@@ -143,8 +143,10 @@ function parameterSchema(
   }
 
   if (depth <= 0) return result;
-  if (value instanceof Array) result.items = itemsSchema(value, objectsSeen, depth - 1);
-  else if (isSimpleObject(value))
+  if (value instanceof Array) {
+    const items = itemsSchema(value, objectsSeen, depth - 1);
+    if (items) result.items = [items];
+  } else if (isSimpleObject(value))
     result.properties = propertiesSchema(value, objectsSeen, depth - 1);
   return result;
 }
