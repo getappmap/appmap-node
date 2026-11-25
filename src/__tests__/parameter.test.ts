@@ -16,7 +16,12 @@ const examples: [unknown, string, string, Partial<AppMap.Parameter>][] = [
   [new Klass(42), "Klass", "Klass { value: 42 }", {}],
   [[], "Array", "[]", { size: 0 }],
   [[42, 43], "Array", "[ 42, 43 ]", { size: 2, items: [{ class: "Number" }] }],
-  [[42, "foo"], "Array", "[ 42, 'foo' ]", { size: 2 }],
+  [
+    [42, "foo", 43],
+    "Array",
+    "[ 42, 'foo', 43 ]",
+    { size: 3, items: [{ class: "Number" }, { class: "String" }] },
+  ],
   [[0, 1], "Array", "[ 0, 1 ]", { size: 2, items: [{ class: "Number" }] }],
   [["", "a"], "Array", "[ '', 'a' ]", { size: 2, items: [{ class: "String" }] }],
   [
@@ -115,5 +120,20 @@ describe(parameter, () => {
       object_id: expect.any(Number), // eslint-disable-line @typescript-eslint/no-unsafe-assignment
       value: "{}",
     });
+  });
+});
+
+describe(parameter, () => {
+  it("omits items of arrays with too many distinct item schemas", () => {
+    const value = Array.from({ length: 11 }, (_, i) => ({ [`key${i}`]: i }));
+    expect(parameter(value)).not.toHaveProperty("items");
+    expect(parameter(value.slice(1))).toHaveProperty("items.length", 10);
+  });
+
+  it("lists the schema of a repeated object once", () => {
+    const obj = { foo: 42 };
+    expect(parameter([obj, obj]).items).toStrictEqual([
+      { class: "Object", properties: [{ name: "foo", class: "Number" }] },
+    ]);
   });
 });

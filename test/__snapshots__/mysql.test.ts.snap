@@ -398,6 +398,14 @@ exports[`mapping MySQL tests 1`] = `
         },
         {
           "class": "Array",
+          "items": [
+            {
+              "class": "Number",
+            },
+            {
+              "class": "String",
+            },
+          ],
           "object_id": 6,
           "size": 2,
           "value": "[ 1, 'ABC' ]",

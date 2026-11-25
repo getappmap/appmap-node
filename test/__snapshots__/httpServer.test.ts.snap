@@ -457,6 +457,14 @@ exports[`mapping Express.js requests 1`] = `
           },
           {
             "class": "Array",
+            "items": [
+              {
+                "class": "Number",
+              },
+              {
+                "class": "String",
+              },
+            ],
             "name": "heterogenous",
             "object_id": 10,
             "size": 2,
@@ -534,6 +542,14 @@ exports[`mapping Express.js requests 1`] = `
               },
               {
                 "class": "Array",
+                "items": [
+                  {
+                    "class": "Number",
+                  },
+                  {
+                    "class": "String",
+                  },
+                ],
                 "name": "heterogenous",
               },
             ],
@@ -598,6 +614,14 @@ exports[`mapping Express.js requests 1`] = `
             },
             {
               "class": "Array",
+              "items": [
+                {
+                  "class": "Number",
+                },
+                {
+                  "class": "String",
+                },
+              ],
               "name": "heterogenous",
             },
           ],
@@ -663,6 +687,14 @@ exports[`mapping Express.js requests 1`] = `
               },
               {
                 "class": "Array",
+                "items": [
+                  {
+                    "class": "Number",
+                  },
+                  {
+                    "class": "String",
+                  },
+                ],
                 "name": "heterogenous",
               },
             ],
@@ -804,6 +836,14 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         },
         {
           "class": "Array",
+          "items": [
+            {
+              "class": "Number",
+            },
+            {
+              "class": "String",
+            },
+          ],
           "name": "heterogenous",
           "object_id": 10,
           "size": 2,
@@ -1136,6 +1176,14 @@ exports[`mapping Express.js requests with remote recording 1`] = `
             },
             {
               "class": "Array",
+              "items": [
+                {
+                  "class": "Number",
+                },
+                {
+                  "class": "String",
+                },
+              ],
               "name": "heterogenous",
             },
           ],
@@ -1200,6 +1248,14 @@ exports[`mapping Express.js requests with remote recording 1`] = `
           },
           {
             "class": "Array",
+            "items": [
+              {
+                "class": "Number",
+              },
+              {
+                "class": "String",
+              },
+            ],
             "name": "heterogenous",
           },
         ],
@@ -1265,6 +1321,14 @@ exports[`mapping Express.js requests with remote recording 1`] = `
             },
             {
               "class": "Array",
+              "items": [
+                {
+                  "class": "Number",
+                },
+                {
+                  "class": "String",
+                },
+              ],
               "name": "heterogenous",
             },
           ],
