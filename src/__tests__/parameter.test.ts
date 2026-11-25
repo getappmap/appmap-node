@@ -17,6 +17,8 @@ const examples: [unknown, string, string, Partial<AppMap.Parameter>][] = [
   [[], "Array", "[]", { size: 0 }],
   [[42, 43], "Array", "[ 42, 43 ]", { size: 2, items: [{ class: "Number" }] }],
   [[42, "foo"], "Array", "[ 42, 'foo' ]", { size: 2 }],
+  [[0, 1], "Array", "[ 0, 1 ]", { size: 2, items: [{ class: "Number" }] }],
+  [["", "a"], "Array", "[ '', 'a' ]", { size: 2, items: [{ class: "String" }] }],
   [
     nullobj,
     "object",

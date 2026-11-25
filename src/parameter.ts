@@ -162,11 +162,12 @@ function isSimpleObject(value: unknown): value is Record<string, unknown> {
 }
 
 function itemsSchema(
-  [head, ...tail]: unknown[],
+  value: unknown[],
   objectsSeen?: Set<object>,
   depth = defaultDepth,
 ): AppMap.ParameterSchema | undefined {
-  if (!head) return;
+  if (value.length === 0) return;
+  const [head, ...tail] = value;
 
   const schema = parameterSchema(head, objectsSeen, depth);
   for (const item of tail)
