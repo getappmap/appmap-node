@@ -427,9 +427,11 @@ exports[`mapping Express.js requests 1`] = `
               },
               {
                 "class": "Array",
-                "items": {
-                  "class": "Number",
-                },
+                "items": [
+                  {
+                    "class": "Number",
+                  },
+                ],
                 "name": "arr",
               },
             ],
@@ -437,15 +439,17 @@ exports[`mapping Express.js requests 1`] = `
           },
           {
             "class": "Array",
-            "items": {
-              "class": "Object",
-              "properties": [
-                {
-                  "class": "Number",
-                  "name": "foo",
-                },
-              ],
-            },
+            "items": [
+              {
+                "class": "Object",
+                "properties": [
+                  {
+                    "class": "Number",
+                    "name": "foo",
+                  },
+                ],
+              },
+            ],
             "name": "arr",
             "object_id": 9,
             "size": 2,
@@ -453,6 +457,14 @@ exports[`mapping Express.js requests 1`] = `
           },
           {
             "class": "Array",
+            "items": [
+              {
+                "class": "Number",
+              },
+              {
+                "class": "String",
+              },
+            ],
             "name": "heterogenous",
             "object_id": 10,
             "size": 2,
@@ -504,28 +516,40 @@ exports[`mapping Express.js requests 1`] = `
                   },
                   {
                     "class": "Array",
-                    "items": {
-                      "class": "Number",
-                    },
+                    "items": [
+                      {
+                        "class": "Number",
+                      },
+                    ],
                     "name": "arr",
                   },
                 ],
               },
               {
                 "class": "Array",
-                "items": {
-                  "class": "Object",
-                  "properties": [
-                    {
-                      "class": "Number",
-                      "name": "foo",
-                    },
-                  ],
-                },
+                "items": [
+                  {
+                    "class": "Object",
+                    "properties": [
+                      {
+                        "class": "Number",
+                        "name": "foo",
+                      },
+                    ],
+                  },
+                ],
                 "name": "arr",
               },
               {
                 "class": "Array",
+                "items": [
+                  {
+                    "class": "Number",
+                  },
+                  {
+                    "class": "String",
+                  },
+                ],
                 "name": "heterogenous",
               },
             ],
@@ -564,28 +588,40 @@ exports[`mapping Express.js requests 1`] = `
                 },
                 {
                   "class": "Array",
-                  "items": {
-                    "class": "Number",
-                  },
+                  "items": [
+                    {
+                      "class": "Number",
+                    },
+                  ],
                   "name": "arr",
                 },
               ],
             },
             {
               "class": "Array",
-              "items": {
-                "class": "Object",
-                "properties": [
-                  {
-                    "class": "Number",
-                    "name": "foo",
-                  },
-                ],
-              },
+              "items": [
+                {
+                  "class": "Object",
+                  "properties": [
+                    {
+                      "class": "Number",
+                      "name": "foo",
+                    },
+                  ],
+                },
+              ],
               "name": "arr",
             },
             {
               "class": "Array",
+              "items": [
+                {
+                  "class": "Number",
+                },
+                {
+                  "class": "String",
+                },
+              ],
               "name": "heterogenous",
             },
           ],
@@ -625,28 +661,40 @@ exports[`mapping Express.js requests 1`] = `
                   },
                   {
                     "class": "Array",
-                    "items": {
-                      "class": "Number",
-                    },
+                    "items": [
+                      {
+                        "class": "Number",
+                      },
+                    ],
                     "name": "arr",
                   },
                 ],
               },
               {
                 "class": "Array",
-                "items": {
-                  "class": "Object",
-                  "properties": [
-                    {
-                      "class": "Number",
-                      "name": "foo",
-                    },
-                  ],
-                },
+                "items": [
+                  {
+                    "class": "Object",
+                    "properties": [
+                      {
+                        "class": "Number",
+                        "name": "foo",
+                      },
+                    ],
+                  },
+                ],
                 "name": "arr",
               },
               {
                 "class": "Array",
+                "items": [
+                  {
+                    "class": "Number",
+                  },
+                  {
+                    "class": "String",
+                  },
+                ],
                 "name": "heterogenous",
               },
             ],
@@ -758,9 +806,11 @@ exports[`mapping Express.js requests with remote recording 1`] = `
             },
             {
               "class": "Array",
-              "items": {
-                "class": "Number",
-              },
+              "items": [
+                {
+                  "class": "Number",
+                },
+              ],
               "name": "arr",
             },
           ],
@@ -768,15 +818,17 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         },
         {
           "class": "Array",
-          "items": {
-            "class": "Object",
-            "properties": [
-              {
-                "class": "Number",
-                "name": "foo",
-              },
-            ],
-          },
+          "items": [
+            {
+              "class": "Object",
+              "properties": [
+                {
+                  "class": "Number",
+                  "name": "foo",
+                },
+              ],
+            },
+          ],
           "name": "arr",
           "object_id": 9,
           "size": 2,
@@ -784,6 +836,14 @@ exports[`mapping Express.js requests with remote recording 1`] = `
         },
         {
           "class": "Array",
+          "items": [
+            {
+              "class": "Number",
+            },
+            {
+              "class": "String",
+            },
+          ],
           "name": "heterogenous",
           "object_id": 10,
           "size": 2,
@@ -1090,28 +1150,40 @@ exports[`mapping Express.js requests with remote recording 1`] = `
                 },
                 {
                   "class": "Array",
-                  "items": {
-                    "class": "Number",
-                  },
+                  "items": [
+                    {
+                      "class": "Number",
+                    },
+                  ],
                   "name": "arr",
                 },
               ],
             },
             {
               "class": "Array",
-              "items": {
-                "class": "Object",
-                "properties": [
-                  {
-                    "class": "Number",
-                    "name": "foo",
-                  },
-                ],
-              },
+              "items": [
+                {
+                  "class": "Object",
+                  "properties": [
+                    {
+                      "class": "Number",
+                      "name": "foo",
+                    },
+                  ],
+                },
+              ],
               "name": "arr",
             },
             {
               "class": "Array",
+              "items": [
+                {
+                  "class": "Number",
+                },
+                {
+                  "class": "String",
+                },
+              ],
               "name": "heterogenous",
             },
           ],
@@ -1150,28 +1222,40 @@ exports[`mapping Express.js requests with remote recording 1`] = `
               },
               {
                 "class": "Array",
-                "items": {
-                  "class": "Number",
-                },
+                "items": [
+                  {
+                    "class": "Number",
+                  },
+                ],
                 "name": "arr",
               },
             ],
           },
           {
             "class": "Array",
-            "items": {
-              "class": "Object",
-              "properties": [
-                {
-                  "class": "Number",
-                  "name": "foo",
-                },
-              ],
-            },
+            "items": [
+              {
+                "class": "Object",
+                "properties": [
+                  {
+                    "class": "Number",
+                    "name": "foo",
+                  },
+                ],
+              },
+            ],
             "name": "arr",
           },
           {
             "class": "Array",
+            "items": [
+              {
+                "class": "Number",
+              },
+              {
+                "class": "String",
+              },
+            ],
             "name": "heterogenous",
           },
         ],
@@ -1211,28 +1295,40 @@ exports[`mapping Express.js requests with remote recording 1`] = `
                 },
                 {
                   "class": "Array",
-                  "items": {
-                    "class": "Number",
-                  },
+                  "items": [
+                    {
+                      "class": "Number",
+                    },
+                  ],
                   "name": "arr",
                 },
               ],
             },
             {
               "class": "Array",
-              "items": {
-                "class": "Object",
-                "properties": [
-                  {
-                    "class": "Number",
-                    "name": "foo",
-                  },
-                ],
-              },
+              "items": [
+                {
+                  "class": "Object",
+                  "properties": [
+                    {
+                      "class": "Number",
+                      "name": "foo",
+                    },
+                  ],
+                },
+              ],
               "name": "arr",
             },
             {
               "class": "Array",
+              "items": [
+                {
+                  "class": "Number",
+                },
+                {
+                  "class": "String",
+                },
+              ],
               "name": "heterogenous",
             },
           ],

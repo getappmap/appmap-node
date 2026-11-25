@@ -135,17 +135,23 @@ function parameterSchema(
 ): AppMap.ParameterSchema {
   const result: AppMap.ParameterSchema = { class: getClass(value) };
 
-  // Handle circular references to prevent stack overflow
+  if (depth <= 0) return result;
+
+  // Handle circular references to prevent stack overflow. objectsSeen holds
+  // the objects on the path from the root, so an object referenced from
+  // several places (without a cycle) is still described in each of them.
   objectsSeen ??= new Set();
   if (value && typeof value === "object") {
     if (objectsSeen.has(value)) return result;
     objectsSeen.add(value);
   }
 
-  if (depth <= 0) return result;
-  if (value instanceof Array) result.items = itemsSchema(value, objectsSeen, depth - 1);
-  else if (isSimpleObject(value))
+  if (value instanceof Array) {
+    const items = itemsSchema(value, objectsSeen, depth - 1);
+    if (items) result.items = items;
+  } else if (isSimpleObject(value))
     result.properties = propertiesSchema(value, objectsSeen, depth - 1);
+  if (value && typeof value === "object") objectsSeen.delete(value);
   return result;
 }
 
@@ -159,18 +165,23 @@ function isSimpleObject(value: unknown): value is Record<string, unknown> {
   }
 }
 
+// Arrays with more distinct item schemas than this get no `items` at all;
+// listing them all would bloat the AppMap without telling much.
+const maxItemSchemas = 10;
+
 function itemsSchema(
-  [head, ...tail]: unknown[],
+  value: unknown[],
   objectsSeen?: Set<object>,
   depth = defaultDepth,
-): AppMap.ParameterSchema | undefined {
-  if (!head) return;
-
-  const schema = parameterSchema(head, objectsSeen, depth);
-  for (const item of tail)
-    if (!isDeepStrictEqual(schema, parameterSchema(item, objectsSeen, depth))) return;
-
-  return schema;
+): AppMap.ParameterSchema[] | undefined {
+  const schemas: AppMap.ParameterSchema[] = [];
+  for (const item of value) {
+    const schema = parameterSchema(item, objectsSeen, depth);
+    if (schemas.some((s) => isDeepStrictEqual(s, schema))) continue;
+    if (schemas.length === maxItemSchemas) return;
+    schemas.push(schema);
+  }
+  if (schemas.length > 0) return schemas;
 }
 
 function propertiesSchema(
